@@ -1,0 +1,18 @@
+image: samueldebruyn/debian-git
+
+pipelines:
+  custom: # Pipelines that are triggered manually via the Bitbucket GUI
+    init: # -- First time init
+      - step:
+          script:
+            - apt-get update
+            - apt-get -qq install git-ftp
+            - git ftp push -v --user $FTP_USERNAME --passwd $FTP_PASSWORD sftp://138.68.228.23:22/public_html/wp-content/plugins/the-crafters-box-subscriptions/
+  branches:
+    master:
+      - step:
+          deployment: staging
+          script:
+            - apt-get update
+            - apt-get -qq install git-ftp
+            - git ftp push -v --user $FTP_USERNAME --passwd $FTP_PASSWORD sftp://138.68.228.23:22/public_html/wp-content/plugins/the-crafters-box-subscriptions/

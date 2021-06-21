@@ -1,0 +1,14 @@
+.non-clickable {
+	pointer-events: none;
+	opacity: 0.5;
+}
+
+.datepicker-inline {
+	width: 100% !important;
+}
+
+.datepicker table tr td.new, .datepicker table tr td.old {
+	height: 0;
+	line-height: 0;
+	visibility: hidden;
+}

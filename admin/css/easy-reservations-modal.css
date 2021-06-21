@@ -1,0 +1,103 @@
+/* The Modal (background) */
+.ersrv-modal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 9999; /* Sit on top */
+	padding-top: 100px; /* Location of the box */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0,0,0); /* Fallback color */
+	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.ersrv-modal-content {
+	background-color: #fefefe;
+	margin: auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 30%;
+}
+
+/* The Close Button */
+.ersrv-close-modal {
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.ersrv-close-modal:hover,
+.ersrv-close-modal:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.ersrv-modal-content h3 {
+	font-size: 22px;
+    color: #000;
+    margin-bottom: 40px !important;
+    margin-top: 0px;
+}
+
+.ersrv-date-ranges .from,
+.ersrv-date-ranges .to {
+    float: left;
+    display: flex;
+    align-items: center;
+}
+
+.ersrv-date-ranges .from {
+  width:48%;
+  margin-right:2%
+}
+
+.ersrv-date-ranges .to {
+  width:48%;
+  margin-left:2%
+}
+
+.ersrv-date-ranges .format {
+	width: 100%;
+	text-align: center;
+}
+
+.ersrv-date-ranges {
+    overflow: hidden;
+}
+
+.ersrv-date-ranges .from label,
+.ersrv-date-ranges .to label,
+.ersrv-date-ranges .format label {
+    font-size: 14px;
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+.ersrv-date-ranges input {
+	width: 100%;
+}
+
+.submit-export {
+	overflow: hidden;
+	width: 100%;
+	text-align: center;
+	padding-bottom: 2px;
+}
+
+
+.submit-export button {
+	width: 120px;
+    height: 40px;
+    font-size: 16px !important;
+    margin-top: 15px !important;
+}
+
+.submit-export button:hover {
+	color: #fff;
+    background: #0071a1;
+}

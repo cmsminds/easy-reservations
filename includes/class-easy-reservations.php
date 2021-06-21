@@ -1,0 +1,219 @@
+<?php
+
+/**
+ * The file that defines the core plugin class
+ *
+ * A class definition that includes attributes and functions used across both the
+ * public-facing side of the site and the admin area.
+ *
+ * @link       https://www.cmsminds.com/
+ * @since      1.0.0
+ *
+ * @package    Easy_Reservations
+ * @subpackage Easy_Reservations/includes
+ */
+
+/**
+ * The core plugin class.
+ *
+ * This is used to define internationalization, admin-specific hooks, and
+ * public-facing site hooks.
+ *
+ * Also maintains the unique identifier of this plugin as well as the current
+ * version of the plugin.
+ *
+ * @since      1.0.0
+ * @package    Easy_Reservations
+ * @subpackage Easy_Reservations/includes
+ * @author     cmsMinds <info@cmsminds.com>
+ */
+class Easy_Reservations {
+
+	/**
+	 * The loader that's responsible for maintaining and registering all hooks that power
+	 * the plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 * @var      Easy_Reservations_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 */
+	protected $loader;
+
+	/**
+	 * The unique identifier of this plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
+	 */
+	protected $plugin_name;
+
+	/**
+	 * The current version of the plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 * @var      string    $version    The current version of the plugin.
+	 */
+	protected $version;
+
+	/**
+	 * Define the core functionality of the plugin.
+	 *
+	 * Set the plugin name and the plugin version that can be used throughout the plugin.
+	 * Load the dependencies, define the locale, and set the hooks for the admin area and
+	 * the public-facing side of the site.
+	 *
+	 * @since    1.0.0
+	 */
+	public function __construct() {
+		$this->version     = ( defined( 'ERSRV_PLUGIN_VERSION' ) ) ? ERSRV_PLUGIN_VERSION : '1.0.0';
+		$this->plugin_name = 'easy-reservations';
+
+		$this->load_dependencies();
+		$this->set_locale();
+		$this->define_admin_hooks();
+		$this->define_public_hooks();
+	}
+
+	/**
+	 * Load the required dependencies for this plugin.
+	 *
+	 * Include the following files that make up the plugin:
+	 *
+	 * - Easy_Reservations_Loader. Orchestrates the hooks of the plugin.
+	 * - Easy_Reservations_i18n. Defines internationalization functionality.
+	 * - Easy_Reservations_Admin. Defines all hooks for the admin area.
+	 * - Easy_Reservations_Public. Defines all hooks for the public side of the site.
+	 *
+	 * Create an instance of the loader which will be used to register the hooks
+	 * with WordPress.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function load_dependencies() {
+		// The class responsible for orchestrating the actions and filters of the core plugin.
+		require_once ERSRV_PLUGIN_PATH . 'includes/class-easy-reservations-loader.php';
+
+		// The class responsible for defining internationalization functionality of the plugin.
+		require_once ERSRV_PLUGIN_PATH . 'includes/class-easy-reservations-i18n.php';
+
+		// The file is responsible for defining all custom functions.
+		require_once ERSRV_PLUGIN_PATH . 'includes/easy-reservations-functions.php';
+
+		// The class responsible for defining all actions that occur in the admin area.
+		require_once ERSRV_PLUGIN_PATH . 'admin/class-easy-reservations-admin.php';
+
+		// The class responsible for defining all actions that occur in the public-facing side of the site.
+		require_once ERSRV_PLUGIN_PATH . 'public/class-easy-reservations-public.php';
+
+		$this->loader = new Easy_Reservations_Loader();
+	}
+
+	/**
+	 * Define the locale for this plugin for internationalization.
+	 *
+	 * Uses the Easy_Reservations_i18n class in order to set the domain and to register the hook
+	 * with WordPress.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function set_locale() {
+		$plugin_i18n = new Easy_Reservations_i18n();
+
+		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+	}
+
+	/**
+	 * Register all of the hooks related to the admin area functionality
+	 * of the plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function define_admin_hooks() {
+		$plugin_admin = new Easy_Reservations_Admin( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'ersrv_admin_enqueue_scripts_callback' );
+		$this->loader->add_filter( 'product_type_selector', $plugin_admin, 'ersrv_product_type_selector_callback' );
+		$this->loader->add_filter( 'woocommerce_product_data_tabs', $plugin_admin, 'ersrv_woocommerce_product_data_tabs_callback' );
+		$this->loader->add_action( 'woocommerce_product_data_panels', $plugin_admin, 'ersrv_woocommerce_product_data_panels_callback' );
+		$this->loader->add_action( 'woocommerce_process_product_meta', $plugin_admin, 'ersrv_woocommerce_process_product_meta_callback' );
+		$this->loader->add_action( 'admin_footer', $plugin_admin, 'ersrv_admin_footer_callback' );
+		$this->loader->add_action( 'wp_ajax_export_reservations', $plugin_admin, 'ersrv_export_reservations_callback' );
+		$this->loader->add_filter( 'woocommerce_get_settings_pages', $plugin_admin, 'ersrv_woocommerce_get_settings_pages_callback' );
+		$this->loader->add_filter( 'plugin_row_meta', $plugin_admin, 'ersrv_plugin_row_meta_callback', 10, 2 );
+		$this->loader->add_action( 'wp_ajax_get_amenity_html', $plugin_admin, 'ersrv_get_amenity_html_callback' );
+		$this->loader->add_action( 'widgets_init', $plugin_admin, 'ersrv_widgets_init_callback' );
+	}
+
+	/**
+	 * Register all of the hooks related to the public-facing functionality
+	 * of the plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function define_public_hooks() {
+		$plugin_public = new Easy_Reservations_Public( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'ersrv_wp_enqueue_scripts_callback', 99 );
+		$this->loader->add_action( 'init', $plugin_public, 'ersrv_init_callback' );
+		$this->loader->add_shortcode( 'ersrv_reserve_item', $plugin_public, 'ersrv_ersrv_reserve_item_callback' );
+		$this->loader->add_action( 'woocommerce_after_single_product_summary', $plugin_public, 'ersrv_woocommerce_after_single_product_summary_callback' );
+		$this->loader->add_action( 'woocommerce_after_order_details', $plugin_public, 'ersrv_woocommerce_after_order_details_callback' );
+		$this->loader->add_action( 'wp_ajax_add_reservation_to_gcal', $plugin_public, 'ersrv_add_reservation_to_gcal_callback' );
+		$this->loader->add_action( 'wp_ajax_nopriv_add_reservation_to_gcal', $plugin_public, 'ersrv_add_reservation_to_gcal_callback' );
+		$this->loader->add_action( 'wp_ajax_add_reservation_to_ical', $plugin_public, 'ersrv_add_reservation_to_ical_callback' );
+		$this->loader->add_action( 'wp_ajax_nopriv_add_reservation_to_ical', $plugin_public, 'ersrv_add_reservation_to_ical_callback' );
+		$this->loader->add_action( 'woocommerce_thankyou', $plugin_public, 'ersrv_woocommerce_thankyou_callback' );
+		$this->loader->add_filter( 'ersrv_posts_args', $plugin_public, 'ersrv_ersrv_posts_args_callback' );
+		$this->loader->add_action( 'wp_ajax_get_item_unavailable_dates', $plugin_public, 'ersrv_get_item_unavailable_dates_callback' );
+		$this->loader->add_action( 'wp_ajax_nopriv_get_item_unavailable_dates', $plugin_public, 'ersrv_get_item_unavailable_dates_callback' );
+		$this->loader->add_action( 'wp_head', $plugin_public, 'ersrv_wp_head_callback' );
+		$this->loader->add_filter( 'woocommerce_product_add_to_cart_text', $plugin_public, 'ersrv_woocommerce_product_add_to_cart_text_callback', 10, 2 );
+	}
+
+	/**
+	 * Run the loader to execute all of the hooks with WordPress.
+	 *
+	 * @since    1.0.0
+	 */
+	public function run() {
+		$this->loader->run();
+	}
+
+	/**
+	 * The name of the plugin used to uniquely identify it within the context of
+	 * WordPress and to define internationalization functionality.
+	 *
+	 * @since     1.0.0
+	 * @return    string    The name of the plugin.
+	 */
+	public function get_plugin_name() {
+		return $this->plugin_name;
+	}
+
+	/**
+	 * The reference to the class that orchestrates the hooks with the plugin.
+	 *
+	 * @since     1.0.0
+	 * @return    Easy_Reservations_Loader    Orchestrates the hooks of the plugin.
+	 */
+	public function get_loader() {
+		return $this->loader;
+	}
+
+	/**
+	 * Retrieve the version number of the plugin.
+	 *
+	 * @since     1.0.0
+	 * @return    string    The version number of the plugin.
+	 */
+	public function get_version() {
+		return $this->version;
+	}
+
+}

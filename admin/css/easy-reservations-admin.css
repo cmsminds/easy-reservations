@@ -1,0 +1,98 @@
+ul.wc-tabs li.reservation_tab a::before {
+	font-family: Dashicons;
+	content: "\f508" !important;
+}
+
+.reservation-tab-setting-heading {
+	margin-left: 10px;
+}
+
+.ersrv-copy-adult-charge {
+	margin-left: 10px;
+}
+
+.non-clickable {
+	pointer-events: none;
+	opacity: 0.5;
+}
+
+.dropdown.rothco {
+	display: inline-block;
+	margin-left: 4px;
+	padding: 3px 8px;
+	position: relative;
+	text-decoration: none;
+	border: 1px solid #0071a1;
+	border-radius: 2px;
+	text-shadow: none;
+	font-weight: 600;
+	font-size: 13px;
+	line-height: normal;
+	color: #0071a1;
+	background: #f3f5f6;
+	cursor: pointer;
+	top: -3px;
+}
+
+.dropdown.rothco .dropbtn {
+	font-size: 14px;
+	border: none;
+	outline: none;
+	color: #0071a1;
+	padding: 0;
+	background-color: inherit;
+	font-family: inherit;
+	margin: 0;
+	font-weight: 600;
+}
+
+.navbar a:hover, .dropdown.rothco:hover .dropbtn {
+	background-color: #f3f5f6;
+}
+	
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #f9f9f9;
+	min-width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+	top: 100%;
+	left: 0;
+	width: 210px;
+}
+
+.dropdown-content a {
+	float: none;
+	color: #0071a1;
+	padding: 8px 16px;
+	text-decoration: none;
+	display: block;
+	text-align: left;
+}
+
+.dropdown-content a:hover {
+	background-color: #ddd;
+}
+
+.dropdown.rothco:hover .dropdown-content {
+	display: block;
+}
+
+.woocommerce_options_panel .form-field.amenities-row {
+    padding-left: 16px !important;
+    display:flex;
+}
+.amenities-row .short{
+	width:calc(100%/ 2 - 16px) !important;
+	margin-right:16px;
+}
+
+.reservations-amenities-header {
+    display: flex;
+    align-items: center;
+}
+
+.reservations-amenities-header .reservation-tab-setting-heading {
+    margin-right: 1.33em;
+}
