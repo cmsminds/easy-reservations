@@ -277,7 +277,7 @@ class Easy_Reservations_Public {
 	 */
 	public function ersrv_init_callback() {
 		// Include the product type custom class.
-		require ERSRV_PLUGIN_PATH . 'includes/classes/class-easy-reservations-product-type.php';
+		require ERSRV_PLUGIN_PATH . 'includes/classes/class-wc-product-reservation.php';
 	}
 
 	/**

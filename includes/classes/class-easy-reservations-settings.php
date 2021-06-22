@@ -37,10 +37,10 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 	 */
 	public function get_sections() {
 		$sections = array_merge(
-			array( '' => __( 'General', 'easy-reservations' ), ),
-			array( 'reservation_calendar' => __( 'Reservation Calendar', 'easy-reservations' ), ),
-			array( 'quickbooks' => __( 'Quickbooks', 'easy-reservations' ), ),
-			array( 'emails' => __( 'Emails', 'easy-reservations' ), )
+			array( '' => __( 'General', 'easy-reservations' ) ),
+			array( 'reservation_calendar' => __( 'Reservation Calendar', 'easy-reservations' ) ),
+			array( 'quickbooks' => __( 'Quickbooks', 'easy-reservations' ) ),
+			array( 'emails' => __( 'Emails', 'easy-reservations' ) )
 		);
 
 		return apply_filters( 'woocommerce_get_sections_' . $this->id, $sections );
@@ -77,7 +77,7 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 	 * @return array
 	 */
 	public function get_settings( $current_section = '' ) {
-		switch( $current_section ) {
+		switch ( $current_section ) {
 			case 'reservation_calendar':
 				$settings = $this->ersrv_reservation_calendar_settings_fields();
 				break;
@@ -190,7 +190,7 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 				'desc'        => __( 'This holds the quickbooks account API key.', 'easy-reservations' ),
 				'desc_tip'    => true,
 				'id'          => 'ersrv_quickbooks_api_key',
-				'placeholder' => __( '', 'easy-reservations' ),
+				'placeholder' => __( 'XXX XXX XXX', 'easy-reservations' ),
 				'type'        => 'text',
 			),
 			array(

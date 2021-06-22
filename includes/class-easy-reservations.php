@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The file that defines the core plugin class
  *
@@ -82,7 +81,7 @@ class Easy_Reservations {
 	 * Include the following files that make up the plugin:
 	 *
 	 * - Easy_Reservations_Loader. Orchestrates the hooks of the plugin.
-	 * - Easy_Reservations_i18n. Defines internationalization functionality.
+	 * - Easy_Reservations_I18n. Defines internationalization functionality.
 	 * - Easy_Reservations_Admin. Defines all hooks for the admin area.
 	 * - Easy_Reservations_Public. Defines all hooks for the public side of the site.
 	 *
@@ -114,14 +113,14 @@ class Easy_Reservations {
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the Easy_Reservations_i18n class in order to set the domain and to register the hook
+	 * Uses the Easy_Reservations_I18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
 	 * @access   private
 	 */
 	private function set_locale() {
-		$plugin_i18n = new Easy_Reservations_i18n();
+		$plugin_i18n = new Easy_Reservations_I18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 	}

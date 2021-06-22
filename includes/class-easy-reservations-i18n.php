@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Define the internationalization functionality
  *
@@ -24,8 +23,7 @@
  * @subpackage Easy_Reservations/includes
  * @author     cmsMinds <info@cmsminds.com>
  */
-class Easy_Reservations_i18n {
-
+class Easy_Reservations_I18n {
 
 	/**
 	 * Load the plugin text domain for translation.

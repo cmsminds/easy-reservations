@@ -24,7 +24,7 @@ class Easy_Reservations_Calendar_Widget extends WP_Widget {
 			__( 'Easy Reservations: Calendar', 'easy-reservations' ), // Widget name will appear in UI.
 			array(
 				'description' => __( 'This widget offered by easy reservations plugin, shows the available/unavailable dates by reservable item.', 'easy-reservations' ), // Widget description.
-			) 
+			)
 		);
 	}
 
@@ -38,14 +38,11 @@ class Easy_Reservations_Calendar_Widget extends WP_Widget {
 	public function widget( $args, $instance ) {
 		$widget_title                = ( ! empty( $instance['title'] ) ) ? $instance['title'] : '';
 		$widget_desc                 = ( ! empty( $instance['description'] ) ) ? $instance['description'] : '';
-		$display_reserve_item_button = ( ! empty( $instance[ 'display_reserve_item_button' ] ) ) ? 'yes' : 'no';
-
-		// Before and after widget arguments are defined by themes.
-		echo $args['before_widget'];
+		$display_reserve_item_button = ( ! empty( $instance['display_reserve_item_button'] ) ) ? 'yes' : 'no';
 
 		// Print the widget title.
 		if ( ! empty( $widget_title ) ) {
-			echo $args['before_title'] . $widget_title . $args['after_title'];
+			echo wp_kses_post( $widget_title );
 		}
 
 		// Print the widget description.
@@ -77,7 +74,9 @@ class Easy_Reservations_Calendar_Widget extends WP_Widget {
 		ob_start();
 		?>
 		<div class="ersrv-reservation-widget-container">
-			<?php if ( ! empty( $reservable_items ) && is_array( $reservable_items ) ) { ?>
+			<?php
+			if ( ! empty( $reservable_items ) && is_array( $reservable_items ) ) {
+				?>
 				<select id="ersrv-widget-reservable-items">
 					<option value="-1"><?php esc_html_e( 'Select Item', 'easy-reservations' ); ?></option>
 					<?php foreach ( $reservable_items as $reservable_item_id ) { ?>
@@ -91,59 +90,87 @@ class Easy_Reservations_Calendar_Widget extends WP_Widget {
 						<a title="<?php echo wp_kses_post( $reserve_item_button_text ); ?>" href="javascript:void(0);"><?php echo wp_kses_post( $reserve_item_button_text ); ?></a>
 					</div>
 				<?php } ?>
-			<?php } else {
-				echo sprintf( __( 'There are no reservable items.', 'easy-reservations' ), '<p class="ersrv-no-reservable-items">', '</p>' );
-			} ?>
+				<?php
+			} else {
+				echo wp_kses(
+					'<p class="ersrv-no-reservable-items">' . __( 'There are no reservable items.', 'easy-reservations' ) . '</p>',
+					array(
+						'p' => array(
+							'class' => array(),
+						),
+					)
+				);
+			}
+			?>
 		</div>
 		<?php
-		echo ob_get_clean();
-
-		echo $args['after_widget'];
+		echo wp_kses(
+			ob_get_clean(),
+			array(
+				'a'      => array(
+					'title' => array(),
+					'href'  => array(),
+				),
+				'div'    => array(
+					'class' => array(),
+				),
+				'select' => array(
+					'id' => array(),
+				),
+				'option' => array(
+					'value' => array(),
+				),
+				'p'      => array(
+					'class' => array(),
+				),
+			)
+		);
 	}
 
 	/**
 	 * Widget admin settings.
 	 *
-	 * @param array $new_instance New instance.
+	 * @param array $instance Widget instance.
 	 */
 	public function form( $instance ) {
-		$title                       = ( ! empty( $instance[ 'title' ] ) ) ? $instance[ 'title' ] : __( 'New title', 'easy-reservations' );
-		$description                 = ( ! empty( $instance[ 'description' ] ) ) ? $instance[ 'description' ] : '';
-		$available_dates_bg_color    = ( ! empty( $instance[ 'available_dates_bg_color' ] ) ) ? $instance[ 'available_dates_bg_color' ] : '';
-		$display_reserve_item_button = ( ! empty( $instance[ 'display_reserve_item_button' ] ) ) ? 'yes' : 'no';
+		$title                       = ( ! empty( $instance['title'] ) ) ? $instance['title'] : __( 'New title', 'easy-reservations' );
+		$description                 = ( ! empty( $instance['description'] ) ) ? $instance['description'] : '';
+		$available_dates_bg_color    = ( ! empty( $instance['available_dates_bg_color'] ) ) ? $instance['available_dates_bg_color'] : '';
+		$display_reserve_item_button = ( ! empty( $instance['display_reserve_item_button'] ) ) ? 'yes' : 'no';
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title:', 'easy-reservations' ); ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo wp_kses_post( $title ); ?>" />
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'easy-reservations' ); ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo wp_kses_post( $title ); ?>" />
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'description' ); ?>"><?php esc_html_e( 'Description:', 'easy-reservations' ); ?></label>
-			<textarea class="widefat" id="<?php echo $this->get_field_id( 'description' ); ?>" name="<?php echo $this->get_field_name( 'description' ); ?>"><?php echo wp_kses_post( $description ); ?></textarea>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"><?php esc_html_e( 'Description:', 'easy-reservations' ); ?></label>
+			<textarea class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'description' ) ); ?>"><?php echo wp_kses_post( $description ); ?></textarea>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'available_dates_bg_color' ); ?>"><?php esc_html_e( 'Available Dates Background Color:', 'easy-reservations' ); ?></label>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'available_dates_bg_color' ); ?>" name="<?php echo $this->get_field_name( 'available_dates_bg_color' ); ?>" type="color" value="<?php echo wp_kses_post( $available_dates_bg_color ); ?>" />
+			<label for="<?php echo esc_attr( $this->get_field_id( 'available_dates_bg_color' ) ); ?>"><?php esc_html_e( 'Available Dates Background Color:', 'easy-reservations' ); ?></label>
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'available_dates_bg_color' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'available_dates_bg_color' ) ); ?>" type="color" value="<?php echo wp_kses_post( $available_dates_bg_color ); ?>" />
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'display_reserve_item_button' ); ?>"><?php esc_html_e( 'Display Reserve Item Button:', 'easy-reservations' ); ?></label>
-			<input type="checkbox" id="<?php echo $this->get_field_id( 'display_reserve_item_button' ); ?>" name="<?php echo $this->get_field_name( 'display_reserve_item_button' ); ?>" <?php echo esc_attr( ( ! empty( $display_reserve_item_button ) && 'yes' === $display_reserve_item_button ) ? 'checked' : '' ); ?> />
+			<label for="<?php echo esc_attr( $this->get_field_id( 'display_reserve_item_button' ) ); ?>"><?php esc_html_e( 'Display Reserve Item Button:', 'easy-reservations' ); ?></label>
+			<input type="checkbox" id="<?php echo esc_attr( $this->get_field_id( 'display_reserve_item_button' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'display_reserve_item_button' ) ); ?>" <?php echo esc_attr( ( ! empty( $display_reserve_item_button ) && 'yes' === $display_reserve_item_button ) ? 'checked' : '' ); ?> />
 		</p>
-		<?php 
+		<?php
 	}
 
 	/**
 	 * Updating widget replacing old instances with new.
 	 *
-	 * 
+	 * @param array $new_instance New instance.
 	 * @param array $old_instance Old instance.
 	 * @return array
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance                                = array();
-		$instance['title']                       = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+		$instance['title']                       = ( ! empty( $new_instance['title'] ) ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
 		$instance['description']                 = ( ! empty( $new_instance['description'] ) ) ? $new_instance['description'] : '';
 		$instance['available_dates_bg_color']    = ( ! empty( $new_instance['available_dates_bg_color'] ) ) ? $new_instance['available_dates_bg_color'] : '';
 		$instance['display_reserve_item_button'] = ( ! empty( $new_instance['display_reserve_item_button'] ) ) ? $new_instance['display_reserve_item_button'] : '';
+
 		return $instance;
 	}
 }

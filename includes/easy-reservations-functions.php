@@ -90,6 +90,9 @@ if ( ! function_exists( 'ersrv_get_posts' ) ) {
 	/**
 	 * Get the posts.
 	 *
+	 * @param string $post_type Post type.
+	 * @param int    $paged Paged value.
+	 * @param int    $posts_per_page Posts per page.
 	 * @return object
 	 */
 	function ersrv_get_posts( $post_type = 'post', $paged = 1, $posts_per_page = -1 ) {
@@ -129,7 +132,7 @@ if ( ! function_exists( 'ersrv_get_active_stylesheet' ) ) {
 	 * @return string
 	 */
 	function ersrv_get_active_stylesheet( $current_theme ) {
-		switch( $current_theme ) {
+		switch ( $current_theme ) {
 			case 'twentysixteen':
 				return array(
 					'url'  => ERSRV_PLUGIN_URL . 'public/css/easy-reservations-twentysixteen.css',
@@ -211,11 +214,11 @@ if ( ! function_exists( 'ersrv_order_is_reservation' ) ) {
 			return false;
 		}
 
-		$custom_product_type  = ersrv_get_custom_product_type_slug();
+		$custom_product_type = ersrv_get_custom_product_type_slug();
 
 		// Iterate through the items to check if any reservation has been booked.
 		foreach ( $line_items as $line_item ) {
-			$line_item_product_id   = $line_item->get_product_id();
+			$line_item_product_id = $line_item->get_product_id();
 
 			// If the item ID is available.
 			$line_item_type = get_the_terms( $line_item_product_id, 'product_type' );
@@ -237,8 +240,8 @@ if ( ! function_exists( 'ersrv_get_amenity_html' ) ) {
 	/**
 	 * Get the amenity HTML.
 	 *
-	 * @param string  $amenity_title Holds the amenity title.
-	 * @param string  $amenity_cost Holds the amenity cost.
+	 * @param string $amenity_title Holds the amenity title.
+	 * @param string $amenity_cost Holds the amenity cost.
 	 * @return string
 	 */
 	function ersrv_get_amenity_html( $amenity_title = '', $amenity_cost = '' ) {
@@ -306,7 +309,7 @@ if ( ! function_exists( 'ersrv_get_widget_settings' ) ) {
 
 			break; // Terminate the loop, because the requested settings have been achieved.
 		}
-		
+
 		return $widget_settings;
 	}
 }
