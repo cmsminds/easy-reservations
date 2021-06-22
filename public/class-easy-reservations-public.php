@@ -59,9 +59,9 @@ class Easy_Reservations_Public {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of the plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @since 1.0.0
+	 * @param string $plugin_name The name of the plugin.
+	 * @param string $version The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 		$this->plugin_name = $plugin_name;
@@ -83,12 +83,12 @@ class Easy_Reservations_Public {
 	public function ersrv_wp_enqueue_scripts_callback() {
 		global $wp_registered_widgets, $post;
 		// Active style file based on the active theme.
-		$current_theme       = get_option( 'stylesheet' );
-		$active_style        = ersrv_get_active_stylesheet( $current_theme );
-		$active_style_url    = ( ! empty( $active_style['url'] ) ) ? $active_style['url'] : '';
-		$active_style_path   = ( ! empty( $active_style['path'] ) ) ? $active_style['path'] : '';
+		$current_theme     = get_option( 'stylesheet' );
+		$active_style      = ersrv_get_active_stylesheet( $current_theme );
+		$active_style_url  = ( ! empty( $active_style['url'] ) ) ? $active_style['url'] : '';
+		$active_style_path = ( ! empty( $active_style['path'] ) ) ? $active_style['path'] : '';
 
-		/************************************************ STYLES ************************************************/
+		/* ---------------------------------------STYLES--------------------------------------- */
 
 		// Include few styles on reservation product type page.
 		if ( is_product() ) {
@@ -98,31 +98,41 @@ class Easy_Reservations_Public {
 				// Enqueue the bootstrap style.
 				wp_enqueue_style(
 					$this->plugin_name . '-bootstrap-style',
-					ERSRV_PLUGIN_URL . 'public/css/bootstrapv4.6.0.min.css'
+					ERSRV_PLUGIN_URL . 'public/css/bootstrapv4.6.0.min.css',
+					array(),
+					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrapv4.6.0.min.css' )
 				);
 
 				// Enqueue the bootstrap select style.
 				wp_enqueue_style(
 					$this->plugin_name . '-bootstrap-select-style',
-					ERSRV_PLUGIN_URL . 'public/css/bootstrap-select.1.13.14.min.css'
+					ERSRV_PLUGIN_URL . 'public/css/bootstrap-select.1.13.14.min.css',
+					array(),
+					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap-select.1.13.14.min.css' )
 				);
 
 				// Enqueue the bootstrap datepicker style.
 				wp_enqueue_style(
 					$this->plugin_name . '-bootstrap-datepicker-style',
-					ERSRV_PLUGIN_URL . 'public/css/bootstrap-datepicker-v1.9.0.min.css'
+					ERSRV_PLUGIN_URL . 'public/css/bootstrap-datepicker-v1.9.0.min.css',
+					array(),
+					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap-datepicker-v1.9.0.min.css' )
 				);
 
 				// Enqueue the free font-awesome style.
 				wp_enqueue_style(
 					$this->plugin_name . '-font-awesome-style',
-					'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css'
+					'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css',
+					array(),
+					'5.13.1'
 				);
 
 				// Enqueue the calendar core style.
 				wp_enqueue_style(
 					$this->plugin_name . '-fullcalendar-core-style',
-					ERSRV_PLUGIN_URL . 'public/css/fullcalendar/main.min.css'
+					ERSRV_PLUGIN_URL . 'public/css/fullcalendar/main.min.css',
+					array(),
+					filemtime( ERSRV_PLUGIN_PATH . 'public/css/fullcalendar/main.min.css' )
 				);
 
 				// Enqueue the public style only when the style url and path are available.
@@ -143,7 +153,9 @@ class Easy_Reservations_Public {
 			if ( ! wp_style_is( $this->plugin_name . '-bootstrap-style', 'enqueued' ) ) {
 				wp_enqueue_style(
 					$this->plugin_name . '-bootstrap-style',
-					ERSRV_PLUGIN_URL . 'public/css/bootstrapv4.6.0.min.css'
+					ERSRV_PLUGIN_URL . 'public/css/bootstrapv4.6.0.min.css',
+					array(),
+					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrapv4.6.0.min.css' )
 				);
 			}
 
@@ -151,7 +163,9 @@ class Easy_Reservations_Public {
 			if ( ! wp_style_is( $this->plugin_name . '-bootstrap-datepicker-style', 'enqueued' ) ) {
 				wp_enqueue_style(
 					$this->plugin_name . '-bootstrap-datepicker-style',
-					ERSRV_PLUGIN_URL . 'public/css/bootstrap-datepicker-v1.9.0.min.css'
+					ERSRV_PLUGIN_URL . 'public/css/bootstrap-datepicker-v1.9.0.min.css',
+					array(),
+					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap-datepicker-v1.9.0.min.css' )
 				);
 			}
 
@@ -163,7 +177,7 @@ class Easy_Reservations_Public {
 			);
 		}
 
-		/************************************************ SCRIPTS ************************************************/
+		/* ---------------------------------------SCRIPTS--------------------------------------- */
 
 		if ( is_product() ) {
 			$wc_product = wc_get_product( get_the_ID() );
@@ -229,7 +243,7 @@ class Easy_Reservations_Public {
 					'ERSRV_Public_Script_Vars',
 					array(
 						'ajaxurl'        => admin_url( 'admin-ajax.php' ),
-						'remove_sidebar' => ersrv_get_plugin_settings( 'ersrv_remove_product_single_sidebar' ), 
+						'remove_sidebar' => ersrv_get_plugin_settings( 'ersrv_remove_product_single_sidebar' ),
 					)
 				);
 			}
@@ -324,7 +338,7 @@ class Easy_Reservations_Public {
 	public function ersrv_woocommerce_after_order_details_callback( $wc_order ) {
 		$add_calendar_buttons = ersrv_order_is_reservation( $wc_order );
 		$add_calendar_buttons = true;
-		
+
 		// Return, if there is no need to add calendar buttons.
 		if ( ! $add_calendar_buttons ) {
 			return;
@@ -336,7 +350,7 @@ class Easy_Reservations_Public {
 		 *
 		 * This filter helps to modify the google calendar button text, which adds the reservation to google calendar.
 		 *
-		 * @param string   $google_calendar_button_text Google calendar button text. 
+		 * @param string   $google_calendar_button_text Google calendar button text.
 		 * @param WC_Order $wc_order WooCommerce Order data.
 		 * @return string
 		 * @since 1.0.0
@@ -349,7 +363,7 @@ class Easy_Reservations_Public {
 		 *
 		 * This filter helps to modify the icalendar button text, which adds the reservation to icalendar.
 		 *
-		 * @param string   $icalendar_button_text Google calendar button text. 
+		 * @param string   $icalendar_button_text Google calendar button text.
 		 * @param WC_Order $wc_order WooCommerce Order data.
 		 * @return string
 		 * @since 1.0.0
@@ -465,7 +479,9 @@ class Easy_Reservations_Public {
 		$reservation_end_date   = '2021-06-31 14:30:00';
 		$event                  = array(
 			'id'          => $order_id,
+			/* translators: 1: %d: wc order ID */
 			'title'       => sprintf( __( 'Reservation booked. ID: #%1$d', 'easy-reservations' ), $order_id ),
+			/* translators: 1: %s: blogname */
 			'description' => sprintf( __( 'Example reservation booked on %1$s', 'easy-reservations' ), get_bloginfo( 'name' ) ),
 			'datestart'   => strtotime( $reservation_start_date ),
 			'dateend'     => strtotime( $reservation_end_date ),
@@ -483,7 +499,7 @@ class Easy_Reservations_Public {
 		UID:' . md5( $event['title'] ) . '
 		DTSTAMP:' . time() . '
 		LOCATION:' . addslashes( $event['address'] ) . '
-		DESCRIPTION:' . addslashes($event['description']) . '
+		DESCRIPTION:' . addslashes( $event['description'] ) . '
 		URL;VALUE=URI: ' . $event['order_url'] . '
 		SUMMARY:' . addslashes( $event['title'] ) . '
 		DTSTART:' . ersrv_get_icalendar_formatted_date( $event['datestart'] ) . '
@@ -493,7 +509,6 @@ class Easy_Reservations_Public {
 		header( 'Content-type: text/calendar; charset=utf-8' );
 		header( 'Content-Disposition: attachment; filename=your-reservation.ics' );
 		echo $ical;
-
 		die;
 
 		/**
@@ -651,7 +666,7 @@ class Easy_Reservations_Public {
 		$related_post_ids        = $reservation_posts_query->posts;
 
 		// Unset the current reservation item.
-		$item_to_exclude_key = array_search( $post_id, $related_post_ids );
+		$item_to_exclude_key = array_search( $post_id, $related_post_ids, true );
 		if ( false !== $item_to_exclude_key ) {
 			unset( $related_post_ids[ $item_to_exclude_key ] );
 		}
