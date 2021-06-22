@@ -174,6 +174,7 @@ class Easy_Reservations {
 		$this->loader->add_action( 'wp_ajax_nopriv_get_item_unavailable_dates', $plugin_public, 'ersrv_get_item_unavailable_dates_callback' );
 		$this->loader->add_action( 'wp_head', $plugin_public, 'ersrv_wp_head_callback' );
 		$this->loader->add_filter( 'woocommerce_product_add_to_cart_text', $plugin_public, 'ersrv_woocommerce_product_add_to_cart_text_callback', 10, 2 );
+		$this->loader->add_filter( 'woocommerce_related_products', $plugin_public, 'ersrv_woocommerce_related_products_callback', 20, 2 );
 	}
 
 	/**

@@ -624,4 +624,38 @@ class Easy_Reservations_Public {
 
 		return ersrv_get_plugin_settings( 'ersrv_archive_page_add_to_cart_button_text' );
 	}
+
+	/**
+	 * Alter the related products on reservation product type.
+	 *
+	 * @param array $related_post_ids Holds the related posts IDs.
+	 * @param int   $post_id Holds the current post ID.
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_related_products_callback( $related_post_ids, $post_id ) {
+		global $product;
+
+		// Return, if it's not product single page.
+		if ( ! is_product() ) {
+			return $related_post_ids;
+		}
+
+		// Return, if the current product is not of reservation type.
+		if ( $this->custom_product_type !== $product->get_type() ) {
+			return $related_post_ids;
+		}
+
+		// Get the reservation type products now.
+		$reservation_posts_query = ersrv_get_posts( 'product', 1, -1 );
+		$related_post_ids        = $reservation_posts_query->posts;
+
+		// Unset the current reservation item.
+		$item_to_exclude_key = array_search( $post_id, $related_post_ids );
+		if ( false !== $item_to_exclude_key ) {
+			unset( $related_post_ids[ $item_to_exclude_key ] );
+		}
+
+		return $related_post_ids;
+	}
 }
