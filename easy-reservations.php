@@ -93,8 +93,8 @@ function ersrv_run_easy_reservations() {
  * @since 1.0.0
  */
 function ersrv_plugins_loaded_callback() {
-	$active_plugins             = get_option( 'active_plugins' );
-	$is_wc_active               = in_array( 'woocommerce/woocommerce.php', $active_plugins, true );
+	$active_plugins = get_option( 'active_plugins' );
+	$is_wc_active   = in_array( 'woocommerce/woocommerce.php', $active_plugins, true );
 
 	if ( current_user_can( 'activate_plugins' ) && false === $is_wc_active ) {
 		add_action( 'admin_notices', 'ersrv_admin_notices_callback' );
@@ -119,7 +119,7 @@ function ersrv_admin_notices_callback() {
 	<div class="error">
 		<p>
 			<?php
-			/* translators: 1: %s: string tag open, 2: %s: strong tag close, 3: %s: this plugin, 4: %s: woocommerce plugin */
+			/* translators: 1: %s: strong tag open, 2: %s: strong tag close, 3: %s: this plugin, 4: %s: woocommerce plugin, 5: anchor tag for woocommerce plugin, 6: anchor tag close */
 			echo wp_kses_post( sprintf( __( '%1$s%3$s%2$s is ineffective as it requires %1$s%4$s%2$s to be installed and active. Click %5$shere%6$s to install or activate it.', 'wc-quick-buy' ), '<strong>', '</strong>', esc_html( $this_plugin ), esc_html( $wc_plugin ), '<a target="_blank" href="' . admin_url( 'plugin-install.php?s=woocommerce&tab=search&type=term' ) . '">', '</a>' ) );
 			?>
 		</p>
@@ -143,18 +143,4 @@ function ersrv_plugin_actions_callback( $links ) {
 	);
 
 	return array_merge( $this_plugin_links, $links );
-}
-
-/**
- * Debugger function which shall be removed in production.
- */
-if ( ! function_exists( 'debug' ) ) {
-	/**
-	 * Debug function definition.
-	 */
-	function debug( $params ) {
-		echo '<pre>';
-		print_r( $params );
-		echo '</pre>';
-	}
 }
