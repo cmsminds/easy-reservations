@@ -10,8 +10,8 @@
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 $product_type_slug = ersrv_get_custom_product_type_slug();
-$post_id           = (int) filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
-$amenities         = get_post_meta( $post_id, '_ersrv_reservation_amenities', true );
+$product_id        = (int) filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
+$amenities         = get_post_meta( $product_id, '_ersrv_reservation_amenities', true );
 ?>
 <div id="<?php echo esc_attr( $product_type_slug ); ?>_product_options" class="panel woocommerce_options_panel">
 	<div class="options_group">
@@ -29,7 +29,7 @@ $amenities         = get_post_meta( $post_id, '_ersrv_reservation_amenities', tr
 				'value'             => get_post_meta( $post->ID, '_ersrv_security_amt', true ),
 				'custom_attributes' => array(
 					'step' => 0.01,
-					'min'  => 0
+					'min'  => 0,
 				),
 			)
 		);
@@ -72,7 +72,7 @@ $amenities         = get_post_meta( $post_id, '_ersrv_reservation_amenities', tr
 				'value'             => get_post_meta( $post->ID, '_ersrv_accomodation_adult_charge', true ),
 				'custom_attributes' => array(
 					'step' => 0.01,
-					'min'  => 0
+					'min'  => 0,
 				),
 			)
 		);
@@ -89,7 +89,7 @@ $amenities         = get_post_meta( $post_id, '_ersrv_reservation_amenities', tr
 				'value'             => get_post_meta( $post->ID, '_ersrv_accomodation_kid_charge', true ),
 				'custom_attributes' => array(
 					'step' => 0.01,
-					'min'  => 0
+					'min'  => 0,
 				),
 			)
 		);
@@ -119,7 +119,7 @@ $amenities         = get_post_meta( $post_id, '_ersrv_reservation_amenities', tr
 				'value'             => get_post_meta( $post->ID, '_ersrv_reservation_min_period', true ),
 				'custom_attributes' => array(
 					'step' => 1,
-					'min'  => 0
+					'min'  => 0,
 				),
 			)
 		);
@@ -136,7 +136,7 @@ $amenities         = get_post_meta( $post_id, '_ersrv_reservation_amenities', tr
 				'value'             => get_post_meta( $post->ID, '_ersrv_reservation_max_period', true ),
 				'custom_attributes' => array(
 					'step' => 1,
-					'min'  => 0
+					'min'  => 0,
 				),
 			)
 		);
@@ -163,7 +163,28 @@ $amenities         = get_post_meta( $post_id, '_ersrv_reservation_amenities', tr
 			// Check if amenities are available. Print them.
 			if ( ! empty( $amenities ) && is_array( $amenities ) ) {
 				foreach ( $amenities as $amenity_data ) {
-					echo ersrv_get_amenity_html( $amenity_data['title'], $amenity_data['cost'] );
+					echo wp_kses(
+						ersrv_get_amenity_html( $amenity_data['title'], $amenity_data['cost'] ),
+						array(
+							'p'      => array(
+								'class' => array(),
+							),
+							'input'  => array(
+								'type'        => array(),
+								'value'       => array(),
+								'required'    => array(),
+								'name'        => array(),
+								'class'       => array(),
+								'placeholder' => array(),
+								'step'        => array(),
+								'min'         => array(),
+							),
+							'button' => array(
+								'type'  => array(),
+								'class' => array(),
+							),
+						)
+					);
 				}
 			}
 			?>

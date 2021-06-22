@@ -42,9 +42,9 @@ class Easy_Reservations_Admin {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @since 1.0.0
+	 * @param string $plugin_name The name of this plugin.
+	 * @param string $version The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 		$this->plugin_name = $plugin_name;
@@ -206,9 +206,7 @@ class Easy_Reservations_Admin {
 			return;
 		}
 
-		ob_start();
 		require_once ERSRV_PLUGIN_PATH . 'admin/templates/settings/product-settings.php';
-		echo ob_get_clean();
 	}
 
 	/**
@@ -238,7 +236,7 @@ class Easy_Reservations_Admin {
 					'cost'  => $amenities_costs[ $index ],
 				);
 			}
-			
+
 			// Update the amenities to the database.
 			update_post_meta( $post_id, '_ersrv_reservation_amenities', $amenities );
 		} else {
