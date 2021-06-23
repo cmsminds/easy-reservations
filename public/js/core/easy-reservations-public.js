@@ -6,6 +6,7 @@ jQuery( document ).ready( function( $ ) {
 	var remove_sidebar = ERSRV_Public_Script_Vars.remove_sidebar;
 
 	// Custom variables defined.
+	var reservation_item_id  = $( '.ersrv-reservation-container' ).data( 'item' );
 	var reservation_calendar = document.getElementById( 'calendar' );
 
 	// If sidebar is to be removed on reservation single page.
@@ -13,6 +14,11 @@ jQuery( document ).ready( function( $ ) {
 		$( '.secondary' ).remove();
 		$( '.primary' ).css( 'width', '100%' );
 	}
+
+	// Datepicker dates.
+	$( '.datepicker' ).datepicker( {
+		format: 'yyyy-mm-dd',
+	} );
 
 	/**
 	 * Add the reservation to google calendar.
@@ -108,7 +114,12 @@ jQuery( document ).ready( function( $ ) {
 		} );
 	} );
 
-	$('.datepicker').datepicker({});
+	/**
+	 * Proceed with reservation details and add the details to the cart.
+	 */
+	$( document ).on( 'click', '.ersrv-proceed-with-reservation-details', function() {
+		console.log( 'reservation_item_id', reservation_item_id );
+	} );
 
 	var calendar = new FullCalendar.Calendar( reservation_calendar, {
 		themeSystem: 'bootstrap',

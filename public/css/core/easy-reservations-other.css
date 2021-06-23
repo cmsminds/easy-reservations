@@ -1,0 +1,405 @@
+.non-clickable {
+	pointer-events: none;
+	opacity: 0.5;
+}
+
+.datepicker table tr td.new, .datepicker table tr td.old {
+	height: 0;
+	line-height: 0;
+	visibility: hidden;
+}
+
+.fc-viewChangeDropdown-button {
+	display: none !important;
+}
+
+#calendar .btn-group .btn {
+	width: 101px;
+	height: 45px;
+	background-color: transparent;
+	border: 2px solid rgba(223, 223, 223, 0.73);
+	border-radius: 25px;
+	margin-right: 18px;
+
+	font-size: 16px;
+	letter-spacing: 0px;
+	line-height: normal;
+	color: #000000;
+	font-weight: 400;
+	text-align: center;
+}
+
+#calendar .btn-group .btn:hover {
+	border: 2px solid #0b71c3;
+}
+
+#calendar .btn-group .btn.fc-prev-button::before {
+	content: "\f053";
+	display: inline-block;
+	font-family: 'Font Awesome 5 Free';
+	font-weight: 900;
+	font-size: 1rem;
+	color: #585858;
+	vertical-align: middle;
+	transform: translateX(-10px);
+}
+
+#calendar .btn-group .btn.fc-next-button::after {
+	content: "\f054";
+	display: inline-block;
+	font-family: 'Font Awesome 5 Free';
+	font-weight: 900;
+	font-size: 1rem;
+	color: #585858;
+	vertical-align: middle;
+	transform: translateX(10px);
+}
+
+.btn:focus,
+.bootstrap-select .dropdown-toggle:focus,
+.bootstrap-select>select.mobile-device:focus+.dropdown-toggle {
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+#calendar .fc-scrollgrid-sync-table {
+	font-weight: 400;
+	font-size: 14px;
+	letter-spacing: 1px;
+	line-height: normal;
+	color: #757575;
+}
+/* #calendar .table-bordered tbody tr td.fc-daygrid-day.fc-day {
+	height: 150px;
+} */
+#calendar .table-bordered,
+#calendar .table-bordered td,
+#calendar .table-bordered th {
+	border: 1px solid transparent;
+}
+
+#calendar .table-bordered tbody tr {
+	border-bottom: 2px solid #f6f6f6;
+}
+
+#calendar .table-bordered .fc-col-header tbody tr {
+	border-bottom: 2px solid #eee;
+}
+
+#calendar .table-bordered .fc-col-header tbody tr th,
+#calendar .table-bordered .fc-col-header tbody tr th a {
+	font-size: 16px;
+	line-height: 40px;
+	color: #000000;
+	font-weight: 600;
+	text-align: center;
+}
+
+.fc-daygrid-day-events .fc-daygrid-event-harness,
+.fc .fc-more-popover .fc-popover-body .fc-daygrid-event-harness {
+	margin-bottom: 2px;
+	margin-top: 0px !important;
+}
+.light-green-label ,
+.green-label ,
+.light-blue-label ,
+.blue-label {
+	padding: 5px 15px;
+	border-radius: 25px;
+	border: 1px solid transparent;
+}
+.light-green-label {
+	background-color: #cbefd9;
+}
+
+.light-green-label * {
+	font-size: 12px;
+	letter-spacing: 0px;
+	line-height: 20px;
+	color: #040404;
+	font-weight: 600;
+}
+
+.green-label {
+	background-color: #3ab166;
+}
+
+.green-label * {
+	font-size: 12px;
+	letter-spacing: 0px;
+	line-height: 20px;
+	color: #fff;
+	font-weight: 600;
+}
+.light-blue-label {
+	background-color: #d1e6f7;
+}
+
+.light-blue-label * {
+	font-size: 12px;
+	letter-spacing: 0px;
+	line-height: 20px;
+	color: #040404;
+	font-weight: 600;
+}
+
+.blue-label {
+	background-color: #0c71c3;
+}
+
+.blue-label * {
+	font-size: 12px;
+	letter-spacing: 0px;
+	line-height: 20px;
+	color: #fff;
+	font-weight: 600;
+}
+
+.fc .fc-highlight {
+	background-color: #ebf7f0;
+}
+
+.bootstrap-select>.dropdown-toggle.btn-light,
+.bootstrap-select>.dropdown-toggle.btn-light:active {
+	background-color: #fff;
+	/*filter: drop-shadow(0px 10px 9px rgba(0,0,0,0.09));*/
+	border: 2px solid #eee;
+	margin: 0px;
+	border-radius: 25px;
+}
+.bootstrap-select > .dropdown-toggle::after{
+	border: 0px;
+	content: "\f078";
+	display: inline-block;
+	font-family: 'Font Awesome 5 Free';
+	font-weight: 900;
+	font-size: 1rem;
+	color: #3ab166;
+	vertical-align: middle;
+}
+.text-green{
+	color: #3ab166 !important;
+}
+.dropdown-menu {
+	filter: drop-shadow(0px 10px 9px rgba(0, 0, 0, 0.09));
+	border: 1px solid transparent;
+	margin: 0px;
+	border-radius: 25px;
+	padding: 16px;
+}
+.dropdown-menu.datepicker-orient-bottom{
+	filter: drop-shadow(0px -10px 9px rgba(0, 0, 0, 0.09)) drop-shadow(0px 10px 9px rgba(0, 0, 0, 0.09));
+}
+.dropdown-item.active,
+.dropdown-item:active,
+.dropdown-item:hover {
+	color: #0470be !important;
+	text-decoration: none;
+	background-color: transparent;
+}
+.datepicker-dropdown.datepicker-orient-top::before,
+.datepicker-dropdown.datepicker-orient-bottom:before{
+	display: none;
+}
+.datepicker-dropdown.datepicker-orient-top::before{
+	display: none;
+}
+.datepicker-dropdown.datepicker-orient-top::after{
+	bottom: -7px;
+	left: 30px;
+	border-width: 7px 7px 0px 7px;
+}
+.datepicker-dropdown.datepicker-orient-bottom::after{
+	left: 30px;
+}
+.datepicker-days tr td,
+.datepicker-days tr th,
+.datepicker-months table tr td span,
+.datepicker-years table tr td span{
+	padding: 4px 6px;
+}
+.datepicker-months table tr td span,
+.datepicker-years table tr td span{
+	height: 40px;
+	line-height: 30px;
+}
+.datepicker table tr td.active.active, .datepicker table tr td.active.disabled, .datepicker table tr td.active.disabled.active, .datepicker table tr td.active.disabled.disabled, .datepicker table tr td.active.disabled:active, .datepicker table tr td.active.disabled:hover, .datepicker table tr td.active.disabled:hover.active, .datepicker table tr td.active.disabled:hover.disabled, .datepicker table tr td.active.disabled:hover:active, .datepicker table tr td.active.disabled:hover:hover, .datepicker table tr td.active.disabled:hover[disabled], .datepicker table tr td.active.disabled[disabled], .datepicker table tr td.active:active, .datepicker table tr td.active:hover, .datepicker table tr td.active:hover.active, .datepicker table tr td.active:hover.disabled, .datepicker table tr td.active:hover:active, .datepicker table tr td.active:hover:hover, .datepicker table tr td.active:hover[disabled], .datepicker table tr td.active[disabled],
+.datepicker table tr td span.active.active, .datepicker table tr td span.active.disabled, .datepicker table tr td span.active.disabled.active, .datepicker table tr td span.active.disabled.disabled, .datepicker table tr td span.active.disabled:active, .datepicker table tr td span.active.disabled:hover, .datepicker table tr td span.active.disabled:hover.active, .datepicker table tr td span.active.disabled:hover.disabled, .datepicker table tr td span.active.disabled:hover:active, .datepicker table tr td span.active.disabled:hover:hover, .datepicker table tr td span.active.disabled:hover[disabled], .datepicker table tr td span.active.disabled[disabled], .datepicker table tr td span.active:active, .datepicker table tr td span.active:hover, .datepicker table tr td span.active:hover.active, .datepicker table tr td span.active:hover.disabled, .datepicker table tr td span.active:hover:active, .datepicker table tr td span.active:hover:hover, .datepicker table tr td span.active:hover[disabled], .datepicker table tr td span.active[disabled]{
+	background-color: #0470be;
+	background-image: none;
+	border: none;
+	text-shadow: none;
+}
+
+.card {
+	border: 0px;
+	border-radius: 25px;
+	filter: drop-shadow(0px 14px 38px rgba(0, 0, 0, 0.05));
+	padding: 60px 65px 58px 61px;
+	margin-bottom: 33px;
+}
+
+.booking-date-details-wrapper .card .date-input {
+	border-radius: 25px;
+	border: 1px solid #e8e8e8;
+	background-color: #fafafa;
+	padding: 19px 22px 16px;
+
+	font-size: 16px;
+	letter-spacing: 0px;
+	line-height: normal;
+	color: #000000;
+	font-weight: 400;
+	height: 50px;
+}
+.calendar-icon {
+	background-image: url("../images/planner.png");
+	background-position: 90%;
+	background-size: 20px;
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+.to{
+	display: flex;
+	justify-content: center;
+	font-size: 24px;
+	letter-spacing: 0px;
+	line-height: 40px;
+	color: rgba(0, 0, 0, 0.44);
+	font-weight: 300;
+	text-align: center;
+}
+.booking-date-details-wrapper .custom-selectbox .btn{
+	height: 50px;
+	padding: 8px 22px;
+}
+.booking-date-details-wrapper .custom-selectbox .btn.btn-light,
+.booking-date-details-wrapper .custom-selectbox .btn.btn-light:hover,
+.booking-date-details-wrapper .custom-selectbox .btn.btn-light:focus,
+.bootstrap-select>.dropdown-toggle.btn-light:hover,
+.bootstrap-select>.dropdown-toggle.btn-light:focus, 
+.bootstrap-select>.dropdown-toggle.btn-light:active{
+	background-color: #e6f4ff;
+	border: 2px solid #4d97d3;
+}
+
+.booking-date-details-wrapper .custom-selectbox .btn > .filter-option *{
+	height: 100%;
+	line-height: normal;
+	vertical-align: middle;
+	display: inline-flex;
+	align-items: center;
+}
+.reservation-wrapper h2{
+	font-size: 30px;
+	letter-spacing: 1px;
+	/* line-height: 40px; */
+	color: #000000;
+	font-weight: 700;
+}
+.reservation-wrapper table td {
+	font-size: 17px;
+	letter-spacing: 0px;
+	line-height: 48px;
+	color: #000000;
+	font-weight: 600;
+}
+.reservation-wrapper table td:last-child {
+	font-size: 16px;
+	letter-spacing: 0px;
+	line-height: normal;
+	color: #000000;
+	font-weight: 400;
+}
+.booking-date-details-wrapper .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){
+	width: 100%;
+}
+.bg-7a7a7a{
+	background-color: #7a7a7a !important;
+}
+.bg-464646{
+	background-color: #464646 !important;
+}
+tr.empty td {
+	line-height: 2px !important;
+}
+.deposit-row td:first-child,
+.total-row  td:first-child{
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+.deposit-row td:last-child,
+.total-row  td:last-child{
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+.font-weight-semibold{
+	font-weight: 600 !important;
+}
+.reservation-wrapper {
+	position: relative;
+	z-index: -1;
+}
+@media(min-width:1200px){
+	.container{
+		max-width: calc(1025px + 30px);
+	}
+}
+@media(min-width:768px) {
+	.booking-date-details-wrapper, .booking-date-details-wrapper > .card {
+		/* height: calc(100% - 16px); */
+	}
+}
+/* max-width */
+@media(max-width:991px) {
+	.card{
+		padding: 20px 25px;
+	}
+	.fc-toolbar-chunk .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){
+		width: 180px;
+	}
+}
+@media(max-width:767px) {
+	.fc .fc-toolbar.fc-header-toolbar{
+		flex-flow: row wrap;
+	}
+	.fc .fc-toolbar-title{
+		font-size: 1.2rem;
+	}
+	.fc-toolbar-chunk .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){
+		width: 130px;
+	}
+	.calender-wrapper h1{
+		font-size: 1.8rem;
+	}
+	.reservation-wrapper h2{
+		font-size: 1.5rem;
+	}
+	.reservation-wrapper table td{
+		font-size: 14px;
+		line-height: 38px;
+	}
+	#calendar .btn-group .btn{
+		font-size: 0px;
+		width: 45px;
+		border-radius: 16px;
+		padding: 0px !important;
+		margin-right: 10px;
+	}
+	#calendar .btn-group .btn::before,
+	#calendar .btn-group .btn::after{
+		font-size: 14px !important;
+		transform: none !important;
+	}
+	.fc .fc-toolbar.fc-header-toolbar .fc-toolbar-chunk:nth-child(2){
+		margin: 10px 0px;
+		order: -1;
+		max-width: 100%;
+		flex: 0 100%;
+		text-align: center;
+	}
+	.dropdown.bootstrap-select .dropdown-item {
+		padding-left: 0px;
+		padding-right: 0px;
+	}    
+}

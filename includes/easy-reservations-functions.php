@@ -135,44 +135,44 @@ if ( ! function_exists( 'ersrv_get_active_stylesheet' ) ) {
 		switch ( $current_theme ) {
 			case 'twentysixteen':
 				return array(
-					'url'  => ERSRV_PLUGIN_URL . 'public/css/easy-reservations-twentysixteen.css',
-					'path' => ERSRV_PLUGIN_PATH . 'public/css/easy-reservations-twentysixteen.css',
+					'url'  => ERSRV_PLUGIN_URL . 'public/css/core/easy-reservations-twentysixteen.css',
+					'path' => ERSRV_PLUGIN_PATH . 'public/css/core/easy-reservations-twentysixteen.css',
 				);
 
 			case 'twentyseventeen':
 				return array(
-					'url'  => ERSRV_PLUGIN_URL . 'public/css/easy-reservations-twentyseventeen.css',
-					'path' => ERSRV_PLUGIN_PATH . 'public/css/easy-reservations-twentyseventeen.css',
+					'url'  => ERSRV_PLUGIN_URL . 'public/css/core/easy-reservations-twentyseventeen.css',
+					'path' => ERSRV_PLUGIN_PATH . 'public/css/core/easy-reservations-twentyseventeen.css',
 				);
 
 			case 'twentynineteen':
 				return array(
-					'url'  => ERSRV_PLUGIN_URL . 'public/css/easy-reservations-twentynineteen.css',
-					'path' => ERSRV_PLUGIN_PATH . 'public/css/easy-reservations-twentynineteen.css',
+					'url'  => ERSRV_PLUGIN_URL . 'public/css/core/easy-reservations-twentynineteen.css',
+					'path' => ERSRV_PLUGIN_PATH . 'public/css/core/easy-reservations-twentynineteen.css',
 				);
 
 			case 'twentytwenty':
 				return array(
-					'url'  => ERSRV_PLUGIN_URL . 'public/css/easy-reservations-twentytwenty.css',
-					'path' => ERSRV_PLUGIN_PATH . 'public/css/easy-reservations-twentytwenty.css',
+					'url'  => ERSRV_PLUGIN_URL . 'public/css/core/easy-reservations-twentytwenty.css',
+					'path' => ERSRV_PLUGIN_PATH . 'public/css/core/easy-reservations-twentytwenty.css',
 				);
 
 			case 'twentytwentyone':
 				return array(
-					'url'  => ERSRV_PLUGIN_URL . 'public/css/easy-reservations-twentytwentyone.css',
-					'path' => ERSRV_PLUGIN_PATH . 'public/css/easy-reservations-twentytwentyone.css',
+					'url'  => ERSRV_PLUGIN_URL . 'public/css/core/easy-reservations-twentytwentyone.css',
+					'path' => ERSRV_PLUGIN_PATH . 'public/css/core/easy-reservations-twentytwentyone.css',
 				);
 
 			case 'storefront':
 				return array(
-					'url'  => ERSRV_PLUGIN_URL . 'public/css/easy-reservations-storefront.css',
-					'path' => ERSRV_PLUGIN_PATH . 'public/css/easy-reservations-storefront.css',
+					'url'  => ERSRV_PLUGIN_URL . 'public/css/core/easy-reservations-storefront.css',
+					'path' => ERSRV_PLUGIN_PATH . 'public/css/core/easy-reservations-storefront.css',
 				);
 
 			default:
 				return array(
-					'url'  => ERSRV_PLUGIN_URL . 'public/css/easy-reservations-other.css',
-					'path' => ERSRV_PLUGIN_PATH . 'public/css/easy-reservations-other.css',
+					'url'  => ERSRV_PLUGIN_URL . 'public/css/core/easy-reservations-other.css',
+					'path' => ERSRV_PLUGIN_PATH . 'public/css/core/easy-reservations-other.css',
 				);
 		}
 	}

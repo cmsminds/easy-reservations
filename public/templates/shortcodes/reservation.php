@@ -24,7 +24,7 @@ $reservation_heading = __( 'Start Your Reservation', 'easy-reservations' );
  */
 $reservation_heading = apply_filters( 'ersrv_reservation_template_heading_text', $reservation_heading, $item_id );
 ?>
-<div class="ersrv-reservation-container">
+<div class="ersrv-reservation-container" data-item="<?php echo esc_attr( $item_id ); ?>">
 	<div class="wrapper">
 		<div class="container">
 			<div class="row">
@@ -39,23 +39,28 @@ $reservation_heading = apply_filters( 'ersrv_reservation_template_heading_text',
 				<div class="col-12 col-md-5">
 					<div class="booking-date-details-wrapper">
 						<div class="card">
-							<form action="#">
-								<div class="input-group mb-3">
-									<input type="text" class="form-control date-input datepicker calendar-icon" aria-label="startday" />
-								</div>
-								<span class="to mb-3">to</span>
-								<div class="input-group mb-3">
-									<input type="text" class="form-control date-input datepicker calendar-icon" aria-label="endday" />
-								</div>
-								<label for="">No book items</label>
-								<div class="custom-selectbox">
-									<select name="viewchange" id="bookItems" class="selectpicker">
-										<option value="1">1</option>
-										<option value="2">2</option>
-										<option value="2">3</option>
-									</select>
-								</div>
-							</form>
+							<h3><?php esc_html_e( 'Checkin/Checkout', 'easy-reservations' ); ?></h3>
+							<div class="input-group mb-3">
+								<input placeholder="<?php esc_html_e( 'Checkin date', 'easy-reservations' ); ?>" type="text" class="form-control date-input datepicker calendar-icon" aria-label="startday" />
+							</div>
+							<span class="to mb-3"><?php esc_html_e( 'to', 'easy-reservations' ); ?></span>
+							<div class="input-group mb-3">
+								<input placeholder="<?php esc_html_e( 'Checkout date', 'easy-reservations' ); ?>" type="text" class="form-control date-input datepicker calendar-icon" aria-label="endday" />
+							</div>
+						</div>
+						<div class="card">
+							<h3><?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?></h3>
+							<p>
+								<label for="ersrv-accomodation-adult"><?php esc_html_e( 'Adults', 'easy-reservations' ); ?></label>
+								<input placeholder="0" type="number" id="ersrv-accomodation-adult" class="form-control " aria-label="accomodation-adult" />
+							</p>
+							<p>
+								<label for="ersrv-accomodation-kids"><?php esc_html_e( 'Kid(s)', 'easy-reservations' ); ?></label>
+								<input placeholder="0" type="number" id="ersrv-accomodation-kids" class="form-control " aria-label="accomodation-kids" />
+							</p>
+						</div>
+						<div class="card">
+							<h3><?php esc_html_e( 'Amenities', 'easy-reservations' ); ?></h3>
 						</div>
 					</div>
 				</div>
@@ -108,6 +113,9 @@ $reservation_heading = apply_filters( 'ersrv_reservation_template_heading_text',
 									<td class="text-white pr-3">$6000</td>
 								</tr>
 							</table>
+						</div>
+						<div class="card">
+							<button class="ersrv-proceed-with-reservation-details reservation-button" type="button"><?php esc_html_e( 'Proceed with reservation details', 'easy-reservations' ); ?></button>
 						</div>
 					</div>
 				</div>

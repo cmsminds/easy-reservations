@@ -98,25 +98,25 @@ class Easy_Reservations_Public {
 				// Enqueue the bootstrap style.
 				wp_enqueue_style(
 					$this->plugin_name . '-bootstrap-style',
-					ERSRV_PLUGIN_URL . 'public/css/bootstrapv4.6.0.min.css',
+					ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap.min.css',
 					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrapv4.6.0.min.css' )
+					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap.min.css' )
 				);
 
 				// Enqueue the bootstrap select style.
 				wp_enqueue_style(
 					$this->plugin_name . '-bootstrap-select-style',
-					ERSRV_PLUGIN_URL . 'public/css/bootstrap-select.1.13.14.min.css',
+					ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap-select.min.css',
 					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap-select.1.13.14.min.css' )
+					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap-select.min.css' )
 				);
 
 				// Enqueue the bootstrap datepicker style.
 				wp_enqueue_style(
 					$this->plugin_name . '-bootstrap-datepicker-style',
-					ERSRV_PLUGIN_URL . 'public/css/bootstrap-datepicker-v1.9.0.min.css',
+					ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap-datepicker.css',
 					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap-datepicker-v1.9.0.min.css' )
+					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap-datepicker.css' )
 				);
 
 				// Enqueue the free font-awesome style.
@@ -153,9 +153,9 @@ class Easy_Reservations_Public {
 			if ( ! wp_style_is( $this->plugin_name . '-bootstrap-style', 'enqueued' ) ) {
 				wp_enqueue_style(
 					$this->plugin_name . '-bootstrap-style',
-					ERSRV_PLUGIN_URL . 'public/css/bootstrapv4.6.0.min.css',
+					ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap.min.css',
 					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrapv4.6.0.min.css' )
+					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap.min.css' )
 				);
 			}
 
@@ -163,9 +163,9 @@ class Easy_Reservations_Public {
 			if ( ! wp_style_is( $this->plugin_name . '-bootstrap-datepicker-style', 'enqueued' ) ) {
 				wp_enqueue_style(
 					$this->plugin_name . '-bootstrap-datepicker-style',
-					ERSRV_PLUGIN_URL . 'public/css/bootstrap-datepicker-v1.9.0.min.css',
+					ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap-datepicker.css',
 					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap-datepicker-v1.9.0.min.css' )
+					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap-datepicker.css' )
 				);
 			}
 
@@ -186,27 +186,27 @@ class Easy_Reservations_Public {
 				// Bootstrap bundle script.
 				wp_enqueue_script(
 					$this->plugin_name . '-bootstrap-bundle-script',
-					ERSRV_PLUGIN_URL . 'public/js/bootstrap-bundle-v4.6.0.min.js',
+					ERSRV_PLUGIN_URL . 'public/js/bootstrap/bootstrap.bundle.min.js',
 					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap-bundle-v4.6.0.min.js' ),
+					filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap/bootstrap.bundle.min.js' ),
 					true
 				);
 
 				// Bootstrap select script.
 				wp_enqueue_script(
 					$this->plugin_name . '-bootstrap-select-script',
-					ERSRV_PLUGIN_URL . 'public/js/bootstrap-select-v.1.13.14.min.js',
+					ERSRV_PLUGIN_URL . 'public/js/bootstrap/bootstrap-select.min.js',
 					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap-select-v.1.13.14.min.js' ),
+					filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap/bootstrap-select.min.js' ),
 					true
 				);
 
 				// Bootstrap datepicker script.
 				wp_enqueue_script(
 					$this->plugin_name . '-bootstrap-datepicker-script',
-					ERSRV_PLUGIN_URL . 'public/js/bootstrap-datepicker-v.1.9.0.min.js',
+					ERSRV_PLUGIN_URL . 'public/js/bootstrap/bootstrap-datepicker.min.js',
 					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap-datepicker-v.1.9.0.min.js' ),
+					filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap/bootstrap-datepicker.min.js' ),
 					true
 				);
 
@@ -231,9 +231,9 @@ class Easy_Reservations_Public {
 				// Custom public script.
 				wp_enqueue_script(
 					$this->plugin_name,
-					ERSRV_PLUGIN_URL . 'public/js/easy-reservations-public.js',
+					ERSRV_PLUGIN_URL . 'public/js/core/easy-reservations-public.js',
 					array( 'jquery' ),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/js/easy-reservations-public.js' ),
+					filemtime( ERSRV_PLUGIN_PATH . 'public/js/core/easy-reservations-public.js' ),
 					true
 				);
 
