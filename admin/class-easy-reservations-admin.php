@@ -683,6 +683,9 @@ class Easy_Reservations_Admin {
 			$item_id = filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
 		}
 
+		// Parse the item to integer type.
+		$item_id = (int) $item_id;
+
 		// Accomodation limit.
 		$accomodation_limit = get_post_meta( $item_id, '_ersrv_accomodation_limit', true );
 
