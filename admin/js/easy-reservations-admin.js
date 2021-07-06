@@ -9,6 +9,7 @@ jQuery( document ).ready( function( $ ) {
 	var email_address_invalid   = ERSRV_Admin_Script_Vars.email_address_invalid;
 	var password_required       = ERSRV_Admin_Script_Vars.password_required;
 	var accomodation_limit_text = ERSRV_Admin_Script_Vars.accomodation_limit_text;
+	var start_of_week           = parseInt( ERSRV_Admin_Script_Vars.start_of_week );
 
 	// Add HTML after the kid charge number field.
 	$( '<a class="ersrv-copy-adult-charge" href="javascript:void(0);">' + same_as_adult + '</a>' ).insertAfter( '#accomodation_kid_charge' );
@@ -355,6 +356,52 @@ jQuery( document ).ready( function( $ ) {
 					var accomodation_limit = ( -1 !== is_valid_number( item_details.accomodation_limit ) ) ? parseInt( item_details.accomodation_limit ) : '';
 					$( '#accomodation-limit' ).val( accomodation_limit );
 					$( 'label[for="accomodation"]' ).next( 'small' ).text( accomodation_limit_text.replace( '--', accomodation_limit ) );
+
+					var blocked_dates          = response.data.reserved_dates;
+					var datepicker_date_format = 'yyyy-mm-dd';
+					var current_date           = new Date();
+					var current_month          = ( ( '0' + ( current_date.getMonth() + 1 ) ).slice( -2 ) );
+					var today_formatted        = current_date.getFullYear() + '-' + current_month + '-' + current_date.getDate();
+
+					// Set the calendar on checkin and checkout dates.
+					$( '#checkin-checkout-date' ).datepicker( {
+						beforeShowDay: function( date ) {
+							var loop_month          = ( ( '0' + ( date.getMonth() + 1 ) ).slice( -2 ) );
+							var loop_date_formatted = date.getFullYear() + '-' + loop_month + '-' + date.getDate();
+							var date_enabled        = false;
+							var date_classes        = '';
+							var date_tooltip        = '';
+
+							// If not the past date.
+							if ( today_formatted <= loop_date_formatted ) {
+								// Add custom class to the active dates of the current month.
+								var key = $.map( blocked_dates, function( val, i ) {
+									if ( val.date === loop_date_formatted ) {
+										return i;
+									}
+								} );
+				
+								// If the loop date is a blocked date.
+								if ( 0 < key.length ) {
+									key = key[0];
+									date_tooltip = blocked_dates[key].message;
+								} else if ( 0 === key.length ) {
+									date_enabled = true;
+									date_classes = 'ersrv-date-active';
+								}
+							}
+
+							// Return the datepicker day object.
+							return {
+								'enabled': date_enabled,
+								'classes': date_classes,
+								'tooltip': date_tooltip,
+							};
+						},
+						format: datepicker_date_format,
+						startDate: current_date,
+						weekStart: start_of_week,
+					} );
 				}
 			}
 		} );

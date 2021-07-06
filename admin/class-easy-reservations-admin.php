@@ -83,6 +83,16 @@ class Easy_Reservations_Admin {
 			$include_modal_style = true;
 		}
 
+		// Bootstrap datepicker style.
+		if ( ! is_null( $page ) && 'new-reservation' === $page ) {
+			wp_enqueue_style(
+				$this->plugin_name . '-bootstrap-datepicker-style',
+				ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap-datepicker.css',
+				array(),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap-datepicker.css' )
+			);
+		}
+
 		// Include modal style.
 		if ( $include_modal_style ) {
 			wp_enqueue_style(
@@ -100,6 +110,17 @@ class Easy_Reservations_Admin {
 			array(),
 			filemtime( ERSRV_PLUGIN_PATH . 'admin/css/easy-reservations-admin.css' )
 		);
+
+		// Bootstrap datepicker script.
+		if ( ! is_null( $page ) && 'new-reservation' === $page ) {
+			wp_enqueue_script(
+				$this->plugin_name . '-bootstrap-datepicker-script',
+				ERSRV_PLUGIN_URL . 'public/js/bootstrap/bootstrap-datepicker.min.js',
+				array(),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap/bootstrap-datepicker.min.js' ),
+				true
+			);
+		}
 
 		// Custom admin script.
 		wp_enqueue_script(
@@ -665,9 +686,13 @@ class Easy_Reservations_Admin {
 		// Accomodation limit.
 		$accomodation_limit = get_post_meta( $item_id, '_ersrv_accomodation_limit', true );
 
+		// Reserved dates.
+		$reserved_dates = ersrv_get_reservation_item_blockout_dates( $item_id );
+
 		// Put the details in an array.
 		$item_details = array(
 			'accomodation_limit' => $accomodation_limit,
+			'reserved_dates'     => $reserved_dates,
 		);
 
 		// Send the AJAX response.

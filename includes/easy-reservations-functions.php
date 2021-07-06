@@ -514,6 +514,7 @@ if ( ! function_exists( 'ersrv_get_admin_script_vars' ) ) {
 			$vars['email_address_invalid']   = __( 'Email address is invalid.', 'easy-reservations' );
 			$vars['password_required']       = __( 'Password is required.', 'easy-reservations' );
 			$vars['accomodation_limit_text'] = __( 'Limit: --', 'easy-reservations' );
+			$vars['start_of_week']           = get_option( 'start_of_week' );
 		}
 
 		return $vars;
