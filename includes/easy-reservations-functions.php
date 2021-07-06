@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
  *
  * @param string $setting Holds the setting index.
  * @return boolean|string|array|int
+ * @since 1.0.0
  */
 function ersrv_get_plugin_settings( $setting ) {
 	switch ( $setting ) {
@@ -52,6 +53,7 @@ if ( ! function_exists( 'ersrv_get_custom_product_type_slug' ) ) {
 	 * Get the custom product type slug.
 	 *
 	 * @return string
+	 * @since 1.0.0
 	 */
 	function ersrv_get_custom_product_type_slug() {
 
@@ -67,6 +69,7 @@ if ( ! function_exists( 'ersrv_get_custom_product_type_label' ) ) {
 	 * Get the custom product type label.
 	 *
 	 * @return string
+	 * @since 1.0.0
 	 */
 	function ersrv_get_custom_product_type_label() {
 		$product_type_label = __( 'Reservation', 'easy-reservations' );
@@ -94,6 +97,7 @@ if ( ! function_exists( 'ersrv_get_posts' ) ) {
 	 * @param int    $paged Paged value.
 	 * @param int    $posts_per_page Posts per page.
 	 * @return object
+	 * @since 1.0.0
 	 */
 	function ersrv_get_posts( $post_type = 'post', $paged = 1, $posts_per_page = -1 ) {
 		// Prepare the arguments array.
@@ -130,6 +134,7 @@ if ( ! function_exists( 'ersrv_get_active_stylesheet' ) ) {
 	 *
 	 * @param string $current_theme Holds the current theme slug.
 	 * @return string
+	 * @since 1.0.0
 	 */
 	function ersrv_get_active_stylesheet( $current_theme ) {
 		switch ( $current_theme ) {
@@ -188,10 +193,34 @@ if ( ! function_exists( 'ersrv_get_icalendar_formatted_date' ) ) {
 	 * @param string  $timestamp Holds the linux timestamp.
 	 * @param boolean $include_time Whether to include time in the formatted datetime.
 	 * @return string
+	 * @since 1.0.0
 	 */
 	function ersrv_get_icalendar_formatted_date( $timestamp = '', $include_time = true ) {
 
 		return gmdate( 'Ymd' . ( $include_time ? '\THis' : '' ), $timestamp ) . 'Z';
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_wc_product_type' ) ) {
+	/**
+	 * Get the product type from ID.
+	 *
+	 * @param int $product_id Holds the WooCommerce product type.
+	 * @return boolean|string
+	 * @since 1.0.0
+	 */
+	function ersrv_get_wc_product_type( $product_id = 0 ) {
+		// Return false, if the item ID is 0.
+		if ( 0 === $product_id || ! is_int( $product_id ) ) {
+			return false;
+		}
+
+		$wc_product = wc_get_product( $product_id );
+
+		return ( false === $wc_product ) ? false : $wc_product->get_type();
 	}
 }
 
@@ -204,6 +233,7 @@ if ( ! function_exists( 'ersrv_order_is_reservation' ) ) {
 	 *
 	 * @param WC_Order $wc_order Order data.
 	 * @return boolean
+	 * @since 1.0.0
 	 */
 	function ersrv_order_is_reservation( $wc_order ) {
 		// Get the order line items.
@@ -221,10 +251,10 @@ if ( ! function_exists( 'ersrv_order_is_reservation' ) ) {
 			$line_item_product_id = $line_item->get_product_id();
 
 			// If the item ID is available.
-			$line_item_type = get_the_terms( $line_item_product_id, 'product_type' );
+			$line_item_type = ersrv_get_wc_product_type( $line_item_product_id );
 
 			// Check if the product is of reservation type.
-			if ( ! empty( $line_item_type[0]->slug ) && $custom_product_type === $line_item_type[0]->slug ) {
+			if ( false !== $line_item_type && $custom_product_type === $line_item_type ) {
 				return true;
 			}
 		}
@@ -243,6 +273,7 @@ if ( ! function_exists( 'ersrv_get_amenity_html' ) ) {
 	 * @param string $amenity_title Holds the amenity title.
 	 * @param string $amenity_cost Holds the amenity cost.
 	 * @return string
+	 * @since 1.0.0
 	 */
 	function ersrv_get_amenity_html( $amenity_title = '', $amenity_cost = '' ) {
 		ob_start();
@@ -250,9 +281,7 @@ if ( ! function_exists( 'ersrv_get_amenity_html' ) ) {
 		<p class="form-field reservation_amenity_field amenities-row">
 			<input type="text" value="<?php echo esc_html( $amenity_title ); ?>" required name="amenity_title[]" class="short addTitle-field" placeholder="<?php esc_html_e( 'Amenity Title', 'easy-reservations' ); ?>">
 			<input type="number" value="<?php echo esc_html( $amenity_cost ); ?>" required name="amenity_cost[]" class="short addNumber-field" placeholder="0.0" step="0.01" min="0.01">
-			<button type="button" class="button button-secondary btn-submit ersrv-remove-amenity-html">
-				<?php esc_html_e( 'Remove', 'easy-reservations' ); ?>
-			</button>
+			<button type="button" class="button button-secondary btn-submit ersrv-remove-amenity-html"></button>
 		</p>
 		<?php
 		return ob_get_clean();
@@ -267,6 +296,7 @@ if ( ! function_exists( 'ersrv_get_calendar_widget_base_id' ) ) {
 	 * Get the base ID of calendar widget.
 	 *
 	 * @return string
+	 * @since 1.0.0
 	 */
 	function ersrv_get_calendar_widget_base_id() {
 
@@ -311,5 +341,211 @@ if ( ! function_exists( 'ersrv_get_widget_settings' ) ) {
 		}
 
 		return $widget_settings;
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_reservation_item_amenities' ) ) {
+	/**
+	 * Get the amenities offered for the reservable item.
+	 *
+	 * @param int $item_id Holds the reservation item ID.
+	 * @return boolean|array
+	 * @since 1.0.0
+	 */
+	function ersrv_get_reservation_item_amenities( $item_id = 0 ) {
+		// Return, if the item ID is not integer.
+		if ( ! is_int( $item_id ) ) {
+			return false;
+		}
+
+		// Get the item type.
+		$item_type           = ersrv_get_wc_product_type( $item_id );
+		$custom_product_type = ersrv_get_custom_product_type_slug();
+
+		// If it's not reservation, return false.
+		if ( false === $item_type || $custom_product_type !== $item_type ) {
+			return false;
+		}
+
+		$amenities = get_post_meta( $item_id, '_ersrv_reservation_amenities', true );
+
+		return ( empty( $amenities ) ) ? false : $amenities;
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_reservation_item_blockout_dates' ) ) {
+	/**
+	 * Get the blockedout dates for the reservable item.
+	 *
+	 * @param int $item_id Holds the reservation item ID.
+	 * @return boolean|array
+	 * @since 1.0.0
+	 */
+	function ersrv_get_reservation_item_blockout_dates( $item_id = 0 ) {
+		// Return, if the item ID is not integer.
+		if ( ! is_int( $item_id ) ) {
+			return false;
+		}
+
+		// Get the item type.
+		$item_type           = ersrv_get_wc_product_type( $item_id );
+		$custom_product_type = ersrv_get_custom_product_type_slug();
+
+		// If it's not reservation, return false.
+		if ( false === $item_type || $custom_product_type !== $item_type ) {
+			return false;
+		}
+
+		$blockout_dates = get_post_meta( $item_id, '_ersrv_reservation_blockout_dates', true );
+
+		return ( empty( $blockout_dates ) ) ? false : $blockout_dates;
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_blockout_date_html' ) ) {
+	/**
+	 * Get the amenity HTML.
+	 *
+	 * @param string $amenity_title Holds the amenity title.
+	 * @param string $amenity_cost Holds the amenity cost.
+	 * @return string
+	 * @since 1.0.0
+	 */
+	function ersrv_get_blockout_date_html( $date = '', $message = '' ) {
+		ob_start();
+		?>
+		<p class="form-field reservation_blockout_date_field blockout-dates-row">
+			<input type="text" value="<?php echo esc_html( $date ); ?>" required name="blockout_date[]" class="short addTitle-field" placeholder="YYYY-MM-DD">
+			<input type="text" value="<?php echo esc_html( $message ); ?>" required name="blockout_date_message[]" class="short addTitle-field">
+			<button type="button" class="button button-secondary btn-submit ersrv-remove-blockout-date-html"></button>
+		</p>
+		<?php
+		return ob_get_clean();
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_dates_within_2_dates' ) ) {
+	/**
+	 * Get dates that fall between 2 dates.
+	 *
+	 * @param string $from Start date.
+	 * @param string $to End date.
+	 * @return boolean|DatePeriod
+	 * @since 1.0.0
+	 */
+	function ersrv_get_dates_within_2_dates( $from, $to ) {
+		// Return if either of the date is not provided.
+		if ( empty( $from ) || empty( $to ) ) {
+			return false;
+		}
+
+		// Get the dates array.
+		$from     = new DateTime( $from );
+		$to       = new DateTime( $to );
+		$to       = $to->modify( '+1 day' );
+		$interval = new DateInterval( 'P1D' );
+
+		return new DatePeriod( $from, $interval, $to );
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_product_is_reservation' ) ) {
+	/**
+	 * Check if the page is reservation single page.
+	 *
+	 * @param int $product_id Holds the product ID.
+	 * @return boolean
+	 * @since 1.0.0
+	 */
+	function ersrv_product_is_reservation( $product_id ) {
+		// Get woocommerce product.
+		$wc_product = wc_get_product( $product_id );
+
+		// Return false, if it's not the valid WC product.
+		if ( false === $wc_product ) {
+			return false;
+		}
+
+		// Return false, if the product type is not reservation.
+		if ( ersrv_get_custom_product_type_slug() !== $wc_product->get_type() ) {
+			return false;
+		}
+
+		return true;
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_admin_script_vars' ) ) {
+	/**
+	 * Return the array of script variables.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	function ersrv_get_admin_script_vars() {
+		$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
+		$vars = array(
+			'ajaxurl'             => admin_url( 'admin-ajax.php' ),
+			'same_as_adult'       => __( 'Same as Adult!', 'easy-reservations' ),
+			'export_reservations' => __( 'Export Reservations', 'easy-reservations' ),
+		);
+
+		// Add the error message to the array on new reservation page.
+		if ( ! is_null( $page ) && 'new-reservation' === $page ) {
+			$vars['email_address_required'] = __( 'Email address is required.', 'easy-reservations' );
+			$vars['email_address_invalid']  = __( 'Email address is invalid.', 'easy-reservations' );
+			$vars['password_required']      = __( 'Password is required.', 'easy-reservations' );
+		}
+
+		return $vars;
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_create_new_user' ) ) {
+	/**
+	 * Create the new wp user.
+	 *
+	 * @param string $username Holds the username.
+	 * @param string $email Holds the email.
+	 * @param string $password Holds the password.
+	 * @param string $first_name Holds the first name.
+	 * @param string $last_name Holds the last name.
+	 * @return int
+	 */
+	function ersrv_create_new_user( $username, $email, $password, $first_name, $last_name ) {
+		$user_id  = wp_create_user( $username, $password, $email ); // Create the user.
+
+		// Update the first name.
+		if ( ! empty( $first_name ) ) {
+			update_user_meta( $user_id, 'first_name', $first_name );
+		}
+
+		// Update the last name.
+		if ( ! empty( $last_name ) ) {
+			update_user_meta( $last_name, 'last_name', $last_name );
+		}
+
+		return $user_id;
 	}
 }

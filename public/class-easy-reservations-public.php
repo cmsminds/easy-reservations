@@ -255,9 +255,9 @@ class Easy_Reservations_Public {
 			if ( ! wp_script_is( $this->plugin_name . '-bootstrap-datepicker-script', 'enqueued' ) ) {
 				wp_enqueue_script(
 					$this->plugin_name . '-bootstrap-datepicker-script',
-					ERSRV_PLUGIN_URL . 'public/js/bootstrap-datepicker-v.1.9.0.min.js',
+					ERSRV_PLUGIN_URL . 'public/js/bootstrap/bootstrap-datepicker.min.js',
 					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap-datepicker-v.1.9.0.min.js' ),
+					filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap/bootstrap-datepicker.min.js' ),
 					true
 				);
 			}
@@ -583,14 +583,13 @@ class Easy_Reservations_Public {
 		}
 
 		// Now that we have item ID, get the unavailability dates.
-		$unavailability_dates = get_post_meta( $item_id, 'ersrv_unavailability_dates' );
-		$unavailability_dates = array( '2021-06-25', '2021-06-28' );
+		$blocked_dates = ersrv_get_reservation_item_blockout_dates( $item_id );
 
 		// If doing AJAX.
 		if ( DOING_AJAX ) {
 			$response = array(
 				'code'      => 'unavailability-dates-fetched',
-				'dates'     => $unavailability_dates,
+				'dates'     => $blocked_dates,
 				'item_link' => get_permalink( $item_id ),
 			);
 			wp_send_json_success( $response );
@@ -598,7 +597,7 @@ class Easy_Reservations_Public {
 		}
 
 		// Return the dates, otherewise.
-		return $unavailability_dates;
+		return $blocked_dates;
 	}
 
 	/**
@@ -672,5 +671,21 @@ class Easy_Reservations_Public {
 		}
 
 		return $related_post_ids;
+	}
+
+	/**
+	 * Override the WooCommerce single product page.
+	 *
+	 * @param string $template Holds the template path.
+	 * @return string
+	 * @since 1.0.0
+	 */
+	public function ersrv_template_include_callback( $template ) {
+		// Override the product single page.
+		if ( ersrv_product_is_reservation( get_the_ID() ) ) {
+			$template = ERSRV_PLUGIN_PATH . 'public/templates/woocommerce/single-product.php';
+		}
+
+		return $template;
 	}
 }

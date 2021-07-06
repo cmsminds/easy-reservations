@@ -1,6 +1,19 @@
-ul.wc-tabs li.reservation_tab a::before {
+ul.wc-tabs li.reservation_details_tab a::before,
+ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 	font-family: Dashicons;
 	content: "\f508" !important;
+}
+
+.ersrv-remove-blockout-date-html::before,
+.ersrv-remove-amenity-html::before {
+	font-family: Dashicons;
+	content: "\f158" !important;
+}
+
+.ersrv-add-amenity-html::before,
+.ersrv-add-blockedout-date-html::before {
+	font-family: Dashicons;
+	content: "\f132" !important;
 }
 
 .reservation-tab-setting-heading {
@@ -79,20 +92,42 @@ ul.wc-tabs li.reservation_tab a::before {
 	display: block;
 }
 
-.woocommerce_options_panel .form-field.amenities-row {
+.woocommerce_options_panel .form-field.amenities-row,
+.woocommerce_options_panel .form-field.blockout-dates-row {
     padding-left: 16px !important;
     display:flex;
 }
-.amenities-row .short{
-	width:calc(100%/ 2 - 16px) !important;
+
+.amenities-row .short,
+.blockout-dates-row .short {
+	width:calc( 100%/ 2 - 16px ) !important;
 	margin-right:16px;
 }
 
-.reservations-amenities-header {
+.reservations-amenities-header,
+.reservations-blockout-dates-header {
     display: flex;
     align-items: center;
 }
 
-.reservations-amenities-header .reservation-tab-setting-heading {
+.reservations-amenities-header .reservation-tab-setting-heading,
+.reservations-blockout-dates-header .reservation-tab-setting-heading {
     margin-right: 1.33em;
+}
+
+.ersrv-blockout-dates-message {
+	margin-top: 10px;
+}
+
+.ersrv-blockout-dates-message textarea {
+	width: 100%;
+}
+
+.ersrv-form-description-text {
+	color: #b2b2b2;
+	font-size: 12px !important;
+}
+
+.ersrv-create-new-customer-link {
+	font-size: 12px;
 }

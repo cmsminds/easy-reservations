@@ -12,3 +12,32 @@
 	line-height: 0;
 	visibility: hidden;
 }
+/* For Genral Theme */
+.widget-title{
+	font-size: 24px;
+	font-size: 1.5rem;
+	font-weight: 600 !important;
+	margin-bottom: 0.4rem;
+}
+.widget-area h6,
+.widget-description{
+	font-size: 18px;
+	font-size: 1.2rem;
+	margin-bottom: 1rem;
+}
+.widget-area select,
+.calender-select{
+	width: 100%;
+	margin-bottom: 0.7rem;
+}
+.widget-area table{
+	border-width: 1px;
+}
+.ersrv-date-active{
+	transform: scale(0.9);
+}
+.datepicker table tr td.day:not(.disabled):hover,
+.datepicker table tr td.day.focused:not(.disabled) {
+    background: #101010;
+    cursor: pointer;
+}

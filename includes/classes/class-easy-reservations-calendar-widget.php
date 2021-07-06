@@ -42,16 +42,15 @@ class Easy_Reservations_Calendar_Widget extends WP_Widget {
 
 		// Print the widget title.
 		if ( ! empty( $widget_title ) ) {
-			echo wp_kses_post( $widget_title );
+			echo wp_kses_post('<h2 class="widget-title">'. $widget_title .'</h2>');
 		}
 
 		// Print the widget description.
 		if ( ! empty( $widget_desc ) ) {
 			echo wp_kses(
-				'<h6>' . $widget_desc . '</h6>',
+				'<h6 class="description">' . $widget_desc . '</h6>',
 				array(
-					'h6' => array(),
-				)
+					'h6' => array(),				)
 			);
 		}
 
@@ -77,12 +76,14 @@ class Easy_Reservations_Calendar_Widget extends WP_Widget {
 			<?php
 			if ( ! empty( $reservable_items ) && is_array( $reservable_items ) ) {
 				?>
-				<select id="ersrv-widget-reservable-items">
+				<div class="selectbox">
+				<select class="calender-select" id="ersrv-widget-reservable-items">
 					<option value="-1"><?php esc_html_e( 'Select Item', 'easy-reservations' ); ?></option>
 					<?php foreach ( $reservable_items as $reservable_item_id ) { ?>
 						<option value="<?php echo esc_attr( $reservable_item_id ); ?>"><?php echo wp_kses_post( get_the_title( $reservable_item_id ) ); ?></option>
 					<?php } ?>
 				</select>
+				</div>
 				<div class="ersrv-widget-calendar"></div>
 
 				<?php if ( ! empty( $display_reserve_item_button ) && 'yes' === $display_reserve_item_button ) { ?>

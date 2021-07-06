@@ -51,7 +51,7 @@ jQuery( document ).ready( function( $ ) {
 				$( '.ersrv-book-item-from-widget a' ).attr( 'href', response.data.item_link );
 
 				// Dates to disable. These are actually unavailability dates.
-				var unavailability_dates   = response.data.dates;
+				var blocked_dates          = response.data.dates;
 				var datepicker_date_format = 'yyyy-mm-dd';
 				var current_date           = new Date();
 				var current_month          = ( ( '0' + ( current_date.getMonth() + 1 ) ).slice( -2 ) );
@@ -64,11 +64,22 @@ jQuery( document ).ready( function( $ ) {
 						var loop_date_formatted = date.getFullYear() + '-' + loop_month + '-' + date.getDate();
 						var date_enabled        = false;
 						var date_classes        = '';
+						var date_tooltip        = '';
 
 						// If not the past date.
 						if ( today_formatted <= loop_date_formatted ) {
 							// Add custom class to the active dates of the current month.
-							if ( -1 === unavailability_dates.indexOf( loop_date_formatted ) ) {
+							var key = $.map( blocked_dates, function( val, i ) {
+								if ( val.date === loop_date_formatted ) {
+									return i;
+								}
+							} );
+			
+							// If the loop date is a blocked date.
+							if ( 0 < key.length ) {
+								key = key[0];
+								date_tooltip = blocked_dates[key].message;
+							} else if ( 0 === key.length ) {
 								date_enabled = true;
 								date_classes = 'ersrv-date-active';
 							}
@@ -78,6 +89,7 @@ jQuery( document ).ready( function( $ ) {
 						return {
 							'enabled': date_enabled,
 							'classes': date_classes,
+							'tooltip': date_tooltip,
 						};
 					},
 					format: datepicker_date_format,

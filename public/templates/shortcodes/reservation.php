@@ -23,6 +23,8 @@ $reservation_heading = __( 'Start Your Reservation', 'easy-reservations' );
  * @since 1.0.0
  */
 $reservation_heading = apply_filters( 'ersrv_reservation_template_heading_text', $reservation_heading, $item_id );
+
+$amenities = ersrv_get_reservation_item_amenities( $item_id );
 ?>
 <div class="ersrv-reservation-container" data-item="<?php echo esc_attr( $item_id ); ?>">
 	<div class="wrapper">
@@ -59,9 +61,25 @@ $reservation_heading = apply_filters( 'ersrv_reservation_template_heading_text',
 								<input placeholder="0" type="number" id="ersrv-accomodation-kids" class="form-control " aria-label="accomodation-kids" />
 							</p>
 						</div>
-						<div class="card">
-							<h3><?php esc_html_e( 'Amenities', 'easy-reservations' ); ?></h3>
-						</div>
+						<?php
+						// Check if amenities are available.
+						if ( ! empty( $amenities ) && is_array( $amenities ) ) {
+							?>
+							<div class="card amenities">
+								<h3><?php esc_html_e( 'Amenities', 'easy-reservations' ); ?></h3>
+								<?php
+								foreach ( $amenities as $amenity ) {
+									?>
+									<div class="amenity">
+										<button data-amenity_title="<?php echo wp_kses_post( $amenity['title'] ); ?>" data-amenity_cost="<?php echo wp_kses_post( $amenity['cost'] ); ?>"><?php echo wp_kses_post( $amenity['title'] ); ?></button>
+									</div>
+									<?php
+								}
+								?>
+							</div>
+							<?php
+						}
+						?>
 					</div>
 				</div>
 				<div class="col-12 col-md-7">
@@ -109,7 +127,7 @@ $reservation_heading = apply_filters( 'ersrv_reservation_template_heading_text',
 									<td class="small" colspan="2">&nbsp;</td>
 								</tr>
 								<tr class="total-row bg-464646">
-									<td class="text-white pl-3">Toatal</td>
+									<td class="text-white pl-3">Total</td>
 									<td class="text-white pr-3">$6000</td>
 								</tr>
 							</table>

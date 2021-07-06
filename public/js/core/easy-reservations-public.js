@@ -118,7 +118,19 @@ jQuery( document ).ready( function( $ ) {
 	 * Proceed with reservation details and add the details to the cart.
 	 */
 	$( document ).on( 'click', '.ersrv-proceed-with-reservation-details', function() {
-		console.log( 'reservation_item_id', reservation_item_id );
+		// Gather the amenities, if selected.
+		if ( $( '.card.amenities' ).length ) {
+			$( '.card.amenities .amenity' ).each( function() {
+				
+			} );
+		}
+	} );
+
+	/**
+	 * Enable/disable amenity.
+	 */
+	$( document ).on( 'click', '.card.amenities .amenity button', function() {
+		$( this ).toggleClass( 'amenity-selected' );
 	} );
 
 	var calendar = new FullCalendar.Calendar( reservation_calendar, {

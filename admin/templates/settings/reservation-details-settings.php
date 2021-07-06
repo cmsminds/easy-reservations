@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is used for templating the product admin settings.
+ * This file is used for templating the product reservation details settings.
  *
  * @since 1.0.0
  * @package Easy_Reservations
@@ -13,7 +13,7 @@ $product_type_slug = ersrv_get_custom_product_type_slug();
 $product_id        = (int) filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
 $amenities         = get_post_meta( $product_id, '_ersrv_reservation_amenities', true );
 ?>
-<div id="<?php echo esc_attr( $product_type_slug ); ?>_product_options" class="panel woocommerce_options_panel">
+<div id="reservation_details_product_options" class="panel woocommerce_options_panel">
 	<div class="options_group">
 		<h4 class="reservation-tab-setting-heading"><?php esc_html_e( 'Security Deposit', 'easy-reservations' ); ?></h4>
 		<?php

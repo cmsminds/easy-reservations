@@ -2,8 +2,12 @@ jQuery( document ).ready( function( $ ) {
 	'use strict';
 
 	// Localized variables.
-	var same_as_adult       = ERSRV_Admin_Script_Vars.same_as_adult;
-	var export_reservations = ERSRV_Admin_Script_Vars.export_reservations;
+	var ajaxurl                = ERSRV_Admin_Script_Vars.ajaxurl;
+	var same_as_adult          = ERSRV_Admin_Script_Vars.same_as_adult;
+	var export_reservations    = ERSRV_Admin_Script_Vars.export_reservations;
+	var email_address_required = ERSRV_Admin_Script_Vars.email_address_required;
+	var email_address_invalid  = ERSRV_Admin_Script_Vars.email_address_invalid;
+	var password_required      = ERSRV_Admin_Script_Vars.password_required;
 
 	// Add HTML after the kid charge number field.
 	$( '<a class="ersrv-copy-adult-charge" href="javascript:void(0);">' + same_as_adult + '</a>' ).insertAfter( '#accomodation_kid_charge' );
@@ -23,14 +27,14 @@ jQuery( document ).ready( function( $ ) {
 	 * Open the modal to allow date range selection.
 	 */
 	 $( document ).on( 'click', '.ersrv-export-reservations', function() {
-		$( '#ersrv-export-reservations-modal' ).show();
+		$( '#ersrv-export-reservations-modal' ).fadeIn( 'slow' );
 	} );
 
 	/**
 	 * Close modal.
 	 */
 	$( document ).on( 'click', '.ersrv-close-modal', function() {
-		$( '.ersrv-modal' ).hide();
+		$( '.ersrv-modal' ).fadeOut( 'slow' );
 	} );
 
 	/**
@@ -38,7 +42,7 @@ jQuery( document ).ready( function( $ ) {
 	 */
 	$( 'body' ).click( function( evt ) {
 		if ( 'ersrv-export-reservations-modal' === evt.target.id ) {
-			$( '.ersrv-modal' ).hide();
+			$( '.ersrv-modal' ).fadeOut( 'slow' );
 		}
 	} );
 
@@ -83,12 +87,10 @@ jQuery( document ).ready( function( $ ) {
 	 * Add amenity HTML block.
 	 */
 	$( document ).on( 'click', '.ersrv-add-amenity-html', function() {
-		var this_button   = $( this );
-
 		// Block the element.
 		block_element( $( '.reservations-amenities' ) );
 
-		// Send the AJAX for clearing the log.
+		// Send the AJAX for adding amenity html.
 		$.ajax( {
 			url: ajaxurl,
 			type: 'POST',
@@ -114,9 +116,294 @@ jQuery( document ).ready( function( $ ) {
 	 * Remove amenity HTML block.
 	 */
 	 $( document ).on( 'click', '.ersrv-remove-amenity-html', function() {
-		var this_button = $( this );
-		this_button.parent( '.reservation_amenity_field' ).remove();
+		$( this ).parent( '.reservation_amenity_field' ).remove();
 	} );
+
+	/**
+	 * Open calendar for blockingout dates to reservation calendar.
+	 */
+	$( document ).on( 'click', '.ersrv-add-blockedout-date-html', function() {
+		$( '#ersrv-blockout-reservation-calendar-dates-modal' ).fadeIn( 'slow' );
+	} );
+
+	/**
+	 * Add blockout dates HTML.
+	 */
+	$( document ).on( 'click', '.submit-blockout-calendar-dates', function() {
+		var this_button = $( this );
+		var date_from   = $( '#ersrv-blockout-date-from' ).val();
+		var date_to     = $( '#ersrv-blockout-date-to' ).val();
+		var message     = $( '.ersrv-blockout-dates-message textarea' ).val();
+
+		// Block the element.
+		block_element( this_button );
+
+		// Send the AJAX for adding blockout date html.
+		$.ajax( {
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'get_blockout_date_html',
+				date_from: date_from,
+				date_to: date_to,
+				message: message,
+			},
+			success: function ( response ) {
+				// Return, if the response is not proper.
+				if ( 'blockout-date-html-fetched' !== response.data.code ) {
+					return false;
+				}
+
+				// Unblock the element.
+				unblock_element( this_button );
+
+				// Apend the blockout date html block.
+				$( '.blockout-dates-list' ).append( response.data.html );
+
+				// Vacate the modal fields.
+				$( '#ersrv-blockout-date-from, #ersrv-blockout-date-to, .ersrv-blockout-dates-message textarea' ).val( '' );
+
+				// Hide the modal.
+				$( '#ersrv-blockout-reservation-calendar-dates-modal' ).fadeOut( 'slow' );
+			},
+		} );
+	} );
+
+	/**
+	 * Remove blockout date HTML block.
+	 */
+	$( document ).on( 'click', '.ersrv-remove-blockout-date-html', function() {
+		$( this ).parent( '.reservation_blockout_date_field' ).remove();
+	} );
+
+	/**
+	 * Open the new customer modal.
+	 */
+	$( document ).on( 'click', '.ersrv-create-new-customer-link', function() {
+		$( '#ersrv-new-customer-modal' ).fadeIn( 'slow' );
+	} );
+
+	/**
+	 * Submit new customer details.
+	 */
+	$( document ).on( 'click', '.submit-customer button', function() {
+		var this_button      = $( this );
+		var this_button_text = this_button.text();
+		var first_name       = $( '#ersrv-customer-first-name' ).val();
+		var last_name        = $( '#ersrv-customer-last-name' ).val();
+		var email            = $( '#ersrv-customer-email' ).val();
+		var password         = $( '#ersrv-customer-password' ).val();
+		var register_user    = true;
+
+		// Vacate the errors.
+		$( '.ersrv-form-field-error, .ersrv-form-error' ).text( '' );
+
+		// Validate email.
+		if ( -1 === is_valid_string( email ) ) {
+			$( '.ersrv-form-field-error.email-error' ).text( email_address_required );
+			register_user = false;
+		} else if ( -1 === is_valid_email( email ) ) {
+			$( '.ersrv-form-field-error.email-error' ).text( email_address_invalid );
+			register_user = false;
+		}
+
+		// Validate password.
+		if ( -1 === is_valid_string( password ) ) {
+			$( '.ersrv-form-field-error.password-error' ).text( password_required );
+			register_user = false;
+		}
+
+		// Exit, if user registration is set to false.
+		if ( false === register_user ) {
+			return false;
+		}
+
+		// Block the button.
+		block_element( this_button );
+
+		// Activate loader.
+		this_button.html( '<span class="webinar-registration-in-process"><i class="fa fa-refresh fa-spin"></i></span> Please wait...' );
+
+		// Send the AJAX now.
+		var data = {
+			action: 'register_new_customer',
+			first_name: first_name,
+			last_name: last_name,
+			email: email,
+			password: password,
+		};
+
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: data,
+			success: function ( response ) {
+				// In case of invalid AJAX call.
+				if ( 0 === response ) {
+					console.warn( 'easy reservations: invalid AJAX call' );
+					return false;
+				}
+
+				// If user already exists.
+				if ( 'ersrv-user-exists' === response.data.code ) {
+					// Unblock the button.
+					unblock_element( this_button );
+
+					// Activate loader.
+					this_button.html( this_button_text );
+
+					// Paste the error message.
+					$( '.ersrv-form-error' ).text( response.data.error_message );
+
+					return false;
+				}
+
+				// If user is created.
+				if ( 'ersrv-user-registered' === response.data.code ) {
+					// Unblock the button.
+					unblock_element( this_button );
+
+					// Activate loader.
+					this_button.html( this_button_text );
+
+					// Vacate all the form values.
+					$( '#ersrv-customer-first-name, #ersrv-customer-last-name, #ersrv-customer-email, #ersrv-customer-password' ).val( '' );
+
+					// Hide the modal.
+					$( '.ersrv-close-modal' ).click();
+
+					// Add the user as an option in the select box, and select the created user.
+					$( '#customer-id' ).append( response.data.user_html ).val( response.data.user_id );
+				}
+			}
+		} );
+	} );
+
+	/**
+	 * Generate new password.
+	 */
+	$( document ).on( 'click', '.ersrv-generate-password', function() {
+		// Block the element.
+		block_element( $( '#ersrv-customer-password' ) );
+
+		// Send AJAX.
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'generate_new_password',
+			},
+			success: function ( response ) {
+				// In case of invalid AJAX call.
+				if ( 0 === response ) {
+					console.warn( 'easy reservations: invalid AJAX call' );
+					return false;
+				}
+
+				// If the password is generated.
+				if ( 'password-generated' === response.data.code ) {
+					// Unblock the element.
+					unblock_element( $( '#ersrv-customer-password' ) );
+
+					// Paste the password.
+					$( '#ersrv-customer-password' ).val( response.data.password );
+				}
+			}
+		} );
+	} );
+
+	/**
+	 * Fetch the reservation item details for creating new reservation from admin.
+	 */
+	$( document ).on( 'change', '#item-id', function() {
+		var this_select = $( this );
+		var item_id     = this_select.val();
+
+		// Block the element.
+		block_element( this_select );
+
+		// Send AJAX.
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'get_reservable_item_details',
+				item_id: item_id,
+			},
+			success: function ( response ) {
+				// In case of invalid AJAX call.
+				if ( 0 === response ) {
+					console.warn( 'easy reservations: invalid AJAX call' );
+					return false;
+				}
+
+				// If the password is generated.
+				if ( 'item-details-fetched' === response.data.code ) {
+					// Unblock the element.
+					unblock_element( this_select );
+
+					// Item details.
+					var item_details = response.data.details;
+
+					var accomodation_limit = ( -1 !== is_valid_number( item_details.accomodation_limit ) ) ? parseInt( item_details.accomodation_limit ) : '';
+					$( '#accomodation-limit' ).val( accomodation_limit );
+					var accomodation_limit_text = $( 'label[for="accomodation"]' ).next( 'small' ).text();
+					// console.log( 'accomodation_limit_text', accomodation_limit_text );
+					accomodation_limit_text = accomodation_limit_text.replace( '--', accomodation_limit );
+					$( 'label[for="accomodation"]' ).next( 'small' ).text( accomodation_limit_text );
+				}
+			}
+		} );
+	} );
+
+	/**
+	 * Add reservation from admin panel.
+	 */
+	$( document ).on( 'click', '.ersrv-add-new-reservation', function() {
+		var item_id            = $( '#item-id' ).val();
+		var customer_id        = $( '#customer-id' ).val();
+		var accomodation_limit = $( '#accomodation-limit' ).val();
+	} );
+
+	/**
+	 * Check if a email is valid.
+	 *
+	 * @param {string} email
+	 */
+	function is_valid_email( email ) {
+		var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+		return ( ! regex.test( email ) ) ? -1 : 1;
+	}
+
+	/**
+	 * Check if a string is valid.
+	 *
+	 * @param {string} $data
+	 */
+	 function is_valid_string( data ) {
+		if ( '' === data || undefined === data || ! isNaN( data ) || 0 === data ) {
+			return -1;
+		} else {
+			return 1;
+		}
+	}
+
+	/**
+	 * Check if a number is valid.
+	 *
+	 * @param {number} $data
+	 */
+	function is_valid_number( data ) {
+		if ( '' === data || undefined === data || isNaN( data ) || 0 === data ) {
+			return -1;
+		} else {
+			return 1;
+		}
+	}
 
 	/**
 	 * Block element.

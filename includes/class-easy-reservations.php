@@ -146,6 +146,11 @@ class Easy_Reservations {
 		$this->loader->add_filter( 'plugin_row_meta', $plugin_admin, 'ersrv_plugin_row_meta_callback', 10, 2 );
 		$this->loader->add_action( 'wp_ajax_get_amenity_html', $plugin_admin, 'ersrv_get_amenity_html_callback' );
 		$this->loader->add_action( 'widgets_init', $plugin_admin, 'ersrv_widgets_init_callback' );
+		$this->loader->add_action( 'wp_ajax_get_blockout_date_html', $plugin_admin, 'ersrv_get_blockout_date_html_callback' );
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'ersrv_admin_menu_callback' );
+		$this->loader->add_action( 'wp_ajax_register_new_customer', $plugin_admin, 'ersrv_register_new_customer_callback' );
+		$this->loader->add_action( 'wp_ajax_generate_new_password', $plugin_admin, 'ersrv_generate_new_password_callback' );
+		$this->loader->add_action( 'wp_ajax_get_reservable_item_details', $plugin_admin, 'ersrv_get_reservable_item_details_callback' );
 	}
 
 	/**
@@ -174,6 +179,7 @@ class Easy_Reservations {
 		$this->loader->add_action( 'wp_head', $plugin_public, 'ersrv_wp_head_callback' );
 		$this->loader->add_filter( 'woocommerce_product_add_to_cart_text', $plugin_public, 'ersrv_woocommerce_product_add_to_cart_text_callback', 10, 2 );
 		$this->loader->add_filter( 'woocommerce_related_products', $plugin_public, 'ersrv_woocommerce_related_products_callback', 20, 2 );
+		$this->loader->add_filter( 'template_include', $plugin_public, 'ersrv_template_include_callback', 99, 1 );
 	}
 
 	/**
