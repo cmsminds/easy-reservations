@@ -91,5 +91,5 @@ $customers = get_users();
 		</tbody>
 	</table>
 	<input type="hidden" id="accomodation-limit" value="" />
-	<button type="button" class="button ersrv-add-new-reservation"><?php esc_html_e( 'Add New Reservation', 'easy-reservations' ); ?></button>
+	<button type="button" class="button ersrv-add-new-reservation"><?php esc_html_e( 'Add New Reservation Demo', 'easy-reservations' ); ?></button>
 </div>
