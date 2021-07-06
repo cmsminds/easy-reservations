@@ -354,8 +354,7 @@ jQuery( document ).ready( function( $ ) {
 
 					var accomodation_limit = ( -1 !== is_valid_number( item_details.accomodation_limit ) ) ? parseInt( item_details.accomodation_limit ) : '';
 					$( '#accomodation-limit' ).val( accomodation_limit );
-					accomodation_limit_text = accomodation_limit_text.replace( '--', accomodation_limit );
-					$( 'label[for="accomodation"]' ).next( 'small' ).text( accomodation_limit_text );
+					$( 'label[for="accomodation"]' ).next( 'small' ).text( accomodation_limit_text.replace( '--', accomodation_limit ) );
 				}
 			}
 		} );
