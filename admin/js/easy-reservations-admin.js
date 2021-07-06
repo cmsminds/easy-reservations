@@ -363,6 +363,8 @@ jQuery( document ).ready( function( $ ) {
 					var current_month          = ( ( '0' + ( current_date.getMonth() + 1 ) ).slice( -2 ) );
 					var today_formatted        = current_date.getFullYear() + '-' + current_month + '-' + current_date.getDate();
 
+					console.log( 'blocked_dates', blocked_dates );
+
 					// Set the calendar on checkin and checkout dates.
 					$( '#checkin-checkout-date' ).datepicker( {
 						beforeShowDay: function( date ) {
