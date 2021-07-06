@@ -362,15 +362,14 @@ jQuery( document ).ready( function( $ ) {
 					var current_date           = new Date();
 					var current_month          = ( ( '0' + ( current_date.getMonth() + 1 ) ).slice( -2 ) );
 					var today_formatted        = current_date.getFullYear() + '-' + current_month + '-' + current_date.getDate();
+					var reserved_dates         = [];
 
 					// Prepare the blocked out dates in a separate array.
 					if ( 0 < blocked_dates.length ) {
 						for ( var i in blocked_dates ) {
-							console.log( 'date', blocked_dates[i].date );
+							reserved_dates.push( blocked_dates[i].date );
 						}
 					}
-
-					console.log( 'blocked_dates', blocked_dates );
 
 					// Set the calendar on checkin and checkout dates.
 					$( '#checkin-checkout-date' ).datepicker( {
@@ -384,7 +383,7 @@ jQuery( document ).ready( function( $ ) {
 							// If not the past date.
 							if ( today_formatted <= loop_date_formatted ) {
 								// Add custom class to the active dates of the current month.
-								var key = $.map( blocked_dates, function( val, i ) {
+								var key = $.map( reserved_dates, function( val, i ) {
 									if ( val.date === loop_date_formatted ) {
 										return i;
 									}
@@ -393,7 +392,7 @@ jQuery( document ).ready( function( $ ) {
 								// If the loop date is a blocked date.
 								if ( 0 < key.length ) {
 									key = key[0];
-									date_tooltip = blocked_dates[key].message;
+									date_tooltip = reserved_dates[key].message;
 								} else if ( 0 === key.length ) {
 									date_enabled = true;
 									date_classes = 'ersrv-date-active';
