@@ -510,9 +510,10 @@ if ( ! function_exists( 'ersrv_get_admin_script_vars' ) ) {
 
 		// Add the error message to the array on new reservation page.
 		if ( ! is_null( $page ) && 'new-reservation' === $page ) {
-			$vars['email_address_required'] = __( 'Email address is required.', 'easy-reservations' );
-			$vars['email_address_invalid']  = __( 'Email address is invalid.', 'easy-reservations' );
-			$vars['password_required']      = __( 'Password is required.', 'easy-reservations' );
+			$vars['email_address_required']  = __( 'Email address is required.', 'easy-reservations' );
+			$vars['email_address_invalid']   = __( 'Email address is invalid.', 'easy-reservations' );
+			$vars['password_required']       = __( 'Password is required.', 'easy-reservations' );
+			$vars['accomodation_limit_text'] = __( 'Limit: --', 'easy-reservations' );
 		}
 
 		return $vars;

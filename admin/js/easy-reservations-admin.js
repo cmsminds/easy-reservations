@@ -2,12 +2,13 @@ jQuery( document ).ready( function( $ ) {
 	'use strict';
 
 	// Localized variables.
-	var ajaxurl                = ERSRV_Admin_Script_Vars.ajaxurl;
-	var same_as_adult          = ERSRV_Admin_Script_Vars.same_as_adult;
-	var export_reservations    = ERSRV_Admin_Script_Vars.export_reservations;
-	var email_address_required = ERSRV_Admin_Script_Vars.email_address_required;
-	var email_address_invalid  = ERSRV_Admin_Script_Vars.email_address_invalid;
-	var password_required      = ERSRV_Admin_Script_Vars.password_required;
+	var ajaxurl                 = ERSRV_Admin_Script_Vars.ajaxurl;
+	var same_as_adult           = ERSRV_Admin_Script_Vars.same_as_adult;
+	var export_reservations     = ERSRV_Admin_Script_Vars.export_reservations;
+	var email_address_required  = ERSRV_Admin_Script_Vars.email_address_required;
+	var email_address_invalid   = ERSRV_Admin_Script_Vars.email_address_invalid;
+	var password_required       = ERSRV_Admin_Script_Vars.password_required;
+	var accomodation_limit_text = ERSRV_Admin_Script_Vars.accomodation_limit_text;
 
 	// Add HTML after the kid charge number field.
 	$( '<a class="ersrv-copy-adult-charge" href="javascript:void(0);">' + same_as_adult + '</a>' ).insertAfter( '#accomodation_kid_charge' );
@@ -351,9 +352,10 @@ jQuery( document ).ready( function( $ ) {
 					var accomodation_limit = ( -1 !== is_valid_number( item_details.accomodation_limit ) ) ? parseInt( item_details.accomodation_limit ) : '';
 					$( '#accomodation-limit' ).val( accomodation_limit );
 					var accomodation_limit_text = $( 'label[for="accomodation"]' ).next( 'small' ).text();
-					// console.log( 'accomodation_limit_text', accomodation_limit_text );
 					accomodation_limit_text = accomodation_limit_text.replace( '--', accomodation_limit );
 					$( 'label[for="accomodation"]' ).next( 'small' ).text( accomodation_limit_text );
+
+					// accomodation_limit_text
 				}
 			}
 		} );
