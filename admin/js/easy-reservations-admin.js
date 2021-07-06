@@ -363,6 +363,13 @@ jQuery( document ).ready( function( $ ) {
 					var current_month          = ( ( '0' + ( current_date.getMonth() + 1 ) ).slice( -2 ) );
 					var today_formatted        = current_date.getFullYear() + '-' + current_month + '-' + current_date.getDate();
 
+					// Prepare the blocked out dates in a separate array.
+					if ( 0 < blocked_dates.length ) {
+						for ( var i in blocked_dates ) {
+							console.log( 'date', blocked_dates[i].date );
+						}
+					}
+
 					console.log( 'blocked_dates', blocked_dates );
 
 					// Set the calendar on checkin and checkout dates.
