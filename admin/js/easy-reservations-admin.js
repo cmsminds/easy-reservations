@@ -325,6 +325,8 @@ jQuery( document ).ready( function( $ ) {
 		// Change the accomodation limit text.
 		$( 'label[for="accomodation"]' ).next( 'small' ).text( accomodation_limit_text );
 
+		console.log( accomodation_limit_text );
+
 		// Block the element.
 		block_element( this_select );
 
