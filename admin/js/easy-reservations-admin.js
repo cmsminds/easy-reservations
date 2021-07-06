@@ -322,6 +322,9 @@ jQuery( document ).ready( function( $ ) {
 		var this_select = $( this );
 		var item_id     = this_select.val();
 
+		// Change the accomodation limit text.
+		$( 'label[for="accomodation"]' ).next( 'small' ).text( accomodation_limit_text );
+
 		// Block the element.
 		block_element( this_select );
 
@@ -351,11 +354,8 @@ jQuery( document ).ready( function( $ ) {
 
 					var accomodation_limit = ( -1 !== is_valid_number( item_details.accomodation_limit ) ) ? parseInt( item_details.accomodation_limit ) : '';
 					$( '#accomodation-limit' ).val( accomodation_limit );
-					var accomodation_limit_text = $( 'label[for="accomodation"]' ).next( 'small' ).text();
 					accomodation_limit_text = accomodation_limit_text.replace( '--', accomodation_limit );
 					$( 'label[for="accomodation"]' ).next( 'small' ).text( accomodation_limit_text );
-
-					// accomodation_limit_text
 				}
 			}
 		} );
