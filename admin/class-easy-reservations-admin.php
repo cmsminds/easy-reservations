@@ -83,8 +83,17 @@ class Easy_Reservations_Admin {
 			$include_modal_style = true;
 		}
 
-		// Bootstrap datepicker style.
+		// Enqueue bootstrap datepicker on new reservation page.
 		if ( ! is_null( $page ) && 'new-reservation' === $page ) {
+			// Enqueue the bootstrap style.
+			wp_enqueue_style(
+				$this->plugin_name . '-bootstrap-style',
+				ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap.min.css',
+				array(),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap.min.css' )
+			);
+
+			// Bootstrap datepicker style.
 			wp_enqueue_style(
 				$this->plugin_name . '-bootstrap-datepicker-style',
 				ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap-datepicker.css',
@@ -111,8 +120,18 @@ class Easy_Reservations_Admin {
 			filemtime( ERSRV_PLUGIN_PATH . 'admin/css/easy-reservations-admin.css' )
 		);
 
-		// Bootstrap datepicker script.
+		// Enqueue bootstrap datepicker on new reservation page.
 		if ( ! is_null( $page ) && 'new-reservation' === $page ) {
+			// Bootstrap bundle script.
+			wp_enqueue_script(
+				$this->plugin_name . '-bootstrap-bundle-script',
+				ERSRV_PLUGIN_URL . 'public/js/bootstrap/bootstrap.bundle.min.js',
+				array(),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap/bootstrap.bundle.min.js' ),
+				true
+			);
+
+			// Bootstrap datepicker script.
 			wp_enqueue_script(
 				$this->plugin_name . '-bootstrap-datepicker-script',
 				ERSRV_PLUGIN_URL . 'public/js/bootstrap/bootstrap-datepicker.min.js',
