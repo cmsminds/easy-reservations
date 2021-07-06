@@ -357,7 +357,7 @@ jQuery( document ).ready( function( $ ) {
 					$( '#accomodation-limit' ).val( accomodation_limit );
 					$( 'label[for="accomodation"]' ).next( 'small' ).text( accomodation_limit_text.replace( '--', accomodation_limit ) );
 
-					var blocked_dates          = response.data.reserved_dates;
+					var blocked_dates          = item_details.reserved_dates;
 					var datepicker_date_format = 'yyyy-mm-dd';
 					var current_date           = new Date();
 					var current_month          = ( ( '0' + ( current_date.getMonth() + 1 ) ).slice( -2 ) );
