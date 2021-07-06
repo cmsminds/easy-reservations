@@ -88,6 +88,16 @@ $customers = get_users();
 					<p><input type="number" id="kid-accomodation-count" min="1" max="12" step="1" class="regular-text" placeholder="<?php esc_html_e( 'No. of kids.', 'easy-reservations' ); ?>"></p>
 				</td>
 			</tr>
+
+			<!-- CHECKIN/CHECKOUT DATE -->
+			<tr>
+				<th scope="row">
+					<label for="checkin-checkout-date"><?php esc_html_e( 'Checkin/checkout Date', 'easy-reservations' ); ?></label>
+				</th>
+				<td>
+					<input type="text" class="regular-text" id="checkin-checkout-date" placeholder="<?php esc_html_e( 'Select the reservation dates.', 'easy-reservations' ); ?>">
+				</td>
+			</tr>
 		</tbody>
 	</table>
 	<input type="hidden" id="accomodation-limit" value="" />
