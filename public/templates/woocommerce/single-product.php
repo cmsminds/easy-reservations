@@ -1,18 +1,6 @@
 <?php
 get_header();
 ?>
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sailboat Mallorca Bavaria</title>
-    <link rel="stylesheet" href="./venders/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./venders/bootstrap-select/css/bootstrap-select.min.css">
-    <!-- <link rel="stylesheet" href="./venders/fontawesome/all.css"> -->
-    <!-- <link rel="stylesheet" href="./venders/bootstrap-datepicker/css/bootstrap-datepicker3.standalone.min.css"> -->
-    <link rel="stylesheet" href="./venders/jQuery-ui/css/jquery-ui.css">
-    <link rel="stylesheet" href="./css/main.css">
-</head>
 <section class="wrapper single-reserve-page" id="wrapper">
     <div class="banner text-center">
         <div class="container">
@@ -46,13 +34,9 @@ get_header();
             <div class="row">
                 <div class="col-12 col-lg-7 col-xl-8">
                     <div class="ship-features info-box">
-                        <!-- <a class="section-title font-Poppins font-size-24 font-weight-bold d-block color-black text-decoration-none show-on-load" data-toggle="collapse" href="#ship-features-collapse" role="button" aria-expanded="true" aria-controls="ship-features-collapse">
-                                <span class="">Ship Features</span>
-                            </a> -->
                         <h3 class="section-title font-Poppins font-size-24 font-weight-bold d-block color-black text-decoration-none show-on-load">
                             <span class="">Ship Features</span>
                         </h3>
-                        <!-- <div class="collapse show show-on-load" id="ship-features-collapse"> -->
                         <div class="ship-inner-features show show-on-load" id="ship-features-collapse">
                             <div class="dropdown-divider"></div>
                             <div class="card">
@@ -278,14 +262,5 @@ get_header();
         </div>
     </div>
 </section>
-
-<!-- JS library -->
-<script src="./venders/jquery/jquery.min.js"></script>
-<script src="./venders/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="./venders/bootstrap-select/js/bootstrap-select.min.js"></script>
-<!-- <script src="./venders/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script> -->
-<script src="./venders/jQuery-ui/js/jquery-ui.min.js"></script>
-<script src='./js/main.js'></script>
-
 <?php
 get_footer();
