@@ -15,16 +15,16 @@ jQuery( document ).ready( function( $ ) {
 		$( '.primary' ).css( 'width', '100%' );
 	}
 
-	var DATE_FORMAT = 'yyyy-mm-dd';
-	var datepicker = $('.datepicker-inline');
-
-	datepicker.datepicker( {
-			numberOfMonths: 2,
+	var datepicker_date_format = 'yyyy-mm-dd';
+	$( '.datepicker-inline' ).datepicker( {
+		numberOfMonths: 2,
+		format: datepicker_date_format,
 	} );
 
-	$(".date-control").datepicker({
-	numberOfMonths: 1,
-	});
+	$( '.date-control' ).datepicker( {
+		numberOfMonths: 1
+	} );
+
 	// range slider
 	$("#slider-range").slider({
 	range: true,
