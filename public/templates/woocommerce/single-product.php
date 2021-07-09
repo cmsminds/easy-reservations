@@ -1,4 +1,6 @@
 <?php
 get_header();
-echo 'hello';
+?>
+<h1>Test</h1>
+<?php
 get_footer();
