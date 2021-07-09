@@ -15,10 +15,27 @@ jQuery( document ).ready( function( $ ) {
 		$( '.primary' ).css( 'width', '100%' );
 	}
 
-	// Datepicker dates.
-	$( '.datepicker' ).datepicker( {
-		format: 'yyyy-mm-dd',
+	var DATE_FORMAT = 'yyyy-mm-dd';
+	var datepicker = $('.datepicker-inline');
+
+	datepicker.datepicker( {
+			numberOfMonths: 2,
 	} );
+
+	$(".date-control").datepicker({
+	numberOfMonths: 1,
+	});
+	// range slider
+	$("#slider-range").slider({
+	range: true,
+	min: 0,
+	max: 500,
+	values: [75, 300],
+	slide: function (event, ui) {
+	$(".price-value").html("$" + ui.values[0] + " to $" + ui.values[1]);
+	}
+	});
+	$(".price-value").html("$" + $("#slider-range").slider("values", 0) + " to $" + $("#slider-range").slider("values", 1));
 
 	/**
 	 * Add the reservation to google calendar.
