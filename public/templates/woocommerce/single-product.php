@@ -21,20 +21,20 @@ get_header();
                     <h1 class="font-Poppins font-size-40 font-weight-semibold">Sailboat Mallorca Bavaria</h1>
                 </div>
                 <div class="review d-flex justify-content-center align-items-center color-white mb-3 font-size-17 font-weight-normal">
-                    <img src="./images/stars.png" alt="stars">
+                    <img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/stars.png' ); ?>" alt="stars">
                     <span class="ml-2">(1 review)</span>
                 </div>
                 <div class="boat-options d-flex justify-content-center align-items-center color-white font-size-16">
                     <div class="d-flex first mr-3 pr-1">
-                        <img src="./images/Ship-icon.png" alt="">
+                        <img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/Ship-icon.png' ); ?>" alt="">
                         <span class="ml-2 font-weight-medium">Sailboat</span>
                     </div>
                     <div class="d-flex second mr-3 pr-1">
-                        <img src="./images/user-icon.png" alt="">
+                        <img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/user-icon.png' ); ?>" alt="">
                         <span class="ml-2 font-weight-medium">With Capitanicon</span>
                     </div>
                     <div class="d-flex third">
-                        <img src="./images/3d-box.png" alt="">
+                        <img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/3d-box.png' ); ?>" alt="">
                         <span class="ml-2 font-weight-medium">4</span>
                     </div>
                 </div>
@@ -72,22 +72,22 @@ get_header();
                             </div>
                             <div class="gallery d-flex justify-content-start flex-wrap">
                                 <div class="img image-1">
-                                    <img src="./images/image-1.jpg" alt="image">
+                                    <img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/image-1.jpg' ); ?>" alt="image">
                                 </div>
                                 <div class="img image-2">
-                                    <img src="./images/image 2.jpg" alt="image">
+                                    <img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/image 2.jpg' ); ?>" alt="image">
                                 </div>
                                 <div class="img image-3">
-                                    <img src="./images/image 3.jpg" alt="image">
+                                    <img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/image 3.jpg' ); ?>" alt="image">
                                 </div>
                                 <div class="img image-4">
-                                    <img src="./images/image 4.jpg" alt="image">
+                                    <img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/image 4.jpg' ); ?>" alt="image">
                                 </div>
                                 <div class="img image-5">
-                                    <img src="./images/image 5.jpg" alt="image">
+                                    <img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/image 5.jpg' ); ?>" alt="image">
                                 </div>
                                 <div class="img image-6">
-                                    <img src="./images/image 6.jpg" alt="image">
+                                    <img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/image 6.jpg' ); ?>" alt="image">
                                 </div>
                             </div>
                         </div>
@@ -191,7 +191,7 @@ get_header();
                                     </div>
                                     <div class="instant-booking">
                                         <button class="btn btn-primary btn-block btn-xl font-lato font-size-18 font-weight-bold">
-                                            <span class="mr-3"><img src="images/Instant-booking.png" alt="instant-booking"></span>
+                                            <span class="mr-3"><img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/Instant-booking.png' ); ?>" alt="instant-booking"></span>
                                             <span>Instant Booking</span>
                                         </button>
                                     </div>
@@ -265,7 +265,7 @@ get_header();
                                     </div>
                                     <div class="search-box">
                                         <button class="btn btn-primary btn-block btn-xl font-lato font-size-18 font-weight-bold">
-                                            <span class="mr-3"><img src="images/Search.png" alt="Search"></span>
+                                            <span class="mr-3"><img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/Search.png' ); ?>" alt="Search"></span>
                                             <span>Search</span>
                                         </button>
                                     </div>
