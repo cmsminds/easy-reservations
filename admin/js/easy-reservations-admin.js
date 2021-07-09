@@ -373,7 +373,7 @@ jQuery( document ).ready( function( $ ) {
 
 					// Set the calendar on checkin and checkout dates.
 					$( '#checkin-checkout-date' ).datepicker( {
-						/*beforeShowDay: function( date ) {
+						beforeShowDay: function( date ) {
 							var loop_month          = ( ( '0' + ( date.getMonth() + 1 ) ).slice( -2 ) );
 							var loop_date_formatted = date.getFullYear() + '-' + loop_month + '-' + date.getDate();
 							var date_enabled        = false;
@@ -405,7 +405,7 @@ jQuery( document ).ready( function( $ ) {
 								'classes': date_classes,
 								'tooltip': date_tooltip,
 							};
-						},*/
+						},
 						format: datepicker_date_format,
 						startDate: current_date,
 						weekStart: start_of_week,
