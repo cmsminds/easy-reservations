@@ -103,6 +103,14 @@ class Easy_Reservations_Public {
 					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap.min.css' )
 				);
 
+				// Enqueue the ui style.
+				wp_enqueue_style(
+					$this->plugin_name . '-jquery-ui-style',
+					ERSRV_PLUGIN_URL . 'public/css/bootstrap/jquery-ui.min.css',
+					array(),
+					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/jquery-ui.min.css' )
+				);
+
 				// Enqueue the bootstrap select style.
 				wp_enqueue_style(
 					$this->plugin_name . '-bootstrap-select-style',
@@ -240,7 +248,7 @@ class Easy_Reservations_Public {
 				wp_enqueue_script(
 					$this->plugin_name,
 					ERSRV_PLUGIN_URL . 'public/js/core/easy-reservations-public.js',
-					array( 'jquery' ),
+					array( 'jquery', 'jquery-ui-datepicker' ),
 					filemtime( ERSRV_PLUGIN_PATH . 'public/js/core/easy-reservations-public.js' ),
 					true
 				);
