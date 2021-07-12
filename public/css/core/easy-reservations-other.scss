@@ -1,0 +1,490 @@
+@import 'easy-reservations-other-variable.scss';
+
+.single-reserve-page {
+    background-color: #f8f8f8;
+
+    .banner {
+        min-height: 570px;
+        padding-top: 149px;
+        padding-bottom: 256px;
+        background-image: url(../../images/banner-bg.jpg);
+        background-position: center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+
+        .details {
+            max-width: 360px;
+        }
+    }
+
+    .content-part {
+        margin-top: calc(86px - 256px);
+
+        .info-box {
+            // min-height:400px;
+            @extend .bgcolor-white;
+            border-radius: 6px;
+            padding: 23.5px 30px;
+            margin-bottom: 20px;
+
+            .card {
+                padding: 0px;
+                border: 0px;
+                background-color: transparent;
+            }
+            .dropdown-divider{
+                margin-top: 22px;
+                padding-bottom: 31px;
+            }
+
+            a:hover {
+                @extend .color-accent;
+            }
+
+            .section-title {
+                position: relative;
+                color: $primary;
+
+                // color: #0b65af;
+                &.show-on-load,&[aria-expanded="true"]{
+                    color: $black;
+                }
+
+                &:not(.show-on-load) {
+
+                    &:before,
+                    &:after {
+                        display: inline-flex;
+                        content: "";
+                        position: absolute;
+                        right: 15px;
+                        background-color: $primary;
+                        transform: scale(0.75);
+                        transition: transform 0.25s ease-out;
+                    }
+
+                    &[aria-expanded="false"] {
+
+                        /* Vertical line */
+                        &::before {
+                            top: 0;
+                            width: 4px;
+                            height: 30px;
+                            margin-left: -2px;
+                        }
+                    }
+
+                    /* horizontal line */
+                    &::after {
+                        top: 40%;
+                        width: 30px;
+                        height: 4px;
+                        margin-top: -2px;
+                        right: 2px;
+                    }
+                }
+            }
+        }
+
+        .datepicker {
+            .ui-datepicker-inline {
+                width: 100% !important;
+                padding: 0px;
+
+                .ui-datepicker-header {
+                    .ui-datepicker-prev {
+                        &:hover {
+                            text-decoration: none;
+                            top: 2px;
+                            left: 2px;
+                        }
+                    }
+
+                    .ui-datepicker-prev,
+                    .ui-datepicker-next {
+                        // width: 49px;
+                        // height: 34px;
+                        @include ratio(49px, 34px);
+                        @include flex-center();
+                        @extend .btn-primary;
+                        border-radius: 4px;
+                        border: 1px solid $primary;
+                        cursor: pointer;
+
+                        .ui-icon {
+                            text-indent: 0px;
+                            position: relative;
+                            left: 0px;
+                            right: 0px;
+                            top: 0px;
+                            bottom: 0px;
+                            transform: none;
+                            margin: 0px;
+                            @extend .font-lato;
+                            @extend .font-size-14;
+                            @extend .font-weight-semibold;
+                        }
+
+                        &:hover {
+                            text-decoration: none;
+                            top: 2px;
+                            @extend .btn-outline-primary;
+                        }
+                    }
+
+                    .ui-datepicker-prev {
+                        &:hover {
+                            left: 2px;
+                        }
+                    }
+
+                    .ui-datepicker-next {
+                        &:hover {
+                            right: 2px;
+                        }
+                    }
+
+                    .ui-datepicker-title {
+                        @extend .font-lato;
+                        @extend .font-size-16;
+                        @extend .font-weight-semibold;
+                    }
+                }
+
+                .ui-datepicker-buttonpane {
+                    display: none;
+                }
+
+                .ui-datepicker-calendar {
+                    thead {
+                        tr {
+                            th {
+                                @extend .font-lato;
+                                @extend .font-size-16;
+                                @extend .font-weight-semibold;
+                                color: $black;
+                            }
+                        }
+                    }
+
+                    tbody {
+                        tr {
+
+                            td,
+                            td a {
+                                @extend .font-lato;
+                                @extend .font-size-16;
+                                @extend .font-weight-semibold;
+                                color: $gray;
+                                text-align: center;
+
+                                @include tablet{
+                                    font-size: 14px;
+                                    a {
+                                        padding: 4px;
+                                    }
+                                }
+                                @include desktop{
+                                    font-size: 16px;
+                                    a {
+                                        padding: 9px;
+                                    }
+                                }
+
+                                &.ui-state-active {
+                                    color: $white;
+                                    background-color: $accent;
+                                    border-radius: 100%;
+                                }
+
+                                &.ui-state-highlight {
+                                    color: $seconadry;
+                                    background-color: $accent-300;
+                                    border-radius: 100%;
+                                }
+                            }
+                        }
+                    }
+                }
+                @include mobile{
+                    display: flex !important;
+                    flex-direction: column;
+                    &>div{
+                        width: 100%;
+                    }
+                    .ui-datepicker-calendar {
+                        tbody {
+                            tr {
+                                td{
+                                    a {
+                                        padding: 6px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .gallery {
+            .img {
+                img {
+                    height: 100%;
+                    width: 100%;
+                    -o-object-fit: cover;
+                    object-fit: cover;
+                }
+                @include tablet{
+                    max-width: calc(100% / 2);
+                    flex-basis: calc(100% / 2);
+                }
+                @include desktop{
+                    max-width: calc(100% / 3);
+                    flex-basis: calc(100% / 3);
+                }
+                @include mobile{
+                    max-width: calc(100% / 1);
+                    flex-basis: calc(100% / 1);
+                }
+            }
+        }
+    }
+
+    .sidebar-wrapper {
+        .price-box {
+            margin-bottom: 17px;
+        }
+
+        .book-tour,
+        .advanced-search {
+            padding: 30px 33px;
+            margin-bottom: 23px;
+            .details {
+                input {
+                    @extend .font-lato;
+                    @extend .font-size-15;
+                    @extend .color-black-500;
+                    @extend .bgcolor-white-300;
+                    @extend .border-color-black-300;
+                    min-height: 55px;
+
+                    &:focus {
+                        @extend .color-black;
+                    }
+
+                    &.date-control {
+                        @extend .date-control;
+                        background-position: 95%;
+                    }
+                }
+
+                .btn-xl {
+                    padding: 15.063px 1.5rem;
+                }
+
+                .social {
+                    a {
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        height: 44px;
+                        width: 44px;
+                        border-radius: 100%;
+                        border: 1px solid $gray;
+                        @extend .color-gray;
+                        margin: 0px 4px;
+
+                        svg {
+                            pointer-events: none;
+                            fill: $gray;
+                            width: 20px;
+                            height: auto;
+                        }
+
+                        &:hover {
+                            @extend .border-color-accent;
+                            svg {
+                                fill: $accent;
+                            }
+                        }
+                        &.facebook{
+                            &:hover{
+                                border-color:$facebook;
+                                svg{
+                                    fill:$facebook;
+                                }
+                            }
+                        }
+                        &.twitter{
+                            &:hover{
+                                border-color:$twiiter;
+                                svg{
+                                    fill:$twiiter;
+                                }
+                            }
+                        }
+                        &.pinterest{
+                            &:hover{
+                                border-color:$pinterest;
+                                svg{
+                                    fill:$pinterest;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .advanced-search {
+            padding-bottom: 41px;
+        }
+    }
+}
+
+#ui-datepicker-div {
+    background: #fff;
+    box-shadow:
+        0 3.1px 29.1px rgba(0, 0, 0, 0.15),
+        0 25px 80px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    padding: 10px;
+    z-index: 9999 !important;
+    .ui-datepicker-header {
+        .ui-datepicker-prev {
+            &:hover {
+                text-decoration: none;
+                top: 2px;
+                left: 2px;
+            }
+        }
+
+        .ui-datepicker-prev,
+        .ui-datepicker-next {
+            @include ratio(40px, 25px);
+            @include flex-center();
+            @extend .btn-primary;
+            border-radius: 4px;
+            border: 1px solid $primary;
+            cursor: pointer;
+
+            .ui-icon {
+                text-indent: 0px;
+                position: relative;
+                left: 0px;
+                right: 0px;
+                top: 0px;
+                bottom: 0px;
+                transform: none;
+                margin: 0px;
+                @extend .font-lato;
+                @extend .font-size-12;
+                @extend .font-weight-semibold;
+            }
+
+            &:hover {
+                text-decoration: none;
+                top: 2px;
+                @extend .btn-outline-primary;
+            }
+        }
+
+        .ui-datepicker-prev {
+            &:hover {
+                left: 2px;
+            }
+        }
+
+        .ui-datepicker-next {
+            &:hover {
+                right: 2px;
+            }
+        }
+
+        .ui-datepicker-title {
+            @extend .font-lato;
+            @extend .font-size-14;
+            @extend .font-weight-semibold;
+        }
+    }
+
+    .ui-datepicker-buttonpane {
+        display: none;
+    }
+
+    .ui-datepicker-calendar {
+        thead {
+            tr {
+                th {
+                    @extend .font-lato;
+                    @extend .font-size-14;
+                    @extend .font-weight-semibold;
+                    color: $black;
+                }
+            }
+        }
+
+        tbody {
+            tr {
+                td,
+                td a {
+                    @extend .font-lato;
+                    @extend .font-size-14;
+                    @extend .font-weight-semibold;
+                    color: $gray;
+                    text-align: center;
+                    a{
+                        padding: 6px;
+                    }
+                    &.ui-state-active {
+                        color: $white;
+                        background-color: $accent;
+                        border-radius: 100%;
+                    }
+
+                    &.ui-state-highlight {
+                        color: $seconadry;
+                        background-color: $accent-300;
+                        border-radius: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+.bootstrap-select .dropdown-menu li a{
+    &:hover,&:focus{
+        color: $accent;
+    }
+}
+.ui-slider{
+    background-color: $accent-300;
+    border-radius: 4px;
+    height: 6px;
+    .ui-slider-range{
+        background-color: $accent;
+    }
+    .ui-slider-handle{
+        top: -.55em;
+        background-color: $accent;
+        border:3px solid $white;
+        border-radius: 100%;
+        height: 22px;
+        width: 22px;
+        cursor: pointer;
+    }
+}
+.bootstrap-select{
+    .btn{
+        min-height: 55px;
+        &:hover,&:focus{
+            .filter-option{
+                .filter-option-inner{
+                    .filter-option-inner-inner{
+                        color: $white;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1118,8 +1118,10 @@ img {
 	cursor: pointer;
 }
 
-.bootstrap-select .btn {
+.bootstrap-select .btn,
+.bootstrap-select .dropdown-toggle{
 	min-height: 55px;
+	height: auto;
 }
 
 .bootstrap-select .btn:hover .filter-option .filter-option-inner .filter-option-inner-inner,
