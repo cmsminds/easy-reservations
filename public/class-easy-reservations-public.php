@@ -202,10 +202,10 @@ class Easy_Reservations_Public {
 				);
 
 				// Enqueue the ui script.
-				wp_enqueue_style(
+				wp_enqueue_script(
 					$this->plugin_name . '-jquery-ui-script',
 					ERSRV_PLUGIN_URL . 'public/js/ui/jquery-ui.min.js',
-					array(),
+					array( 'jquery' ),
 					filemtime( ERSRV_PLUGIN_PATH . 'public/js/ui/jquery-ui.min.js' )
 				);
 
