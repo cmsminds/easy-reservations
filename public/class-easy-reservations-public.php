@@ -106,9 +106,9 @@ class Easy_Reservations_Public {
 				// Enqueue the ui style.
 				wp_enqueue_style(
 					$this->plugin_name . '-jquery-ui-style',
-					ERSRV_PLUGIN_URL . 'public/css/bootstrap/jquery-ui.min.css',
+					ERSRV_PLUGIN_URL . 'public/css/ui/jquery-ui.min.css',
 					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/jquery-ui.min.css' )
+					filemtime( ERSRV_PLUGIN_PATH . 'public/css/ui/jquery-ui.min.css' )
 				);
 
 				// Enqueue the bootstrap select style.
@@ -119,29 +119,13 @@ class Easy_Reservations_Public {
 					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap-select.min.css' )
 				);
 
-				// Enqueue the bootstrap datepicker style.
-				wp_enqueue_style(
-					$this->plugin_name . '-bootstrap-datepicker-style',
-					ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap-datepicker.css',
-					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap-datepicker.css' )
-				);
-
 				// Enqueue the free font-awesome style.
-				wp_enqueue_style(
-					$this->plugin_name . '-font-awesome-style',
-					'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css',
-					array(),
-					'5.13.1'
-				);
-
-				// Enqueue the calendar core style.
-				wp_enqueue_style(
-					$this->plugin_name . '-fullcalendar-core-style',
-					ERSRV_PLUGIN_URL . 'public/css/fullcalendar/main.min.css',
-					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/css/fullcalendar/main.min.css' )
-				);
+				// wp_enqueue_style(
+				// 	$this->plugin_name . '-font-awesome-style',
+				// 	'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css',
+				// 	array(),
+				// 	'5.13.1'
+				// );
 
 				// Enqueue the public style only when the style url and path are available.
 				if ( ! empty( $active_style_url ) && ! empty( $active_style_path ) ) {
@@ -175,13 +159,13 @@ class Easy_Reservations_Public {
 				);
 			}
 
-			// Enqueue the bootstrap datepicker style if not already enqueued.
-			if ( ! wp_style_is( $this->plugin_name . '-bootstrap-datepicker-style', 'enqueued' ) ) {
+			// Enqueue the ui datepicker style if not already enqueued.
+			if ( ! wp_style_is( $this->plugin_name . '-jquery-ui-style', 'enqueued' ) ) {
 				wp_enqueue_style(
-					$this->plugin_name . '-bootstrap-datepicker-style',
-					ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap-datepicker.css',
+					$this->plugin_name . '-jquery-ui-style',
+					ERSRV_PLUGIN_URL . 'public/css/ui/jquery-ui.min.css',
 					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap-datepicker.css' )
+					filemtime( ERSRV_PLUGIN_PATH . 'public/css/ui/jquery-ui.min.css' )
 				);
 			}
 
@@ -217,38 +201,19 @@ class Easy_Reservations_Public {
 					true
 				);
 
-				// Bootstrap datepicker script.
-				wp_enqueue_script(
-					$this->plugin_name . '-bootstrap-datepicker-script',
-					ERSRV_PLUGIN_URL . 'public/js/bootstrap/bootstrap-datepicker.min.js',
+				// Enqueue the ui script.
+				wp_enqueue_style(
+					$this->plugin_name . '-jquery-ui-script',
+					ERSRV_PLUGIN_URL . 'public/js/ui/jquery-ui.min.js',
 					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap/bootstrap-datepicker.min.js' ),
-					true
-				);
-
-				// Moment script.
-				wp_enqueue_script(
-					$this->plugin_name . '-moment-script',
-					ERSRV_PLUGIN_URL . 'public/js/moment-v2.29.1.min.js',
-					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/js/moment-v2.29.1.min.js' ),
-					true
-				);
-
-				// Full calendar script.
-				wp_enqueue_script(
-					$this->plugin_name . '-full-calendar-script',
-					ERSRV_PLUGIN_URL . 'public/js/fullcalendar/main.min.js',
-					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/js/fullcalendar/main.min.js' ),
-					true
+					filemtime( ERSRV_PLUGIN_PATH . 'public/js/ui/jquery-ui.min.js' )
 				);
 
 				// Custom public script.
 				wp_enqueue_script(
 					$this->plugin_name,
 					ERSRV_PLUGIN_URL . 'public/js/core/easy-reservations-public.js',
-					array( 'jquery', 'jquery-ui-datepicker' ),
+					array( 'jquery' ),
 					filemtime( ERSRV_PLUGIN_PATH . 'public/js/core/easy-reservations-public.js' ),
 					true
 				);
@@ -267,14 +232,13 @@ class Easy_Reservations_Public {
 
 		// Add the datepicker and custom script only when the widget is active.
 		if ( false !== $this->is_calendar_widget_active ) {
-			// Enqueue the bootstrap datepicker script if not already enqueued.
-			if ( ! wp_script_is( $this->plugin_name . '-bootstrap-datepicker-script', 'enqueued' ) ) {
-				wp_enqueue_script(
-					$this->plugin_name . '-bootstrap-datepicker-script',
-					ERSRV_PLUGIN_URL . 'public/js/bootstrap/bootstrap-datepicker.min.js',
+			// Enqueue the ui datepicker script if not already enqueued.
+			if ( ! wp_script_is( $this->plugin_name . '-jquery-ui-script', 'enqueued' ) ) {
+				wp_enqueue_style(
+					$this->plugin_name . '-jquery-ui-script',
+					ERSRV_PLUGIN_URL . 'public/js/ui/jquery-ui.min.js',
 					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap/bootstrap-datepicker.min.js' ),
-					true
+					filemtime( ERSRV_PLUGIN_PATH . 'public/js/ui/jquery-ui.min.js' )
 				);
 			}
 
