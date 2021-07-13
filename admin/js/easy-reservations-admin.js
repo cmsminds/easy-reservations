@@ -324,7 +324,7 @@ jQuery( document ).ready( function( $ ) {
 		var item_id     = this_select.val();
 
 		// Change the accomodation limit text.
-		$( 'label[for="accomodation"]' ).next( 'small' ).text( accomodation_limit_text );
+		$( '.ersrv-new-reservation-limit-text' ).text( accomodation_limit_text );
 
 		// Block the element.
 		block_element( this_select );
@@ -355,10 +355,9 @@ jQuery( document ).ready( function( $ ) {
 
 					var accomodation_limit = ( -1 !== is_valid_number( item_details.accomodation_limit ) ) ? parseInt( item_details.accomodation_limit ) : '';
 					$( '#accomodation-limit' ).val( accomodation_limit );
-					$( 'label[for="accomodation"]' ).next( 'small' ).text( accomodation_limit_text.replace( '--', accomodation_limit ) );
+					$( '.ersrv-new-reservation-limit-text' ).text( accomodation_limit_text.replace( '--', accomodation_limit ) );
 
 					var blocked_dates          = item_details.reserved_dates;
-					var datepicker_date_format = 'yyyy-mm-dd';
 					var current_date           = new Date();
 					var current_month          = ( ( '0' + ( current_date.getMonth() + 1 ) ).slice( -2 ) );
 					var today_formatted        = current_date.getFullYear() + '-' + current_month + '-' + current_date.getDate();
@@ -371,44 +370,47 @@ jQuery( document ).ready( function( $ ) {
 						}
 					}
 
+					console.log( 'reserved_dates', reserved_dates );
+
 					// Set the calendar on checkin and checkout dates.
-					$( '#checkin-checkout-date' ).datepicker( {
+					$( '#ersrv-checkin-date, #ersrv-checkout-date' ).datepicker( {
 						beforeShowDay: function( date ) {
 							var loop_month          = ( ( '0' + ( date.getMonth() + 1 ) ).slice( -2 ) );
 							var loop_date_formatted = date.getFullYear() + '-' + loop_month + '-' + date.getDate();
-							var date_enabled        = false;
-							var date_classes        = '';
-							var date_tooltip        = '';
+							var date_enabled        = true;
 
 							// If not the past date.
 							if ( today_formatted <= loop_date_formatted ) {
 								// Add custom class to the active dates of the current month.
 								var key = $.map( reserved_dates, function( val, i ) {
-									if ( val.date === loop_date_formatted ) {
+									if ( val === loop_date_formatted ) {
 										return i;
 									}
 								} );
-				
+
 								// If the loop date is a blocked date.
 								if ( 0 < key.length ) {
-									key = key[0];
-									date_tooltip = reserved_dates[key].message;
-								} else if ( 0 === key.length ) {
-									date_enabled = true;
-									date_classes = 'ersrv-date-active';
+									date_enabled = false;
 								}
+							} else {
+								date_enabled = false;
 							}
 
 							// Return the datepicker day object.
-							return {
-								'enabled': date_enabled,
-								'classes': date_classes,
-								'tooltip': date_tooltip,
-							};
+							return [ date_enabled ];
 						},
-						format: datepicker_date_format,
-						startDate: current_date,
+						onSelect: function ( selected_date, instance ) {
+							if ( 'ersrv-checkin-date' === instance.id ) {
+								// $( '#ersrv-checkout-date' ).focus();
+								// Min date for checkout should be on/after the checkin date.
+								$( '#ersrv-checkout-date' ).datepicker( 'show' );
+								$( '#ersrv-checkout-date' ).datepicker( 'option', 'minDate', selected_date );
+							}
+						},
+						dateFormat: 'yy-mm-dd',
+						minDate: 0,
 						weekStart: start_of_week,
+						changeMonth: true,
 					} );
 				}
 			}

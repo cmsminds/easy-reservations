@@ -81,7 +81,7 @@ $customers = get_users();
 			<tr>
 				<th scope="row">
 					<label for="accomodation"><?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?></label>
-					<small><?php esc_html_e( 'Limit: --', 'easy-reservations' ); ?></small>
+					<small class="ersrv-new-reservation-limit-text"><?php esc_html_e( 'Limit: --', 'easy-reservations' ); ?></small>
 				</th>
 				<td>
 					<p><input type="number" id="adult-accomodation-count" min="1" max="12" step="1" class="regular-text" placeholder="<?php esc_html_e( 'No. of adults.', 'easy-reservations' ); ?>"></p>
@@ -95,7 +95,8 @@ $customers = get_users();
 					<label for="checkin-checkout-date"><?php esc_html_e( 'Checkin/checkout Date', 'easy-reservations' ); ?></label>
 				</th>
 				<td>
-					<input type="text" class="regular-text" id="checkin-checkout-date" placeholder="<?php esc_html_e( 'Select the reservation dates.', 'easy-reservations' ); ?>">
+					<input type="text" class="regular-text" id="ersrv-checkin-date" placeholder="<?php esc_html_e( 'Select the reservation checkin date.', 'easy-reservations' ); ?>">
+					<input type="text" class="regular-text" id="ersrv-checkout-date" placeholder="<?php esc_html_e( 'Select the reservation checkout date.', 'easy-reservations' ); ?>">
 				</td>
 			</tr>
 		</tbody>

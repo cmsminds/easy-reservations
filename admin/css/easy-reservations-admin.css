@@ -131,3 +131,7 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 .ersrv-create-new-customer-link {
 	font-size: 12px;
 }
+
+.ersrv-new-reservation-limit-text {
+	display: block;
+}

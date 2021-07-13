@@ -387,7 +387,7 @@ if ( ! function_exists( 'ersrv_get_reservation_item_blockout_dates' ) ) {
 	 * @return boolean|array
 	 * @since 1.0.0
 	 */
-	function ersrv_get_reservation_item_blockout_dates( $item_id = 0 ) {
+	function ersrv_get_reservation_item_blockout_dates( $item_id ) {
 		// Return, if the item ID is not integer.
 		if ( ! is_int( $item_id ) ) {
 			return false;
@@ -404,7 +404,7 @@ if ( ! function_exists( 'ersrv_get_reservation_item_blockout_dates' ) ) {
 
 		$blockout_dates = get_post_meta( $item_id, '_ersrv_reservation_blockout_dates', true );
 
-		return ( empty( $blockout_dates ) ) ? false : $blockout_dates;
+		return ( empty( $blockout_dates ) ) ? array() : $blockout_dates;
 	}
 }
 

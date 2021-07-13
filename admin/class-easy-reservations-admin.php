@@ -85,20 +85,10 @@ class Easy_Reservations_Admin {
 
 		// Enqueue bootstrap datepicker on new reservation page.
 		if ( ! is_null( $page ) && 'new-reservation' === $page ) {
-			// Enqueue the bootstrap style.
+			// Enqueue the ui style.
 			wp_enqueue_style(
-				$this->plugin_name . '-bootstrap-style',
-				ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap.min.css',
-				array(),
-				filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap.min.css' )
-			);
-
-			// Bootstrap datepicker style.
-			wp_enqueue_style(
-				$this->plugin_name . '-bootstrap-datepicker-style',
-				ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap-datepicker.css',
-				array(),
-				filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap-datepicker.css' )
+				$this->plugin_name . '-jquery-ui-style',
+				'//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css'
 			);
 		}
 
@@ -120,32 +110,11 @@ class Easy_Reservations_Admin {
 			filemtime( ERSRV_PLUGIN_PATH . 'admin/css/easy-reservations-admin.css' )
 		);
 
-		// Enqueue bootstrap datepicker on new reservation page.
-		if ( ! is_null( $page ) && 'new-reservation' === $page ) {
-			// Bootstrap bundle script.
-			wp_enqueue_script(
-				$this->plugin_name . '-bootstrap-bundle-script',
-				ERSRV_PLUGIN_URL . 'public/js/bootstrap/bootstrap.bundle.min.js',
-				array(),
-				filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap/bootstrap.bundle.min.js' ),
-				true
-			);
-
-			// Bootstrap datepicker script.
-			wp_enqueue_script(
-				$this->plugin_name . '-bootstrap-datepicker-script',
-				ERSRV_PLUGIN_URL . 'public/js/bootstrap/bootstrap-datepicker.min.js',
-				array(),
-				filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap/bootstrap-datepicker.min.js' ),
-				true
-			);
-		}
-
 		// Custom admin script.
 		wp_enqueue_script(
 			$this->plugin_name,
 			ERSRV_PLUGIN_URL . 'admin/js/easy-reservations-admin.js',
-			array( 'jquery' ),
+			array( 'jquery', 'jquery-ui-datepicker' ),
 			filemtime( ERSRV_PLUGIN_PATH . 'admin/js/easy-reservations-admin.js' ),
 			true
 		);
