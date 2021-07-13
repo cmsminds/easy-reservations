@@ -1,9 +1,36 @@
 .site{
     margin: 0px;
 }
-.site-inner{
+table{
+    border-width: 0px;
+}
+.site-inner,
+.theme-astra .site-content > .ast-container,
+.theme-astra .site-content > .ast-container > section,
+.theme-storefront .col-full{
     max-width: 100%;
 }
-.site-content{
+.site-content,
+.theme-astra .site-content > .ast-container,
+.theme-storefront .col-full{
     padding: 0px;
+}
+.theme-astra .site-content > .ast-container > section{
+    width: 100%;
+}
+.non-clickable {
+	pointer-events: none;
+	opacity: 0.5;
+}
+#page::after {
+    position: fixed;
+    z-index: 1000;
+    height: 100%;
+    width: 100%;
+    background: rgba(0,0,0,.5);
+    content: "";
+    display: inline-block;
+    pointer-events: none;
+    top: 0px;
+    left: 0px;
 }

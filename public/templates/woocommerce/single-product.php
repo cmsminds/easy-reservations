@@ -5,8 +5,8 @@ get_header();
     <div class="banner text-center">
         <div class="container">
             <div class="details mx-auto font-lato">
-                <div class="page-title color-white mb-3">
-                    <h1 class="font-Poppins font-size-40 font-weight-semibold">Sailboat Mallorca Bavaria</h1>
+                <div class="page-title mb-3">
+                    <h1 class="font-Poppins font-size-40 font-weight-semibold color-white">Sailboat Mallorca Bavaria</h1>
                 </div>
                 <div class="review d-flex justify-content-center align-items-center color-white mb-3 font-size-17 font-weight-normal">
                     <img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/stars.png' ); ?>" alt="stars">
@@ -230,8 +230,8 @@ get_header();
                                         <input type="text" class="form-control date-control ship-icon-field text-left rounded-lg" placeholder="June 20, 2021">
                                     </div>
                                     <div class="input-daterange d-flex flex-column flex-fill mb-4 pb-3">
-                                        <input type="text" class="form-control date-control text-left rounded-lg mb-3" placeholder="Chech in">
-                                        <input type="text" class="form-control date-control text-left rounded-lg" placeholder="Chech out">
+                                        <input type="text" class="form-control date-control text-left rounded-lg mb-3" placeholder="Check in">
+                                        <input type="text" class="form-control date-control text-left rounded-lg" placeholder="Check out">
                                     </div>
                                     <div class="range-slider-wrapper mb-4 pb-2">
                                         <h4 class="font-lato font-size-14 font-weight-normal color-black text-center mb-2">Price Range</h4>
@@ -241,7 +241,7 @@ get_header();
                                         </div>
                                     </div>
                                     <div class="book-items-wrapper mb-4 pb-3">
-                                        <select class="selectpicker form-control" id="book-items" data-size="5" data-style="btn-outline-secondary focus-none" title="Boat Type">
+                                        <select class="selectpicker form-control Boat-Types" id="boat-types" data-size="5" data-style="btn-outline-secondary focus-none" title="Boat Type">
                                             <option>3 Guest</option>
                                             <option>2 Guest</option>
                                             <option>1 Guest</option>
