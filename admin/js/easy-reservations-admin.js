@@ -323,6 +323,17 @@ jQuery( document ).ready( function( $ ) {
 		var this_select = $( this );
 		var item_id     = this_select.val();
 
+		// Disable everything if item is invalid.
+		if ( -1 === is_valid_number( item_id ) ) {
+			// Block the items.
+			block_element( $( 'tr.ersrv-new-reservation-customer-row' ) );
+			block_element( $( 'tr.ersrv-new-reservation-accomodation-row' ) );
+			block_element( $( 'tr.ersrv-new-reservation-checkin-checkout-row' ) );
+			block_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
+			block_element( $( '.ersrv-add-new-reservation' ) );
+			return false;
+		}
+
 		// Change the accomodation limit text.
 		$( '.ersrv-new-reservation-limit-text' ).text( accomodation_limit_text );
 
@@ -350,9 +361,15 @@ jQuery( document ).ready( function( $ ) {
 					// Unblock the element.
 					unblock_element( this_select );
 
-					// Item details.
-					var item_details = response.data.details;
+					// Unblock the items.
+					unblock_element( $( 'tr.ersrv-new-reservation-customer-row' ) );
+					unblock_element( $( 'tr.ersrv-new-reservation-accomodation-row' ) );
+					unblock_element( $( 'tr.ersrv-new-reservation-checkin-checkout-row' ) );
+					unblock_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
+					unblock_element( $( '.ersrv-add-new-reservation' ) );
 
+					// Item details.
+					var item_details       = response.data.details;
 					var accomodation_limit = ( -1 !== is_valid_number( item_details.accomodation_limit ) ) ? parseInt( item_details.accomodation_limit ) : '';
 					$( '#accomodation-limit' ).val( accomodation_limit );
 					$( '.ersrv-new-reservation-limit-text' ).text( accomodation_limit_text.replace( '--', accomodation_limit ) );
@@ -369,8 +386,6 @@ jQuery( document ).ready( function( $ ) {
 							reserved_dates.push( blocked_dates[i].date );
 						}
 					}
-
-					console.log( 'reserved_dates', reserved_dates );
 
 					// Set the calendar on checkin and checkout dates.
 					$( '#ersrv-checkin-date, #ersrv-checkout-date' ).datepicker( {
@@ -401,10 +416,11 @@ jQuery( document ).ready( function( $ ) {
 						},
 						onSelect: function ( selected_date, instance ) {
 							if ( 'ersrv-checkin-date' === instance.id ) {
-								// $( '#ersrv-checkout-date' ).focus();
 								// Min date for checkout should be on/after the checkin date.
-								$( '#ersrv-checkout-date' ).datepicker( 'show' );
 								$( '#ersrv-checkout-date' ).datepicker( 'option', 'minDate', selected_date );
+								setTimeout( function() {
+									$( '#ersrv-checkout-date' ).datepicker( 'show' );
+								}, 16 );
 							}
 						},
 						dateFormat: 'yy-mm-dd',
@@ -412,6 +428,25 @@ jQuery( document ).ready( function( $ ) {
 						weekStart: start_of_week,
 						changeMonth: true,
 					} );
+
+					// Min and max reservation periods.
+					var min_reservation_period = ( -1 !== is_valid_number( item_details.min_reservation_period ) ) ? parseInt( item_details.min_reservation_period ) : -1;
+					var max_reservation_period = ( -1 !== is_valid_number( item_details.max_reservation_period ) ) ? parseInt( item_details.max_reservation_period ) : -1;
+					$( '#min-reservation-period' ).val( min_reservation_period );
+					$( '#max-reservation-period' ).val( max_reservation_period );
+
+					// Put the amenities html.
+					$( 'tr.ersrv-new-reservation-amenities-row td' ).html( item_details.amenity_html );
+
+					// Adult & kid's charge.
+					var adult_charge = ( -1 !== is_valid_number( item_details.adult_charge ) ) ? parseInt( item_details.adult_charge ) : 0;
+					var kid_charge   = ( -1 !== is_valid_number( item_details.kid_charge ) ) ? parseInt( item_details.kid_charge ) : 0;
+					$( '#adult-charge' ).val( adult_charge );
+					$( '#kid-charge' ).val( kid_charge );
+
+					// Security amount.
+					var security_amount   = ( -1 !== is_valid_number( item_details.security_amount ) ) ? parseInt( item_details.security_amount ) : 0;
+					$( '#security-amount' ).val( security_amount );
 				}
 			}
 		} );
@@ -421,9 +456,95 @@ jQuery( document ).ready( function( $ ) {
 	 * Add reservation from admin panel.
 	 */
 	$( document ).on( 'click', '.ersrv-add-new-reservation', function() {
-		var item_id            = $( '#item-id' ).val();
-		var customer_id        = $( '#customer-id' ).val();
-		var accomodation_limit = $( '#accomodation-limit' ).val();
+		var this_button         = $( this );
+		var item_id             = $( '#item-id' ).val();
+		var customer_id         = $( '#customer-id' ).val();
+		customer_id             = ( -1 !== is_valid_number( customer_id ) ) ? customer_id : 0;
+		var accomodation_limit  = parseInt( $( '#accomodation-limit' ).val() );
+		var checkin_date        = $( '#ersrv-checkin-date' ).val();
+		var checkout_date       = $( '#ersrv-checkout-date' ).val();
+		var adult_count         = parseInt( $( '#adult-accomodation-count' ).val() );
+		adult_count             = ( -1 !== is_valid_number( adult_count ) ) ? adult_count : 0;
+		var kid_count           = parseInt( $( '#kid-accomodation-count' ).val() );
+		kid_count               = ( -1 !== is_valid_number( kid_count ) ) ? kid_count : 0;
+		var guests              = adult_count + kid_count;
+		var process_reservation = true;
+
+		// Vacate the error message.
+		$( '.ersrv-reservation-error' ).text( '' );
+
+		// If the customer is not selected.
+		if ( -1 === is_valid_number( customer_id ) ) {
+			process_reservation = false;
+			$( '.ersrv-reservation-error.customer-error' ).text( 'Please select a customer for this reservation.' );
+		}
+
+		// Guests count.
+		if ( -1 === is_valid_number( adult_count ) && -1 === is_valid_number( kid_count ) ) {
+			process_reservation = false;
+			$( '.ersrv-reservation-error.accomodation-error' ).text( 'Please provide the count of guests for the reservation.' );
+		} else if ( -1 === is_valid_number( adult_count ) && -1 !== is_valid_number( kid_count ) ) {
+			process_reservation = false;
+			$( '.ersrv-reservation-error.accomodation-error' ).text( 'We cannot proceed with only the kids in the reservation.' );
+		} else if ( accomodation_limit < guests ) {
+			process_reservation = false;
+			$( '.ersrv-reservation-error.accomodation-error' ).text( 'The guests count is more than the accomodation limit.' );
+		}
+
+		// If the checkin and checkout dates are not available.
+		if ( '' === checkin_date && '' === checkout_date ) {
+			process_reservation = false;
+			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( 'Please provide checkin and checkout dates.' );
+		} else if ( '' === checkin_date ) {
+			process_reservation = false;
+			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( 'Please provide checkin date.' );
+		} else if ( '' === checkout_date ) {
+			process_reservation = false;
+			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( 'Please provide checkout date.' );
+		}
+
+		// Exit, if we cannot process the reservation.
+		if ( false === process_reservation ) {
+			return false;
+		}
+
+		// Block element.
+		block_element( this_button );
+
+		// Send AJAX creating a reservation.
+		var data = {
+			action: 'create_reservation',
+			item_id: item_id,
+			customer_id: customer_id,
+			checkin_date: checkin_date,
+			checkout_date: checkout_date,
+			adult_count: adult_count,
+			kid_count: kid_count,
+		};
+
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: data,
+			success: function ( response ) {
+				// Return, if the response is not proper.
+				if ( 0 === response ) {
+					console.log( 'easy-reservations: invalid ajax call' );
+					return false;
+				}
+
+				// If the reservation is added.
+				if ( 'reservation-created' === response.data.code ) {
+					// Unblock the element.
+					unblock_element( this_button );
+
+					console.log( 'response', response );
+				}
+			},
+		} );
+
+		console.log( 'everything good' );
 	} );
 
 	/**

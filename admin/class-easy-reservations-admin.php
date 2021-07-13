@@ -680,10 +680,45 @@ class Easy_Reservations_Admin {
 		// Reserved dates.
 		$reserved_dates = ersrv_get_reservation_item_blockout_dates( $item_id );
 
+		// Amenities.
+		$amenities = get_post_meta( $item_id, '_ersrv_reservation_amenities', true );
+		// Prepare the amenities HTML.
+		ob_start();
+		if ( ! empty( $amenities ) && is_array( $amenities ) ) {
+			foreach ( $amenities as $index => $amenity ) {
+				$title = ( ! empty( $amenity['title'] ) ) ? $amenity['title'] : '';
+				$cost  = ( ! empty( $amenity['cost'] ) ) ? $amenity['cost'] : '';
+
+				// Skip the HTML is either the title or the cost is missing.
+				if ( empty( $title ) || empty( $cost ) ) {
+					continue;
+				}
+
+				// WooCommerce currency symbol.
+				$currency = get_woocommerce_currency_symbol();
+				?>
+				<div data-cost="<?php echo esc_attr( $cost ); ?>" class="ersrv-new-reservation-single-amenity <?php echo ( 2 < $index ) ? 'mtop' : ''; ?>">
+					<label class="ersrv-switch">
+						<input type="checkbox" class="ersrv-switch-input">
+						<span class="slider ersrv-switch-slider"></span>
+					</label>
+					<span><?php echo "{$title} [{$currency}{$cost}]"; ?></span>
+				</div>
+				<?php
+			}
+		}
+		$amenity_html = ob_get_clean();
+
 		// Put the details in an array.
 		$item_details = array(
-			'accomodation_limit' => $accomodation_limit,
-			'reserved_dates'     => $reserved_dates,
+			'accomodation_limit'     => $accomodation_limit,
+			'reserved_dates'         => $reserved_dates,
+			'min_reservation_period' => get_post_meta( $item_id, '_ersrv_reservation_min_period', true ),
+			'max_reservation_period' => get_post_meta( $item_id, '_ersrv_reservation_max_period', true ),
+			'amenity_html'           => $amenity_html,
+			'adult_charge'           => get_post_meta( $item_id, '_ersrv_accomodation_adult_charge', true ),
+			'kid_charge'             => get_post_meta( $item_id, '_ersrv_accomodation_kid_charge', true ),
+			'security_amount'        => get_post_meta( $item_id, '_ersrv_security_amt', true ),
 		);
 
 		// Send the AJAX response.
@@ -697,5 +732,95 @@ class Easy_Reservations_Admin {
 		}
 
 		return $item_details;
+	}
+
+	/**
+	 * AJAX to create new reservation.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_create_reservation_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+		// Exit, if the action mismatches.
+		if ( empty( $action ) || 'create_reservation' !== $action ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Posted data.
+		$item_id       = filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
+		$customer_id   = filter_input( INPUT_POST, 'customer_id', FILTER_SANITIZE_NUMBER_INT );
+		$checkin_date  = filter_input( INPUT_POST, 'checkin_date', FILTER_SANITIZE_STRING );
+		$checkout_date = filter_input( INPUT_POST, 'checkout_date', FILTER_SANITIZE_STRING );
+		$adult_count   = filter_input( INPUT_POST, 'adult_count', FILTER_SANITIZE_NUMBER_INT );
+		$kid_count     = filter_input( INPUT_POST, 'kid_count', FILTER_SANITIZE_NUMBER_INT );
+		$posted_array  = filter_input_array( INPUT_POST );
+		$amenities     = array();
+
+		die("pool");
+
+		$billing_address = array(
+			'first_name' => 'Adarsh',
+			'last_name'  => 'Verma',
+			'company'    => 'cmsMinds',
+			'address_1'  => 'Test route',
+			'address_2'  => 'Test route 2',
+			'city'       => 'Lucknow',
+			'state'      => 'UP',
+			'postcode'   => '226021',
+			'country'    => 'IN',
+			'email'      => 'adarsh.srmcem@gmail.com',
+			'phone'      => '9898989898',
+		);
+	
+		$shipping_address = array(
+			'first_name' => 'Adarsh',
+			'last_name'  => 'Verma',
+			'company'    => 'cmsMinds',
+			'address_1'  => 'Test route',
+			'address_2'  => 'Test route 2',
+			'city'       => 'Lucknow',
+			'state'      => 'UP',
+			'postcode'   => '226021',
+			'country'    => 'IN',
+		);
+	
+		$order_args = array(
+			'status'              => 'pending',
+			'customer_ip_address' => $_SERVER['REMOTE_ADDR'],
+		);
+	
+		$wc_order = wc_create_order( $order_args );
+		$wc_order->set_customer_id( 1 );
+		$wc_order->set_customer_note( 'Test order' );
+		$wc_order->set_currency( get_woocommerce_currency() );
+		$wc_order->set_prices_include_tax( 'yes' === get_option( 'woocommerce_prices_include_tax' ) );
+	
+		// For calculating taxes on items
+		$taxes_args = array(
+			'country'  => 'IN',
+			'state'    => 'UP',
+		);
+	
+		$wc_product = wc_get_product( 52 );
+		$item_id    = $wc_order->add_product( $wc_product, 3 );
+		$line_item  = $wc_order->get_item( $item_id, false );
+		$line_item->calculate_taxes( $taxes_args );
+		$line_item->save();
+	
+		$wc_order->set_address( $billing_address, 'billing');
+		$wc_order->set_address( $shipping_address, 'shipping');
+		$wc_order->calculate_totals();
+		$wc_order->save();
+	
+		echo $wc_order->get_id();
+
+		$response = array(
+			'code'    => 'item-details-fetched',
+			'details' => $item_details,
+		);
+		wp_send_json_success( $response );
+		wp_die();
 	}
 }

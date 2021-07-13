@@ -151,6 +151,7 @@ class Easy_Reservations {
 		$this->loader->add_action( 'wp_ajax_register_new_customer', $plugin_admin, 'ersrv_register_new_customer_callback' );
 		$this->loader->add_action( 'wp_ajax_generate_new_password', $plugin_admin, 'ersrv_generate_new_password_callback' );
 		$this->loader->add_action( 'wp_ajax_get_reservable_item_details', $plugin_admin, 'ersrv_get_reservable_item_details_callback' );
+		$this->loader->add_action( 'wp_ajax_create_reservation', $plugin_admin, 'ersrv_create_reservation_callback' );
 	}
 
 	/**

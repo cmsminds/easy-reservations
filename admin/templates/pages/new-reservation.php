@@ -49,7 +49,7 @@ $customers = get_users();
 			</tr>
 
 			<!-- CUSTOMER -->
-			<tr>
+			<tr class="ersrv-new-reservation-customer-row non-clickable">
 				<th scope="row"><label for="customer-id"><?php esc_html_e( 'Customer', 'easy-reservations' ); ?></label></th>
 				<td>
 					<select id="customer-id">
@@ -74,11 +74,12 @@ $customers = get_users();
 					</select>
 					<a class="ersrv-create-new-customer-link" href="javascript:void(0);"><?php esc_html_e( 'Not listed here? Create new from here.', 'easy-reservations' ); ?></a>
 					<p class="ersrv-form-description-text"><?php esc_html_e( 'Select the customer whom the reservation would be assigned.', 'easy-reservations' ); ?></p>
+					<p class="ersrv-reservation-error customer-error"></p>
 				</td>
 			</tr>
 
 			<!-- ACCOMODATION -->
-			<tr>
+			<tr class="ersrv-new-reservation-accomodation-row non-clickable">
 				<th scope="row">
 					<label for="accomodation"><?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?></label>
 					<small class="ersrv-new-reservation-limit-text"><?php esc_html_e( 'Limit: --', 'easy-reservations' ); ?></small>
@@ -86,21 +87,47 @@ $customers = get_users();
 				<td>
 					<p><input type="number" id="adult-accomodation-count" min="1" max="12" step="1" class="regular-text" placeholder="<?php esc_html_e( 'No. of adults.', 'easy-reservations' ); ?>"></p>
 					<p><input type="number" id="kid-accomodation-count" min="1" max="12" step="1" class="regular-text" placeholder="<?php esc_html_e( 'No. of kids.', 'easy-reservations' ); ?>"></p>
+					<p class="ersrv-reservation-error accomodation-error"></p>
 				</td>
 			</tr>
 
 			<!-- CHECKIN/CHECKOUT DATE -->
-			<tr>
+			<tr class="ersrv-new-reservation-checkin-checkout-row non-clickable">
 				<th scope="row">
 					<label for="checkin-checkout-date"><?php esc_html_e( 'Checkin/checkout Date', 'easy-reservations' ); ?></label>
 				</th>
 				<td>
 					<input type="text" class="regular-text" id="ersrv-checkin-date" placeholder="<?php esc_html_e( 'Select the reservation checkin date.', 'easy-reservations' ); ?>">
 					<input type="text" class="regular-text" id="ersrv-checkout-date" placeholder="<?php esc_html_e( 'Select the reservation checkout date.', 'easy-reservations' ); ?>">
+					<p class="ersrv-reservation-error checkin-checkout-dates-error"></p>
+				</td>
+			</tr>
+
+			<!-- AMENITIES -->
+			<tr class="ersrv-new-reservation-amenities-row non-clickable">
+				<th scope="row">
+					<label for="reservation-amenities"><?php esc_html_e( 'Amenities', 'easy-reservations' ); ?></label>
+				</th>
+				<td>
+					<div class="ersrv-new-reservation-single-amenity">
+						<label class="ersrv-switch">
+							<input type="checkbox" class="ersrv-switch-input">
+							<span class="slider ersrv-switch-slider"></span>
+						</label>
+						<span></span>
+					</div>
 				</td>
 			</tr>
 		</tbody>
 	</table>
+	<div class="new-reservation-summary">
+
+	</div>
 	<input type="hidden" id="accomodation-limit" value="" />
-	<button type="button" class="button ersrv-add-new-reservation"><?php esc_html_e( 'Add New Reservation', 'easy-reservations' ); ?></button>
+	<input type="hidden" id="min-reservation-period" value="" />
+	<input type="hidden" id="max-reservation-period" value="" />
+	<input type="hidden" id="adult-charge" value="" />
+	<input type="hidden" id="kid-charge" value="" />
+	<input type="hidden" id="security-amount" value="" />
+	<button type="button" class="button ersrv-add-new-reservation non-clickable"><?php esc_html_e( 'Add New Reservation', 'easy-reservations' ); ?></button>
 </div>

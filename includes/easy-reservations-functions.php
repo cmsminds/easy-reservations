@@ -347,38 +347,6 @@ if ( ! function_exists( 'ersrv_get_widget_settings' ) ) {
 /**
  * Check if the function exists.
  */
-if ( ! function_exists( 'ersrv_get_reservation_item_amenities' ) ) {
-	/**
-	 * Get the amenities offered for the reservable item.
-	 *
-	 * @param int $item_id Holds the reservation item ID.
-	 * @return boolean|array
-	 * @since 1.0.0
-	 */
-	function ersrv_get_reservation_item_amenities( $item_id = 0 ) {
-		// Return, if the item ID is not integer.
-		if ( ! is_int( $item_id ) ) {
-			return false;
-		}
-
-		// Get the item type.
-		$item_type           = ersrv_get_wc_product_type( $item_id );
-		$custom_product_type = ersrv_get_custom_product_type_slug();
-
-		// If it's not reservation, return false.
-		if ( false === $item_type || $custom_product_type !== $item_type ) {
-			return false;
-		}
-
-		$amenities = get_post_meta( $item_id, '_ersrv_reservation_amenities', true );
-
-		return ( empty( $amenities ) ) ? false : $amenities;
-	}
-}
-
-/**
- * Check if the function exists.
- */
 if ( ! function_exists( 'ersrv_get_reservation_item_blockout_dates' ) ) {
 	/**
 	 * Get the blockedout dates for the reservable item.

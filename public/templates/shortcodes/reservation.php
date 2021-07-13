@@ -24,7 +24,7 @@ $reservation_heading = __( 'Start Your Reservation', 'easy-reservations' );
  */
 $reservation_heading = apply_filters( 'ersrv_reservation_template_heading_text', $reservation_heading, $item_id );
 
-$amenities = ersrv_get_reservation_item_amenities( $item_id );
+$amenities = get_post_meta( $item_id, '_ersrv_reservation_amenities', true );
 ?>
 <div class="ersrv-reservation-container" data-item="<?php echo esc_attr( $item_id ); ?>">
 	<div class="wrapper">
