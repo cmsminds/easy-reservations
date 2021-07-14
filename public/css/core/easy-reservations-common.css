@@ -22,7 +22,7 @@ table{
 	pointer-events: none;
 	opacity: 0.5;
 }
-#page::after {
+/* #page::after {
     position: fixed;
     z-index: 1000;
     height: 100%;
@@ -33,6 +33,9 @@ table{
     pointer-events: none;
     top: 0px;
     left: 0px;
+} */
+h1:not(.site-title):before, h2:before{
+    display: none !important;
 }
 @media(max-width:1063px){
     .site-content,
