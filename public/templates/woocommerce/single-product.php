@@ -12,16 +12,16 @@ get_header();
                     <img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/stars.png' ); ?>" alt="stars">
                     <span class="ml-2">(1 review)</span>
                 </div>
-                <div class="boat-options d-flex justify-content-center align-items-center color-white font-size-16">
-                    <div class="d-flex first mr-3 pr-1">
+                <div class="boat-options d-flex justify-content-center align-items-center color-white font-size-16 flex-column flex-md-row">
+                    <div class="d-flex align-items-center first mb-2 mb-md-0 mr-3 pr-1">
                         <img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/Ship-icon.png' ); ?>" alt="">
                         <span class="ml-2 font-weight-medium">Sailboat</span>
                     </div>
-                    <div class="d-flex second mr-3 pr-1">
+                    <div class="d-flex align-items-center second mb-2 mb-md-0 mr-3 pr-1">
                         <img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/user-icon.png' ); ?>" alt="">
                         <span class="ml-2 font-weight-medium">With Capitanicon</span>
                     </div>
-                    <div class="d-flex third">
+                    <div class="d-flex align-items-center third mb-2 mb-md-0">
                         <img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/3d-box.png' ); ?>" alt="">
                         <span class="ml-2 font-weight-medium">4</span>
                     </div>

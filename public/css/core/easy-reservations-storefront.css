@@ -1,45 +1,55 @@
-.color-primary, .btn-outline-fill-primary, .btn-outline-primary, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
+.color-primary, .btn-primary:hover, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
 .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover {
-  color: #0c71c3;
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover, .btn-outline-fill-primary, .btn-outline-primary {
+  color: #43454b;
 }
 
 .bgcolor-primary, .btn-primary, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev,
 .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary:hover {
-  background-color: #0c71c3;
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:focus, .btn-outline-fill-primary:active, .btn-outline-primary:hover, .btn-outline-primary:focus, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:focus:hover,
+.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:focus:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:focus:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:focus:hover, .btn-outline-primary:active, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:active:hover,
+.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:active:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:active:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:active:hover, .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active {
+  background-color: #43454b;
 }
 
 .border-color-primary, .btn-primary, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev,
 .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary, .btn-outline-primary, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover {
-  border-color: #0c71c3;
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary, .btn-outline-primary, .btn-outline-primary:hover, .btn-outline-primary:focus, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:focus:hover,
+.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:focus:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:focus:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:focus:hover, .btn-outline-primary:active, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:active:hover,
+.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:active:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:active:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:active:hover, .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active {
+  border-color: #43454b;
 }
 
 .color-primary-300 {
-  color: #d1e6f7;
+  color: #b4b5b7;
 }
 
-.bgcolor-primary-300, .btn-outline-fill-primary {
-  background-color: #d1e6f7;
+.bgcolor-primary-300, .btn-primary:hover, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
+.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover, .btn-outline-fill-primary {
+  background-color: #b4b5b7;
 }
 
-.border-color-primary-300 {
-  border-color: #d1e6f7;
+.border-color-primary-300, .btn-primary:hover, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
+.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover {
+  border-color: #b4b5b7;
 }
 
-.color-seconadry {
-  color: #3e3e3e;
+.color-secondary, .btn-outline-secondary {
+  color: #111;
 }
 
-.bgcolor-seconadry {
-  background-color: #3e3e3e;
+.bgcolor-secondary {
+  background-color: #111;
 }
 
-.border-color-seconadry {
-  border-color: #3e3e3e;
+.border-color-secondary, .btn-outline-secondary {
+  border-color: #111;
 }
 
 .color-accent, .single-reserve-page .content-part .info-box a:hover {
@@ -81,7 +91,11 @@
 
 .color-white, .btn-primary, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev,
 .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary:hover {
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:focus, .btn-outline-fill-primary:active, .btn-outline-primary:hover, .btn-outline-primary:focus, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:focus:hover,
+.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:focus:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:focus:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:focus:hover, .btn-outline-primary:active, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:active:hover,
+.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:active:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:active:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:active:hover, .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active {
   color: #fff;
 }
 
@@ -206,13 +220,25 @@
   border-color: #8a8f9c;
 }
 
+.color-light-gray {
+  color: #eeeeee;
+}
+
+.bgcolor-light-gray {
+  background-color: #eeeeee;
+}
+
+.border-color-light-gray {
+  border-color: #eeeeee;
+}
+
 .color-transparent {
   color: rgba(0, 0, 0, 0);
 }
 
 .bgcolor-transparent, .btn-outline-primary, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
 .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover {
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover, .btn-outline-secondary {
   background-color: rgba(0, 0, 0, 0);
 }
 
@@ -598,6 +624,7 @@ img {
 .single-reserve-page .sidebar-wrapper .advanced-search .details input.date-control:focus, .date-control:hover, .single-reserve-page .sidebar-wrapper .book-tour .details input.date-control:hover,
 .single-reserve-page .sidebar-wrapper .advanced-search .details input.date-control:hover {
   background-image: url("../../images/planner_active.png");
+  background-blend-mode: luminosity;
 }
 
 .ship-icon-field {
@@ -610,10 +637,15 @@ img {
   transition: 0.3s ease-in-out;
 }
 
+.ship-icon-field:focus, .ship-icon-field:hover {
+  background-blend-mode: difference !important;
+}
+
 *:focus,
 .focus-none,
 .bootstrap-select .dropdown-toggle:focus,
-.bootstrap-select > select.mobile-device:focus + .dropdown-toggle {
+.bootstrap-select > select.mobile-device:focus + .dropdown-toggle,
+.custom-control-input:focus ~ .custom-control-label::before {
   outline: none !important;
   -webkit-box-shadow: none !important;
           box-shadow: none !important;
@@ -627,6 +659,8 @@ img {
   background-size: contain;
   width: 15px;
   height: 10px;
+  -webkit-filter: brightness(0) invert(0.4);
+  filter: brightness(0) invert(0.4);
 }
 
 .bootstrap-select > .dropdown-toggle:hover::after, .bootstrap-select > .dropdown-toggle:focus::after {
@@ -634,10 +668,27 @@ img {
   filter: brightness(0) invert(1);
 }
 
-.dropdown-item.active, .dropdown-item:active {
+.dropdown-item.active,
+.dropdown-item:active {
   color: #fff;
   text-decoration: none;
-  background-color: #0c71c3;
+  background-color: #43454b;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+  color: #fff;
+  border-color: #43454b;
+  background-color: #43454b;
+}
+
+.custom-control-input:not(:disabled):active ~ .custom-control-label::before {
+  color: #fff;
+  background-color: #b4b5b7;
+  border-color: #b4b5b7;
+}
+
+.custom-control-input:focus:not(:checked) ~ .custom-control-label::before {
+  border-color: #43454b;
 }
 
 .single-reserve-page {
@@ -681,15 +732,11 @@ img {
 
 .single-reserve-page .content-part .info-box .section-title {
   position: relative;
-  color: #0c71c3;
+  color: #43454b;
 }
 
 .single-reserve-page .content-part .info-box .section-title.show-on-load, .single-reserve-page .content-part .info-box .section-title[aria-expanded="true"] {
   color: #000;
-}
-
-.single-reserve-page .content-part .info-box .section-title:not(.show-on-load) {
-  /* horizontal line */
 }
 
 .single-reserve-page .content-part .info-box .section-title:not(.show-on-load):before, .single-reserve-page .content-part .info-box .section-title:not(.show-on-load):after {
@@ -699,17 +746,13 @@ img {
   content: "";
   position: absolute;
   right: 15px;
-  background-color: #0c71c3;
+  background-color: #43454b;
   -webkit-transform: scale(0.75);
           transform: scale(0.75);
   -webkit-transition: -webkit-transform 0.25s ease-out;
   transition: -webkit-transform 0.25s ease-out;
   transition: transform 0.25s ease-out;
   transition: transform 0.25s ease-out, -webkit-transform 0.25s ease-out;
-}
-
-.single-reserve-page .content-part .info-box .section-title:not(.show-on-load)[aria-expanded="false"] {
-  /* Vertical line */
 }
 
 .single-reserve-page .content-part .info-box .section-title:not(.show-on-load)[aria-expanded="false"]::before {
@@ -752,7 +795,7 @@ img {
       -ms-flex-pack: center;
           justify-content: center;
   border-radius: 4px;
-  border: 1px solid #0c71c3;
+  border: 1px solid #43454b;
   cursor: pointer;
 }
 
@@ -828,7 +871,7 @@ img {
 
 .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-highlight,
 .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ui-state-highlight {
-  color: #3e3e3e;
+  color: #111;
   background-color: #cbefd9;
   border-radius: 100%;
 }
@@ -918,6 +961,12 @@ img {
 .single-reserve-page .sidebar-wrapper .book-tour .details .btn.btn-xl,
 .single-reserve-page .sidebar-wrapper .advanced-search .details .btn.btn-xl {
   padding: 15.063px 1.5rem;
+}
+
+.single-reserve-page .sidebar-wrapper .book-tour .details .btn:hover img,
+.single-reserve-page .sidebar-wrapper .advanced-search .details .btn:hover img {
+  -webkit-filter: invert(0.76);
+  filter: invert(0.76);
 }
 
 .single-reserve-page .sidebar-wrapper .book-tour .details .social a,
@@ -1014,7 +1063,7 @@ img {
       -ms-flex-pack: center;
           justify-content: center;
   border-radius: 4px;
-  border: 1px solid #0c71c3;
+  border: 1px solid #43454b;
   cursor: pointer;
 }
 
@@ -1073,7 +1122,7 @@ img {
 
 #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ui-state-highlight,
 #ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ui-state-highlight {
-  color: #3e3e3e;
+  color: #111;
   background-color: #cbefd9;
   border-radius: 100%;
 }
@@ -1108,5 +1157,9 @@ img {
 
 .bootstrap-select .btn:hover .filter-option .filter-option-inner .filter-option-inner-inner, .bootstrap-select .btn:focus .filter-option .filter-option-inner .filter-option-inner-inner {
   color: #fff;
+}
+
+.bootstrap-select > .dropdown-toggle.bs-placeholder, .bootstrap-select > .dropdown-toggle.bs-placeholder:active, .bootstrap-select > .dropdown-toggle.bs-placeholder:focus, .bootstrap-select > .dropdown-toggle.bs-placeholder:hover {
+  color: inherit;
 }
 /*# sourceMappingURL=easy-reservations-storefront.css.map */

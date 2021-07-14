@@ -1,7 +1,6 @@
 @import 'easy-reservations-storefront-variable.scss';
 .single-reserve-page {
     background-color: #f8f8f8;
-
     .banner {
         min-height: 570px;
         padding-top: 149px;
@@ -20,7 +19,6 @@
         margin-top: calc(86px - 256px);
 
         .info-box {
-            // min-height:400px;
             @extend .bgcolor-white;
             border-radius: 6px;
             padding: 23.5px 30px;
@@ -35,11 +33,9 @@
                 margin-top: 22px;
                 padding-bottom: 31px;
             }
-
             a:hover {
                 @extend .color-accent;
             }
-
             .section-title {
                 position: relative;
                 color: $primary;
@@ -50,7 +46,6 @@
                 }
 
                 &:not(.show-on-load) {
-
                     &:before,
                     &:after {
                         display: inline-flex;
@@ -63,8 +58,6 @@
                     }
 
                     &[aria-expanded="false"] {
-
-                        /* Vertical line */
                         &::before {
                             top: 0;
                             width: 4px;
@@ -72,8 +65,6 @@
                             margin-left: -2px;
                         }
                     }
-
-                    /* horizontal line */
                     &::after {
                         top: 40%;
                         width: 30px;
@@ -193,7 +184,7 @@
                                 }
 
                                 &.ui-state-highlight {
-                                    color: $seconadry;
+                                    color: $secondary;
                                     background-color: $accent-300;
                                     border-radius: 100%;
                                 }
@@ -279,8 +270,13 @@
                     &.btn-xl {
                         padding: 15.063px 1.5rem;
                     }
+                    &:hover{
+                        img{
+                            -webkit-filter: invert(0.76);
+                                    filter: invert(0.76);
+                        }
+                    }
                 }
-
                 .social {
                     a {
                         display: inline-flex;
@@ -341,7 +337,7 @@
 }
 
 #ui-datepicker-div {
-    background: #fff;
+    background: $white;
     box-shadow:
         0 3.1px 29.1px rgba(0, 0, 0, 0.15),
         0 25px 80px rgba(0, 0, 0, 0.25);
@@ -385,29 +381,24 @@
                 @extend .btn-outline-primary;
             }
         }
-
         .ui-datepicker-prev {
             &:hover {
                 left: 2px;
             }
         }
-
         .ui-datepicker-next {
             &:hover {
                 right: 2px;
             }
         }
-
         .ui-datepicker-title {
             @extend .font-size-14;
             @extend .font-weight-semibold;
         }
     }
-
     .ui-datepicker-buttonpane {
         display: none;
     }
-
     .ui-datepicker-calendar {
         thead {
             tr {
@@ -418,7 +409,6 @@
                 }
             }
         }
-
         tbody {
             tr {
                 td,
@@ -435,9 +425,8 @@
                         background-color: $accent;
                         border-radius: 100%;
                     }
-
                     &.ui-state-highlight {
-                        color: $seconadry;
+                        color: $secondary;
                         background-color: $accent-300;
                         border-radius: 100%;
                     }
@@ -481,4 +470,7 @@
             }
         }
     }
+}
+.bootstrap-select>.dropdown-toggle.bs-placeholder, .bootstrap-select>.dropdown-toggle.bs-placeholder:active, .bootstrap-select>.dropdown-toggle.bs-placeholder:focus, .bootstrap-select>.dropdown-toggle.bs-placeholder:hover{
+    color: inherit;
 }

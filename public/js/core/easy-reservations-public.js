@@ -1,59 +1,59 @@
-jQuery( document ).ready( function( $ ) {
+jQuery(document).ready(function ($) {
 	'use strict';
 
 	// Localized variables.
-	var ajaxurl        = ERSRV_Public_Script_Vars.ajaxurl;
+	var ajaxurl = ERSRV_Public_Script_Vars.ajaxurl;
 	var remove_sidebar = ERSRV_Public_Script_Vars.remove_sidebar;
 
 	// Custom variables defined.
-	var reservation_item_id  = $( '.ersrv-reservation-container' ).data( 'item' );
-	var reservation_calendar = document.getElementById( 'calendar' );
+	var reservation_item_id = $('.ersrv-reservation-container').data('item');
+	var reservation_calendar = document.getElementById('calendar');
 
 	// If sidebar is to be removed on reservation single page.
-	if ( 'yes' === remove_sidebar ) {
-		$( '.secondary' ).remove();
-		$( '.primary' ).css( 'width', '100%' );
+	if ('yes' === remove_sidebar) {
+		$('.secondary').remove();
+		$('.primary').css('width', '100%');
 	}
 
 	var datepicker_date_format = 'yyyy-mm-dd';
-	$( '.datepicker-inline' ).datepicker( {
+	$('.datepicker-inline').datepicker({
 		numberOfMonths: 2,
 		format: datepicker_date_format,
-	} );
+	});
 
-	$( '.date-control' ).datepicker( {
+	$('.date-control').datepicker({
 		numberOfMonths: 1
-	} );
+	});
 
 	// range slider
 	$("#slider-range").slider({
-	range: true,
-	min: 0,
-	max: 500,
-	values: [75, 300],
-	slide: function (event, ui) {
-	$(".price-value").html("$" + ui.values[0] + " to $" + ui.values[1]);
-	}
+		range: true,
+		min: 0,
+		max: 500,
+		values: [75, 300],
+		slide: function (event, ui) {
+			$(".price-value").html("$" + ui.values[0] + " to $" + ui.values[1]);
+		}
 	});
 	$(".price-value").html("$" + $("#slider-range").slider("values", 0) + " to $" + $("#slider-range").slider("values", 1));
 
 	/**
 	 * Add the reservation to google calendar.
 	 */
-	$( document ).on( 'click', '.add-to-gcal', function() {
-		var this_button = $( this );
-		var order_id    = this_button.parent( '.ersrv-reservation-calendars-container' ).data( 'oid' );
+	$(document).on('click', '.add-to-gcal', function () {
+		var this_button = $(this);
+		var order_id = this_button.parent('.ersrv-reservation-calendars-container').data('oid');
 
 		// Return false, if the order id is invalid.
-		if ( -1 === is_valid_number( order_id ) ) {
+		if (-1 === is_valid_number(order_id)) {
 			return false;
 		}
 
 		// Send the AJAX now.
-		block_element( $( '.ersrv-reservation-calendars-container' ) );
+		block_element($('.ersrv-reservation-calendars-container'));
 
 		// Send the AJAX now.
-		$.ajax( {
+		$.ajax({
 			dataType: 'JSON',
 			url: ajaxurl,
 			type: 'POST',
@@ -61,46 +61,46 @@ jQuery( document ).ready( function( $ ) {
 				action: 'add_reservation_to_gcal',
 				order_id: order_id,
 			},
-			success: function ( response ) {
+			success: function (response) {
 				// Check for invalid ajax request.
-				if ( 0 === response ) {
-					console.log( 'easy reservations: invalid ajax request' );
+				if (0 === response) {
+					console.log('easy reservations: invalid ajax request');
 					return false;
 				}
 
 				// Check for invalid order ID.
-				if ( -1 === response ) {
-					console.log( 'easy reservations: invalid order ID' );
+				if (-1 === response) {
+					console.log('easy reservations: invalid order ID');
 					return false;
 				}
 
-				if ( 'reservation_added-to-gcal' !== response.data.code ) {
+				if ('reservation_added-to-gcal' !== response.data.code) {
 					return false;
 				}
 
 				// Unblock the element.
-				unblock_element( $( '.ersrv-reservation-calendars-container' ) );
+				unblock_element($('.ersrv-reservation-calendars-container'));
 			},
-		} );
-	} );
+		});
+	});
 
 	/**
 	 * Add the reservation to google calendar.
 	 */
-	$( document ).on( 'click', '.add-to-ical', function() {
-		var this_button = $( this );
-		var order_id    = this_button.parent( '.ersrv-reservation-calendars-container' ).data( 'oid' );
+	$(document).on('click', '.add-to-ical', function () {
+		var this_button = $(this);
+		var order_id = this_button.parent('.ersrv-reservation-calendars-container').data('oid');
 
 		// Return false, if the order id is invalid.
-		if ( -1 === is_valid_number( order_id ) ) {
+		if (-1 === is_valid_number(order_id)) {
 			return false;
 		}
 
 		// Send the AJAX now.
-		block_element( $( '.ersrv-reservation-calendars-container' ) );
+		block_element($('.ersrv-reservation-calendars-container'));
 
 		// Send the AJAX now.
-		$.ajax( {
+		$.ajax({
 			dataType: 'JSON',
 			url: ajaxurl,
 			type: 'POST',
@@ -108,48 +108,48 @@ jQuery( document ).ready( function( $ ) {
 				action: 'add_reservation_to_ical',
 				order_id: order_id,
 			},
-			success: function ( response ) {
+			success: function (response) {
 				// Check for invalid ajax request.
-				if ( 0 === response ) {
-					console.log( 'easy reservations: invalid ajax request' );
+				if (0 === response) {
+					console.log('easy reservations: invalid ajax request');
 					return false;
 				}
 
 				// Check for invalid order ID.
-				if ( -1 === response ) {
-					console.log( 'easy reservations: invalid order ID' );
+				if (-1 === response) {
+					console.log('easy reservations: invalid order ID');
 					return false;
 				}
 
-				if ( 'reservation_added-to-ical' !== response.data.code ) {
+				if ('reservation_added-to-ical' !== response.data.code) {
 					return false;
 				}
 
 				// Unblock the element.
-				unblock_element( $( '.ersrv-reservation-calendars-container' ) );
+				unblock_element($('.ersrv-reservation-calendars-container'));
 			},
-		} );
-	} );
+		});
+	});
 
 	/**
 	 * Proceed with reservation details and add the details to the cart.
 	 */
-	$( document ).on( 'click', '.ersrv-proceed-with-reservation-details', function() {
+	$(document).on('click', '.ersrv-proceed-with-reservation-details', function () {
 		// Gather the amenities, if selected.
-		if ( $( '.card.amenities' ).length ) {
-			$( '.card.amenities .amenity' ).each( function() {
-				
-			} );
+		if ($('.card.amenities').length) {
+			$('.card.amenities .amenity').each(function () {
+
+			});
 		}
-	} );
+	});
 
 	/**
 	 * Block element.
 	 *
 	 * @param {string} element
 	 */
-	 function block_element( element ) {
-		element.addClass( 'non-clickable' );
+	function block_element(element) {
+		element.addClass('non-clickable');
 	}
 
 	/**
@@ -157,8 +157,8 @@ jQuery( document ).ready( function( $ ) {
 	 *
 	 * @param {string} element
 	 */
-	function unblock_element( element ) {
-		element.removeClass( 'non-clickable' );
+	function unblock_element(element) {
+		element.removeClass('non-clickable');
 	}
 
 	/**
@@ -166,8 +166,8 @@ jQuery( document ).ready( function( $ ) {
 	 * 
 	 * @param {number} data 
 	 */
-	 function is_valid_number( data ) {
-		if ( '' === data || undefined === data || isNaN( data ) || 0 === data ) {
+	function is_valid_number(data) {
+		if ('' === data || undefined === data || isNaN(data) || 0 === data) {
 			return -1;
 		}
 
@@ -179,11 +179,11 @@ jQuery( document ).ready( function( $ ) {
 	 * 
 	 * @param {string} data 
 	 */
-	function is_valid_string( data ) {
-		if ( '' === data || undefined === data || ! isNaN( data ) || 0 === data ) {
+	function is_valid_string(data) {
+		if ('' === data || undefined === data || !isNaN(data) || 0 === data) {
 			return -1;
 		}
 
 		return 1;
 	}
-} );
+});

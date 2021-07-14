@@ -7,12 +7,12 @@ table{
 .site-inner,
 .theme-astra .site-content > .ast-container,
 .theme-astra .site-content > .ast-container > section,
-.theme-storefront .col-full{
+.theme-storefront .site-content > .col-full{
     max-width: 100%;
 }
 .site-content,
 .theme-astra .site-content > .ast-container,
-.theme-storefront .col-full{
+.theme-storefront .site-content > .col-full{
     padding: 0px;
 }
 .theme-astra .site-content > .ast-container > section{
@@ -33,4 +33,11 @@ table{
     pointer-events: none;
     top: 0px;
     left: 0px;
+}
+@media(max-width:1063px){
+    .site-content,
+    .theme-astra .site-content > .ast-container,
+    .theme-storefront .site-content > .col-full{
+        margin: 0px;
+    }
 }
