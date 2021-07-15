@@ -210,24 +210,10 @@ class Easy_Reservations_Public {
 				);
 
 				// Custom public script.
-				wp_enqueue_script(
-					$this->plugin_name,
-					ERSRV_PLUGIN_URL . 'public/js/core/easy-reservations-public.js',
-					array( 'jquery' ),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/js/core/easy-reservations-public.js' ),
-					true
-				);
-
-				// Localize script.
-				wp_localize_script(
-					$this->plugin_name,
-					'ERSRV_Public_Script_Vars',
-					array(
-						'ajaxurl'        => admin_url( 'admin-ajax.php' ),
-						'remove_sidebar' => ersrv_get_plugin_settings( 'ersrv_remove_product_single_sidebar' ),
-					)
-				);
+				self::ersrv_enqueue_plugin_core_js( $this->plugin_name );
 			}
+		} elseif ( is_checkout() ) {
+			self::ersrv_enqueue_plugin_core_js( $this->plugin_name );
 		}
 
 		// Add the datepicker and custom script only when the widget is active.
@@ -264,6 +250,35 @@ class Easy_Reservations_Public {
 	}
 
 	/**
+	 * Enqueue the plugin core JS file.
+	 *
+	 * @param string $plugin_name Plugin folder name.
+	 * @since 1.0.0
+	 */
+	public static function ersrv_enqueue_plugin_core_js( $plugin_name ) {
+		// Custom public script.
+		wp_enqueue_script(
+			$plugin_name,
+			ERSRV_PLUGIN_URL . 'public/js/core/easy-reservations-public.js',
+			array( 'jquery' ),
+			filemtime( ERSRV_PLUGIN_PATH . 'public/js/core/easy-reservations-public.js' ),
+			true
+		);
+
+		// Localize script.
+		wp_localize_script(
+			$plugin_name,
+			'ERSRV_Public_Script_Vars',
+			array(
+				'ajaxurl'        => admin_url( 'admin-ajax.php' ),
+				'remove_sidebar' => ersrv_get_plugin_settings( 'ersrv_remove_product_single_sidebar' ),
+				'is_product'     => ( is_product() ) ? 'yes' : 'no',
+				'is_checkout'    => ( is_product() ) ? 'yes' : 'no',
+			)
+		);
+	}
+
+	/**
 	 * Do the following when WordPress initiates.
 	 * 1. Register custom product type in WooCommerce Products.
 	 *
@@ -272,6 +287,16 @@ class Easy_Reservations_Public {
 	public function ersrv_init_callback() {
 		// Include the product type custom class.
 		require ERSRV_PLUGIN_PATH . 'includes/classes/class-wc-product-reservation.php';
+
+		// Check if the action is required to download iCalendar invite.
+		$action      = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
+		$order_id    = filter_input( INPUT_GET, 'order_id', FILTER_SANITIZE_NUMBER_INT );
+		$redirect_to = filter_input( INPUT_GET, 'redirect_to', FILTER_SANITIZE_STRING );
+
+		if ( ! is_null( $action ) && 'download_ical_invite' === $action ) {
+			var_dump( $order_id, $redirect_to );
+			die;
+		}
 	}
 
 	/**
@@ -318,6 +343,7 @@ class Easy_Reservations_Public {
 	public function ersrv_woocommerce_after_order_details_callback( $wc_order ) {
 		$add_calendar_buttons = ersrv_order_is_reservation( $wc_order );
 		$add_calendar_buttons = true;
+		$order_id             = $wc_order->get_id();
 
 		// Return, if there is no need to add calendar buttons.
 		if ( ! $add_calendar_buttons ) {
@@ -350,11 +376,15 @@ class Easy_Reservations_Public {
 		 */
 		$icalendar_button_text = apply_filters( 'ersrv_add_reservation_to_icalendar_button_text', $icalendar_button_text, $wc_order );
 
+		// Download ical invite link.
+		$current_url               = home_url( $_SERVER['REQUEST_URI'] );
+		$download_ical_invite_link = home_url( "/?action=download_ical_invite&order_id={$order_id}&redirect_to={$current_url}" );
+
 		ob_start();
 		?>
-		<div class="ersrv-reservation-calendars-container" data-oid="<?php echo esc_attr( $wc_order->get_id() ); ?>">
+		<div class="ersrv-reservation-calendars-container" data-oid="<?php echo esc_attr( $order_id ); ?>">
 			<button type="button" class="add-to-gcal"><?php echo wp_kses_post( $google_calendar_button_text ); ?></button>
-			<button type="button" class="add-to-ical"><?php echo wp_kses_post( $icalendar_button_text ); ?></button>
+			<button type="button" class="add-to-ical" data-goto="<?php echo $download_ical_invite_link; ?>"><?php echo wp_kses_post( $icalendar_button_text ); ?></button>
 		</div>
 		<?php
 		$reservations_calendar_container = ob_get_clean();
@@ -371,7 +401,26 @@ class Easy_Reservations_Public {
 		 * @return string
 		 * @since 1.0.0
 		 */
-		echo wp_kses_post( apply_filters( 'ersrv_reservations_calendar_container_html', $reservations_calendar_container, $google_calendar_button_text, $icalendar_button_text, $wc_order ) );
+		echo wp_kses(
+			apply_filters(
+				'ersrv_reservations_calendar_container_html',
+				$reservations_calendar_container,
+				$google_calendar_button_text,
+				$icalendar_button_text,
+				$wc_order
+			),
+			array(
+				'div'    => array(
+					'class'    => array(),
+					'data-oid' => array(),
+				),
+				'button' => array(
+					'type'      => array(),
+					'class'     => array(),
+					'data-goto' => array(),
+				),
+			)
+		);
 	}
 
 	/**
@@ -418,87 +467,6 @@ class Easy_Reservations_Public {
 		 * @param int $order_id Holds the WooCommerce order ID.
 		 */
 		do_action( 'ersrv_add_reservation_to_gcal_after', $order_id );
-	}
-
-	/**
-	 * AJAX to add reservation to customer's icalendar.
-	 *
-	 * @since 1.0.0
-	 */
-	public function ersrv_add_reservation_to_ical_callback() {
-		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
-
-		// Exit, if the action mismatches.
-		if ( empty( $action ) || 'add_reservation_to_ical' !== $action ) {
-			echo 0;
-			wp_die();
-		}
-
-		// Posted data.
-		$order_id = (int) filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT );
-
-		// Exit, if this order ID is invalid.
-		$wc_order_post = get_post( $order_id );
-
-		if ( is_null( $wc_order_post ) ) {
-			echo -1;
-			wp_die();
-		}
-
-		/**
-		 * This hook fires before adding reservation to the calendar.
-		 *
-		 * This hook helps in executing anything before the reservation is added to icalendar.
-		 *
-		 * @param int $order_id Holds the WooCommerce order ID.
-		 */
-		do_action( 'ersrv_add_reservation_to_ical_before', $order_id );
-
-		// Add the reservation to the icalendar now.
-		$reservation_start_date = '2021-06-29 13:30:00';
-		$reservation_end_date   = '2021-06-31 14:30:00';
-		$event                  = array(
-			'id'          => $order_id,
-			/* translators: 1: %d: wc order ID */
-			'title'       => sprintf( __( 'Reservation booked. ID: #%1$d', 'easy-reservations' ), $order_id ),
-			/* translators: 1: %s: blogname */
-			'description' => sprintf( __( 'Example reservation booked on %1$s', 'easy-reservations' ), get_bloginfo( 'name' ) ),
-			'datestart'   => strtotime( $reservation_start_date ),
-			'dateend'     => strtotime( $reservation_end_date ),
-			'address'     => '123 Fake St, MyCity, State 12345',
-			'order_url'   => home_url( "/my-account/view-order/{$order_id}/" ),
-		);
-
-		// Build the ics file.
-		$ical = 'BEGIN:VCALENDAR
-		VERSION:2.0
-		PRODID:-//hacksw/handcal//NONSGML v1.0//EN
-		CALSCALE:GREGORIAN
-		BEGIN:VEVENT
-		DTEND:' . ersrv_get_icalendar_formatted_date( $event['dateend'] ) . '
-		UID:' . md5( $event['title'] ) . '
-		DTSTAMP:' . time() . '
-		LOCATION:' . addslashes( $event['address'] ) . '
-		DESCRIPTION:' . addslashes( $event['description'] ) . '
-		URL;VALUE=URI: ' . $event['order_url'] . '
-		SUMMARY:' . addslashes( $event['title'] ) . '
-		DTSTART:' . ersrv_get_icalendar_formatted_date( $event['datestart'] ) . '
-		END:VEVENT
-		END:VCALENDAR';
-
-		header( 'Content-type: text/calendar; charset=utf-8' );
-		header( 'Content-Disposition: attachment; filename=your-reservation.ics' );
-		echo $ical;
-		die;
-
-		/**
-		 * This hook fires after adding reservation to the calendar.
-		 *
-		 * This hook helps in executing anything after the reservation is added to icalendar.
-		 *
-		 * @param int $order_id Holds the WooCommerce order ID.
-		 */
-		do_action( 'ersrv_add_reservation_to_ical_after', $order_id );
 	}
 
 	/**
