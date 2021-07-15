@@ -242,9 +242,8 @@ get_header();
                                     </div>
                                     <div class="book-items-wrapper mb-4 pb-3">
                                         <select class="selectpicker form-control Boat-Types" id="boat-types" data-size="5" data-style="btn-outline-secondary focus-none" title="Boat Type">
-                                            <option>3 Guest</option>
-                                            <option>2 Guest</option>
-                                            <option>1 Guest</option>
+                                            <option>Single Boat</option>
+                                            <option>Cruse</option>
                                         </select>
                                     </div>
                                     <div class="search-box">
