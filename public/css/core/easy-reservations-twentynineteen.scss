@@ -230,6 +230,9 @@
     .sidebar-wrapper {
         .price-box {
             margin-bottom: 17px;
+            .old-price{
+                color:$white-500;
+            }
         }
 
         .book-tour,
@@ -400,7 +403,7 @@
                     color: $gray;
                     text-align: center;
                     a{
-                        padding: 6px;
+                        padding: 7px;
                     }
                     &.ui-state-active {
                         color: $white;

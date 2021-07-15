@@ -925,6 +925,10 @@ img {
   margin-bottom: 17px;
 }
 
+.single-reserve-page .sidebar-wrapper .price-box .old-price {
+  color: rgba(255, 255, 255, 0.5);
+}
+
 .single-reserve-page .sidebar-wrapper .book-tour,
 .single-reserve-page .sidebar-wrapper .advanced-search {
   padding: 30px 33px;
@@ -1101,7 +1105,7 @@ img {
 
 #ui-datepicker-div .ui-datepicker-calendar tbody tr td a,
 #ui-datepicker-div .ui-datepicker-calendar tbody tr td a a {
-  padding: 6px;
+  padding: 7px;
 }
 
 #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ui-state-active,
