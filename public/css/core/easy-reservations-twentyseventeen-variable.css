@@ -1,38 +1,37 @@
-@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Poppins:wght@300;400;500;600;700&display=swap");
 .color-primary, .btn-outline-fill-primary, .btn-outline-primary {
-  color: #0c71c3;
+  color: #222;
 }
 
-.bgcolor-primary, .btn-primary, .btn-outline-fill-primary:hover {
-  background-color: #0c71c3;
+.bgcolor-primary, .btn-primary, .btn-outline-fill-primary:hover, .btn-outline-primary:hover {
+  background-color: #222;
 }
 
-.border-color-primary, .btn-primary, .btn-outline-fill-primary, .btn-outline-primary {
-  border-color: #0c71c3;
+.border-color-primary, .btn-primary, .btn-outline-fill-primary, .btn-outline-primary, .btn-outline-primary:hover {
+  border-color: #222;
 }
 
 .color-primary-300 {
-  color: #d1e6f7;
+  color: #767676;
 }
 
 .bgcolor-primary-300, .btn-outline-fill-primary {
-  background-color: #d1e6f7;
+  background-color: #767676;
 }
 
-.border-color-primary-300 {
-  border-color: #d1e6f7;
+.border-color-primary-300, .btn-primary:hover {
+  border-color: #767676;
 }
 
-.color-seconadry {
-  color: #3e3e3e;
+.color-secondary {
+  color: #111;
 }
 
-.bgcolor-seconadry {
-  background-color: #3e3e3e;
+.bgcolor-secondary, .btn-primary:hover {
+  background-color: #111;
 }
 
-.border-color-seconadry {
-  border-color: #3e3e3e;
+.border-color-secondary {
+  border-color: #111;
 }
 
 .color-accent {
@@ -71,7 +70,7 @@
   border-color: #17763a;
 }
 
-.color-white, .btn-primary, .btn-outline-fill-primary:hover {
+.color-white, .btn-primary, .btn-outline-fill-primary:hover, .btn-outline-primary:hover {
   color: #fff;
 }
 
@@ -189,6 +188,18 @@
 
 .border-color-gray {
   border-color: #8a8f9c;
+}
+
+.color-light-gray {
+  color: #eeeeee;
+}
+
+.bgcolor-light-gray {
+  background-color: #eeeeee;
+}
+
+.border-color-light-gray {
+  border-color: #eeeeee;
 }
 
 .color-transparent {
@@ -536,18 +547,6 @@
   letter-spacing: 1px;
 }
 
-body {
-  font-family: "Lato", sans-serif;
-}
-
-.font-lato {
-  font-family: "Lato", sans-serif;
-}
-
-.font-Poppins {
-  font-family: "Poppins", sans-serif;
-}
-
 img {
   max-width: 100%;
   height: auto;
@@ -600,7 +599,8 @@ img {
 *:focus,
 .focus-none,
 .bootstrap-select .dropdown-toggle:focus,
-.bootstrap-select > select.mobile-device:focus + .dropdown-toggle {
+.bootstrap-select > select.mobile-device:focus + .dropdown-toggle,
+.custom-control-input:focus ~ .custom-control-label::before {
   outline: none !important;
   -webkit-box-shadow: none !important;
           box-shadow: none !important;
@@ -621,9 +621,31 @@ img {
   filter: brightness(0) invert(1);
 }
 
-.dropdown-item.active, .dropdown-item:active {
+.dropdown-item.active,
+.dropdown-item:active {
   color: #fff;
   text-decoration: none;
-  background-color: #0c71c3;
+  background-color: #222;
 }
-/*# sourceMappingURL=easy-reservations-other-variable.css.map */
+
+.custom-control-input:checked ~ .custom-control-label::before {
+  color: #fff;
+  border-color: #222;
+  background-color: #222;
+}
+
+.custom-control-input:not(:disabled):active ~ .custom-control-label::before {
+  color: #fff;
+  background-color: #767676;
+  border-color: #767676;
+}
+
+.custom-control-input:focus:not(:checked) ~ .custom-control-label::before {
+  border-color: #222;
+}
+
+.btn,
+.no-svg .dropdown-toggle {
+  padding: .375rem .75rem;
+}
+/*# sourceMappingURL=easy-reservations-twentyseventeen-variable.css.map */
