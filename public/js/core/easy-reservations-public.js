@@ -91,10 +91,13 @@ jQuery(document).ready(function ($) {
 	/**
 	 * Add the reservation to google calendar.
 	 */
-	if ( 'yes' === is_product ) {
+	if ( 'yes' === is_checkout ) {
 		$( document ).on( 'click', '.add-to-ical', function () {
 			var goto = $( this ).data( 'goto' );
-			console.log( 'goto', goto );
+			
+			if ( -1 !== is_valid_string( goto ) ) {
+				window.location.href = goto;
+			}
 		} );
 	}
 
