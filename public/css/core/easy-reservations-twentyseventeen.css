@@ -1,19 +1,16 @@
-.color-primary, .btn-outline-fill-primary, .btn-outline-primary, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover {
+.color-primary, .btn-outline-fill-primary, .btn-outline-primary {
   color: #222;
 }
 
 .bgcolor-primary, .btn-primary, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev,
 .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary:hover, .btn-outline-primary:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover {
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary:hover, .btn-outline-primary:hover {
   background-color: #222;
 }
 
 .border-color-primary, .btn-primary, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev,
 .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary, .btn-outline-primary, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover, .btn-outline-primary:hover {
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary, .btn-outline-primary, .btn-outline-primary:hover {
   border-color: #222;
 }
 
@@ -84,8 +81,7 @@
 
 .color-white, .btn-primary, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev,
 .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary:hover, .btn-outline-primary:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover {
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary:hover, .btn-outline-primary:hover {
   color: #fff;
 }
 
@@ -226,8 +222,7 @@
   color: rgba(0, 0, 0, 0);
 }
 
-.bgcolor-transparent, .btn-outline-primary, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover {
+.bgcolor-transparent, .btn-outline-primary {
   background-color: rgba(0, 0, 0, 0);
 }
 
@@ -1075,6 +1070,8 @@ img {
 #ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover {
   text-decoration: none;
   top: 2px;
+  color: #111;
+  background-color: rgba(0, 0, 0, 0);
 }
 
 #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover {

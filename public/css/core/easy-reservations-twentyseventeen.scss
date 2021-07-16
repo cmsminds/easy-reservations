@@ -361,7 +361,8 @@
             &:hover {
                 text-decoration: none;
                 top: 2px;
-                @extend .btn-outline-primary;
+                color: $secondary;
+                background-color: $transparent;
             }
         }
         .ui-datepicker-prev {
