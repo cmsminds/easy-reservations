@@ -159,6 +159,10 @@
 .ersrv-new-customer-details .ersrv-customer-field select{
 	max-width: 100%;
 }
+hr{
+	width: 100%;
+	height: 0px;
+}
 @media(max-width:767px){
 	.ersrv-modal-content{
 		width:60%;
