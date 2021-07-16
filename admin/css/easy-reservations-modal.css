@@ -156,6 +156,9 @@
     text-align: right;
     margin-right: 10px;
 }
+.ersrv-new-customer-details .ersrv-customer-field select{
+	max-width: 100%;
+}
 @media(max-width:767px){
 	.ersrv-modal-content{
 		width:60%;
