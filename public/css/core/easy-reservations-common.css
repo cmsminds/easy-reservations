@@ -7,12 +7,15 @@ table{
 .site-inner,
 .theme-astra .site-content > .ast-container,
 .theme-astra .site-content > .ast-container > section,
-.theme-storefront .site-content > .col-full{
+.theme-storefront .site-content > .col-full,
+.theme-twentytwentyone .site-content > .content-area{
     max-width: 100%;
 }
 .site-content,
 .theme-astra .site-content > .ast-container,
-.theme-storefront .site-content > .col-full{
+.theme-storefront .site-content > .col-full,
+.theme-twentytwentyone .site-content > .content-area,
+.theme-twentytwentyone .site-content > .content-area > #main > .wrapper{
     padding: 0px;
 }
 .theme-astra .site-content > .ast-container > section{
@@ -40,7 +43,8 @@ h1:not(.site-title):before, h2:before{
 @media(max-width:1063px){
     .site-content,
     .theme-astra .site-content > .ast-container,
-    .theme-storefront .site-content > .col-full{
+    .theme-storefront .site-content > .col-full,
+    .theme-twentytwentyone .site-content > .content-area > #main{
         margin: 0px;
     }
 }
