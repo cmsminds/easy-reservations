@@ -1,4 +1,4 @@
-@import 'easy-reservations-twentyseventeen-variable.scss';
+@import 'easy-reservations-twentysixteen-variable.scss';
 .single-reserve-page {
     background-color: #f8f8f8;
     .banner {
@@ -164,15 +164,13 @@
                                         padding: 9px;
                                     }
                                 }
-
                                 &.ui-state-active {
                                     color: $white;
                                     background-color: $accent;
                                     border-radius: 100%;
                                 }
-
                                 &.ui-state-highlight {
-                                    color: $secondary;
+                                    color: $white;
                                     background-color: $accent-300;
                                     border-radius: 100%;
                                 }
@@ -224,7 +222,6 @@
             }
         }
     }
-
     .sidebar-wrapper {
         .price-box {
             margin-bottom: 17px;
@@ -232,7 +229,6 @@
                 color:$white-500;
             }
         }
-
         .book-tour,
         .advanced-search {
             padding: 30px 33px;
@@ -273,14 +269,12 @@
                         border: 1px solid $gray;
                         @extend .color-gray;
                         margin: 0px 4px;
-
                         svg {
                             pointer-events: none;
                             fill: $gray;
                             width: 20px;
                             height: auto;
                         }
-
                         &:hover {
                             @extend .border-color-accent;
                             svg {
@@ -443,6 +437,7 @@
 .bootstrap-select{
     .btn{
         min-height: 55px;
+        height: auto;
         &:hover,&:focus{
             .filter-option{
                 .filter-option-inner{
