@@ -194,11 +194,31 @@ jQuery( document ).ready( function( $ ) {
 		var first_name       = $( '#ersrv-customer-first-name' ).val();
 		var last_name        = $( '#ersrv-customer-last-name' ).val();
 		var email            = $( '#ersrv-customer-email' ).val();
+		var phone            = $( '#ersrv-customer-phone' ).val();
 		var password         = $( '#ersrv-customer-password' ).val();
+		var address_line     = $( '#ersrv-customer-address-line' ).val();
+		var address_line_2   = $( '#ersrv-customer-address-line-2' ).val();
+		var country          = $( '#ersrv-customer-country' ).val();
+		var state            = $( '#ersrv-customer-state' ).val();
+		state                = ( null === state ) ? '' : state;
+		var city             = $( '#ersrv-customer-city' ).val();
+		var postcode         = $( '#ersrv-customer-postcode' ).val();
 		var register_user    = true;
 
 		// Vacate the errors.
 		$( '.ersrv-form-field-error, .ersrv-form-error' ).text( '' );
+
+		// Validate the first name.
+		if ( -1 === is_valid_string( first_name ) ) {
+			$( '.ersrv-form-field-error.first-name-error' ).text( 'First name is required.' );
+			register_user = false;
+		}
+
+		// Validate the last name.
+		if ( -1 === is_valid_string( last_name ) ) {
+			$( '.ersrv-form-field-error.last-name-error' ).text( 'Last name is required.' );
+			register_user = false;
+		}
 
 		// Validate email.
 		if ( -1 === is_valid_string( email ) ) {
@@ -209,9 +229,39 @@ jQuery( document ).ready( function( $ ) {
 			register_user = false;
 		}
 
+		// Validate the phone.
+		if ( '' === phone ) {
+			$( '.ersrv-form-field-error.phone-error' ).text( 'Phone number is required.' );
+			register_user = false;
+		}
+
 		// Validate password.
 		if ( -1 === is_valid_string( password ) ) {
 			$( '.ersrv-form-field-error.password-error' ).text( password_required );
+			register_user = false;
+		}
+
+		// Validate the address line.
+		if ( -1 === is_valid_string( address_line ) ) {
+			$( '.ersrv-form-field-error.address-line-error' ).text( 'Address line is required.' );
+			register_user = false;
+		}
+
+		// Validate the country.
+		if ( -1 === is_valid_string( country ) ) {
+			$( '.ersrv-form-field-error.country-error' ).text( 'Country is required.' );
+			register_user = false;
+		}
+
+		// Validate the city.
+		if ( -1 === is_valid_string( city ) ) {
+			$( '.ersrv-form-field-error.city-error' ).text( 'City is required.' );
+			register_user = false;
+		}
+
+		// Validate the postcode.
+		if ( -1 === is_valid_string( postcode ) ) {
+			$( '.ersrv-form-field-error.postcode-error' ).text( 'Postcode is required.' );
 			register_user = false;
 		}
 
@@ -232,7 +282,14 @@ jQuery( document ).ready( function( $ ) {
 			first_name: first_name,
 			last_name: last_name,
 			email: email,
+			phone: phone,
 			password: password,
+			address_line: address_line,
+			address_line_2: address_line_2,
+			country: country,
+			state: state,
+			city: city,
+			postcode: postcode,
 		};
 
 		$.ajax( {
@@ -530,7 +587,7 @@ jQuery( document ).ready( function( $ ) {
 			success: function ( response ) {
 				// Return, if the response is not proper.
 				if ( 0 === response ) {
-					console.log( 'easy-reservations: invalid ajax call' );
+					console.warn( 'easy-reservations: invalid ajax call' );
 					return false;
 				}
 
@@ -543,8 +600,64 @@ jQuery( document ).ready( function( $ ) {
 				}
 			},
 		} );
+	} );
 
-		console.log( 'everything good' );
+	/**
+	 * Fetch states based on country code.
+	 */
+	$( document ).on( 'change', '#ersrv-customer-country', function() {
+		var this_select  = $( this );
+		var country_code = this_select.val();
+
+		// Exit, if the country code is invalid.
+		if ( -1 === is_valid_string( country_code ) ) {
+			return false;
+		}
+
+		// Block the element now.
+		block_element( this_select );
+
+		// Send the AJAX now.
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'get_states',
+				country_code: country_code,
+			},
+			success: function ( response ) {
+				// Return, if the response is not proper.
+				if ( 0 === response ) {
+					console.log( 'easy-reservations: invalid ajax call' );
+					return false;
+				}
+
+				// If the reservation is added.
+				if ( 'states-fetched' === response.data.code ) {
+					// Unblock the element.
+					unblock_element( this_select );
+
+					var states = response.data.states;
+					if ( 0 !== states.length ) {
+						// Prepare the html for states.
+						var html = '<option value="">Select state</option>';
+						for ( var i in states ) {
+							html += '<option value="' + i + '">' + states[i] + '</option>';
+						}
+
+						// Paste the html.
+						$( '#ersrv-customer-state' ).html( html );
+
+						// Show the states select box.
+						$( '.ersrv-customer-field.state' ).show();
+					} else {
+						// Hide the states select box.
+						$( '.ersrv-customer-field.state' ).hide();
+					}
+				}
+			},
+		} );
 	} );
 
 	/**

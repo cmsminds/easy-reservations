@@ -603,9 +603,16 @@ class Easy_Reservations_Admin {
 		$first_name     = filter_input( INPUT_POST, 'first_name', FILTER_SANITIZE_STRING );
 		$last_name      = filter_input( INPUT_POST, 'last_name', FILTER_SANITIZE_STRING );
 		$email          = filter_input( INPUT_POST, 'email', FILTER_SANITIZE_STRING );
+		$phone          = filter_input( INPUT_POST, 'phone', FILTER_SANITIZE_STRING );
 		$password       = filter_input( INPUT_POST, 'password', FILTER_SANITIZE_STRING );
 		$email_exploded = explode( '@', $email );
 		$username       = ( ! empty( $email_exploded[0] ) ) ? $email_exploded[0] : $email;
+		$address_line   = filter_input( INPUT_POST, 'address_line', FILTER_SANITIZE_STRING );
+		$address_line_2 = filter_input( INPUT_POST, 'address_line_2', FILTER_SANITIZE_STRING );
+		$country        = filter_input( INPUT_POST, 'country', FILTER_SANITIZE_STRING );
+		$state          = filter_input( INPUT_POST, 'state', FILTER_SANITIZE_STRING );
+		$city           = filter_input( INPUT_POST, 'city', FILTER_SANITIZE_STRING );
+		$postcode       = filter_input( INPUT_POST, 'postcode', FILTER_SANITIZE_STRING );
 
 		// Return the error if the customer exists.
 		if ( email_exists( $email ) || username_exists( $username ) ) {
@@ -624,6 +631,18 @@ class Easy_Reservations_Admin {
 		$user_display_name = $user_data->data->display_name;
 		$user_email        = $user_data->data->user_email;
 		$user_option_text  = "#{$user_id} [{$user_email}] - {$user_display_name}";
+
+		// Update the customer's billing details.
+		update_user_meta( $user_id, 'billing_first_name', $first_name );
+		update_user_meta( $user_id, 'billing_last_name', $last_name );
+		update_user_meta( $user_id, 'billing_address_1', $address_line );
+		update_user_meta( $user_id, 'billing_address_2', $address_line_2 );
+		update_user_meta( $user_id, 'billing_city', $city );
+		update_user_meta( $user_id, 'billing_state', $state );
+		update_user_meta( $user_id, 'billing_postcode', $postcode );
+		update_user_meta( $user_id, 'billing_country', $country );
+		update_user_meta( $user_id, 'billing_email', $email );
+		update_user_meta( $user_id, 'billing_phone', $phone );
 
 		$response = array(
 			'code'            => 'ersrv-user-registered',
@@ -830,5 +849,45 @@ class Easy_Reservations_Admin {
 		);
 		wp_send_json_success( $response );
 		wp_die();
+	}
+
+	/**
+	 * Get the states from country code.
+	 *
+	 * @param string $country_code Holds the country code.
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function ersrv_get_states_callback( $country_code ) {
+		// If doing AJAX.
+		if ( DOING_AJAX ) {
+			$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+			// Exit, if the action mismatches.
+			if ( empty( $action ) || 'get_states' !== $action ) {
+				echo 0;
+				wp_die();
+			}
+
+			// Posted data.
+			$country_code = filter_input( INPUT_POST, 'country_code', FILTER_SANITIZE_STRING );
+		}
+
+		// Get the states now.
+		$woo_countries = new WC_Countries();
+		$states        = $woo_countries->get_states( $country_code );
+		$states        = ( ! empty( $states ) && is_array( $states ) ) ? $states : array();
+
+		// Send the AJAX response.
+		if ( DOING_AJAX ) {
+			$response = array(
+				'code'   => 'states-fetched',
+				'states' => $states,
+			);
+			wp_send_json_success( $response );
+			wp_die();
+		}
+
+		return $states;
 	}
 }

@@ -110,6 +110,8 @@
     display: flex;
     flex-flow: row wrap;
 	justify-content: flex-start;
+	max-height: 270px;
+	overflow-y: auto;
 }
 .ersrv-new-customer-details .ersrv-customer-field {
     display: flex;
@@ -119,7 +121,7 @@
 	margin-right: 10px;
 
 }
-.ersrv-new-customer-details .ersrv-customer-field.email,
+
 .ersrv-new-customer-details .ersrv-customer-field.ersrv-customer-field.password{
     width:calc(100%);
 }
