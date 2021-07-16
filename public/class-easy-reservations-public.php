@@ -314,12 +314,12 @@ class Easy_Reservations_Public {
 			header( 'Content-Disposition: attachment; filename=' . $nvite_file_name );
 
 			$invitation_details = array(
-				'location'    => '123 Fake St, New York, NY',
-				'description' => 'This is my description',
-				'dtstart'     => '2017-1-16 9:00AM',
-				'dtend'       => '2017-1-16 10:00AM',
-				'summary'     => 'This is my summary',
-				'url'         => 'https://example.com'
+				'location'    => '123 Fake St, New York, NY', // reservation item location.
+				'description' => 'This is my description', // reservation description.
+				'dtstart'     => '2017-1-16 9:00AM', // reservation start date time.
+				'dtend'       => '2017-1-16 10:00AM', // reservation end date time.
+				'summary'     => 'This is my summary', // invitation summary.
+				'url'         => 'https://example.com' // view order url.
 			);
 			/**
 			 * This hook fires when the request to download ical file is processed.

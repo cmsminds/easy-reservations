@@ -265,6 +265,7 @@ class Easy_Reservations_Admin {
 	 * @since 1.0.0
 	 */
 	public function ersrv_woocommerce_process_product_meta_callback( $post_id ) {
+		$location                  = filter_input( INPUT_POST, 'location', FILTER_SANITIZE_STRING );
 		$security_amt              = (float) filter_input( INPUT_POST, 'security_amount', FILTER_SANITIZE_NUMBER_FLOAT );
 		$accomodation_limit        = (int) filter_input( INPUT_POST, 'accomodation_limit', FILTER_SANITIZE_NUMBER_INT );
 		$accomodation_adult_charge = (float) filter_input( INPUT_POST, 'accomodation_adult_charge', FILTER_SANITIZE_NUMBER_FLOAT );
@@ -317,6 +318,13 @@ class Easy_Reservations_Admin {
 
 			// Update the blocked out dates to the database.
 			update_post_meta( $post_id, '_ersrv_reservation_blockout_dates', $blockedout_dates );
+		}
+
+		// If item location is available.
+		if ( ! empty( $location ) ) {
+			update_post_meta( $post_id, '_ersrv_item_location', $location );
+		} else {
+			delete_post_meta( $post_id, '_ersrv_item_location' );
 		}
 
 		// If security amount is available.

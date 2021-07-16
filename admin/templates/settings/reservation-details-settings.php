@@ -15,6 +15,34 @@ $amenities         = get_post_meta( $product_id, '_ersrv_reservation_amenities',
 ?>
 <div id="reservation_details_product_options" class="panel woocommerce_options_panel">
 	<div class="options_group">
+		<h4 class="reservation-tab-setting-heading"><?php esc_html_e( 'Location Details', 'easy-reservations' ); ?></h4>
+		<?php
+		// Security amount.
+		woocommerce_wp_textarea_input(
+			array(
+				'id'                => 'location',
+				'label'             => __( 'Item Location', 'easy-reservations' ),
+				'placeholder'       => __( 'Provide the item physical location.', 'easy-reservations' ),
+				'desc_tip'          => 'true',
+				'description'       => __( 'Reservation item location.', 'easy-reservations' ),
+				'value'             => get_post_meta( $post->ID, '_ersrv_item_location', true ),
+				'custom_attributes' => array(
+					'rows' => 2,
+				),
+			)
+		);
+
+		/**
+		 * Hook that fires after the security deposit item settings.
+		 *
+		 * This hook helps in adding custom settings to the reservable item, after the security deposit settings.
+		 *
+		 * @param string $product_type_slug Holds the product type slug.
+		 */
+		do_action( 'ersrv_after_security_deposit_item_settings', $product_type_slug );
+		?>
+	</div>
+	<div class="options_group">
 		<h4 class="reservation-tab-setting-heading"><?php esc_html_e( 'Security Deposit', 'easy-reservations' ); ?></h4>
 		<?php
 		// Security amount.
