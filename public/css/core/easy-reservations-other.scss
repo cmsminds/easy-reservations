@@ -1,6 +1,6 @@
 @import 'easy-reservations-other-variable.scss';
 
-.single-reserve-page {
+.wrapper {
     background-color: #f8f8f8;
 
     .banner {
@@ -32,7 +32,8 @@
                 border: 0px;
                 background-color: transparent;
             }
-            .dropdown-divider{
+
+            .dropdown-divider {
                 margin-top: 22px;
                 padding-bottom: 31px;
             }
@@ -46,7 +47,8 @@
                 color: $primary;
 
                 // color: #0b65af;
-                &.show-on-load,&[aria-expanded="true"]{
+                &.show-on-load,
+                &[aria-expanded="true"] {
                     color: $black;
                 }
 
@@ -178,23 +180,28 @@
                                 color: $gray;
                                 text-align: center;
 
-                                @include tablet{
+                                @include tablet {
                                     font-size: 14px;
+
                                     a {
                                         padding: 4px;
                                     }
                                 }
-                                @include desktop{
+
+                                @include desktop {
                                     font-size: 16px;
+
                                     a {
                                         padding: 9px;
                                     }
                                 }
+
                                 &.ui-state-highlight {
                                     color: $seconadry;
                                     background-color: $accent-300;
                                     border-radius: 100%;
                                 }
+
                                 &.ui-state-active {
                                     color: $white;
                                     background-color: $accent;
@@ -204,16 +211,19 @@
                         }
                     }
                 }
-                @include mobile{
+
+                @include mobile {
                     display: flex !important;
                     flex-direction: column;
-                    &>div{
+
+                    &>div {
                         width: 100%;
                     }
+
                     .ui-datepicker-calendar {
                         tbody {
                             tr {
-                                td{
+                                td {
                                     a {
                                         padding: 6px;
                                     }
@@ -233,15 +243,18 @@
                     -o-object-fit: cover;
                     object-fit: cover;
                 }
-                @include tablet{
+
+                @include tablet {
                     max-width: calc(100% / 2);
                     flex-basis: calc(100% / 2);
                 }
-                @include desktop{
+
+                @include desktop {
                     max-width: calc(100% / 3);
                     flex-basis: calc(100% / 3);
                 }
-                @include mobile{
+
+                @include mobile {
                     max-width: calc(100% / 1);
                     flex-basis: calc(100% / 1);
                 }
@@ -258,6 +271,7 @@
         .advanced-search {
             padding: 30px 33px;
             margin-bottom: 23px;
+
             .details {
                 input {
                     @extend .font-lato;
@@ -302,31 +316,38 @@
 
                         &:hover {
                             @extend .border-color-accent;
+
                             svg {
                                 fill: $accent;
                             }
                         }
-                        &.facebook{
-                            &:hover{
-                                border-color:$facebook;
-                                svg{
-                                    fill:$facebook;
+
+                        &.facebook {
+                            &:hover {
+                                border-color: $facebook;
+
+                                svg {
+                                    fill: $facebook;
                                 }
                             }
                         }
-                        &.twitter{
-                            &:hover{
-                                border-color:$twiiter;
-                                svg{
-                                    fill:$twiiter;
+
+                        &.twitter {
+                            &:hover {
+                                border-color: $twiiter;
+
+                                svg {
+                                    fill: $twiiter;
                                 }
                             }
                         }
-                        &.pinterest{
-                            &:hover{
-                                border-color:$pinterest;
-                                svg{
-                                    fill:$pinterest;
+
+                        &.pinterest {
+                            &:hover {
+                                border-color: $pinterest;
+
+                                svg {
+                                    fill: $pinterest;
                                 }
                             }
                         }
@@ -334,8 +355,218 @@
                 }
             }
         }
+
         .advanced-search {
             padding-bottom: 41px;
+        }
+    }
+
+    &.search-page {
+        .banner {
+            background-image: url(../../images/search-banner-image.jpg);
+            padding-top: 207px;
+            padding-bottom: 52px;
+
+            .details {
+                max-width: 100%;
+            }
+
+            .page-title {
+                h1 {
+                    color: $white;
+                }
+
+                margin-bottom: 102px !important;
+            }
+
+            .form-wrapper {
+                background-color: rgba($white, 0.2);
+                border-radius: 7px;
+                padding: 26px 26px 29px 27px;
+
+                .form-inner {
+
+                    input,
+                    .btn {
+                        min-height: 55px;
+                    }
+
+                    .col-md-6 {
+                        .form-group {
+                            input {
+                                background-position: 98% !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .content-part {
+            margin-top: 0px;
+
+            .search-results-wrapper {
+                border-radius: 10px;
+                padding: 36px 33px;
+                margin-top: 47px;
+                margin-bottom: 52px;
+                box-shadow:
+                    0 0.9px 10px rgba(0, 0, 0, 0.024),
+                    0 2.5px 27.5px rgba(0, 0, 0, 0.035),
+                    0 6px 66.3px rgba(0, 0, 0, 0.046),
+                    0 20px 220px rgba(0, 0, 0, 0.07);
+
+                @include mobile() {
+                    padding: 0px;
+                    box-shadow: none;
+                }
+
+                .title {
+                    font-size: 24px;
+                    line-height: 26px;
+                    color: $black;
+                    font-weight: 700;
+                    margin-bottom: 36px;
+                    text-align: center;
+                }
+
+                .search-result-inner {
+
+                    &.form-row>.col,
+                    &.form-row>[class*=col-] {
+                        padding-right: 7px;
+                        padding-left: 7px;
+                    }
+
+                    .card {
+                        position: relative;
+                        border-radius: 6px;
+                        overflow: hidden;
+                        border: 0px solid transparent;
+                        margin-bottom: 21px;
+                        // box-shadow:
+                        //     0 0px 34px rgba(0, 0, 0, 0.06),
+                        //     0 0px 106.9px rgba(0, 0, 0, 0.039),
+                        //     0 0px 236.3px rgba(0, 0, 0, 0.03),
+                        //     0 0px 500px rgba(0, 0, 0, 0.021);
+                        box-shadow: rgba($black, 0.125) 1.95px 1.95px 2.6px;
+
+                        .price-info {
+                            position: absolute;
+                            top: 16px;
+                            left: 14px;
+                            max-width: 138px;
+
+                            .inner-wrapper {
+                                background-color: $white;
+                                border-radius: 4px;
+                                padding: 5px 14px;
+                                display: flex;
+                                align-items: center;
+                                font-weight: 600;
+
+                                span {
+                                    margin-right: 4px;
+                                }
+                            }
+                        }
+
+                        .favorite {
+                            position: absolute;
+                            top: 18px;
+                            right: 15px;
+
+                            a {
+                                transition: 0.3s all ease-in-out;
+                                svg {
+                                    fill: $white;
+                                }
+
+                                &:hover,
+                                &:focus{
+                                    svg {
+                                        fill: $accent;
+                                    }
+                                }
+                                &:active{
+                                    svg{
+                                        transform: scale(0.8);
+                                    }
+                                }
+                            }
+                        }
+
+                        .amenities {
+                            color: #5d6475;
+                            font-size: 14px;
+                            font-weight: 300;
+                            vertical-align: middle;
+                            margin-bottom: 21px;
+
+                            .icon {
+                                @include flex-center(inline-flex);
+                            }
+
+                            svg {
+                                fill: #5d6475;
+                                pointer-events: none;
+                                height: 14px;
+                                width: 16px;
+                                vertical-align: middle;
+                            }
+                        }
+
+                        .card-body {
+                            padding: 30px;
+                            padding-top: 45px;
+                        }
+
+                        .card-title {
+                            font-size: 20px;
+                            letter-spacing: 0px;
+                            line-height: 22px;
+                            color: $black;
+                            font-weight: 700;
+                            margin-bottom: 10px;
+                            a{
+                                color: $black;
+                                &:hover{
+                                    text-decoration: none;
+                                }
+                            }
+                        }
+
+                        .btns-group {
+                            .btn {
+                                padding: 8px 16px;
+                                font-size: 14px;
+                                line-height: 20px;
+                                font-weight: 700;
+
+                                @include desktop() {
+                                    padding: 12px 26px;
+                                    font-size: 16px;
+                                    line-height: 24px;
+                                }
+                            }
+                        }
+                        &:hover{
+                            box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.13) 0px 3px 6px;
+                        }
+
+                    }
+                }
+            }
+        }
+        .btn-primary {
+            &:hover {
+                color: $black;
+                background-color: $primary-300;
+                img{
+                    -webkit-filter: invert(1);
+                            filter: invert(1);
+                }
+            }
         }
     }
 }
@@ -348,6 +579,7 @@
     border-radius: 5px;
     padding: 10px;
     z-index: 9999 !important;
+
     .ui-datepicker-header {
         .ui-datepicker-prev {
             &:hover {
@@ -424,6 +656,7 @@
 
         tbody {
             tr {
+
                 td,
                 td a {
                     @extend .font-lato;
@@ -431,14 +664,17 @@
                     @extend .font-weight-semibold;
                     color: $gray;
                     text-align: center;
-                    a{
+
+                    a {
                         padding: 6px;
                     }
+
                     &.ui-state-highlight {
                         color: $seconadry;
                         background-color: $accent-300;
                         border-radius: 100%;
                     }
+
                     &.ui-state-active {
                         color: $white;
                         background-color: $accent;
@@ -449,39 +685,59 @@
         }
     }
 }
-.bootstrap-select .dropdown-menu li a{
-    &:hover,&:focus{
+
+.bootstrap-select .dropdown-menu li a {
+
+    &:hover,
+    &:focus {
         color: $accent;
     }
 }
-.ui-slider{
+
+.ui-slider {
     background-color: $accent-300;
     border-radius: 4px;
     height: 6px;
-    .ui-slider-range{
+
+    .ui-slider-range {
         background-color: $accent;
     }
-    .ui-slider-handle{
+
+    .ui-slider-handle {
         top: -.55em;
         background-color: $accent;
-        border:3px solid $white;
+        border: 3px solid $white;
         border-radius: 100%;
         height: 22px;
         width: 22px;
         cursor: pointer;
     }
 }
-.bootstrap-select{
-    .btn{
+
+.bootstrap-select {
+    .btn {
         min-height: 55px;
-        &:hover,&:focus{
-            .filter-option{
-                .filter-option-inner{
-                    .filter-option-inner-inner{
+
+        &:hover,
+        &:focus {
+            .filter-option {
+                .filter-option-inner {
+                    .filter-option-inner-inner {
                         color: $white;
                     }
                 }
             }
+        }
+    }
+}
+.dropdown-toggle.btn-outline-light{
+    &:hover,&:focus,&:active{
+        .filter-option .filter-option-inner .filter-option-inner-inner{
+            color: $black;
+        }
+        &::after{
+            -webkit-filter: invert(0);
+                    filter: invert(0);
         }
     }
 }

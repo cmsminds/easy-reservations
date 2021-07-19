@@ -95,8 +95,8 @@ $count: 0;
     width: $size;
     height: $size;
 }
-@mixin flex-center() {
-    display: flex;
+@mixin flex-center($display:'flex') {
+    display: $display;
     align-items: center;
     justify-content: center;
 }
@@ -164,22 +164,22 @@ img {
 }
 
 .date-control {
-    background-image: url("../../images/planner.png");
-    background-position: 90%;
-    background-size: 20px;
-    background-repeat: no-repeat;
+    background-image: url("../../images/planner.png") !important;
+    background-position: 90% !important;
+    background-size: 20px !important;
+    background-repeat: no-repeat !important;
     cursor: pointer;
     transition: 0.3s ease-in-out;
     &:focus,
     &:hover {
-        background-image: url("../../images/planner_active.png");
+        background-image: url("../../images/planner_active.png") !important;
     }
 }
 .ship-icon-field{
     background-image: url("../../images/ship-gray.png") !important;
-    background-position: 90%;
-    background-size: 20px;
-    background-repeat: no-repeat;
+    background-position: 90% !important;
+    background-size: 20px !important;
+    background-repeat: no-repeat !important;
     cursor: pointer;
     transition: 0.3s ease-in-out;
     &:focus,
@@ -187,7 +187,9 @@ img {
         background-image: url("../../images/ship-green.png") !important;
     }
 }
-
+.date-control.ship-icon-field{
+    @extend .ship-icon-field;
+}
 
 *:focus,
 .focus-none,
@@ -230,6 +232,15 @@ img {
         @extend .bgcolor-primary;
     }
 }
+.btn-accent{
+    @extend .color-white;
+    @extend .bgcolor-accent;
+    @extend .border-color-accent;
+    &:hover{
+        @extend .color-black;
+        @extend .bgcolor-accent-300;
+    }
+}
 .btn-outline-primary{
     @extend .color-primary;
     @extend .border-color-primary;
@@ -239,4 +250,7 @@ img {
     color: $white;
     text-decoration: none;
     background-color: $primary;
+}
+.search-page .btn-xl{
+    padding: 15px 41px;
 }
