@@ -143,14 +143,6 @@ class Easy_Reservations_Public {
 				array(),
 				filemtime( ERSRV_PLUGIN_PATH . 'public/css/core/easy-reservations-common.css' )
 			);
-
-			// Enqueue the public style only when the style url and path are available.
-			wp_enqueue_style(
-				$this->plugin_name . '-common',
-				ERSRV_PLUGIN_URL . 'public/css/core/easy-reservations-common.css',
-				array(),
-				filemtime( ERSRV_PLUGIN_PATH . 'public/css/core/easy-reservations-common.css' )
-			);
 		}
 
 		// Add the UI style only when the widget is active.

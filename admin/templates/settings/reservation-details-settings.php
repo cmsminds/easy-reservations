@@ -27,7 +27,8 @@ $amenities         = get_post_meta( $product_id, '_ersrv_reservation_amenities',
 				'description'       => __( 'Reservation item location.', 'easy-reservations' ),
 				'value'             => get_post_meta( $post->ID, '_ersrv_item_location', true ),
 				'custom_attributes' => array(
-					'rows' => 2,
+					'rows'     => 2,
+					'required' => 'required',
 				),
 			)
 		);
@@ -78,13 +79,16 @@ $amenities         = get_post_meta( $product_id, '_ersrv_reservation_amenities',
 		// Accomodation limit.
 		woocommerce_wp_text_input(
 			array(
-				'id'          => 'accomodation_limit',
-				'label'       => __( 'Accomodation Limit', 'easy-reservations' ),
-				'placeholder' => 0.00,
-				'desc_tip'    => 'true',
-				'description' => __( 'This will set the limit to number of people who cab be a part of the reservation.', 'easy-reservations' ),
-				'type'        => 'number',
-				'value'       => get_post_meta( $post->ID, '_ersrv_accomodation_limit', true ),
+				'id'                => 'accomodation_limit',
+				'label'             => __( 'Accomodation Limit', 'easy-reservations' ),
+				'placeholder'       => 0.00,
+				'desc_tip'          => 'true',
+				'description'       => __( 'This will set the limit to number of people who cab be a part of the reservation.', 'easy-reservations' ),
+				'type'              => 'number',
+				'value'             => get_post_meta( $post->ID, '_ersrv_accomodation_limit', true ),
+				'custom_attributes' => array(
+					'required' => 'required',
+				),
 			)
 		);
 
@@ -99,8 +103,9 @@ $amenities         = get_post_meta( $product_id, '_ersrv_reservation_amenities',
 				'type'              => 'number',
 				'value'             => get_post_meta( $post->ID, '_ersrv_accomodation_adult_charge', true ),
 				'custom_attributes' => array(
-					'step' => 0.01,
-					'min'  => 0,
+					'step'     => 0.01,
+					'min'      => 0,
+					'required' => 'required',
 				),
 			)
 		);
@@ -116,8 +121,9 @@ $amenities         = get_post_meta( $product_id, '_ersrv_reservation_amenities',
 				'type'              => 'number',
 				'value'             => get_post_meta( $post->ID, '_ersrv_accomodation_kid_charge', true ),
 				'custom_attributes' => array(
-					'step' => 0.01,
-					'min'  => 0,
+					'step'     => 0.01,
+					'min'      => 0,
+					'required' => 'required',
 				),
 			)
 		);
@@ -146,8 +152,9 @@ $amenities         = get_post_meta( $product_id, '_ersrv_reservation_amenities',
 				'type'              => 'number',
 				'value'             => get_post_meta( $post->ID, '_ersrv_reservation_min_period', true ),
 				'custom_attributes' => array(
-					'step' => 1,
-					'min'  => 0,
+					'step'     => 1,
+					'min'      => 0,
+					'required' => 'required',
 				),
 			)
 		);

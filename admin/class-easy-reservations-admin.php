@@ -879,7 +879,14 @@ class Easy_Reservations_Admin {
 		return $states;
 	}
 
+	/**
+	 * Update reservation item meta details.
+	 *
+	 * @param int $post_id WordPress Post ID.
+	 * @since 1.0.0
+	 */
 	public function ersrv_save_post_callback( $post_id ) {
-
+		var_dump( $post_id );
+		die;
 	}
 }
