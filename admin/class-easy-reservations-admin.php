@@ -724,7 +724,7 @@ class Easy_Reservations_Admin {
 				// WooCommerce currency symbol.
 				$currency = get_woocommerce_currency_symbol();
 				?>
-				<div data-cost="<?php echo esc_attr( $cost ); ?>" class="ersrv-new-reservation-single-amenity <?php echo ( 2 < $index ) ? 'mtop' : ''; ?>">
+				<div data-amenity="<?php echo esc_attr( $title ); ?>" data-cost="<?php echo esc_attr( $cost ); ?>" class="ersrv-new-reservation-single-amenity <?php echo ( 2 < $index ) ? 'mtop' : ''; ?>">
 					<label class="ersrv-switch">
 						<input type="checkbox" class="ersrv-switch-input">
 						<span class="slider ersrv-switch-slider"></span>
@@ -776,51 +776,39 @@ class Easy_Reservations_Admin {
 		}
 
 		// Posted data.
-		$item_id       = filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
-		$customer_id   = filter_input( INPUT_POST, 'customer_id', FILTER_SANITIZE_NUMBER_INT );
-		$checkin_date  = filter_input( INPUT_POST, 'checkin_date', FILTER_SANITIZE_STRING );
-		$checkout_date = filter_input( INPUT_POST, 'checkout_date', FILTER_SANITIZE_STRING );
-		$adult_count   = filter_input( INPUT_POST, 'adult_count', FILTER_SANITIZE_NUMBER_INT );
-		$kid_count     = filter_input( INPUT_POST, 'kid_count', FILTER_SANITIZE_NUMBER_INT );
-		$posted_array  = filter_input_array( INPUT_POST );
-		$amenities     = array();
+		$item_id        = filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
+		$customer_id    = filter_input( INPUT_POST, 'customer_id', FILTER_SANITIZE_NUMBER_INT );
+		$checkin_date   = filter_input( INPUT_POST, 'checkin_date', FILTER_SANITIZE_STRING );
+		$checkout_date  = filter_input( INPUT_POST, 'checkout_date', FILTER_SANITIZE_STRING );
+		$adult_count    = filter_input( INPUT_POST, 'adult_count', FILTER_SANITIZE_NUMBER_INT );
+		$kid_count      = filter_input( INPUT_POST, 'kid_count', FILTER_SANITIZE_NUMBER_INT );
+		$customer_notes = filter_input( INPUT_POST, 'customer_notes', FILTER_SANITIZE_STRING );
+		$posted_array   = filter_input_array( INPUT_POST );
+		$amenities      = ( ! empty( $posted_array['amenities'] ) ) ? $posted_array['amenities'] : array();
 
-		die("pool");
-
+		// Prepare the billing address.
 		$billing_address = array(
-			'first_name' => 'Adarsh',
-			'last_name'  => 'Verma',
-			'company'    => 'cmsMinds',
-			'address_1'  => 'Test route',
-			'address_2'  => 'Test route 2',
-			'city'       => 'Lucknow',
-			'state'      => 'UP',
-			'postcode'   => '226021',
-			'country'    => 'IN',
-			'email'      => 'adarsh.srmcem@gmail.com',
-			'phone'      => '9898989898',
+			'first_name' => get_user_meta( $customer_id, 'billing_first_name', true ),
+			'last_name'  => get_user_meta( $customer_id, 'billing_last_name', true ),
+			'company'    => get_user_meta( $customer_id, 'billing_company', true ),
+			'address_1'  => get_user_meta( $customer_id, 'billing_address_1', true ),
+			'address_2'  => get_user_meta( $customer_id, 'billing_address_2', true ),
+			'city'       => get_user_meta( $customer_id, 'billing_city', true ),
+			'state'      => get_user_meta( $customer_id, 'billing_state', true ),
+			'postcode'   => get_user_meta( $customer_id, 'billing_postcode', true ),
+			'country'    => get_user_meta( $customer_id, 'billing_country', true ),
+			'email'      => get_user_meta( $customer_id, 'billing_email', true ),
+			'phone'      => get_user_meta( $customer_id, 'billing_phone', true ),
 		);
-	
-		$shipping_address = array(
-			'first_name' => 'Adarsh',
-			'last_name'  => 'Verma',
-			'company'    => 'cmsMinds',
-			'address_1'  => 'Test route',
-			'address_2'  => 'Test route 2',
-			'city'       => 'Lucknow',
-			'state'      => 'UP',
-			'postcode'   => '226021',
-			'country'    => 'IN',
-		);
-	
+
 		$order_args = array(
 			'status'              => 'pending',
 			'customer_ip_address' => $_SERVER['REMOTE_ADDR'],
 		);
 	
 		$wc_order = wc_create_order( $order_args );
-		$wc_order->set_customer_id( 1 );
-		$wc_order->set_customer_note( 'Test order' );
+		$wc_order->set_customer_id( $customer_id );
+		$wc_order->set_customer_note( $customer_notes );
 		$wc_order->set_currency( get_woocommerce_currency() );
 		$wc_order->set_prices_include_tax( 'yes' === get_option( 'woocommerce_prices_include_tax' ) );
 	
@@ -830,14 +818,14 @@ class Easy_Reservations_Admin {
 			'state'    => 'UP',
 		);
 	
-		$wc_product = wc_get_product( 52 );
-		$item_id    = $wc_order->add_product( $wc_product, 3 );
+		$wc_product = wc_get_product( $item_id );
+		$item_id    = $wc_order->add_product( $wc_product, 1 );
 		$line_item  = $wc_order->get_item( $item_id, false );
 		$line_item->calculate_taxes( $taxes_args );
 		$line_item->save();
 	
 		$wc_order->set_address( $billing_address, 'billing');
-		$wc_order->set_address( $shipping_address, 'shipping');
+		$wc_order->set_address( $billing_address, 'shipping');
 		$wc_order->calculate_totals();
 		$wc_order->save();
 	

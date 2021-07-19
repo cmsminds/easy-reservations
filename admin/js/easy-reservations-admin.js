@@ -387,6 +387,7 @@ jQuery( document ).ready( function( $ ) {
 			block_element( $( 'tr.ersrv-new-reservation-accomodation-row' ) );
 			block_element( $( 'tr.ersrv-new-reservation-checkin-checkout-row' ) );
 			block_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
+			block_element( $( 'tr.ersrv-new-reservation-customer-note-row' ) );
 			block_element( $( '.ersrv-add-new-reservation' ) );
 			return false;
 		}
@@ -423,6 +424,7 @@ jQuery( document ).ready( function( $ ) {
 					unblock_element( $( 'tr.ersrv-new-reservation-accomodation-row' ) );
 					unblock_element( $( 'tr.ersrv-new-reservation-checkin-checkout-row' ) );
 					unblock_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
+					unblock_element( $( 'tr.ersrv-new-reservation-customer-note-row' ) );
 					unblock_element( $( '.ersrv-add-new-reservation' ) );
 
 					// Item details.
@@ -526,6 +528,7 @@ jQuery( document ).ready( function( $ ) {
 		kid_count               = ( -1 !== is_valid_number( kid_count ) ) ? kid_count : 0;
 		var guests              = adult_count + kid_count;
 		var process_reservation = true;
+		var amenities           = [];
 
 		// Vacate the error message.
 		$( '.ersrv-reservation-error' ).text( '' );
@@ -560,6 +563,20 @@ jQuery( document ).ready( function( $ ) {
 			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( 'Please provide checkout date.' );
 		}
 
+		// Collect the amenities and their charges.
+		$( '.ersrv-new-reservation-single-amenity' ).each ( function() {
+			var this_element = $( this );
+			var is_checked = this_element.find( 'input[type="checkbox"]' ).is( ':checked' );
+			if ( true === is_checked ) {
+				amenities.push(
+					{
+						amenity: this_element.data( 'amenity' ),
+						cost: this_element.data( 'cost' ),
+					}
+				);
+			}
+		} );
+
 		// Exit, if we cannot process the reservation.
 		if ( false === process_reservation ) {
 			return false;
@@ -577,6 +594,8 @@ jQuery( document ).ready( function( $ ) {
 			checkout_date: checkout_date,
 			adult_count: adult_count,
 			kid_count: kid_count,
+			amenities: amenities,
+			customer_notes: $( '.ersrv-new-reservation-customer-note-row td textarea' ).val(),
 		};
 
 		$.ajax( {

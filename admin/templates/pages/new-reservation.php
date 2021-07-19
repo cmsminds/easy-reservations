@@ -118,6 +118,17 @@ $customers = get_users();
 					</div>
 				</td>
 			</tr>
+
+			<!-- CUSTOM NOTE -->
+			<tr class="ersrv-new-reservation-customer-note-row non-clickable">
+				<th scope="row">
+					<label for="accomodation"><?php esc_html_e( 'Customer Notes (if any)', 'easy-reservations' ); ?></label>
+				</th>
+				<td>
+					<textarea rows="4" class="large-text"></textarea>
+					<p class="ersrv-form-description-text"><?php esc_html_e( 'Any special request that the customer may have during/before the reservation.', 'easy-reservations' ); ?></p>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 	<div class="new-reservation-summary">
