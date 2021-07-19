@@ -145,6 +145,8 @@ class Easy_Reservations_Public {
 					filemtime( ERSRV_PLUGIN_PATH . 'public/css/core/easy-reservations-common.css' )
 				);
 			}
+		} elseif ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) ) {
+			
 		}
 
 		// Add the UI style only when the widget is active.
@@ -685,5 +687,23 @@ class Easy_Reservations_Public {
 		}
 
 		return $template;
+	}
+
+	/**
+	 * Search reservations callback.
+	 *
+	 * @param array $args Holds the shortcode arguments.
+	 * @return string
+	 * @since 1.0.0
+	 */
+	public function ersrv_ersrv_search_reservations_callback( $args = array() ) {
+		// Return, if it's admin panel.
+		if ( is_admin() ) {
+			return;
+		}
+
+		ob_start();
+		require_once ERSRV_PLUGIN_PATH . 'public/templates/shortcodes/search-reservations.php';
+		return ob_get_clean();
 	}
 }

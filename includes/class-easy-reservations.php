@@ -180,6 +180,7 @@ class Easy_Reservations {
 		$this->loader->add_filter( 'woocommerce_product_add_to_cart_text', $plugin_public, 'ersrv_woocommerce_product_add_to_cart_text_callback', 10, 2 );
 		$this->loader->add_filter( 'woocommerce_related_products', $plugin_public, 'ersrv_woocommerce_related_products_callback', 20, 2 );
 		$this->loader->add_filter( 'template_include', $plugin_public, 'ersrv_template_include_callback', 99, 1 );
+		$this->loader->add_shortcode( 'ersrv_search_reservations', $plugin_public, 'ersrv_ersrv_search_reservations_callback' );
 	}
 
 	/**
