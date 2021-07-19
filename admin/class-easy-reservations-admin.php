@@ -266,10 +266,10 @@ class Easy_Reservations_Admin {
 	 */
 	public function ersrv_woocommerce_process_product_meta_callback( $post_id ) {
 		$location                  = filter_input( INPUT_POST, 'location', FILTER_SANITIZE_STRING );
-		$security_amt              = (float) filter_input( INPUT_POST, 'security_amount', FILTER_SANITIZE_NUMBER_FLOAT );
+		$security_amt              = (float)filter_input( INPUT_POST, 'security_amount', FILTER_SANITIZE_STRING );
 		$accomodation_limit        = (int) filter_input( INPUT_POST, 'accomodation_limit', FILTER_SANITIZE_NUMBER_INT );
-		$accomodation_adult_charge = (float) filter_input( INPUT_POST, 'accomodation_adult_charge', FILTER_SANITIZE_NUMBER_FLOAT );
-		$accomodation_kid_charge   = (float) filter_input( INPUT_POST, 'accomodation_kid_charge', FILTER_SANITIZE_NUMBER_FLOAT );
+		$accomodation_adult_charge = (float) filter_input( INPUT_POST, 'accomodation_adult_charge', FILTER_SANITIZE_STRING );
+		$accomodation_kid_charge   = (float) filter_input( INPUT_POST, 'accomodation_kid_charge', FILTER_SANITIZE_STRING );
 		$reservation_min_period    = (int) filter_input( INPUT_POST, 'reservation_min_period', FILTER_SANITIZE_NUMBER_INT );
 		$reservation_max_period    = (int) filter_input( INPUT_POST, 'reservation_max_period', FILTER_SANITIZE_NUMBER_INT );
 		$promotion_text            = filter_input( INPUT_POST, 'promotion_text', FILTER_SANITIZE_STRING );
@@ -746,6 +746,7 @@ class Easy_Reservations_Admin {
 			'adult_charge'           => get_post_meta( $item_id, '_ersrv_accomodation_adult_charge', true ),
 			'kid_charge'             => get_post_meta( $item_id, '_ersrv_accomodation_kid_charge', true ),
 			'security_amount'        => get_post_meta( $item_id, '_ersrv_security_amt', true ),
+			'currency'               => get_woocommerce_currency_symbol(),
 		);
 
 		// Send the AJAX response.
@@ -776,15 +777,19 @@ class Easy_Reservations_Admin {
 		}
 
 		// Posted data.
-		$item_id        = filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
-		$customer_id    = filter_input( INPUT_POST, 'customer_id', FILTER_SANITIZE_NUMBER_INT );
-		$checkin_date   = filter_input( INPUT_POST, 'checkin_date', FILTER_SANITIZE_STRING );
-		$checkout_date  = filter_input( INPUT_POST, 'checkout_date', FILTER_SANITIZE_STRING );
-		$adult_count    = filter_input( INPUT_POST, 'adult_count', FILTER_SANITIZE_NUMBER_INT );
-		$kid_count      = filter_input( INPUT_POST, 'kid_count', FILTER_SANITIZE_NUMBER_INT );
-		$customer_notes = filter_input( INPUT_POST, 'customer_notes', FILTER_SANITIZE_STRING );
-		$posted_array   = filter_input_array( INPUT_POST );
-		$amenities      = ( ! empty( $posted_array['amenities'] ) ) ? $posted_array['amenities'] : array();
+		$item_id            = filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
+		$customer_id        = filter_input( INPUT_POST, 'customer_id', FILTER_SANITIZE_NUMBER_INT );
+		$checkin_date       = filter_input( INPUT_POST, 'checkin_date', FILTER_SANITIZE_STRING );
+		$checkout_date      = filter_input( INPUT_POST, 'checkout_date', FILTER_SANITIZE_STRING );
+		$adult_count        = filter_input( INPUT_POST, 'adult_count', FILTER_SANITIZE_NUMBER_INT );
+		$kid_count          = filter_input( INPUT_POST, 'kid_count', FILTER_SANITIZE_NUMBER_INT );
+		$customer_notes     = filter_input( INPUT_POST, 'customer_notes', FILTER_SANITIZE_STRING );
+		$posted_array       = filter_input_array( INPUT_POST );
+		$amenities          = ( ! empty( $posted_array['amenities'] ) ) ? $posted_array['amenities'] : array();
+		$item_subtotal      = (float) filter_input( INPUT_POST, 'item_subtotal', FILTER_SANITIZE_STRING );
+		$kids_subtotal      = (float) filter_input( INPUT_POST, 'kids_subtotal', FILTER_SANITIZE_STRING );
+		$security_subtotal  = (float) filter_input( INPUT_POST, 'security_subtotal', FILTER_SANITIZE_STRING );
+		$amenities_subtotal = (float) filter_input( INPUT_POST, 'amenities_subtotal', FILTER_SANITIZE_STRING );
 
 		// Prepare the billing address.
 		$billing_address = array(
@@ -800,40 +805,106 @@ class Easy_Reservations_Admin {
 			'email'      => get_user_meta( $customer_id, 'billing_email', true ),
 			'phone'      => get_user_meta( $customer_id, 'billing_phone', true ),
 		);
-
-		$order_args = array(
+		$order_args      = array(
 			'status'              => 'pending',
 			'customer_ip_address' => $_SERVER['REMOTE_ADDR'],
 		);
-	
+
+		/**
+		 * This hook fires before reservation is created as WooCommerce order.
+		 *
+		 * This hook helps in executing anything before the reservation is created from admin panel.
+		 */
+		do_action( 'ersrv_create_reservation_from_admin_before' );
+
+		// Create the woocommerce order now.
 		$wc_order = wc_create_order( $order_args );
 		$wc_order->set_customer_id( $customer_id );
 		$wc_order->set_customer_note( $customer_notes );
 		$wc_order->set_currency( get_woocommerce_currency() );
 		$wc_order->set_prices_include_tax( 'yes' === get_option( 'woocommerce_prices_include_tax' ) );
-	
-		// For calculating taxes on items
-		$taxes_args = array(
-			'country'  => 'IN',
-			'state'    => 'UP',
+
+		// Set the array for tax calculations
+		$calculate_tax_for = array(
+			'country'  => ( ! empty( $billing_address['country'] ) ) ? $billing_address['country'] : '',
+			'state'    => ( ! empty( $billing_address['state'] ) ) ? $billing_address['state'] : '',
+			'postcode' => ( ! empty( $billing_address['postcode'] ) ) ? $billing_address['postcode'] : '',
+			'city'     => ( ! empty( $billing_address['city'] ) ) ? $billing_address['city'] : '',
 		);
-	
+
 		$wc_product = wc_get_product( $item_id );
-		$item_id    = $wc_order->add_product( $wc_product, 1 );
+		$item_id    = $wc_order->add_product( $wc_product, $adult_count );
 		$line_item  = $wc_order->get_item( $item_id, false );
-		$line_item->calculate_taxes( $taxes_args );
+		$line_item->calculate_taxes( $calculate_tax_for );
 		$line_item->save();
-	
-		$wc_order->set_address( $billing_address, 'billing');
-		$wc_order->set_address( $billing_address, 'shipping');
+
+		// Update the item meta details.
+		wc_add_order_item_meta( $item_id, 'Adult Count', $adult_count );
+		wc_add_order_item_meta( $item_id, 'Kid(s) Count', $kid_count );
+		wc_add_order_item_meta( $item_id, 'Checkin Date', $checkin_date );
+		wc_add_order_item_meta( $item_id, 'Checkout Date', $checkout_date );
+
+		// Update the amenities to order item meta.
+		if ( ! empty( $amenities ) && is_array( $amenities ) ) {
+			foreach ( $amenities as $amenity ) {
+				$amenity_title = $amenity['amenity'];
+				$amenity_cost  = $amenity['cost'];
+				wc_add_order_item_meta( $item_id, 'Amenity', $amenity_title );
+				wc_add_order_item_meta( $item_id, "{$amenity_title} Cost", $amenity_cost );
+			}
+		}
+
+		$wc_order->set_address( $billing_address, 'billing' );
+		$wc_order->set_address( $billing_address, 'shipping' );
+
+		// Kid's subtotal fee.
+		$kids_subtotal_fee = new WC_Order_Item_Fee();
+		$kids_subtotal_fee->set_name( __( 'Kid(s) Subtotal', 'easy-reservations' ) );
+		$kids_subtotal_fee->set_amount( $kids_subtotal );
+		$kids_subtotal_fee->set_tax_class( '' );
+		$kids_subtotal_fee->set_tax_status( 'taxable' );
+		$kids_subtotal_fee->set_total( $kids_subtotal );
+		$kids_subtotal_fee->calculate_taxes( $calculate_tax_for );
+		$wc_order->add_item( $kids_subtotal_fee );
+
+		// Security subtotal fee.
+		$security_subtotal_fee = new WC_Order_Item_Fee();
+		$security_subtotal_fee->set_name( __( 'Security Subtotal', 'easy-reservations' ) );
+		$security_subtotal_fee->set_amount( $security_subtotal );
+		$security_subtotal_fee->set_tax_class( '' );
+		$security_subtotal_fee->set_tax_status( 'taxable' );
+		$security_subtotal_fee->set_total( $security_subtotal );
+		$security_subtotal_fee->calculate_taxes( $calculate_tax_for );
+		$wc_order->add_item( $security_subtotal_fee );
+
+		// Amenities subtotal fee.
+		$amenities_subtotal_fee = new WC_Order_Item_Fee();
+		$amenities_subtotal_fee->set_name( __( 'Amenities Subtotal', 'easy-reservations' ) );
+		$amenities_subtotal_fee->set_amount( $amenities_subtotal );
+		$amenities_subtotal_fee->set_tax_class( '' );
+		$amenities_subtotal_fee->set_tax_status( 'taxable' );
+		$amenities_subtotal_fee->set_total( $amenities_subtotal );
+		$amenities_subtotal_fee->calculate_taxes( $calculate_tax_for );
+		$wc_order->add_item( $amenities_subtotal_fee );
+
 		$wc_order->calculate_totals();
 		$wc_order->save();
-	
-		echo $wc_order->get_id();
 
+		/**
+		 * This hook fires after reservation is created as WooCommerce order.
+		 *
+		 * This hook helps in executing anything after the reservation is created from admin panel.
+		 */
+		do_action( 'ersrv_create_reservation_from_admin_after' );
+
+		// Get the order link.
+		$order_edit_link = get_edit_post_link( $wc_order->get_id(), '&' );
+
+		// Prepare the response.
 		$response = array(
-			'code'    => 'item-details-fetched',
-			'details' => $item_details,
+			'code'        => 'reservation-created',
+			'button_text' => __( 'Reservation created. Redirecting...', 'easy-reservations' ),
+			'redirect_to' => $order_edit_link,
 		);
 		wp_send_json_success( $response );
 		wp_die();
@@ -886,7 +957,18 @@ class Easy_Reservations_Admin {
 	 * @since 1.0.0
 	 */
 	public function ersrv_save_post_callback( $post_id ) {
-		var_dump( $post_id );
-		die;
+		// If it's the product page.
+		if ( 'product' === get_post_type( $post_id ) ) {
+			$accomodation_adult_charge = (float) filter_input( INPUT_POST, 'accomodation_adult_charge', FILTER_SANITIZE_STRING );
+
+			// If accomodation adult charge is available.
+			if ( ! empty( $accomodation_adult_charge ) ) {
+				update_post_meta( $post_id, '_regular_price', $accomodation_adult_charge );
+				update_post_meta( $post_id, '_price', $accomodation_adult_charge );
+			} else {
+				delete_post_meta( $post_id, '_regular_price' );
+				delete_post_meta( $post_id, '_price' );
+			}
+		}
 	}
 }

@@ -478,12 +478,39 @@ if ( ! function_exists( 'ersrv_get_admin_script_vars' ) ) {
 
 		// Add the error message to the array on new reservation page.
 		if ( ! is_null( $page ) && 'new-reservation' === $page ) {
-			$vars['email_address_required']  = __( 'Email address is required.', 'easy-reservations' );
-			$vars['email_address_invalid']   = __( 'Email address is invalid.', 'easy-reservations' );
-			$vars['password_required']       = __( 'Password is required.', 'easy-reservations' );
-			$vars['accomodation_limit_text'] = __( 'Limit: --', 'easy-reservations' );
-			$vars['start_of_week']           = get_option( 'start_of_week' );
+			$vars['accomodation_limit_text']                      = __( 'Limit: --', 'easy-reservations' );
+			$vars['start_of_week']                                = get_option( 'start_of_week' );
+			$vars['woo_currency']                                 = get_woocommerce_currency_symbol();
+			$vars['reservation_customer_err_msg']                 = __( 'Please select a customer for this reservation.', 'easy-reservations' );
+			$vars['reservation_guests_err_msg']                   = __( 'Please provide the count of guests for the reservation.', 'easy-reservations' );
+			$vars['reservation_only_kids_guests_err_msg']         = __( 'We cannot proceed with only the kids in the reservation.', 'easy-reservations' );
+			$vars['reservation_guests_count_exceeded_err_msg']    = __( 'The guests count is more than the accomodation limit.', 'easy-reservations' );
+			$vars['reservation_checkin_checkout_missing_err_msg'] = __( 'Please provide checkin and checkout dates.', 'easy-reservations' );
+			$vars['reservation_checkin_missing_err_msg']          = __( 'Please provide checkin dates.', 'easy-reservations' );
+			$vars['reservation_checkout_missing_err_msg']         = __( 'Please provide checkout dates.', 'easy-reservations' );
+			$vars['reservation_lesser_reservation_days_err_msg']  = __( 'The item can be reserved for a min. of XX days.', 'easy-reservations' );
+			$vars['reservation_greater_reservation_days_err_msg'] = __( 'The item can be reserved for a max. of XX days.', 'easy-reservations' );
+			$vars['reservation_customer_first_name_err_msg']      = __( 'First name is required.', 'easy-reservations' );
+			$vars['reservation_customer_last_name_err_msg']       = __( 'Last name is required.', 'easy-reservations' );
+			$vars['reservation_customer_email_err_msg']           = __( 'Email address is required.', 'easy-reservations' );
+			$vars['reservation_customer_email_invalid_err_msg']   = __( 'Email address is invalid.', 'easy-reservations' );
+			$vars['reservation_customer_password_err_msg']        = __( 'Password is required.', 'easy-reservations' );
+			$vars['reservation_customer_phone_err_msg']           = __( 'Phone number is required.', 'easy-reservations' );
+			$vars['reservation_customer_address_err_msg']         = __( 'Address line is required.', 'easy-reservations' );
+			$vars['reservation_customer_country_err_msg']         = __( 'Country is required.', 'easy-reservations' );
+			$vars['reservation_customer_city_err_msg']            = __( 'City is required.', 'easy-reservations' );
+			$vars['reservation_customer_postcode_err_msg']        = __( 'Postcode is required.', 'easy-reservations' );
 		}
+
+		/**
+		 * This hook fires in admin panel.
+		 *
+		 * This filter helps in modifying the script variables in admin.
+		 *
+		 * @param array $vars Script variables.
+		 * @return array
+		 */
+		$vars = apply_filters( 'ersrv_admin_script_vars', $vars );
 
 		return $vars;
 	}

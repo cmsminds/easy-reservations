@@ -135,11 +135,29 @@ $customers = get_users();
 		<h3><?php esc_html_e( 'Summary', 'easy-reservations' ); ?></h3>
 		<table class="form-table">
 			<tbody>
-				<tr>
-					<th scope="row"><?php esc_html_e( 'Security Fees', 'easy-reservations' ); ?></th>
-					<td class="">Rs. 200</td>
+				<tr class="item-price-summary">
+					<th scope="row"><?php esc_html_e( 'Item (Adult) Subtotal', 'easy-reservations' ); ?></th>
+					<td>--</td>
+				</tr>
+				<tr class="kids-charge-summary">
+					<th scope="row"><?php esc_html_e( 'Kid(s) Subtotal', 'easy-reservations' ); ?></th>
+					<td>--</td>
+				</tr>
+				<tr class="security-amount-summary">
+					<th scope="row"><?php esc_html_e( 'Security Fees Subtotal', 'easy-reservations' ); ?></th>
+					<td>--</td>
+				</tr>
+				<tr class="amenities-summary">
+					<th scope="row"><?php esc_html_e( 'Amenities Subtotal', 'easy-reservations' ); ?></th>
+					<td>--</td>
 				</tr>
 			</tbody>
+			<tfoot>
+				<tr class="new-reservation-total-cost">
+					<th scope="row"><?php esc_html_e( 'Total', 'easy-reservations' ); ?></th>
+					<td>--</td>
+				</tr>
+			</tfoot>
 		</table>
 	</div>
 	<input type="hidden" id="accomodation-limit" value="" />
