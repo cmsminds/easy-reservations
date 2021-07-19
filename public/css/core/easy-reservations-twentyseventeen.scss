@@ -164,16 +164,14 @@
                                         padding: 9px;
                                     }
                                 }
-
-                                &.ui-state-active {
-                                    color: $white;
-                                    background-color: $accent;
-                                    border-radius: 100%;
-                                }
-
                                 &.ui-state-highlight {
                                     color: $secondary;
                                     background-color: $accent-300;
+                                    border-radius: 100%;
+                                }
+                                &.ui-state-active {
+                                    color: $white;
+                                    background-color: $accent;
                                     border-radius: 100%;
                                 }
                             }
@@ -403,14 +401,14 @@
                     a{
                         padding: 7px;
                     }
-                    &.ui-state-active {
-                        color: $white;
-                        background-color: $accent;
-                        border-radius: 100%;
-                    }
                     &.ui-state-highlight {
                         color: $secondary;
                         background-color: $accent-300;
+                        border-radius: 100%;
+                    }
+                    &.ui-state-active {
+                        color: $white;
+                        background-color: $accent;
                         border-radius: 100%;
                     }
                 }

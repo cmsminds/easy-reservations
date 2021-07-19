@@ -1,6 +1,8 @@
-@import 'easy-reservations-twentysixteen-variable.scss';
+@import 'easy-reservations-twentytwentyone-variable.scss';
+
 .single-reserve-page {
     background-color: #f8f8f8;
+
     .banner {
         min-height: 570px;
         padding-top: 149px;
@@ -9,17 +11,22 @@
         background-position: center center;
         background-size: cover;
         background-repeat: no-repeat;
+
         .details {
-            max-width: 500px;
+            max-width: 360px;
         }
     }
+
     .content-part {
         margin-top: calc(86px - 256px);
+
         .info-box {
+            // min-height:400px;
             @extend .bgcolor-white;
             border-radius: 6px;
             padding: 23.5px 30px;
             margin-bottom: 20px;
+
             .card {
                 padding: 0px;
                 border: 0px;
@@ -29,16 +36,22 @@
                 margin-top: 22px;
                 padding-bottom: 31px;
             }
+
             a:hover {
                 @extend .color-accent;
             }
+
             .section-title {
                 position: relative;
                 color: $primary;
+
+                // color: #0b65af;
                 &.show-on-load,&[aria-expanded="true"]{
                     color: $black;
                 }
+
                 &:not(.show-on-load) {
+
                     &:before,
                     &:after {
                         display: inline-flex;
@@ -49,8 +62,9 @@
                         transform: scale(0.75);
                         transition: transform 0.25s ease-out;
                     }
+
                     &[aria-expanded="false"] {
-                        &::before {
+						&::before {
                             top: 0;
                             width: 4px;
                             height: 30px;
@@ -67,10 +81,12 @@
                 }
             }
         }
+
         .datepicker {
             .ui-datepicker-inline {
                 width: 100% !important;
                 padding: 0px;
+
                 .ui-datepicker-header {
                     .ui-datepicker-prev {
                         &:hover {
@@ -79,6 +95,7 @@
                             left: 2px;
                         }
                     }
+
                     .ui-datepicker-prev,
                     .ui-datepicker-next {
                         @include ratio(49px, 34px);
@@ -104,8 +121,7 @@
                         &:hover {
                             text-decoration: none;
                             top: 2px;
-                            color: $secondary;
-                            background-color: $transparent;
+                            @extend .btn-outline-primary;
                         }
                     }
 
@@ -165,7 +181,7 @@
                                     }
                                 }
                                 &.ui-state-highlight {
-                                    color: $accent-700;
+                                    color: $seconadry;
                                     background-color: $accent-300;
                                     border-radius: 100%;
                                 }
@@ -222,13 +238,12 @@
             }
         }
     }
+
     .sidebar-wrapper {
         .price-box {
             margin-bottom: 17px;
-            .old-price{
-                color:$white-500;
-            }
         }
+
         .book-tour,
         .advanced-search {
             padding: 30px 33px;
@@ -250,14 +265,16 @@
                         background-position: 95%;
                     }
                 }
-                .btn{
-                    display: inline-flex;
-                    justify-content: center;
-                    align-items: center;
-                    &.btn-xl {
-                        padding: 15.063px 1.5rem;
-                    }
+				.checkbox-wrapper{
+					.custom-control.custom-checkbox{
+						padding-left: 0px;
+					}
+				}
+
+                .btn-xl {
+                    padding: 15.063px 1.5rem;
                 }
+
                 .social {
                     a {
                         display: inline-flex;
@@ -269,12 +286,14 @@
                         border: 1px solid $gray;
                         @extend .color-gray;
                         margin: 0px 4px;
+
                         svg {
                             pointer-events: none;
                             fill: $gray;
                             width: 20px;
                             height: auto;
                         }
+
                         &:hover {
                             @extend .border-color-accent;
                             svg {
@@ -314,15 +333,15 @@
         }
     }
 }
+
 #ui-datepicker-div {
-    background: $white;
+    background: #fff;
     box-shadow:
         0 3.1px 29.1px rgba(0, 0, 0, 0.15),
         0 25px 80px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
     padding: 10px;
     z-index: 9999 !important;
-    // width: 13rem;
     .ui-datepicker-header {
         .ui-datepicker-prev {
             &:hover {
@@ -331,6 +350,7 @@
                 left: 2px;
             }
         }
+
         .ui-datepicker-prev,
         .ui-datepicker-next {
             @include ratio(40px, 25px);
@@ -339,6 +359,7 @@
             border-radius: 4px;
             border: 1px solid $primary;
             cursor: pointer;
+
             .ui-icon {
                 text-indent: 0px;
                 position: relative;
@@ -351,31 +372,36 @@
                 @extend .font-size-12;
                 @extend .font-weight-semibold;
             }
+
             &:hover {
                 text-decoration: none;
                 top: 2px;
-                color: $secondary;
-                background-color: $transparent;
+                @extend .btn-outline-primary;
             }
         }
+
         .ui-datepicker-prev {
             &:hover {
                 left: 2px;
             }
         }
+
         .ui-datepicker-next {
             &:hover {
                 right: 2px;
             }
         }
+
         .ui-datepicker-title {
             @extend .font-size-14;
             @extend .font-weight-semibold;
         }
     }
+
     .ui-datepicker-buttonpane {
         display: none;
     }
+
     .ui-datepicker-calendar {
         thead {
             tr {
@@ -386,6 +412,7 @@
                 }
             }
         }
+
         tbody {
             tr {
                 td,
@@ -395,10 +422,10 @@
                     color: $gray;
                     text-align: center;
                     a{
-                        padding: 7px;
+                        padding: 6px;
                     }
                     &.ui-state-highlight {
-                        color: $accent-700;
+                        color: $seconadry;
                         background-color: $accent-300;
                         border-radius: 100%;
                     }
@@ -437,8 +464,7 @@
 .bootstrap-select{
     .btn{
         min-height: 55px;
-        height: auto;
-        &:hover,&:focus{
+		&:hover,&:focus{
             .filter-option{
                 .filter-option-inner{
                     .filter-option-inner-inner{
@@ -447,8 +473,68 @@
                 }
             }
         }
+		&.btn-outline-primary{
+			background-color: $transparent !important;
+			color: $primary !important;
+			border-color: $primary !important;
+			&:hover,&:focus,&:active{
+				background-color: $primary !important;
+				border-color: $primary !important;
+				color: $white !important;
+			}
+		}
+		&.btn-primary{
+			background-color: $primary;
+			color: $white;
+			&:hover,&:focus,&:active{
+				background-color: $seconadry;
+				border-color: $seconadry;
+				color: $primary;
+			}
+		}
+		&.btn-outline-secondary{
+			background-color: $transparent !important;
+			color: $primary !important;
+			border-color: $primary !important;
+			&:hover,&:focus,&:active{
+				background-color: $seconadry !important;
+				border-color: $seconadry !important;
+				color: $primary !important;
+				.filter-option{
+					.filter-option-inner{
+						.filter-option-inner-inner{
+							color: $primary !important;
+						}
+					}
+				}
+				&::after{
+					filter: brightness(0);
+				}
+			}
+		}
+        
     }
 }
-.bootstrap-select>.dropdown-toggle.bs-placeholder, .bootstrap-select>.dropdown-toggle.bs-placeholder:active, .bootstrap-select>.dropdown-toggle.bs-placeholder:focus, .bootstrap-select>.dropdown-toggle.bs-placeholder:hover{
-    color: inherit;
+.btn-outline-fill-primary{
+	background-color: $primary-300 !important;
+	color: $primary !important;
+	border-color: $primary !important;
+	&:hover,&:focus,&:active{
+		background-color: $primary !important;
+		border-color: $primary !important;
+		color: $white !important;
+	}	
+}
+.btn-primary{
+	background-color: $primary !important;
+	color: $seconadry !important;
+	border-color: $primary !important;
+	&:hover,&:focus,&:active{
+		background-color: $transparent !important;
+		border-color: $primary !important;
+		color: $primary !important;
+		img{
+			filter: brightness(0);
+		}
+	}	
 }

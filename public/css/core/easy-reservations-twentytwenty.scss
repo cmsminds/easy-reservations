@@ -1,4 +1,4 @@
-@import 'easy-reservations-twentysixteen-variable.scss';
+@import 'easy-reservations-twentytwenty-variable.scss';
 .single-reserve-page {
     background-color: #f8f8f8;
     .banner {
@@ -87,7 +87,6 @@
                         border-radius: 4px;
                         border: 1px solid $primary;
                         cursor: pointer;
-
                         .ui-icon {
                             text-indent: 0px;
                             position: relative;
@@ -108,7 +107,6 @@
                             background-color: $transparent;
                         }
                     }
-
                     .ui-datepicker-prev {
                         &:hover {
                             left: 2px;
@@ -161,7 +159,7 @@
                                 @include desktop{
                                     font-size: 16px;
                                     a {
-                                        padding: 9px;
+                                        padding: 11px;
                                     }
                                 }
                                 &.ui-state-highlight {
@@ -239,7 +237,9 @@
                     @extend .color-black-500;
                     @extend .bgcolor-white-300;
                     @extend .border-color-black-300;
-                    min-height: 55px;
+                    &:not([type="checkbox"]){
+                        min-height: 55px;
+                    }
 
                     &:focus {
                         @extend .color-black;
@@ -322,7 +322,7 @@
     border-radius: 5px;
     padding: 10px;
     z-index: 9999 !important;
-    // width: 13rem;
+    width: 28.5rem;
     .ui-datepicker-header {
         .ui-datepicker-prev {
             &:hover {
@@ -395,7 +395,7 @@
                     color: $gray;
                     text-align: center;
                     a{
-                        padding: 7px;
+                        padding: 9px;
                     }
                     &.ui-state-highlight {
                         color: $accent-700;
@@ -413,8 +413,10 @@
     }
 }
 .bootstrap-select .dropdown-menu li a{
+    font-size: 1.5rem;
     &:hover,&:focus{
         color: $accent;
+        background-color: $transparent;
     }
 }
 .ui-slider{
@@ -425,7 +427,7 @@
         background-color: $accent;
     }
     .ui-slider-handle{
-        top: -.55em;
+        top: -.85em;
         background-color: $accent;
         border:3px solid $white;
         border-radius: 100%;
@@ -438,6 +440,7 @@
     .btn{
         min-height: 55px;
         height: auto;
+        font-size: 1.5rem;
         &:hover,&:focus{
             .filter-option{
                 .filter-option-inner{
@@ -451,4 +454,17 @@
 }
 .bootstrap-select>.dropdown-toggle.bs-placeholder, .bootstrap-select>.dropdown-toggle.bs-placeholder:active, .bootstrap-select>.dropdown-toggle.bs-placeholder:focus, .bootstrap-select>.dropdown-toggle.bs-placeholder:hover{
     color: inherit;
+}
+label.inline, input[type="checkbox"] + label{
+    display: inline-block;
+    margin: 0px;
+}
+.custom-control-label::before,
+.custom-control-label::after{
+    width: 1.5rem;
+    height: 1.5rem;
+    left: -2.5rem;
+}
+.bootstrap-select .dropdown-menu li{
+    margin: 0px;
 }
