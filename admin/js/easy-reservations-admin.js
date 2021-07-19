@@ -389,6 +389,7 @@ jQuery( document ).ready( function( $ ) {
 			block_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
 			block_element( $( 'tr.ersrv-new-reservation-customer-note-row' ) );
 			block_element( $( '.ersrv-add-new-reservation' ) );
+			block_element( $( '.new-reservation-summary' ) );
 			return false;
 		}
 
@@ -426,6 +427,7 @@ jQuery( document ).ready( function( $ ) {
 					unblock_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
 					unblock_element( $( 'tr.ersrv-new-reservation-customer-note-row' ) );
 					unblock_element( $( '.ersrv-add-new-reservation' ) );
+					unblock_element( $( '.new-reservation-summary' ) );
 
 					// Item details.
 					var item_details       = response.data.details;

@@ -878,4 +878,8 @@ class Easy_Reservations_Admin {
 
 		return $states;
 	}
+
+	public function ersrv_save_post_callback( $post_id ) {
+
+	}
 }

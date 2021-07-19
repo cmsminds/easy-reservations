@@ -83,79 +83,75 @@ class Easy_Reservations_Public {
 	public function ersrv_wp_enqueue_scripts_callback() {
 		global $wp_registered_widgets, $post;
 		// Active style file based on the active theme.
-		$current_theme     = get_option( 'stylesheet' );
-		$active_style      = ersrv_get_active_stylesheet( $current_theme );
-		$active_style_url  = ( ! empty( $active_style['url'] ) ) ? $active_style['url'] : '';
-		$active_style_path = ( ! empty( $active_style['path'] ) ) ? $active_style['path'] : '';
+		$current_theme       = get_option( 'stylesheet' );
+		$active_style        = ersrv_get_active_stylesheet( $current_theme );
+		$active_style_url    = ( ! empty( $active_style['url'] ) ) ? $active_style['url'] : '';
+		$active_style_path   = ( ! empty( $active_style['path'] ) ) ? $active_style['path'] : '';
+		$is_search_page      = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
+		$is_reservation_page = ersrv_product_is_reservation( get_the_ID() );
 
 		/* ---------------------------------------STYLES--------------------------------------- */
 
-		// Include few styles on reservation product type page.
-		if ( is_product() ) {
-			$wc_product = wc_get_product( get_the_ID() );
-			// Check for reservation product type.
-			if ( $this->custom_product_type === $wc_product->get_type() ) {
-				// Enqueue the bootstrap style.
+		// If it's the single reservation page or the search page.
+		if ( $is_reservation_page || $is_search_page ) {
+			// Enqueue the bootstrap style.
+			wp_enqueue_style(
+				$this->plugin_name . '-bootstrap-style',
+				ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap.min.css',
+				array(),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap.min.css' )
+			);
+
+			// Enqueue the ui style.
+			wp_enqueue_style(
+				$this->plugin_name . '-jquery-ui-style',
+				ERSRV_PLUGIN_URL . 'public/css/ui/jquery-ui.min.css',
+				array(),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/css/ui/jquery-ui.min.css' )
+			);
+
+			// Enqueue the bootstrap select style.
+			wp_enqueue_style(
+				$this->plugin_name . '-bootstrap-select-style',
+				ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap-select.min.css',
+				array(),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap-select.min.css' )
+			);
+
+			// Enqueue the free font-awesome style.
+			// wp_enqueue_style(
+			// 	$this->plugin_name . '-font-awesome-style',
+			// 	'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css',
+			// 	array(),
+			// 	'5.13.1'
+			// );
+
+			// Enqueue the public style only when the style url and path are available.
+			if ( ! empty( $active_style_url ) && ! empty( $active_style_path ) ) {
 				wp_enqueue_style(
-					$this->plugin_name . '-bootstrap-style',
-					ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap.min.css',
+					$this->plugin_name,
+					$active_style_url,
 					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap.min.css' )
-				);
-
-				// Enqueue the ui style.
-				wp_enqueue_style(
-					$this->plugin_name . '-jquery-ui-style',
-					ERSRV_PLUGIN_URL . 'public/css/ui/jquery-ui.min.css',
-					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/css/ui/jquery-ui.min.css' )
-				);
-
-				// Enqueue the bootstrap select style.
-				wp_enqueue_style(
-					$this->plugin_name . '-bootstrap-select-style',
-					ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap-select.min.css',
-					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap-select.min.css' )
-				);
-
-				// Enqueue the free font-awesome style.
-				// wp_enqueue_style(
-				// 	$this->plugin_name . '-font-awesome-style',
-				// 	'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css',
-				// 	array(),
-				// 	'5.13.1'
-				// );
-
-				// Enqueue the public style only when the style url and path are available.
-				if ( ! empty( $active_style_url ) && ! empty( $active_style_path ) ) {
-					wp_enqueue_style(
-						$this->plugin_name,
-						$active_style_url,
-						array(),
-						filemtime( $active_style_path ),
-					);
-				}
-
-				// Enqueue the public style only when the style url and path are available.
-				wp_enqueue_style(
-					$this->plugin_name . '-common',
-					ERSRV_PLUGIN_URL . 'public/css/core/easy-reservations-common.css',
-					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/css/core/easy-reservations-common.css' )
+					filemtime( $active_style_path ),
 				);
 			}
-		} elseif ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) ) {
-			
-		}
 
-		// Enqueue the public style only when the style url and path are available.
-		wp_enqueue_style(
-			$this->plugin_name . '-common',
-			ERSRV_PLUGIN_URL . 'public/css/core/easy-reservations-common.css',
-			array(),
-			filemtime( ERSRV_PLUGIN_PATH . 'public/css/core/easy-reservations-common.css' )
-		);
+			// Enqueue the public style only when the style url and path are available.
+			wp_enqueue_style(
+				$this->plugin_name . '-common',
+				ERSRV_PLUGIN_URL . 'public/css/core/easy-reservations-common.css',
+				array(),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/css/core/easy-reservations-common.css' )
+			);
+
+			// Enqueue the public style only when the style url and path are available.
+			wp_enqueue_style(
+				$this->plugin_name . '-common',
+				ERSRV_PLUGIN_URL . 'public/css/core/easy-reservations-common.css',
+				array(),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/css/core/easy-reservations-common.css' )
+			);
+		}
 
 		// Add the UI style only when the widget is active.
 		if ( false !== $this->is_calendar_widget_active ) {
@@ -189,39 +185,36 @@ class Easy_Reservations_Public {
 
 		/* ---------------------------------------SCRIPTS--------------------------------------- */
 
-		if ( is_product() ) {
-			$wc_product = wc_get_product( get_the_ID() );
-			// Check for reservation product type.
-			if ( $this->custom_product_type === $wc_product->get_type() ) {
-				// Bootstrap bundle script.
-				wp_enqueue_script(
-					$this->plugin_name . '-bootstrap-bundle-script',
-					ERSRV_PLUGIN_URL . 'public/js/bootstrap/bootstrap.bundle.min.js',
-					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap/bootstrap.bundle.min.js' ),
-					true
-				);
+		// If it's the single reservation page or the search page.
+		if ( $is_reservation_page || $is_search_page ) {
+			// Bootstrap bundle script.
+			wp_enqueue_script(
+				$this->plugin_name . '-bootstrap-bundle-script',
+				ERSRV_PLUGIN_URL . 'public/js/bootstrap/bootstrap.bundle.min.js',
+				array(),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap/bootstrap.bundle.min.js' ),
+				true
+			);
 
-				// Bootstrap select script.
-				wp_enqueue_script(
-					$this->plugin_name . '-bootstrap-select-script',
-					ERSRV_PLUGIN_URL . 'public/js/bootstrap/bootstrap-select.min.js',
-					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap/bootstrap-select.min.js' ),
-					true
-				);
+			// Bootstrap select script.
+			wp_enqueue_script(
+				$this->plugin_name . '-bootstrap-select-script',
+				ERSRV_PLUGIN_URL . 'public/js/bootstrap/bootstrap-select.min.js',
+				array(),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap/bootstrap-select.min.js' ),
+				true
+			);
 
-				// Enqueue the ui script.
-				wp_enqueue_script(
-					$this->plugin_name . '-jquery-ui-script',
-					ERSRV_PLUGIN_URL . 'public/js/ui/jquery-ui.min.js',
-					array( 'jquery' ),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/js/ui/jquery-ui.min.js' )
-				);
+			// Enqueue the ui script.
+			wp_enqueue_script(
+				$this->plugin_name . '-jquery-ui-script',
+				ERSRV_PLUGIN_URL . 'public/js/ui/jquery-ui.min.js',
+				array( 'jquery' ),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/js/ui/jquery-ui.min.js' )
+			);
 
-				// Custom public script.
-				self::ersrv_enqueue_plugin_core_js( $this->plugin_name );
-			}
+			// Custom public script.
+			self::ersrv_enqueue_plugin_core_js( $this->plugin_name );
 		} elseif ( is_checkout() ) {
 			self::ersrv_enqueue_plugin_core_js( $this->plugin_name );
 		}

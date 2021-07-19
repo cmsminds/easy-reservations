@@ -131,8 +131,16 @@ $customers = get_users();
 			</tr>
 		</tbody>
 	</table>
-	<div class="new-reservation-summary">
-
+	<div class="new-reservation-summary non-clickable">
+		<h3><?php esc_html_e( 'Summary', 'easy-reservations' ); ?></h3>
+		<table class="form-table">
+			<tbody>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Security Fees', 'easy-reservations' ); ?></th>
+					<td class="">Rs. 200</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	<input type="hidden" id="accomodation-limit" value="" />
 	<input type="hidden" id="min-reservation-period" value="" />

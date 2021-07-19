@@ -153,6 +153,7 @@ class Easy_Reservations {
 		$this->loader->add_action( 'wp_ajax_get_reservable_item_details', $plugin_admin, 'ersrv_get_reservable_item_details_callback' );
 		$this->loader->add_action( 'wp_ajax_create_reservation', $plugin_admin, 'ersrv_create_reservation_callback' );
 		$this->loader->add_action( 'wp_ajax_get_states', $plugin_admin, 'ersrv_get_states_callback' );
+		$this->loader->add_action( 'save_post', $plugin_admin, 'ersrv_save_post_callback' );
 	}
 
 	/**
