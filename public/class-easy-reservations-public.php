@@ -149,6 +149,14 @@ class Easy_Reservations_Public {
 			
 		}
 
+		// Enqueue the public style only when the style url and path are available.
+		wp_enqueue_style(
+			$this->plugin_name . '-common',
+			ERSRV_PLUGIN_URL . 'public/css/core/easy-reservations-common.css',
+			array(),
+			filemtime( ERSRV_PLUGIN_PATH . 'public/css/core/easy-reservations-common.css' )
+		);
+
 		// Add the UI style only when the widget is active.
 		if ( false !== $this->is_calendar_widget_active ) {
 			// Enqueue the bootstrap style if not already enqueued.
