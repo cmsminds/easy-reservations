@@ -505,11 +505,17 @@ if ( ! function_exists( 'ersrv_get_admin_script_vars' ) ) {
 	 */
 	function ersrv_get_admin_script_vars() {
 		$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
+		$post = (int) filter_input( INPUT_GET, 'page', FILTER_SANITIZE_NUMBER_INT );
 		$vars = array(
 			'ajaxurl'             => admin_url( 'admin-ajax.php' ),
 			'same_as_adult'       => __( 'Same as Adult!', 'easy-reservations' ),
 			'export_reservations' => __( 'Export Reservations', 'easy-reservations' ),
 		);
+
+		// Add some script variables on product edit page.
+		if ( ! is_null( $post ) && 'product' === get_post_type( $post ) ) {
+			$vars['ersrv_product_type'] = ersrv_get_custom_product_type_slug();
+		}
 
 		// Add the error message to the array on new reservation page.
 		if ( ! is_null( $page ) && 'new-reservation' === $page ) {

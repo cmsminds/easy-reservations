@@ -27,6 +27,7 @@ jQuery( document ).ready( function( $ ) {
 	var reservation_customer_country_err_msg         = ERSRV_Admin_Script_Vars.reservation_customer_country_err_msg;
 	var reservation_customer_city_err_msg            = ERSRV_Admin_Script_Vars.reservation_customer_city_err_msg;
 	var reservation_customer_postcode_err_msg        = ERSRV_Admin_Script_Vars.reservation_customer_postcode_err_msg;
+	var ersrv_product_type                           = ERSRV_Admin_Script_Vars.ersrv_product_type;
 
 	// Add HTML after the kid charge number field.
 	$( '<a class="ersrv-copy-adult-charge" href="javascript:void(0);">' + same_as_adult + '</a>' ).insertAfter( '#accomodation_kid_charge' );
@@ -774,6 +775,28 @@ jQuery( document ).ready( function( $ ) {
 				}
 			},
 		} );
+	} );
+
+	/**
+	 * Add required field attributes to some fields in reservation product type.
+	 */
+	$( document ).on( 'change', '#product-type', function() {
+		var product_type = $( this ).val();
+
+		$( '#location' ).prop( 'required', false );
+		$( '#accomodation_limit' ).prop( 'required', false );
+		$( '#accomodation_adult_charge' ).prop( 'required', false );
+		$( '#accomodation_kid_charge' ).prop( 'required', false );
+		$( '#reservation_min_period' ).prop( 'required', false );
+
+		// If the product type is reservation.
+		if ( ersrv_product_type === product_type ) {
+			$( '#location' ).prop( 'required', true );
+			$( '#accomodation_limit' ).prop( 'required', true );
+			$( '#accomodation_adult_charge' ).prop( 'required', true );
+			$( '#accomodation_kid_charge' ).prop( 'required', true );
+			$( '#reservation_min_period' ).prop( 'required', true );
+		}
 	} );
 
 	/**

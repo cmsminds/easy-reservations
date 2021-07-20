@@ -27,8 +27,7 @@ $amenities         = get_post_meta( $product_id, '_ersrv_reservation_amenities',
 				'description'       => __( 'Reservation item location.', 'easy-reservations' ),
 				'value'             => get_post_meta( $post->ID, '_ersrv_item_location', true ),
 				'custom_attributes' => array(
-					'rows'     => 2,
-					'required' => 'required',
+					'rows' => 2,
 				),
 			)
 		);
@@ -87,7 +86,6 @@ $amenities         = get_post_meta( $product_id, '_ersrv_reservation_amenities',
 				'type'              => 'number',
 				'value'             => get_post_meta( $post->ID, '_ersrv_accomodation_limit', true ),
 				'custom_attributes' => array(
-					'required' => 'required',
 				),
 			)
 		);
@@ -105,7 +103,6 @@ $amenities         = get_post_meta( $product_id, '_ersrv_reservation_amenities',
 				'custom_attributes' => array(
 					'step'     => 0.01,
 					'min'      => 0,
-					'required' => 'required',
 				),
 			)
 		);
@@ -123,7 +120,6 @@ $amenities         = get_post_meta( $product_id, '_ersrv_reservation_amenities',
 				'custom_attributes' => array(
 					'step'     => 0.01,
 					'min'      => 0,
-					'required' => 'required',
 				),
 			)
 		);
@@ -154,7 +150,6 @@ $amenities         = get_post_meta( $product_id, '_ersrv_reservation_amenities',
 				'custom_attributes' => array(
 					'step'     => 1,
 					'min'      => 0,
-					'required' => 'required',
 				),
 			)
 		);
