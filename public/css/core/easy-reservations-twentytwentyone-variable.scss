@@ -91,8 +91,8 @@ $count: 0;
     width: $size;
     height: $size;
 }
-@mixin flex-center() {
-    display: flex;
+@mixin flex-center($display:flex) {
+    display: $display;
     align-items: center;
     justify-content: center;
 }
@@ -236,4 +236,16 @@ img {
 }
 .custom-control-input:focus:not(:checked)~.custom-control-label::before{
     border-color: $primary;
+}
+.search-page .btn-xl{
+    padding: 15px 41px;
+}
+.btn-accent{
+    color: $white !important;
+    @extend .bgcolor-accent;
+    @extend .border-color-accent;
+    &:hover, &:focus, &:active {
+        color: $black !important;
+        @extend .bgcolor-accent-300;
+    }
 }

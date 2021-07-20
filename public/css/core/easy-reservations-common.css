@@ -1,5 +1,7 @@
 .site,
-.theme-twentynineteen .site-content .site-main .page .entry-content{
+.theme-twentynineteen .site-content .site-main .page .entry-content,
+.theme-twentytwenty #site-content .wrapper,
+.theme-twentytwentyone .site-content > .content-area > #main .wrapper{
     margin: 0px;
 }
 table{
@@ -11,7 +13,9 @@ table{
 .theme-storefront .site-content > .col-full,
 .theme-twentytwentyone .site-content > .content-area,
 .theme-twentynineteen .site-content .site-main .page .entry-content,
-.theme-twentynineteen .site-content .site-main .page .entry-content .wrapper{
+.theme-twentynineteen .site-content .site-main .page .entry-content .wrapper,
+.theme-twentytwenty #site-content .wrapper,
+.theme-twentytwentyone .site-content > .content-area > #main .wrapper{
     max-width: 100%;
 }
 .site-content,
@@ -22,7 +26,9 @@ table{
 .theme-twentynineteen .site-content .site-main .page .entry-content{
     padding: 0px;
 }
-.theme-astra .site-content > .ast-container > section{
+.theme-astra .site-content > .ast-container > section,
+.theme-twentytwenty #site-content .wrapper,
+.theme-twentytwentyone .site-content > .content-area > #main .wrapper{
     width: 100%;
 }
 .theme-astra .site-content .ast-container .content-area{

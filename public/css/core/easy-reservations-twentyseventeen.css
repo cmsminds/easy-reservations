@@ -1078,10 +1078,6 @@ img {
   padding: 26px 26px 29px 27px;
 }
 
-.wrapper.search-page .banner .form-wrapper .form-inner .bootstrap-select {
-  overflow: hidden;
-}
-
 .wrapper.search-page .banner .form-wrapper .form-inner input,
 .wrapper.search-page .banner .form-wrapper .form-inner .btn {
   min-height: 55px;
