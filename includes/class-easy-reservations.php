@@ -197,6 +197,8 @@ class Easy_Reservations {
 		$this->loader->add_action( 'woocommerce_order_details_after_order_table', $plugin_public, 'ersrv_woocommerce_order_details_after_order_table_callback' );
 		$this->loader->add_filter( 'woocommerce_order_get_formatted_billing_address', $plugin_public, 'ersrv_woocommerce_order_get_formatted_billing_address_callback', 20, 2 );
 		$this->loader->add_action( 'dokan_order_detail_after_order_items', $plugin_public, 'ersrv_dokan_order_detail_after_order_items_callback' );
+		$this->loader->add_action( 'wp_ajax_get_reservation_items', $plugin_public, 'ersrv_get_reservation_items_callback' );
+		$this->loader->add_action( 'wp_ajax_nopriv_get_reservation_items', $plugin_public, 'ersrv_get_reservation_items_callback' );
 	}
 
 	/**

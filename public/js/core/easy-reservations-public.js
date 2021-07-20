@@ -6,6 +6,7 @@ jQuery(document).ready(function ($) {
 	var remove_sidebar = ERSRV_Public_Script_Vars.remove_sidebar;
 	var is_product     = ERSRV_Public_Script_Vars.is_product;
 	var is_checkout    = ERSRV_Public_Script_Vars.is_checkout;
+	var is_search_page = ERSRV_Public_Script_Vars.is_search_page;
 
 	// Custom variables defined.
 	var reservation_item_id = $('.ersrv-reservation-container').data('item');
@@ -13,8 +14,8 @@ jQuery(document).ready(function ($) {
 
 	// If sidebar is to be removed on reservation single page.
 	if ('yes' === remove_sidebar) {
-		$('.secondary').remove();
-		$('.primary').css('width', '100%');
+		$( '#secondary' ).remove();
+		$( '#primary' ).css( 'width', '100%' );
 	}
 
 	if ( 'yes' === is_product ) {
@@ -111,6 +112,31 @@ jQuery(document).ready(function ($) {
 			});
 		}
 	} );
+
+	/**
+	 * Fire the AJAX to load the reservation items on search page.
+	 */
+	if ( 'yes' === is_search_page ) {
+		// Send the AJAX now.
+		$.ajax({
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'get_reservation_items',
+			},
+			success: function ( response ) {
+				// Check for invalid ajax request.
+				if ( 0 === response ) {
+					console.log( 'easy reservations: invalid ajax request' );
+					return false;
+				} else if ( 'items-found' !== response.data.code ) { // If items are found.
+					var html = response.data.html;
+				} else if ( 'no-items-found' !== response.data.code ) { // If items are found.
+				}
+			},
+		});
+	}
 
 	/**
 	 * Block element.

@@ -206,9 +206,9 @@ class Easy_Reservations_Public {
 			);
 
 			// Custom public script.
-			self::ersrv_enqueue_plugin_core_js( $this->plugin_name );
+			self::ersrv_enqueue_plugin_core_js( $this->plugin_name, $is_search_page );
 		} elseif ( is_checkout() ) {
-			self::ersrv_enqueue_plugin_core_js( $this->plugin_name );
+			self::ersrv_enqueue_plugin_core_js( $this->plugin_name, $is_search_page );
 		}
 
 		// Add the datepicker and custom script only when the widget is active.
@@ -250,7 +250,7 @@ class Easy_Reservations_Public {
 	 * @param string $plugin_name Plugin folder name.
 	 * @since 1.0.0
 	 */
-	public static function ersrv_enqueue_plugin_core_js( $plugin_name ) {
+	public static function ersrv_enqueue_plugin_core_js( $plugin_name, $is_search_page ) {
 		// Custom public script.
 		wp_enqueue_script(
 			$plugin_name,
@@ -266,9 +266,10 @@ class Easy_Reservations_Public {
 			'ERSRV_Public_Script_Vars',
 			array(
 				'ajaxurl'        => admin_url( 'admin-ajax.php' ),
-				'remove_sidebar' => ersrv_get_plugin_settings( 'ersrv_remove_product_single_sidebar' ),
+				'remove_sidebar' => ersrv_get_plugin_settings( 'ersrv_remove_reservation_pages_sidebar' ),
 				'is_product'     => ( is_product() ) ? 'yes' : 'no',
 				'is_checkout'    => ( is_checkout() ) ? 'yes' : 'no',
+				'is_search_page' => ( $is_search_page ) ? 'yes' : 'no',
 			)
 		);
 	}
@@ -879,5 +880,50 @@ class Easy_Reservations_Public {
 			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * AJAX to get reservation items on search page.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_get_reservation_items_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+		// Exit, if the action mismatches.
+		if ( empty( $action ) || 'get_reservation_items' !== $action ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Get the items now.
+		$posts_per_page          = get_option( 'posts_per_page' );
+		$reservation_items_query = ersrv_get_posts( 'product', 1, $posts_per_page );
+		$reservation_item_ids    = $reservation_items_query->posts;
+
+		// Return the response if there are no items available.
+		if ( empty( $reservation_item_ids ) || ! is_array( $reservation_item_ids ) ) {
+			wp_send_json_success(
+				array(
+					'code' => 'no-items-found'
+				)
+			);
+			wp_die();
+		}
+
+		// Iterate through the item IDs to generate the HTML.
+		$html = '';
+		foreach ( $reservation_item_ids as $item_id ) {
+			$html .= ersrv_get_reservation_item_block_html( $item_id );
+		}
+
+		// Send the response.
+		wp_send_json_success(
+			array(
+				'code' => 'items-found',
+				'html' => $html,
+			)
+		);
+		wp_die();
 	}
 }

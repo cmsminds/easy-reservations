@@ -112,9 +112,9 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 				'id'    => 'ersrv_reservation_general_settings',
 			),
 			array(
-				'title' => __( 'Remove Sidebar from Reservation Single Page', 'easy-reservations' ),
-				'desc'  => __( 'This sets whether the sidebar is to be displayed on reservation single page.', 'easy-reservations' ),
-				'id'    => 'ersrv_remove_product_single_sidebar',
+				'title' => __( 'Remove Sidebar from Reservation Pages', 'easy-reservations' ),
+				'desc'  => __( 'This sets whether the sidebar is to be displayed on reservation pages.', 'easy-reservations' ),
+				'id'    => 'ersrv_remove_reservation_pages_sidebar',
 				'type'  => 'checkbox',
 			),
 			array(

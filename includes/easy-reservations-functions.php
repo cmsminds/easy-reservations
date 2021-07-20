@@ -33,7 +33,7 @@ function ersrv_get_plugin_settings( $setting ) {
 			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : __( 'Reserve It', 'easy-reservations' );
 			break;
 
-		case 'ersrv_remove_product_single_sidebar':
+		case 'ersrv_remove_reservation_pages_sidebar':
 			$data = get_option( $setting );
 			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : 'no';
 			break;
@@ -747,445 +747,396 @@ if ( ! function_exists( 'ersrv_email_reservation_receipt_order_status_change' ) 
 }
 
 /**
- * Function hooked to generate the Receipt PDF from order id.
- *
- * @param int    $order_id Holds the order ID.
- * @param string $action Holds the receipt action.
+ * Check if the function exists.
  */
-function ersrv_download_reservation_receipt_callback( $order_id, $action = '' ) {
-	return;
-	// Include the main TCF classes.
-	include_once ERSRV_PLUGIN_PATH . 'includes/lib/tcpdf/tcpdf.php';
-	include_once ERSRV_PLUGIN_PATH . 'public/class-wpir-receipts-tcpdf.php';
+if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
+	/**
+	 * Function hooked to generate the Receipt PDF from order id.
+	 *
+	 * @param int    $order_id Holds the order ID.
+	 * @param string $action Holds the receipt action.
+	 */
+	function ersrv_download_reservation_receipt_callback( $order_id, $action = '' ) {
+		return;
+		// Include the main TCF classes.
+		include_once ERSRV_PLUGIN_PATH . 'includes/lib/tcpdf/tcpdf.php';
+		include_once ERSRV_PLUGIN_PATH . 'public/class-wpir-receipts-tcpdf.php';
 
-	// PDF title.
-	/* translators: 1: %s: site title, 2: %d: order ID */
-	$pdf_title = sprintf( __( '%1$s - Order Receipt #%2$d', 'wc-print-invoice-receipts' ), get_bloginfo( 'title' ), $order_id );
+		// PDF title.
+		/* translators: 1: %s: site title, 2: %d: order ID */
+		$pdf_title = sprintf( __( '%1$s - Order Receipt #%2$d', 'wc-print-invoice-receipts' ), get_bloginfo( 'title' ), $order_id );
 
-	// Start PDF generation.
-	$pdf = new WPIR_Receipts_TCPDF( PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false );
-	$pdf->SetCreator( PDF_CREATOR );
-	$pdf->SetAuthor( 'Nicola Asuni' );
-	$pdf->SetTitle( $pdf_title );
-	$pdf->SetSubject( 'Order Receipt' );
-	$pdf->SetKeywords( 'TCPDF, PDF, example, test, guide' );
-	$pdf->setHeaderFont( array( PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN ) );
-	$pdf->setFooterFont( array( PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA ) );
-	$pdf->SetDefaultMonospacedFont( PDF_FONT_MONOSPACED );
-	$pdf->SetMargins( 6, 37, 6 );
-	$pdf->SetHeaderMargin( 6 );
-	$pdf->SetFooterMargin( PDF_MARGIN_FOOTER );
-	$pdf->SetAutoPageBreak( true, 23 );
-	$pdf->setImageScale( PDF_IMAGE_SCALE_RATIO );
-	if ( file_exists( dirname( __FILE__ ) . '/lang/eng.php' ) ) {
-		require_once dirname( __FILE__ ) . '/lang/eng.php';
-		$pdf->setLanguageArray( $l );
-	}
-	$pdf->setFontSubsetting( true );
-	$pdf->SetFont( 'robotocondensed', '', 12, '', true );
-	$pdf->AddPage();
+		// Start PDF generation.
+		$pdf = new WPIR_Receipts_TCPDF( PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false );
+		$pdf->SetCreator( PDF_CREATOR );
+		$pdf->SetAuthor( 'Nicola Asuni' );
+		$pdf->SetTitle( $pdf_title );
+		$pdf->SetSubject( 'Order Receipt' );
+		$pdf->SetKeywords( 'TCPDF, PDF, example, test, guide' );
+		$pdf->setHeaderFont( array( PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN ) );
+		$pdf->setFooterFont( array( PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA ) );
+		$pdf->SetDefaultMonospacedFont( PDF_FONT_MONOSPACED );
+		$pdf->SetMargins( 6, 37, 6 );
+		$pdf->SetHeaderMargin( 6 );
+		$pdf->SetFooterMargin( PDF_MARGIN_FOOTER );
+		$pdf->SetAutoPageBreak( true, 23 );
+		$pdf->setImageScale( PDF_IMAGE_SCALE_RATIO );
+		if ( file_exists( dirname( __FILE__ ) . '/lang/eng.php' ) ) {
+			require_once dirname( __FILE__ ) . '/lang/eng.php';
+			$pdf->setLanguageArray( $l );
+		}
+		$pdf->setFontSubsetting( true );
+		$pdf->SetFont( 'robotocondensed', '', 12, '', true );
+		$pdf->AddPage();
 
-	// Order details.
-	$wc_order                = wc_get_order( $order_id );
-	$billing_address         = $wc_order->get_formatted_billing_address();
-	$shipping_address        = $wc_order->get_formatted_shipping_address();
-	$raw_billing_address     = $wc_order->get_address( 'billing' );
-	$raw_shipping_address    = $wc_order->get_address( 'shipping' );
-	$order_status            = $wc_order->get_status();
-	$line_items              = $wc_order->get_items();
-	$shipping_data           = wpir_get_order_shipping_data( $wc_order );
-	$shipping_method         = ( ! empty( $shipping_data['title'] ) ) ? $shipping_data['title'] : '';
-	$shipping_cost           = ( ! empty( $shipping_data['amount'] ) ) ? $shipping_data['amount'] : '';
-	$shipping_cost_formatted = ( ! empty( $shipping_data['formatted_amount'] ) ) ? $shipping_data['formatted_amount'] : '';
+		// Order details.
+		$wc_order                = wc_get_order( $order_id );
+		$billing_address         = $wc_order->get_formatted_billing_address();
+		$shipping_address        = $wc_order->get_formatted_shipping_address();
+		$raw_billing_address     = $wc_order->get_address( 'billing' );
+		$raw_shipping_address    = $wc_order->get_address( 'shipping' );
+		$order_status            = $wc_order->get_status();
+		$line_items              = $wc_order->get_items();
+		$shipping_data           = wpir_get_order_shipping_data( $wc_order );
+		$shipping_method         = ( ! empty( $shipping_data['title'] ) ) ? $shipping_data['title'] : '';
+		$shipping_cost           = ( ! empty( $shipping_data['amount'] ) ) ? $shipping_data['amount'] : '';
+		$shipping_cost_formatted = ( ! empty( $shipping_data['formatted_amount'] ) ) ? $shipping_data['formatted_amount'] : '';
 
-	// Store info.
-	$store_address          = wpir_get_store_formatted_address();
-	$date_created           = $wc_order->get_date_created();
-	$date_created_formatted = gmdate( 'F j, Y, g:i A', strtotime( $date_created ) );
+		// Store info.
+		$store_address          = wpir_get_store_formatted_address();
+		$date_created           = $wc_order->get_date_created();
+		$date_created_formatted = gmdate( 'F j, Y, g:i A', strtotime( $date_created ) );
 
-	// Plugin settings.
-	$show_shipping_method  = wpir_get_plugin_setting( 'show-shipping-method' );
-	$show_customer_details = wpir_get_plugin_setting( 'show-customer-details' );
-	$show_customer_note    = wpir_get_plugin_setting( 'show-customer-note' );
-	$store_thanks_note     = wpir_get_plugin_setting( 'store-thanks-note' );
+		// Plugin settings.
+		$show_shipping_method  = wpir_get_plugin_setting( 'show-shipping-method' );
+		$show_customer_details = wpir_get_plugin_setting( 'show-customer-details' );
+		$show_customer_note    = wpir_get_plugin_setting( 'show-customer-note' );
+		$store_thanks_note     = wpir_get_plugin_setting( 'store-thanks-note' );
 
-	// Differences in billing and shipping addresses.
-	$billing_shipping_addresses_difference = array_diff( $raw_billing_address, $raw_shipping_address );
+		// Differences in billing and shipping addresses.
+		$billing_shipping_addresses_difference = array_diff( $raw_billing_address, $raw_shipping_address );
 
-	// Remove the billing email and phone number from the billing differences.
-	if ( ! empty( $billing_shipping_addresses_difference['email'] ) ) {
-		unset( $billing_shipping_addresses_difference['email'] );
-	}
+		// Remove the billing email and phone number from the billing differences.
+		if ( ! empty( $billing_shipping_addresses_difference['email'] ) ) {
+			unset( $billing_shipping_addresses_difference['email'] );
+		}
 
-	if ( ! empty( $billing_shipping_addresses_difference['phone'] ) ) {
-		unset( $billing_shipping_addresses_difference['phone'] );
-	}
+		if ( ! empty( $billing_shipping_addresses_difference['phone'] ) ) {
+			unset( $billing_shipping_addresses_difference['phone'] );
+		}
 
-	// Payment details.
-	$payment_method       = $wc_order->payment_method;
-	$payment_method_title = $wc_order->payment_method_title;
+		// Payment details.
+		$payment_method       = $wc_order->payment_method;
+		$payment_method_title = $wc_order->payment_method_title;
 
-	// Watermark.
-	$watermarks = wpir_receipt_watermarks();
-	$watermark  = $watermarks[ $order_status ]['text'];
+		// Watermark.
+		$watermarks = wpir_receipt_watermarks();
+		$watermark  = $watermarks[ $order_status ]['text'];
 
-	// Coupons usage.
-	$used_coupons = $wc_order->get_used_coupons();
-	$coupon_data  = ( ! empty( $used_coupons ) ) ? wpir_get_order_coupon_data( $wc_order ) : array();
-	$coupon_str   = ( ! empty( $coupon_data ) ) ? wpir_get_coupon_string( $coupon_data ) : '';
+		// Coupons usage.
+		$used_coupons = $wc_order->get_used_coupons();
+		$coupon_data  = ( ! empty( $used_coupons ) ) ? wpir_get_order_coupon_data( $wc_order ) : array();
+		$coupon_str   = ( ! empty( $coupon_data ) ) ? wpir_get_coupon_string( $coupon_data ) : '';
 
-	// Shipment tracking details.
-	$date_shipped_formatted    = __( 'Yet to ship!', 'wc-print-invoice-receipts' );
-	$tracking_number           = '--';
-	$tracking_id               = '--';
-	$shipment_tracking_details = get_post_meta( $order_id, '_wc_shipment_tracking_items', true );
+		// Shipment tracking details.
+		$date_shipped_formatted    = __( 'Yet to ship!', 'wc-print-invoice-receipts' );
+		$tracking_number           = '--';
+		$tracking_id               = '--';
+		$shipment_tracking_details = get_post_meta( $order_id, '_wc_shipment_tracking_items', true );
 
-	if ( ! empty( $shipment_tracking_details[0] ) ) {
-		$shipment_tracking_details = $shipment_tracking_details[0];
-		$tracking_number           = $shipment_tracking_details['tracking_number'];
-		$tracking_id               = $shipment_tracking_details['tracking_id'];
-		$date_shipped              = $shipment_tracking_details['date_shipped'];
-		$date_shipped_formatted    = gmdate( 'F j, Y', $date_shipped );
-	}
+		if ( ! empty( $shipment_tracking_details[0] ) ) {
+			$shipment_tracking_details = $shipment_tracking_details[0];
+			$tracking_number           = $shipment_tracking_details['tracking_number'];
+			$tracking_id               = $shipment_tracking_details['tracking_id'];
+			$date_shipped              = $shipment_tracking_details['date_shipped'];
+			$date_shipped_formatted    = gmdate( 'F j, Y', $date_shipped );
+		}
 
-	$order_totals = 0.00;
-	ob_start();
-	?>
-	<table cellspacing="0" cellpadding="0" width="100%" border="0">
-		<tr width="100%">
-			<td colspan="2">
-				<table cellspacing="0" cellpadding="0" width="100%" border="0">
-					<tr width="100%">
-						<?php
-						if ( empty( $billing_shipping_addresses_difference ) ) {
-							?>
-								<td style="width:35%">
-									<table cellspacing="0" cellpadding="0" width="100%" border="0">
-										<tr width="100%"><td style="line-height:28px;font-size:14px;"><b><?php esc_html_e( 'BILL & SHIP ADDRESS:', 'wc-print-invoice-receipts' ); ?></b></td></tr>
-										<tr width="100%"><td style="line-height:14px;font-size:12px;"><?php echo wp_kses_post( $billing_address ); ?></td></tr>
-										<tr><td style="height:3px"></td></tr>
-									</table>
-								</td>
+		$order_totals = 0.00;
+		ob_start();
+		?>
+		<table cellspacing="0" cellpadding="0" width="100%" border="0">
+			<tr width="100%">
+				<td colspan="2">
+					<table cellspacing="0" cellpadding="0" width="100%" border="0">
+						<tr width="100%">
 							<?php
-						} else {
-							?>
-							<td style="<?php echo ( true === $show_shipping_method ) ? 'width:17.5%' : 'width:35%'; ?>">
-								<table cellspacing="0" cellpadding="0" width="100%" border="0">
-									<tr width="100%">
-										<td style="line-height:28px;font-size:14px;">
-											<b><?php esc_html_e( 'BILL ADDRESS:', 'wc-print-invoice-receipts' ); ?></b>
-										</td>
-									</tr>
-									<tr width="100%">
-										<td style="line-height:14px;font-size:12px;"><?php echo wp_kses_post( $billing_address ); ?></td>
-									</tr>
-								</table>
-							</td>
-							<?php if ( true === $show_shipping_method ) { ?>
-								<td style="width:17.5%">
+							if ( empty( $billing_shipping_addresses_difference ) ) {
+								?>
+									<td style="width:35%">
+										<table cellspacing="0" cellpadding="0" width="100%" border="0">
+											<tr width="100%"><td style="line-height:28px;font-size:14px;"><b><?php esc_html_e( 'BILL & SHIP ADDRESS:', 'wc-print-invoice-receipts' ); ?></b></td></tr>
+											<tr width="100%"><td style="line-height:14px;font-size:12px;"><?php echo wp_kses_post( $billing_address ); ?></td></tr>
+											<tr><td style="height:3px"></td></tr>
+										</table>
+									</td>
+								<?php
+							} else {
+								?>
+								<td style="<?php echo ( true === $show_shipping_method ) ? 'width:17.5%' : 'width:35%'; ?>">
 									<table cellspacing="0" cellpadding="0" width="100%" border="0">
 										<tr width="100%">
 											<td style="line-height:28px;font-size:14px;">
-												<b><?php esc_html_e( 'SHIP ADDRESS:', 'wc-print-invoice-receipts' ); ?></b>
+												<b><?php esc_html_e( 'BILL ADDRESS:', 'wc-print-invoice-receipts' ); ?></b>
 											</td>
 										</tr>
 										<tr width="100%">
-											<?php if ( $show_shipping_method ) { ?>
-												<td style="line-height:14px;font-size:12px;">
-													<?php echo wp_kses_post( $shipping_address ); ?>
-												</td>
-											<?php } ?>
+											<td style="line-height:14px;font-size:12px;"><?php echo wp_kses_post( $billing_address ); ?></td>
 										</tr>
 									</table>
 								</td>
-							<?php } ?>
-						<?php } ?>
-						<td style="width:35%">
-							<table cellspacing="0" cellpadding="0" width="100%" border="0">
-								<tr width="100%">
-									<td style="line-height:28px;font-size:14px;vertical-align:middle;" colspan="2">
-										<b><?php esc_html_e( 'ORDER:', 'wc-print-invoice-receipts' ); ?></b>
-									</td>
-								</tr>
-								<tr width="100%">
-									<td style="line-height:14px;font-size:12px;"><?php echo esc_html( "#{$order_id}" ); ?></td>
-								</tr>
-								<tr><td style="height:3px"></td></tr>
-								<tr width="100%">
-									<td style="line-height:28px;font-size:14px;vertical-align:middle;" colspan="2">
-										<b><?php esc_html_e( 'DATE:', 'wc-print-invoice-receipts' ); ?></b>
-									</td>
-								</tr>
-								<tr width="100%">
-									<td style="line-height:14px;font-size:12px;"><?php echo esc_html( $date_created_formatted ); ?></td>
-								</tr>
-								<tr><td style="height:3px"></td></tr>
-							</table>
-							<?php if ( ! empty( $store_thanks_note ) ) { ?>
-								<table cellspacing="0" cellpadding="0" width="95%" border="0">
-									<tr width="100%">
-										<td style="line-height:16px;font-size:12px;" colspan="2"><?php echo esc_html( $store_thanks_note ); ?></td>
-									</tr>
-									<tr><td style="height:20px"></td></tr>
-								</table>
-							<?php } ?>
-						</td>
-						<td style="width:30%;">
-							<table cellspacing="0" cellpadding="0" width="100%" border="0">
-								<?php
-								if ( 'bacs' === $payment_method ) {
-									$bacs = get_option( 'woocommerce_bacs_settings' );
-									if ( ! empty( $bacs['enabled'] ) && 'yes' === $bacs['enabled'] ) {
-										$accounts = get_option( 'woocommerce_bacs_accounts' );
-										if ( ! empty( $accounts[0] ) ) {
-											$account = $accounts[0];
-											?>
-											<tr>
-												<td style="line-height:16px;font-size:12px;">
-													<b style="text-transform:uppercase;"><?php esc_html_e( 'Store address', 'wc-print-invoice-receipts' ); ?></b>
-													<br/><?php echo wp_kses_post( $store_address ); ?>
+								<?php if ( true === $show_shipping_method ) { ?>
+									<td style="width:17.5%">
+										<table cellspacing="0" cellpadding="0" width="100%" border="0">
+											<tr width="100%">
+												<td style="line-height:28px;font-size:14px;">
+													<b><?php esc_html_e( 'SHIP ADDRESS:', 'wc-print-invoice-receipts' ); ?></b>
 												</td>
 											</tr>
-											<tr><td style="height:5px"></td>
+											<tr width="100%">
+												<?php if ( $show_shipping_method ) { ?>
+													<td style="line-height:14px;font-size:12px;">
+														<?php echo wp_kses_post( $shipping_address ); ?>
+													</td>
+												<?php } ?>
 											</tr>
-
-											<tr>
-												<td style="line-height:16px;font-size:12px;">
-													<b style="text-transform:uppercase;line-height:28px;font-size:14px;">
-														<?php echo esc_html( $payment_method_title ); ?></b>
-													<br/>
-													<span>
-														<?php
-														/* translators 1: %s: br tag, 2: %s: bank name, 3: %s: account name, 4: %s: sort code, 5: %s: account number, 6: %s: bic */
-														echo wp_kses_post( sprintf( __( 'Bank Name: %2$s%1$sAccount Name: %3$s%1$sRouting Name: %4$s%1$sAccount: %5$s%1$sBIC: %6$s%1$s', 'wc-print-invoice-receipts' ), '<br />', esc_html( $account['bank_name'] ), esc_html( $account['account_name'] ), esc_html( $account['sort_code'] ), esc_html( $account['account_number'] ), esc_html( $account['bic'] ) ) );
-														?>
-													</span>
-												</td>
-											</tr>
-											<?php
-										}
-									}
-								} elseif ( 'cheque' === $payment_method ) {
-									?>
-									<tr>
-										<td style="line-height:16px;font-size:12px;">
-											<b style="text-transform:uppercase;"><?php esc_html_e( 'Pay by cheque:', 'wc-print-invoice-receipts' ); ?></b>
-											<br/>
-											<?php
-											/* translators: 1: %s: br tag, 2: %s: store address */
-											echo wp_kses_post( sprintf( __( 'Mail your cheque to:%1$s%2$s', 'wc-print-invoice-receipts' ), '<br />', $store_address ) );
-											?>
-										</td>
-									</tr>
-									<tr><td style="height:5px"></td></tr>
-									<?php
-								} else {
-									?>
-									<tr>
-										<td style="line-height:16px;font-size:12px;">
-											<b style="text-transform:uppercase;"><?php esc_html_e( 'Store address', 'wc-print-invoice-receipts' ); ?></b>
-											<br/><?php echo wp_kses_post( $store_address ); ?>
-										</td>
-									</tr>
-									<tr><td style="height:5px"></td></tr>
-									<tr><td style="line-height:16px;font-size:12px;"><b style="text-transform:uppercase;"><?php esc_html_e( 'Payment mode:', 'wc-print-invoice-receipt' ); ?></b><br/><?php echo esc_html( $payment_method_title ); ?></td></tr>
-									<tr><td style="height:5px"></td></tr>
+										</table>
+									</td>
 								<?php } ?>
-							</table>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		<tr width="100%">
-			<td colspan="2">
-				<table cellspacing="0px" cellpadding="2px" width="100%" border="0">
-					<tr style="background-color:#ccc">
-						<td style="line-height:24px;font-size:12px;padding:5px" width="10%"></td>
-						<td style="line-height:24px;font-size:12px;padding:5px"
-							width="25%"><?php esc_html_e( 'ITEM', 'wc-print-invoice-receipts' ); ?></td>
-						<td style="line-height:24px;font-size:12px;padding:5px"
-							width="35%"><?php esc_html_e( 'DESCRIPTION', 'wc-print-invoice-receipts' ); ?></td>
-						<td style="line-height:24px;font-size:12px;padding:5px"
-							width="5%"><?php esc_html_e( 'QTY', 'wc-print-invoice-receipts' ); ?></td>
-						<td style="line-height:24px;font-size:12px;text-align:right;padding:5px"
-							width="10%"><?php esc_html_e( 'COST', 'wc-print-invoice-receipts' ); ?></td>
-						<td style="line-height:24px;font-size:12px;text-align:right;padding:5px"
-							width="15%"><?php esc_html_e( 'TOTAL', 'wc-print-invoice-receipts' ); ?></td>
-					</tr>
-					<?php
-					if ( ! empty( $line_items ) && is_array( $line_items ) ) {
-						foreach ( $line_items as $item ) {
-							$quantity          = $item->get_quantity();
-							$prod_id           = wpir_product_id( $item->get_product_id(), $item->get_variation_id() );
-							$wc_product        = $item->get_product();
-							$sku               = $wc_product->get_sku();
-							$item_subtotal     = (float) $item->get_subtotal();
-							$item_total        = (float) $item->get_total();
-							$item_cost         = $item_total / $quantity;
-							$order_totals     += $item_total;
-							$product_image_id  = get_post_thumbnail_id( $prod_id );
-							$product_image_url = wpir_get_image_url( $product_image_id );
+							<?php } ?>
+							<td style="width:35%">
+								<table cellspacing="0" cellpadding="0" width="100%" border="0">
+									<tr width="100%">
+										<td style="line-height:28px;font-size:14px;vertical-align:middle;" colspan="2">
+											<b><?php esc_html_e( 'ORDER:', 'wc-print-invoice-receipts' ); ?></b>
+										</td>
+									</tr>
+									<tr width="100%">
+										<td style="line-height:14px;font-size:12px;"><?php echo esc_html( "#{$order_id}" ); ?></td>
+									</tr>
+									<tr><td style="height:3px"></td></tr>
+									<tr width="100%">
+										<td style="line-height:28px;font-size:14px;vertical-align:middle;" colspan="2">
+											<b><?php esc_html_e( 'DATE:', 'wc-print-invoice-receipts' ); ?></b>
+										</td>
+									</tr>
+									<tr width="100%">
+										<td style="line-height:14px;font-size:12px;"><?php echo esc_html( $date_created_formatted ); ?></td>
+									</tr>
+									<tr><td style="height:3px"></td></tr>
+								</table>
+								<?php if ( ! empty( $store_thanks_note ) ) { ?>
+									<table cellspacing="0" cellpadding="0" width="95%" border="0">
+										<tr width="100%">
+											<td style="line-height:16px;font-size:12px;" colspan="2"><?php echo esc_html( $store_thanks_note ); ?></td>
+										</tr>
+										<tr><td style="height:20px"></td></tr>
+									</table>
+								<?php } ?>
+							</td>
+							<td style="width:30%;">
+								<table cellspacing="0" cellpadding="0" width="100%" border="0">
+									<?php
+									if ( 'bacs' === $payment_method ) {
+										$bacs = get_option( 'woocommerce_bacs_settings' );
+										if ( ! empty( $bacs['enabled'] ) && 'yes' === $bacs['enabled'] ) {
+											$accounts = get_option( 'woocommerce_bacs_accounts' );
+											if ( ! empty( $accounts[0] ) ) {
+												$account = $accounts[0];
+												?>
+												<tr>
+													<td style="line-height:16px;font-size:12px;">
+														<b style="text-transform:uppercase;"><?php esc_html_e( 'Store address', 'wc-print-invoice-receipts' ); ?></b>
+														<br/><?php echo wp_kses_post( $store_address ); ?>
+													</td>
+												</tr>
+												<tr><td style="height:5px"></td>
+												</tr>
 
-							// Prepare the item total cost with the cost difference, in case coupon is applied.
-							$item_discount = $item_subtotal - $item_total;
-
-							// Add the discount to the item total.
-							if ( 0 < $item_discount ) {
-								$item_discount_formatted = ( 0 !== $item_discount ) ? wc_price( $item_discount ) : '';
-								/* translators: 1: %s: br tag, 2: %s: discount amount */
-								$item_total = wc_price( $item_total ) . sprintf( __( '%1$s%2$s discount', 'wc-print-invoice-receipts' ), '<br />', $item_discount_formatted );
-							}
-
-							?>
-							<tr valign="middle">
-								<td style="padding:5px" width="10%">
-									<img src="<?php echo esc_url( $product_image_url ); ?>" height="50px" width="50px"/>
-								</td>
-								<td style="line-height:16px;font-size:12px;padding:15px" width="25%"><?php echo esc_html( $sku ); ?></td>
-								<td style="line-height:16px;font-size:12px;padding:15px" width="35%"><?php echo esc_html( $wc_product->get_title() ); ?></td>
-								<td style="line-height:16px;font-size:12px;padding:15px" width="5%"><?php echo esc_html( $quantity ); ?></td>
-								<td style="line-height:16px;font-size:12px;text-align:right;padding:15px" width="10%"><?php echo wp_kses_post( wc_price( $item_cost ) ); ?></td>
-								<td style="line-height:16px;font-size:12px;text-align:right;padding:15px" width="15%"><?php echo wp_kses_post( $item_total ); ?></td>
-							</tr>
-							<?php
-						}
-						$subtotal = wc_price( $order_totals );
-						?>
-						<tr>
-							<td style="line-height:16px;font-size:12px;" width="20%"></td>
-							<td style="line-height:16px;font-size:12px;" width="50%"></td>
-							<td style="line-height:16px;font-size:12px;" width="5%"></td>
-							<td style="line-height:16px;font-size:12px;text-align:right" width="10%"></td>
-							<td style="line-height:16px;font-size:12px;text-align:right" width="15%"></td>
+												<tr>
+													<td style="line-height:16px;font-size:12px;">
+														<b style="text-transform:uppercase;line-height:28px;font-size:14px;">
+															<?php echo esc_html( $payment_method_title ); ?></b>
+														<br/>
+														<span>
+															<?php
+															/* translators 1: %s: br tag, 2: %s: bank name, 3: %s: account name, 4: %s: sort code, 5: %s: account number, 6: %s: bic */
+															echo wp_kses_post( sprintf( __( 'Bank Name: %2$s%1$sAccount Name: %3$s%1$sRouting Name: %4$s%1$sAccount: %5$s%1$sBIC: %6$s%1$s', 'wc-print-invoice-receipts' ), '<br />', esc_html( $account['bank_name'] ), esc_html( $account['account_name'] ), esc_html( $account['sort_code'] ), esc_html( $account['account_number'] ), esc_html( $account['bic'] ) ) );
+															?>
+														</span>
+													</td>
+												</tr>
+												<?php
+											}
+										}
+									} elseif ( 'cheque' === $payment_method ) {
+										?>
+										<tr>
+											<td style="line-height:16px;font-size:12px;">
+												<b style="text-transform:uppercase;"><?php esc_html_e( 'Pay by cheque:', 'wc-print-invoice-receipts' ); ?></b>
+												<br/>
+												<?php
+												/* translators: 1: %s: br tag, 2: %s: store address */
+												echo wp_kses_post( sprintf( __( 'Mail your cheque to:%1$s%2$s', 'wc-print-invoice-receipts' ), '<br />', $store_address ) );
+												?>
+											</td>
+										</tr>
+										<tr><td style="height:5px"></td></tr>
+										<?php
+									} else {
+										?>
+										<tr>
+											<td style="line-height:16px;font-size:12px;">
+												<b style="text-transform:uppercase;"><?php esc_html_e( 'Store address', 'wc-print-invoice-receipts' ); ?></b>
+												<br/><?php echo wp_kses_post( $store_address ); ?>
+											</td>
+										</tr>
+										<tr><td style="height:5px"></td></tr>
+										<tr><td style="line-height:16px;font-size:12px;"><b style="text-transform:uppercase;"><?php esc_html_e( 'Payment mode:', 'wc-print-invoice-receipt' ); ?></b><br/><?php echo esc_html( $payment_method_title ); ?></td></tr>
+										<tr><td style="height:5px"></td></tr>
+									<?php } ?>
+								</table>
+							</td>
 						</tr>
-						<tr>
-							<td style="line-height:16px;font-size:12px;" width="20%"></td>
-							<td style="line-height:16px;font-size:12px;" width="50%"></td>
-							<td style="line-height:16px;font-size:12px;" width="5%"></td>
-							<td style="line-height:16px;font-size:12px;text-align:right" width="10%"><?php esc_html_e( 'SUBTOTAL:', 'wc-print-invoice-receipts' ); ?></td>
-							<td style="line-height:16px;font-size:12px;text-align:right" width="15%"><?php echo wp_kses_post( $subtotal ); ?></td>
+					</table>
+				</td>
+			</tr>
+			<tr width="100%">
+				<td colspan="2">
+					<table cellspacing="0px" cellpadding="2px" width="100%" border="0">
+						<tr style="background-color:#ccc">
+							<td style="line-height:24px;font-size:12px;padding:5px" width="10%"></td>
+							<td style="line-height:24px;font-size:12px;padding:5px"
+								width="25%"><?php esc_html_e( 'ITEM', 'wc-print-invoice-receipts' ); ?></td>
+							<td style="line-height:24px;font-size:12px;padding:5px"
+								width="35%"><?php esc_html_e( 'DESCRIPTION', 'wc-print-invoice-receipts' ); ?></td>
+							<td style="line-height:24px;font-size:12px;padding:5px"
+								width="5%"><?php esc_html_e( 'QTY', 'wc-print-invoice-receipts' ); ?></td>
+							<td style="line-height:24px;font-size:12px;text-align:right;padding:5px"
+								width="10%"><?php esc_html_e( 'COST', 'wc-print-invoice-receipts' ); ?></td>
+							<td style="line-height:24px;font-size:12px;text-align:right;padding:5px"
+								width="15%"><?php esc_html_e( 'TOTAL', 'wc-print-invoice-receipts' ); ?></td>
 						</tr>
 						<?php
-						if ( ! empty( $coupon_str ) ) {
-							?>
-							<tr>
-								<td style="line-height:20px;font-size:12px;" width="20%"></td>
-								<td style="line-height:20px;font-size:12px;"
-									width="50%"></td>
-								<td style="line-height:20px;font-size:12px;" width="5%"></td>
-								<td style="line-height:20px;font-size:12px;text-align:right"
-									width="10%"><?php esc_html_e( 'COUPON:', 'wc-print-invoice-receipts' ); ?></td>
-								<td style="line-height:20px;font-size:12px;text-align:right"
-									width="15%"><?php echo wp_kses_post( $coupon_str ); ?></td>
-							</tr>
-							<?php
-						}
-						// Updating the order totals for shipping costs.
-						$order_totals += $shipping_cost;
-						?>
-						<tr>
-							<?php /* translators: 1: %s: shipping method name */ ?>
-							<td colspan="5" style="line-height:16px;font-size:12px;text-align:right;" width="85%"><span style="text-transform:uppercase;"><?php echo esc_html( sprintf( __( 'Shipping: %1$s', 'wc-print-invoice-receipts' ), $shipping_method ) ); ?></span></td>
-							<td style="line-height:16px;font-size:12px;text-align:right" width="15%"><?php echo wp_kses_post( $shipping_cost_formatted ); ?></td>
-						</tr>
+						if ( ! empty( $line_items ) && is_array( $line_items ) ) {
+							foreach ( $line_items as $item ) {
+								$quantity          = $item->get_quantity();
+								$prod_id           = wpir_product_id( $item->get_product_id(), $item->get_variation_id() );
+								$wc_product        = $item->get_product();
+								$sku               = $wc_product->get_sku();
+								$item_subtotal     = (float) $item->get_subtotal();
+								$item_total        = (float) $item->get_total();
+								$item_cost         = $item_total / $quantity;
+								$order_totals     += $item_total;
+								$product_image_id  = get_post_thumbnail_id( $prod_id );
+								$product_image_url = wpir_get_image_url( $product_image_id );
 
-						<!-- TAXES -->
-						<?php
-						$taxes = $wc_order->get_tax_totals();
-						if ( ! empty( $taxes ) ) {
-							$tax_label         = '';
-							$tax_amt_formatted = '';
-							$tax_amount        = 0.00;
-							foreach ( $taxes as $tax ) {
-								$tax_label         = $tax->label;
-								$tax_amt_formatted = $tax->formatted_amount;
-								$tax_amount        = (float) $tax->amount;
-								break;
+								// Prepare the item total cost with the cost difference, in case coupon is applied.
+								$item_discount = $item_subtotal - $item_total;
+
+								// Add the discount to the item total.
+								if ( 0 < $item_discount ) {
+									$item_discount_formatted = ( 0 !== $item_discount ) ? wc_price( $item_discount ) : '';
+									/* translators: 1: %s: br tag, 2: %s: discount amount */
+									$item_total = wc_price( $item_total ) . sprintf( __( '%1$s%2$s discount', 'wc-print-invoice-receipts' ), '<br />', $item_discount_formatted );
+								}
+
+								?>
+								<tr valign="middle">
+									<td style="padding:5px" width="10%">
+										<img src="<?php echo esc_url( $product_image_url ); ?>" height="50px" width="50px"/>
+									</td>
+									<td style="line-height:16px;font-size:12px;padding:15px" width="25%"><?php echo esc_html( $sku ); ?></td>
+									<td style="line-height:16px;font-size:12px;padding:15px" width="35%"><?php echo esc_html( $wc_product->get_title() ); ?></td>
+									<td style="line-height:16px;font-size:12px;padding:15px" width="5%"><?php echo esc_html( $quantity ); ?></td>
+									<td style="line-height:16px;font-size:12px;text-align:right;padding:15px" width="10%"><?php echo wp_kses_post( wc_price( $item_cost ) ); ?></td>
+									<td style="line-height:16px;font-size:12px;text-align:right;padding:15px" width="15%"><?php echo wp_kses_post( $item_total ); ?></td>
+								</tr>
+								<?php
 							}
-							$order_totals += $tax_amount;
-							$tax_label     = empty( $tax_label ) ? __( 'TAX', 'wc-print-invoice-receipts' ) : $tax_label;
-
+							$subtotal = wc_price( $order_totals );
 							?>
 							<tr>
 								<td style="line-height:16px;font-size:12px;" width="20%"></td>
 								<td style="line-height:16px;font-size:12px;" width="50%"></td>
 								<td style="line-height:16px;font-size:12px;" width="5%"></td>
-								<td style="line-height:16px;font-size:12px;text-align:right" width="10%"><?php echo esc_html( "{$tax_label}:" ); ?></td>
-								<td style="line-height:16px;font-size:12px;text-align:right" width="15%"><?php echo wp_kses_post( $tax_amt_formatted ); ?></td>
+								<td style="line-height:16px;font-size:12px;text-align:right" width="10%"></td>
+								<td style="line-height:16px;font-size:12px;text-align:right" width="15%"></td>
+							</tr>
+							<tr>
+								<td style="line-height:16px;font-size:12px;" width="20%"></td>
+								<td style="line-height:16px;font-size:12px;" width="50%"></td>
+								<td style="line-height:16px;font-size:12px;" width="5%"></td>
+								<td style="line-height:16px;font-size:12px;text-align:right" width="10%"><?php esc_html_e( 'SUBTOTAL:', 'wc-print-invoice-receipts' ); ?></td>
+								<td style="line-height:16px;font-size:12px;text-align:right" width="15%"><?php echo wp_kses_post( $subtotal ); ?></td>
 							</tr>
 							<?php
-						}
-						?>
-						<?php
-					} else {
-						?>
-						<tr>
-							<td colspan="5" style="line-height:16px;font-size:12px;"
-								width="20%"><?php esc_html_e( 'No items found !!', 'wc-print-invoice-receipts' ); ?></td>
-						</tr>
-						<?php
-					}
-					?>
-				</table>
-			</td>
-		</tr>
-		<tr width="100%">
-			<td colspan="2" style="border-bottom:1px dashed #919191;" height="0px">
-			</td>
-		</tr>
-		<tr width="100%">
-			<td colspan="2">
-				<table cellspacing="0" cellpadding="0" width="100%" border="0">
-					<tr width="100%">
-						<td style="width:70%"></td>
-						<td style="width:10%; line-height:28px;font-size:14px;text-align:right;"><?php esc_html_e( 'TOTAL', 'wc-print-invoice-receipts' ); ?></td>
-						<td style="width:20%; line-height:28px;font-size:14px;text-align:right;font-weight:bold"><?php echo wp_kses_post( wc_price( $order_totals ) ); ?></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-
-		<!-- REFUNDS -->
-		<?php
-		$order_refunds = $wc_order->get_refunds();
-		if ( 'refunded' === $order_status || ! empty( $order_refunds ) ) {
-			?>
-			<tr width="100%">
-				<td colspan="2">
-					<table width="100%" cellpadding="2px">
-						<tr width="100%">
-							<td colspan="3">
-								<h5 style="text-transform:uppercase;"><?php esc_html_e( 'Refunds', 'wc-print-invoice-receipts' ); ?></h5>
-							</td>
-						</tr>
-						<tr width="100%" style="background-color:#ccc;">
-							<td style="width:10%;font-size:12px;line-height:24px;padding:5px"><?php esc_html_e( 'SR.NO.', 'wc-print-invoice-receipts' ); ?></td>
-							<td style="width:80%;font-size:12px;line-height:24px;padding:5px"><?php esc_html_e( 'REASON', 'wc-print-invoice-receipts' ); ?></td>
-							<td style="width:10%;font-size:12px;line-height:24px;text-align:right;padding:5px"><?php esc_html_e( 'AMOUNT', 'wc-print-invoice-receipts' ); ?></td>
-						</tr>
-						<?php
-						foreach ( $order_refunds as $key => $order_refund ) {
-							$refund_amount = (float) $order_refund->amount;
-							$order_totals -= $refund_amount;
-							$refund_reason = $order_refund->refund_reason;
-							if ( ! empty( $refund_amount ) ) {
-								$index = $key + 1;
+							if ( ! empty( $coupon_str ) ) {
 								?>
-								<tr width="100%">
-									<td style="width:10%;font-size:12px;line-height:28px;"><?php echo esc_html( "{$index}." ); ?></td>
-									<td style="width:80%;font-size:12px;line-height:28px;"><?php echo esc_html( ( empty( $refund_reason ) ) ? __( 'N/A', 'wc-print-invoice-receipts' ) : $refund_reason ); ?></td>
-									<td style="width:10%;color:red;font-size:12px;line-height:28px;text-align:right;"><?php echo '- ' . wp_kses_post( wc_price( $refund_amount ) ); ?></td>
+								<tr>
+									<td style="line-height:20px;font-size:12px;" width="20%"></td>
+									<td style="line-height:20px;font-size:12px;"
+										width="50%"></td>
+									<td style="line-height:20px;font-size:12px;" width="5%"></td>
+									<td style="line-height:20px;font-size:12px;text-align:right"
+										width="10%"><?php esc_html_e( 'COUPON:', 'wc-print-invoice-receipts' ); ?></td>
+									<td style="line-height:20px;font-size:12px;text-align:right"
+										width="15%"><?php echo wp_kses_post( $coupon_str ); ?></td>
 								</tr>
 								<?php
 							}
+							// Updating the order totals for shipping costs.
+							$order_totals += $shipping_cost;
+							?>
+							<tr>
+								<?php /* translators: 1: %s: shipping method name */ ?>
+								<td colspan="5" style="line-height:16px;font-size:12px;text-align:right;" width="85%"><span style="text-transform:uppercase;"><?php echo esc_html( sprintf( __( 'Shipping: %1$s', 'wc-print-invoice-receipts' ), $shipping_method ) ); ?></span></td>
+								<td style="line-height:16px;font-size:12px;text-align:right" width="15%"><?php echo wp_kses_post( $shipping_cost_formatted ); ?></td>
+							</tr>
+
+							<!-- TAXES -->
+							<?php
+							$taxes = $wc_order->get_tax_totals();
+							if ( ! empty( $taxes ) ) {
+								$tax_label         = '';
+								$tax_amt_formatted = '';
+								$tax_amount        = 0.00;
+								foreach ( $taxes as $tax ) {
+									$tax_label         = $tax->label;
+									$tax_amt_formatted = $tax->formatted_amount;
+									$tax_amount        = (float) $tax->amount;
+									break;
+								}
+								$order_totals += $tax_amount;
+								$tax_label     = empty( $tax_label ) ? __( 'TAX', 'wc-print-invoice-receipts' ) : $tax_label;
+
+								?>
+								<tr>
+									<td style="line-height:16px;font-size:12px;" width="20%"></td>
+									<td style="line-height:16px;font-size:12px;" width="50%"></td>
+									<td style="line-height:16px;font-size:12px;" width="5%"></td>
+									<td style="line-height:16px;font-size:12px;text-align:right" width="10%"><?php echo esc_html( "{$tax_label}:" ); ?></td>
+									<td style="line-height:16px;font-size:12px;text-align:right" width="15%"><?php echo wp_kses_post( $tax_amt_formatted ); ?></td>
+								</tr>
+								<?php
+							}
+							?>
+							<?php
+						} else {
+							?>
+							<tr>
+								<td colspan="5" style="line-height:16px;font-size:12px;"
+									width="20%"><?php esc_html_e( 'No items found !!', 'wc-print-invoice-receipts' ); ?></td>
+							</tr>
+							<?php
 						}
 						?>
 					</table>
 				</td>
 			</tr>
 			<tr width="100%">
-				<td colspan="2" style="border-bottom:1px dashed #919191;" height="0px"></td>
+				<td colspan="2" style="border-bottom:1px dashed #919191;" height="0px">
+				</td>
 			</tr>
 			<tr width="100%">
 				<td colspan="2">
@@ -1193,85 +1144,213 @@ function ersrv_download_reservation_receipt_callback( $order_id, $action = '' ) 
 						<tr width="100%">
 							<td style="width:70%"></td>
 							<td style="width:10%; line-height:28px;font-size:14px;text-align:right;"><?php esc_html_e( 'TOTAL', 'wc-print-invoice-receipts' ); ?></td>
-							<td style="width:20%; line-height:28px;font-size:16px;text-align:right;font-weight:bold"><?php echo wp_kses_post( wc_price( $order_totals ) ); ?></td>
+							<td style="width:20%; line-height:28px;font-size:14px;text-align:right;font-weight:bold"><?php echo wp_kses_post( wc_price( $order_totals ) ); ?></td>
 						</tr>
 					</table>
 				</td>
 			</tr>
 
-		<?php } ?>
-
-		<!-- CUSTOMER NOTES -->
-		<?php
-		$customer_note = $wc_order->customer_message;
-		if ( ! empty( $customer_note ) && true === $show_customer_note ) {
-			?>
-			<tr width="100%">
-				<td colspan="2">
-					<table cellspacing="0" cellpadding="0" width="100%" border="0">
-						<tr width="100%">
-							<td width="100%" style="line-height:16px;font-size:12px;">
-								<span style="text-transform:uppercase;"><?php esc_html_e( 'Customer Note:', 'wc-print-invoice-receipts' ); ?></span><br/>
-								<span><?php echo esc_html( $customer_note ); ?></span>
-							</td>
-						</tr>
-					</table>
-				</td>
-			</tr>
+			<!-- REFUNDS -->
 			<?php
+			$order_refunds = $wc_order->get_refunds();
+			if ( 'refunded' === $order_status || ! empty( $order_refunds ) ) {
+				?>
+				<tr width="100%">
+					<td colspan="2">
+						<table width="100%" cellpadding="2px">
+							<tr width="100%">
+								<td colspan="3">
+									<h5 style="text-transform:uppercase;"><?php esc_html_e( 'Refunds', 'wc-print-invoice-receipts' ); ?></h5>
+								</td>
+							</tr>
+							<tr width="100%" style="background-color:#ccc;">
+								<td style="width:10%;font-size:12px;line-height:24px;padding:5px"><?php esc_html_e( 'SR.NO.', 'wc-print-invoice-receipts' ); ?></td>
+								<td style="width:80%;font-size:12px;line-height:24px;padding:5px"><?php esc_html_e( 'REASON', 'wc-print-invoice-receipts' ); ?></td>
+								<td style="width:10%;font-size:12px;line-height:24px;text-align:right;padding:5px"><?php esc_html_e( 'AMOUNT', 'wc-print-invoice-receipts' ); ?></td>
+							</tr>
+							<?php
+							foreach ( $order_refunds as $key => $order_refund ) {
+								$refund_amount = (float) $order_refund->amount;
+								$order_totals -= $refund_amount;
+								$refund_reason = $order_refund->refund_reason;
+								if ( ! empty( $refund_amount ) ) {
+									$index = $key + 1;
+									?>
+									<tr width="100%">
+										<td style="width:10%;font-size:12px;line-height:28px;"><?php echo esc_html( "{$index}." ); ?></td>
+										<td style="width:80%;font-size:12px;line-height:28px;"><?php echo esc_html( ( empty( $refund_reason ) ) ? __( 'N/A', 'wc-print-invoice-receipts' ) : $refund_reason ); ?></td>
+										<td style="width:10%;color:red;font-size:12px;line-height:28px;text-align:right;"><?php echo '- ' . wp_kses_post( wc_price( $refund_amount ) ); ?></td>
+									</tr>
+									<?php
+								}
+							}
+							?>
+						</table>
+					</td>
+				</tr>
+				<tr width="100%">
+					<td colspan="2" style="border-bottom:1px dashed #919191;" height="0px"></td>
+				</tr>
+				<tr width="100%">
+					<td colspan="2">
+						<table cellspacing="0" cellpadding="0" width="100%" border="0">
+							<tr width="100%">
+								<td style="width:70%"></td>
+								<td style="width:10%; line-height:28px;font-size:14px;text-align:right;"><?php esc_html_e( 'TOTAL', 'wc-print-invoice-receipts' ); ?></td>
+								<td style="width:20%; line-height:28px;font-size:16px;text-align:right;font-weight:bold"><?php echo wp_kses_post( wc_price( $order_totals ) ); ?></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+
+			<?php } ?>
+
+			<!-- CUSTOMER NOTES -->
+			<?php
+			$customer_note = $wc_order->customer_message;
+			if ( ! empty( $customer_note ) && true === $show_customer_note ) {
+				?>
+				<tr width="100%">
+					<td colspan="2">
+						<table cellspacing="0" cellpadding="0" width="100%" border="0">
+							<tr width="100%">
+								<td width="100%" style="line-height:16px;font-size:12px;">
+									<span style="text-transform:uppercase;"><?php esc_html_e( 'Customer Note:', 'wc-print-invoice-receipts' ); ?></span><br/>
+									<span><?php echo esc_html( $customer_note ); ?></span>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<?php
+			}
+			?>
+		</table>
+		<?php
+		$pdf->StartTransform();
+		$pdf->Rotate( 35 );
+		$pdf->SetXY( 98, 177 );
+		$paid_invoice_watermark = '<p stroke="0.4" fill="true" strokecolor="#b0f5b0" color="#fff" style="font-family:helvetica;font-weight:bold;font-size:36pt;z-index:9999">' . $watermark . '</p>';
+		$pdf->writeHTML( $paid_invoice_watermark, true, false, false, false, '' );
+		$pdf->StopTransform();
+		$html = ob_get_clean();
+
+		$search = array(
+			'/\>[^\S ]+/s',     // strip whitespaces after tags, except space.
+			'/[^\S ]+\</s',     // strip whitespaces before tags, except space.
+			'/(\s)+/s',         // shorten multiple whitespace sequences.
+			'/<!--(.|\s)*?-->/', // Remove HTML comments.
+		);
+
+		$replace = array(
+			'>',
+			'<',
+			'\\1',
+			'',
+		);
+
+		$html = preg_replace( $search, $replace, $html );
+		$pdf->SetXY( 3, 37 );
+		$pdf->writeHTMLCell( 0, 0, '', '', $html, 0, 1, 0, true, '', true );
+		$timestamp      = time();
+		$pdf_file_title = "order-receipt-{$order_id}-{$timestamp}.pdf";
+
+		// Check the action requested.
+		if ( '' !== $action ) {
+			$customer_email = $wc_order->get_billing_email();
+			$wp_upload_dir  = wp_upload_dir();
+			$attach_path    = $wp_upload_dir['basedir'] . '/wc-logs/' . $pdf_file_title;
+			$pdf->Output( $attach_path, 'F' );
+			$admin_email = get_option( 'admin_email' );
+			$site_title  = get_option( 'blogname' );
+			$subject     = "Receipt Email - Order #{$order_id}";
+			$headers     = 'From:' . $site_title . '<' . $admin_email . "> \r\n";
+			$headers    .= 'Reply-To:' . $admin_email . "\r\n";
+			$headers    .= "X-Priority: 1\r\n";
+			$headers    .= 'MIME-Version: 1.0' . "\n";
+			$headers    .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+			$attachments = array( $attach_path );
+			$body        = 'Hello, please find the attached receipt.';
+			wp_mail( $customer_email, $subject, $body, $headers, $attachments );
+		} else {
+			// The PDF is either to be viewed or downloaded.
+			$view_receipt = wpir_get_plugin_setting( 'view-order-receipt' );
+			$pdf_action   = ( true === $view_receipt ) ? 'I' : 'D';
+			$pdf->Output( $pdf_file_title, $pdf_action );
 		}
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
+	/**
+	 * Get the block HTML for reservation item.
+	 *
+	 * @param int $item_id Reservation item ID.
+	 */
+	function ersrv_get_reservation_item_block_html( $item_id ) {
+		ob_start();
 		?>
-	</table>
-	<?php
-	$pdf->StartTransform();
-	$pdf->Rotate( 35 );
-	$pdf->SetXY( 98, 177 );
-	$paid_invoice_watermark = '<p stroke="0.4" fill="true" strokecolor="#b0f5b0" color="#fff" style="font-family:helvetica;font-weight:bold;font-size:36pt;z-index:9999">' . $watermark . '</p>';
-	$pdf->writeHTML( $paid_invoice_watermark, true, false, false, false, '' );
-	$pdf->StopTransform();
-	$html = ob_get_clean();
+		<div class="col-12 col-md-6 col-lg-4">
+			<div class="card">
+				<div class="media">
+					<a href="#">
+						<img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/ship-image.jpg' ); ?>" alt="img" class="card-img" />
+					</a>
+				</div>
+				<div class="favorite">
+					<a href="#" class="favorite-link">
+						<span class="sr-only">Favorite</span>
+						<span class="icon-heart">&nbsp;</span>
+					</a>
+				</div>
+				<div class="price-info">
+					<div class="inner-wrapper color-black font-size-12 font-weight-semibold">
+						<span class="color-accent font-size-18 font-Poppins">$500</span> - Per Night
+					</div>
+				</div>
+				<div class="card-body">
+					<h3 class="card-title"><a href="#">Galia 630 Soler</a></h3>
+					<div class="review-stars mb-3">
+						<img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/stars.png' ); ?>" alt="stars">
+					</div>
+					<div class="amenities mb-3">
+						<div class="location">
+							<span class="icon">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 48 48" width="24px" height="24px"><path d="M 23.951172 4 A 1.50015 1.50015 0 0 0 23.072266 4.3222656 L 8.859375 15.519531 C 7.0554772 16.941163 6 19.113506 6 21.410156 L 6 40.5 C 6 41.863594 7.1364058 43 8.5 43 L 18.5 43 C 19.863594 43 21 41.863594 21 40.5 L 21 30.5 C 21 30.204955 21.204955 30 21.5 30 L 26.5 30 C 26.795045 30 27 30.204955 27 30.5 L 27 40.5 C 27 41.863594 28.136406 43 29.5 43 L 39.5 43 C 40.863594 43 42 41.863594 42 40.5 L 42 21.410156 C 42 19.113506 40.944523 16.941163 39.140625 15.519531 L 24.927734 4.3222656 A 1.50015 1.50015 0 0 0 23.951172 4 z M 24 7.4101562 L 37.285156 17.876953 C 38.369258 18.731322 39 20.030807 39 21.410156 L 39 40 L 30 40 L 30 30.5 C 30 28.585045 28.414955 27 26.5 27 L 21.5 27 C 19.585045 27 18 28.585045 18 30.5 L 18 40 L 9 40 L 9 21.410156 C 9 20.030807 9.6307412 18.731322 10.714844 17.876953 L 24 7.4101562 z"/></svg>
+							</span>
+							<span>MotorBoat / Whithout Captain</span>
+						</div>
+						<div class="d-flex align-items-center flex-wrap">
+							<div class="map-loaction mr-3">
+								<span class="icon">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+										<path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+									</svg>
+								</span>
+								<span>Cannes</span>
+							</div>
+							<div class="capacity mr-3">
+								<span class="font-weight-bold mr-2">Capacity :</span>
+								<span class="">1</span>
+							</div>
+							<div class="cabins mr-3">
+								<span class="font-weight-bold mr-2">Cabins1 :</span>
+								<span class="">1</span>
+							</div>
+						</div>
+					</div>
+					<div class="btns-group">
+						<a href="#" class="btn btn-accent mr-2">Book Now</a>
+						<a href="#" class="btn btn-primary">Quick View</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<?php
 
-	$search = array(
-		'/\>[^\S ]+/s',     // strip whitespaces after tags, except space.
-		'/[^\S ]+\</s',     // strip whitespaces before tags, except space.
-		'/(\s)+/s',         // shorten multiple whitespace sequences.
-		'/<!--(.|\s)*?-->/', // Remove HTML comments.
-	);
-
-	$replace = array(
-		'>',
-		'<',
-		'\\1',
-		'',
-	);
-
-	$html = preg_replace( $search, $replace, $html );
-	$pdf->SetXY( 3, 37 );
-	$pdf->writeHTMLCell( 0, 0, '', '', $html, 0, 1, 0, true, '', true );
-	$timestamp      = time();
-	$pdf_file_title = "order-receipt-{$order_id}-{$timestamp}.pdf";
-
-	// Check the action requested.
-	if ( '' !== $action ) {
-		$customer_email = $wc_order->get_billing_email();
-		$wp_upload_dir  = wp_upload_dir();
-		$attach_path    = $wp_upload_dir['basedir'] . '/wc-logs/' . $pdf_file_title;
-		$pdf->Output( $attach_path, 'F' );
-		$admin_email = get_option( 'admin_email' );
-		$site_title  = get_option( 'blogname' );
-		$subject     = "Receipt Email - Order #{$order_id}";
-		$headers     = 'From:' . $site_title . '<' . $admin_email . "> \r\n";
-		$headers    .= 'Reply-To:' . $admin_email . "\r\n";
-		$headers    .= "X-Priority: 1\r\n";
-		$headers    .= 'MIME-Version: 1.0' . "\n";
-		$headers    .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-		$attachments = array( $attach_path );
-		$body        = 'Hello, please find the attached receipt.';
-		wp_mail( $customer_email, $subject, $body, $headers, $attachments );
-	} else {
-		// The PDF is either to be viewed or downloaded.
-		$view_receipt = wpir_get_plugin_setting( 'view-order-receipt' );
-		$pdf_action   = ( true === $view_receipt ) ? 'I' : 'D';
-		$pdf->Output( $pdf_file_title, $pdf_action );
+		return ob_get_clean();
 	}
 }

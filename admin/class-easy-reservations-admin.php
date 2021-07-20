@@ -1003,10 +1003,22 @@ class Easy_Reservations_Admin {
 	}
 
 	/**
-	 * 
+	 * Add the calendar invites button for the reservation orders.
+	 *
+	 * @since 1.0.0
 	 */
 	public function ersrv_calendar_invites_reservation_order() {
-		echo '<p>Hello bhai</p>';
+		$post = (int) filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
+
+		ob_start();
+		?>
+		<div class="ersrv-calendar-invites-container">
+			<p><?php esc_html_e( 'Click on the buttons below to email the calendar invites to the customer\'s billing email address.', 'easy-reservations' ); ?></p>
+			<p><button type="button" class="button"><?php esc_html_e( 'Email iCalendar Invite', 'easy-reservations' ); ?></button></p>
+			<p><button type="button" class="button"><?php esc_html_e( 'Email Google Calendar Invite', 'easy-reservations' ); ?></button></p>
+		</div>
+		<?php
+		echo ob_get_clean();
 	}
 
 	/**
