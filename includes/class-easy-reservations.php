@@ -155,6 +155,9 @@ class Easy_Reservations {
 		$this->loader->add_action( 'wp_ajax_get_states', $plugin_admin, 'ersrv_get_states_callback' );
 		$this->loader->add_action( 'save_post', $plugin_admin, 'ersrv_save_post_callback' );
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'ersrv_add_meta_boxes_callback' );
+		$this->loader->add_filter( 'woocommerce_admin_order_preview_actions', $plugin_admin, 'ersrv_woocommerce_admin_order_preview_actions_callback', 20, 2 );
+		$this->loader->add_filter( 'woocommerce_admin_order_actions', $plugin_admin, 'ersrv_woocommerce_admin_order_actions_callback', 10, 2 );
+		$this->loader->add_action( 'woocommerce_order_actions_end', $plugin_admin, 'ersrv_woocommerce_order_actions_end_callback' );
 	}
 
 	/**
@@ -183,6 +186,7 @@ class Easy_Reservations {
 		$this->loader->add_filter( 'woocommerce_related_products', $plugin_public, 'ersrv_woocommerce_related_products_callback', 20, 2 );
 		$this->loader->add_filter( 'template_include', $plugin_public, 'ersrv_template_include_callback', 99, 1 );
 		$this->loader->add_shortcode( 'ersrv_search_reservations', $plugin_public, 'ersrv_ersrv_search_reservations_callback' );
+		$this->loader->add_action( 'ersrv_delete_reservation_pdf_receipts', $plugin_public, 'ersrv_ersrv_delete_reservation_pdf_receipts_callback' );
 	}
 
 	/**

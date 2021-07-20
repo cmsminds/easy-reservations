@@ -40,7 +40,8 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 			array( '' => __( 'General', 'easy-reservations' ) ),
 			array( 'reservation_calendar' => __( 'Reservation Calendar', 'easy-reservations' ) ),
 			array( 'quickbooks' => __( 'Quickbooks', 'easy-reservations' ) ),
-			array( 'emails' => __( 'Emails', 'easy-reservations' ) )
+			array( 'emails' => __( 'Emails', 'easy-reservations' ) ),
+			array( 'invoice_receipts' => __( 'Invoice Receipts', 'easy-reservations' ) ),
 		);
 
 		return apply_filters( 'woocommerce_get_sections_' . $this->id, $sections );
@@ -86,6 +87,9 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 				break;
 			case 'emails':
 				$settings = $this->ersrv_emails_settings_fields();
+				break;
+			case 'invoice_receipts':
+				$settings = $this->ersrv_invoice_receipts_settings_fields();
 				break;
 			default:
 				$settings = $this->ersrv_general_settings_fields(); // Fields for the general section.
@@ -207,7 +211,7 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 		 * @param array $fields Holds the fields array.
 		 * @return array
 		 */
-		return apply_filters( 'ersrv_general_section_plugin_settings', $fields );
+		return apply_filters( 'ersrv_quickbooks_section_plugin_settings', $fields );
 	}
 
 	/**
@@ -248,7 +252,7 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 		 * @param array $fields Holds the fields array.
 		 * @return array
 		 */
-		return apply_filters( 'ersrv_general_section_plugin_settings', $fields );
+		return apply_filters( 'ersrv_emails_section_plugin_settings', $fields );
 	}
 
 	/**
@@ -287,6 +291,112 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 		 * @return array
 		 */
 		return apply_filters( 'ersrv_reservaton_calendar_section_plugin_settings', $fields );
+	}
+
+	/**
+	 * Return the fields for Emails settings.
+	 *
+	 * @return array
+	 */
+	public function ersrv_invoice_receipts_settings_fields() {
+		$fields = array(
+			array(
+				'title' => __( 'Store Details', 'easy-reservations' ),
+				'type'  => 'title',
+				'desc'  => '',
+				'id'    => 'ersrv_invoice_receipts_store_details_settings',
+			),
+			array(
+				'name'        => __( 'Name', 'easy-reservations' ),
+				'type'        => 'text',
+				/* translators: 1: %s: site title */
+				'desc'        => sprintf( __( 'The store name that will be printed in the header section. Default is the site title (%1$s).', 'easy-reservations' ), get_bloginfo( 'title' ) ),
+				'desc_tip'    => true,
+				'id'          => 'ersrv_reservation_receipt_store_name',
+				/* translators: 1: %s: site title */
+				'placeholder' => sprintf( __( 'E.g.: %1$s', 'easy-reservations' ), get_bloginfo( 'title' ) ),
+			),
+			array(
+				'name'        => __( 'Contact Number', 'easy-reservations' ),
+				'type'        => 'text',
+				'desc'        => __( 'Store\'s contact number that will be printed in the header.', 'easy-reservations' ),
+				'desc_tip'    => true,
+				'id'          => 'ersrv_reservation_receipt_store_contact_number',
+				'placeholder' => __( 'E.g.: 9988776655', 'easy-reservations' ),
+			),
+			array(
+				'name'        => __( 'Logo Media ID', 'easy-reservations' ),
+				'type'        => 'number',
+				'desc'        => __( 'This holds the store logo media ID from the media section. The logo will be printed in the header section.', 'easy-reservations' ),
+				'desc_tip'    => true,
+				'id'          => 'ersrv_reservation_receipt_store_logo_media_id',
+				'placeholder' => __( 'E.g.: 99', 'easy-reservations' ),
+			),
+			array(
+				'type' => 'sectionend',
+				'id'   => 'ersrv_invoice_receipts_store_details_settings',
+			),
+			array(
+				'title' => __( 'Reservation Receipt', 'easy-reservations' ),
+				'type'  => 'title',
+				'desc'  => '',
+				'id'    => 'ersrv_reservation_invoice_receipts_settings',
+			),
+			array(
+				'name'     => __( 'Enable Receipt For Order Statuses', 'easy-reservations' ),
+				'type'     => 'multiselect',
+				'options'  => wc_get_order_statuses(),
+				'class'    => 'wc-enhanced-select',
+				'desc'     => __( 'The order status on which the receipt will be available for download. Leave blank to allow for all statusses.', 'easy-reservations' ),
+				'desc_tip' => true,
+				'default'  => '',
+				'id'       => 'ersrv_easy_reservations_receipt_for_order_statuses',
+			),
+			array(
+				'name'        => __( 'Receipt Button Text', 'easy-reservations' ),
+				'type'        => 'text',
+				'desc'        => __( 'This holds the receipt button text. Default: Download Reservation Receipt', 'easy-reservations' ),
+				'desc_tip'    => true,
+				'id'          => 'ersrv_easy_reservations_receipt_button_text',
+				'placeholder' => __( 'E.g.: Download Reservation Receipt', 'easy-reservations' ),
+			),
+			array(
+				'name'              => __( 'Thanks Note By Store', 'easy-reservations' ),
+				'type'              => 'textarea',
+				'desc'              => __( 'This holds the thanks note by the store printed on the receipt. Something like, Thanks for the reservation with us.', 'easy-reservations' ),
+				'desc_tip'          => true,
+				'id'                => 'ersrv_easy_reservations_reservation_thanks_note',
+				'placeholder'       => __( 'E.g.: Thanks for the reservation with us.', 'easy-reservations' ),
+				'custom_attributes' => array(
+					'rows' => 4,
+				),
+			),
+			array(
+				'name'              => __( 'Receipt Footer Text', 'easy-reservations' ),
+				'type'              => 'textarea',
+				'desc'              => __( 'This holds the footer text printed on the receipt.', 'easy-reservations' ),
+				'desc_tip'          => true,
+				'id'                => 'ersrv_easy_reservations_receipt_footer_text',
+				'placeholder'       => __( 'E.g.: Visit us online to....', 'easy-reservations' ),
+				'custom_attributes' => array(
+					'rows' => 4,
+				),
+			),
+			array(
+				'type' => 'sectionend',
+				'id'   => 'ersrv_reservation_invoice_receipts_settings',
+			),
+		);
+
+		/**
+		 * This hook fires on the admin settings page - general section.
+		 *
+		 * This account help in managing general section plugin settings fields.
+		 *
+		 * @param array $fields Holds the fields array.
+		 * @return array
+		 */
+		return apply_filters( 'ersrv_invoice_receipts_section_plugin_settings', $fields );
 	}
 }
 

@@ -29,7 +29,13 @@ class Easy_Reservations_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-
+		/**
+		 * Setup the cron to delete the PDF files generated while emailing the reservation PDF receipts to the customers.
+		 *
+		 * Setup the daily cron.
+		 */
+		if ( ! wp_next_scheduled( 'ersrv_delete_reservation_pdf_receipts' ) ) {
+			wp_schedule_event( time(), 'daily', 'ersrv_delete_reservation_pdf_receipts' );
+		}
 	}
-
 }

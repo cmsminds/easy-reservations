@@ -699,4 +699,25 @@ class Easy_Reservations_Public {
 		require_once ERSRV_PLUGIN_PATH . 'public/templates/shortcodes/search-reservations.php';
 		return ob_get_clean();
 	}
+
+	/**
+	 * Setup the cron to delete the pdf files from the uploads folder.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_ersrv_delete_reservation_pdf_receipts_callback() {
+		$wp_upload_dir = wp_upload_dir();
+		$attach_path   = $wp_upload_dir['basedir'] . '/wc-logs/';
+		$pdfs          = glob( $wp_upload_dir['basedir'] . '/wc-logs/ersrv-reservation-receipt-*.pdf' );
+
+		// Return, if there are no PDFs generated.
+		if ( empty( $pdfs ) ) {
+			return;
+		}
+
+		// Loop in through the files to unlink each of them.
+		foreach ( $pdfs as $pdf ) {
+			unlink( $pdf );
+		}
+	}
 }
