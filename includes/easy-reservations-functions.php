@@ -1291,13 +1291,15 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 	 * @param int $item_id Reservation item ID.
 	 */
 	function ersrv_get_reservation_item_block_html( $item_id ) {
+		$featured_image_id   = get_post_thumbnail_id( $item_id );
+		$item_featured_image = ersrv_get_attachment_url_from_attachment_id( $featured_image_id );
 		ob_start();
 		?>
 		<div class="col-12 col-md-6 col-lg-4">
 			<div class="card">
 				<div class="media">
 					<a href="#">
-						<img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/ship-image.jpg' ); ?>" alt="img" class="card-img" />
+						<img src="<?php echo esc_url( $item_featured_image ); ?>" alt="img" class="card-img" />
 					</a>
 				</div>
 				<div class="favorite">
@@ -1352,5 +1354,21 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 		<?php
 
 		return ob_get_clean();
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_attachment_url_from_attachment_id' ) ) {
+	/**
+	 * Returns the image URL by attachment ID.
+	 *
+	 * @param int $image_id Holds the attachment ID.
+	 * @return string
+	 */
+	function ersrv_get_attachment_url_from_attachment_id( $image_id ) {
+
+		return ( empty( $image_id ) ) ? wc_placeholder_img_src() : wp_get_attachment_url( $image_id );
 	}
 }
