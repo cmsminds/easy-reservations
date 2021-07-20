@@ -95,7 +95,7 @@ $count: 0;
     width: $size;
     height: $size;
 }
-@mixin flex-center($display:'flex') {
+@mixin flex-center($display:flex) {
     display: $display;
     align-items: center;
     justify-content: center;

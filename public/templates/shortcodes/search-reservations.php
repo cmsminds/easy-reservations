@@ -19,35 +19,35 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
                 <div class="form-wrapper">
                     <form action="#" class="form-inner">
                         <div class="form-row">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-5 col-lg-6">
                                 <div class="form-group">
                                     <input type="text" class="form-control date-control ship-icon-field text-left rounded-lg" placeholder="June 20, 2021">
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-7 col-lg-6">
                                 <div class="input-daterange">
                                     <div class="form-row">
                                         <div class="col-12 col-md-6">
                                             <input type="text" class="form-control date-control text-left rounded-lg mb-3" placeholder="Check in">
                                         </div>
                                         <div class="col-12 col-md-6">
-                                            <input type="text" class="form-control date-control text-left rounded-lg" placeholder="Check out">
+                                            <input type="text" class="form-control date-control text-left rounded-lg mb-3" placeholder="Check out">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-5 col-lg-6">
                                 <div class="slider-wrapper">
                                     <div class="search-price-range-slider"></div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6">
+                            <div class="col-12 col-md-7 col-lg-6">
                                 <div class="input-daterange">
                                     <div class="form-row">
                                         <div class="col-12 col-md-6">
-                                            <select class="selectpicker form-control Boat-Types" id="boat-types" data-size="5" data-style="btn-outline-light focus-none" title="Boat Type">
+                                            <select class="selectpicker form-control Boat-Types mb-3" id="boat-types" data-size="5" data-style="btn-outline-light focus-none" title="Boat Type">
                                                 <option>Single Boat</option>
                                                 <option>Cruse</option>
                                             </select>
