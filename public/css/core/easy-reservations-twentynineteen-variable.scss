@@ -97,8 +97,8 @@ $count: 0;
     height: $size;
 }
 
-@mixin flex-center() {
-    display: flex;
+@mixin flex-center($display:flex){
+    display: $display;
     align-items: center;
     justify-content: center;
 }
@@ -154,16 +154,16 @@ img {
 }
 
 .date-control {
-    background-image: url("../../images/planner.png");
-    background-position: 90%;
-    background-size: 20px;
-    background-repeat: no-repeat;
+    background-image: url("../../images/planner.png") !important;
+    background-position: 90% !important;
+    background-size: 20px !important;
+    background-repeat: no-repeat !important;
     cursor: pointer;
     transition: 0.3s ease-in-out;
 
     &:focus,
     &:hover {
-        background-image: url("../../images/planner_active_blue.png");
+        background-image: url("../../images/planner_active_blue.png") !important;
         // background-blend-mode:luminosity;
     }
 }
@@ -214,7 +214,7 @@ img {
 }
 
 .btn-primary {
-    @extend .color-white;
+    color: $white !important;
     @extend .bgcolor-primary;
     @extend .border-color-primary;
     &:hover, &:focus, &:active {
@@ -249,7 +249,7 @@ img {
     @extend .border-color-secondary;
     @extend .bgcolor-transparent;
     &:hover, &:focus, &:active {
-        @extend .color-white;
+        color: $white !important;
         @extend .border-color-primary;
         @extend .bgcolor-primary;
     }
@@ -272,4 +272,16 @@ img {
 }
 .custom-control-input:focus:not(:checked)~.custom-control-label::before{
     border-color: $primary;
+}
+.search-page .btn-xl{
+    padding: 15px 41px;
+}
+.btn-accent{
+    color: $white !important;
+    @extend .bgcolor-accent;
+    @extend .border-color-accent;
+    &:hover{
+        color: $black !important;
+        @extend .bgcolor-accent-300;
+    }
 }

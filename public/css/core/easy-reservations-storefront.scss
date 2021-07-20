@@ -545,6 +545,9 @@
                 }
             }
         }
+        a,a:hover, .hentry .entry-content a{
+            text-decoration: none;
+        }
     }
 }
 
@@ -697,10 +700,7 @@
 .bootstrap-select>.dropdown-toggle.bs-placeholder, .bootstrap-select>.dropdown-toggle.bs-placeholder:active, .bootstrap-select>.dropdown-toggle.bs-placeholder:focus, .bootstrap-select>.dropdown-toggle.bs-placeholder:hover{
     color: inherit;
 }
-a,a:hover,
-.hentry .entry-content a{
-    text-decoration: none;
-}
+
 // sidebar on search page
 [class*="-sidebar"],
 [class^="-sidebar"],

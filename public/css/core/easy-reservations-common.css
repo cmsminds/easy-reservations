@@ -1,4 +1,5 @@
-.site{
+.site,
+.theme-twentynineteen .site-content .site-main .page .entry-content{
     margin: 0px;
 }
 table{
@@ -8,14 +9,17 @@ table{
 .theme-astra .site-content > .ast-container,
 .theme-astra .site-content > .ast-container > section,
 .theme-storefront .site-content > .col-full,
-.theme-twentytwentyone .site-content > .content-area{
+.theme-twentytwentyone .site-content > .content-area,
+.theme-twentynineteen .site-content .site-main .page .entry-content,
+.theme-twentynineteen .site-content .site-main .page .entry-content .wrapper{
     max-width: 100%;
 }
 .site-content,
 .theme-astra .site-content > .ast-container,
 .theme-storefront .site-content > .col-full,
 .theme-twentytwentyone .site-content > .content-area,
-.theme-twentytwentyone .site-content > .content-area > #main > .wrapper{
+.theme-twentytwentyone .site-content > .content-area > #main > .wrapper,
+.theme-twentynineteen .site-content .site-main .page .entry-content{
     padding: 0px;
 }
 .theme-astra .site-content > .ast-container > section{

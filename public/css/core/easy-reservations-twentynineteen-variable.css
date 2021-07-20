@@ -38,11 +38,11 @@
   color: #005177;
 }
 
-.bgcolor-accent {
+.bgcolor-accent, .btn-accent {
   background-color: #005177;
 }
 
-.border-color-accent {
+.border-color-accent, .btn-accent {
   border-color: #005177;
 }
 
@@ -50,7 +50,7 @@
   color: #80a8bb;
 }
 
-.bgcolor-accent-300 {
+.bgcolor-accent-300, .btn-accent:hover {
   background-color: #80a8bb;
 }
 
@@ -70,7 +70,7 @@
   border-color: #00415f;
 }
 
-.color-white, .btn-primary, .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:focus, .btn-outline-fill-primary:active, .btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active, .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active {
+.color-white, .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:focus, .btn-outline-fill-primary:active, .btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active {
   color: #fff;
 }
 
@@ -569,17 +569,17 @@ img {
 }
 
 .date-control {
-  background-image: url("../../images/planner.png");
-  background-position: 90%;
-  background-size: 20px;
-  background-repeat: no-repeat;
+  background-image: url("../../images/planner.png") !important;
+  background-position: 90% !important;
+  background-size: 20px !important;
+  background-repeat: no-repeat !important;
   cursor: pointer;
   -webkit-transition: 0.3s ease-in-out;
   transition: 0.3s ease-in-out;
 }
 
 .date-control:focus, .date-control:hover {
-  background-image: url("../../images/planner_active_blue.png");
+  background-image: url("../../images/planner_active_blue.png") !important;
 }
 
 .ship-icon-field {
@@ -621,6 +621,14 @@ img {
   filter: brightness(0) invert(1);
 }
 
+.btn-primary {
+  color: #fff !important;
+}
+
+.btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active {
+  color: #fff !important;
+}
+
 .dropdown-item.active,
 .dropdown-item:active {
   color: #fff;
@@ -642,5 +650,17 @@ img {
 
 .custom-control-input:focus:not(:checked) ~ .custom-control-label::before {
   border-color: #0073aa;
+}
+
+.search-page .btn-xl {
+  padding: 15px 41px;
+}
+
+.btn-accent {
+  color: #fff !important;
+}
+
+.btn-accent:hover {
+  color: #000 !important;
 }
 /*# sourceMappingURL=easy-reservations-twentynineteen-variable.css.map */
