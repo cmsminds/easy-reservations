@@ -1001,4 +1001,135 @@ class Easy_Reservations_Admin {
 	public function ersrv_calendar_invites_reservation_order() {
 		echo '<p>Hello bhai</p>';
 	}
+
+	/**
+	 * Hook the receipt option in order preview modal box.
+	 *
+	 * @param array  $actions Holds the actions array.
+	 * @param object $wc_order Holds the WooCommerce order object.
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_admin_order_preview_actions_callback( $actions, $wc_order ) {
+		$order_id              = $wc_order->get_id();
+		
+		// Check if the order has reservation items.
+		$is_reservation_order  = ersrv_order_is_reservation( $wc_order );
+
+		// Return the actions if the order is not reservation order.
+		if ( ! $is_reservation_order ) {
+			return $actions;
+		}
+
+		// Check if the order status is allowed for receipts.
+		$display_order_receipt = ersrv_should_display_receipt_button( $order_id );
+
+		// Return the actions if the receipt button should not be displayed.
+		if ( false === $display_order_receipt ) {
+			return $actions;
+		}
+
+		// Add this action when the order is marked already complete.
+		if ( empty( $actions ) ) {
+			$actions['status']['group'] = __( 'Change status:', 'easy-reservations' );
+		}
+
+		$actions['status']['actions']['ersrv-reservation-receipt'] = array(
+			'name'   => ersrv_get_plugin_settings( 'ersrv_easy_reservations_receipt_button_text' ),
+			'url'    => ersrv_download_reservation_receipt_url( $order_id ),
+			'title'  => ersrv_download_reservation_receipt_button_title( $order_id ),
+			'action' => 'ersrv-reservation-receipt',
+		);
+
+		return $actions;
+	}
+
+	/**
+	 * Hook the receipt option in order listing page in admin.
+	 *
+	 * @param array  $actions Holds the actions array.
+	 * @param object $wc_order Holds the WooCommerce order object.
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_admin_order_actions_callback( $actions, $wc_order ) {
+		$order_id              = $wc_order->get_id();
+		
+		// Check if the order has reservation items.
+		$is_reservation_order  = ersrv_order_is_reservation( $wc_order );
+
+		// Return the actions if the order is not reservation order.
+		if ( ! $is_reservation_order ) {
+			return $actions;
+		}
+
+		// Check if the order status is allowed for receipts.
+		$display_order_receipt = ersrv_should_display_receipt_button( $order_id );
+
+		// Return the actions if the receipt button should not be displayed.
+		if ( false === $display_order_receipt ) {
+			return $actions;
+		}
+
+		// If it's the admin panel.
+		if ( is_admin() ) {
+			$actions['ersrv-reservation-receipt'] = array(
+				'url'    => ersrv_download_reservation_receipt_url( $order_id ),
+				'name'   => '',
+				'title'  => ersrv_download_reservation_receipt_button_title( $order_id ),
+				'action' => 'ersrv-reservation-receipt',
+			);
+		} else {
+			// Check if dokan plugin is active.
+			if ( ersrv_is_dokan_active() ) {
+				// This is for the acitons for dokan order's page.
+				$button_text                          = ersrv_get_plugin_settings( 'ersrv_easy_reservations_receipt_button_text' );
+				$actions['ersrv-reservation-receipt'] = array(
+					'url'    => ersrv_download_reservation_receipt_url( $order_id ),
+					'name'   => $button_text,
+					'action' => 'ersrv-reservation-receipt',
+					'icon'   => '<i class="fa fa-file"></i>',
+				);
+			}
+		}
+
+		return $actions;
+	}
+
+	/**
+	 * Generate the button on order edit page.
+	 *
+	 * @param int $order_id Holds the order ID.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_order_actions_end_callback( $order_id ) {
+		$order_id = (int) $order_id;
+
+		// Check if the order has reservation items.
+		$wc_order              = wc_get_order( $order_id );
+		$is_reservation_order  = ersrv_order_is_reservation( $wc_order );
+
+		// Return the actions if the order is not reservation order.
+		if ( ! $is_reservation_order ) {
+			return $actions;
+		}
+
+		// Check if the order status is allowed for receipts.
+		$display_order_receipt = ersrv_should_display_receipt_button( $order_id );
+
+		// Return the actions if the receipt button should not be displayed.
+		if ( false === $display_order_receipt ) {
+			return;
+		}
+
+		// Generate the button.
+		ob_start();
+		?>
+		<li class="wide ersrv-edit-order-actions">
+			<a class="button" href="<?php echo esc_url( ersrv_download_reservation_receipt_url( $order_id ) ); ?>"><?php echo esc_html( ersrv_get_plugin_settings( 'ersrv_easy_reservations_receipt_button_text' ) ); ?></a>
+		</li>
+		<?php
+		echo wp_kses_post( ob_get_clean() );
+	}
 }

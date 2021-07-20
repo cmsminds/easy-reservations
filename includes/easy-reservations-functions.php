@@ -38,6 +38,41 @@ function ersrv_get_plugin_settings( $setting ) {
 			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : 'no';
 			break;
 
+		case 'ersrv_reservation_receipt_store_name':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : '';
+			break;
+
+		case 'ersrv_reservation_receipt_store_contact_number':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : '';
+			break;
+
+		case 'ersrv_reservation_receipt_store_logo_media_id':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : '';
+			break;
+
+		case 'ersrv_easy_reservations_receipt_for_order_statuses':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : array();
+			break;
+
+		case 'ersrv_easy_reservations_receipt_button_text':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : __( 'Download Reservation Receipt', 'easy-reservations' );
+			break;
+
+		case 'ersrv_easy_reservations_reservation_thanks_note':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : '';
+			break;
+
+		case 'ersrv_easy_reservations_receipt_footer_text':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : '';
+			break;
+
 		default:
 			$data = -1;
 	}
@@ -509,6 +544,7 @@ if ( ! function_exists( 'ersrv_get_admin_script_vars' ) ) {
 		 *
 		 * @param array $vars Script variables.
 		 * @return array
+		 * @since 1.0.0
 		 */
 		$vars = apply_filters( 'ersrv_admin_script_vars', $vars );
 
@@ -529,6 +565,7 @@ if ( ! function_exists( 'ersrv_create_new_user' ) ) {
 	 * @param string $first_name Holds the first name.
 	 * @param string $last_name Holds the last name.
 	 * @return int
+	 * @since 1.0.0
 	 */
 	function ersrv_create_new_user( $username, $email, $password, $first_name, $last_name ) {
 		$user_id  = wp_create_user( $username, $password, $email ); // Create the user.
@@ -544,5 +581,114 @@ if ( ! function_exists( 'ersrv_create_new_user' ) ) {
 		}
 
 		return $user_id;
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_should_display_receipt_button' ) ) {
+	/**
+	 * Check if the receipt button text is generatable for the receiving order ID.
+	 *
+	 * @param int $order_id Holds the order ID.
+	 * @return boolean
+	 * @since 1.0.0
+	 */
+	function ersrv_should_display_receipt_button( $order_id ) {
+		// Check if order ID is valid.
+		if ( empty( $order_id ) || ! is_int( $order_id ) ) {
+			return false;
+		}
+
+		// Get order.
+		$wc_order = wc_get_order( $order_id );
+
+		// Return if the order is not available.
+		if ( false === $wc_order ) {
+			return false;
+		}
+
+		$order_statuses        = ersrv_get_plugin_settings( 'ersrv_easy_reservations_receipt_for_order_statuses' );
+		$order_status          = 'wc-' . $wc_order->get_status();
+		$display_order_receipt = ( in_array( $order_status, $order_statuses, true ) ) ? true : false;
+
+		/**
+		 * Display receipt button filter.
+		 *
+		 * This filter help modifying the condition under which the receipt button should be displayed or not.
+		 *
+		 * @param boolean $display_order_receipt Holds the boolean value to display the button.
+		 * @param int     $order_id Holds the order ID.
+		 * @return boolean
+		 * @since 1.0.0
+		 */
+		$display_order_receipt = apply_filters( 'ersrv_display_receipt_button', $display_order_receipt, $order_id );
+
+		return $display_order_receipt;
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_is_dokan_active' ) ) {
+	/**
+	 * Check if dokan plugin is active.
+	 *
+	 * @return boolean
+	 * @since 1.0.0
+	 */
+	function ersrv_is_dokan_active() {
+
+		return ( false === in_array( 'dokan-lite/dokan.php', get_option( 'active_plugins' ), true ) ) ? false : true;
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_download_reservation_receipt_url' ) ) {
+	/**
+	 * Download reservation receipt URL.
+	 *
+	 * @param int $order_id WooCommerce order ID.
+	 * @return boolean
+	 * @since 1.0.0
+	 */
+	function ersrv_download_reservation_receipt_url( $order_id ) {
+
+		return home_url( "/?action=ersrv-download-reservation-receipt&atts={$order_id}" );
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_download_reservation_button_title' ) ) {
+	/**
+	 * Download reservation button title.
+	 *
+	 * @param int $order_id WooCommerce order ID.
+	 * @return boolean
+	 * @since 1.0.0
+	 */
+	function ersrv_download_reservation_receipt_button_title( $order_id ) {
+		/* translators: 1: %d: order ID. */
+		$button_title = sprintf( __( 'Download reservation receipt for order #%1$d', 'easy-reservations' ), $order_id );
+
+		/**
+		 * This filter fires on the download receipt button.
+		 *
+		 * This filter helps in modifying the download receipt button title tag.
+		 *
+		 * @param string $button_title Download reservation receipt button title.
+		 * @param int    $order_id WooCommerce order ID.
+		 * @return string
+		 * @since 1.0.0
+		 */
+		$button_title = apply_filters( 'ersrv_download_reservation_receipt_button_title_attr', $button_title, $order_id );
+
+		return $button_title;
 	}
 }

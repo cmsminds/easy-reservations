@@ -29,7 +29,10 @@ class Easy_Reservations_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-
+		// Clear the scheduled cron now.
+		if ( wp_next_scheduled( 'ersrv_delete_reservation_pdf_receipts' ) ) {
+			wp_clear_scheduled_hook( 'ersrv_delete_reservation_pdf_receipts' );
+		}
 	}
 
 }
