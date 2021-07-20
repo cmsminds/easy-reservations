@@ -390,11 +390,11 @@
                     .btn {
                         min-height: 55px;
                     }
-
-                    .col-md-6 {
-                        .form-group {
-                            input {
-                                background-position: 98% !important;
+                    .form-group {
+                        .date-control.ship-icon-field {
+                            background-position: 96% !important;
+                            @include mobile() {
+                                background-position: 90% !important;
                             }
                         }
                     }
@@ -404,21 +404,16 @@
 
         .content-part {
             margin-top: 0px;
-
+            padding-bottom: 52px;
             .search-results-wrapper {
                 border-radius: 10px;
                 padding: 36px 33px;
                 margin-top: 47px;
-                margin-bottom: 52px;
-                box-shadow:
-                    0 0.9px 10px rgba(0, 0, 0, 0.024),
-                    0 2.5px 27.5px rgba(0, 0, 0, 0.035),
-                    0 6px 66.3px rgba(0, 0, 0, 0.046),
-                    0 20px 220px rgba(0, 0, 0, 0.07);
+                background-color: #fff;
 
                 @include mobile() {
                     padding: 0px;
-                    box-shadow: none;
+                    background-color: transparent;
                 }
 
                 .title {
@@ -443,13 +438,8 @@
                         border-radius: 6px;
                         overflow: hidden;
                         border: 0px solid transparent;
+                        transition: 0.3s ease-in-out;
                         margin-bottom: 21px;
-                        // box-shadow:
-                        //     0 0px 34px rgba(0, 0, 0, 0.06),
-                        //     0 0px 106.9px rgba(0, 0, 0, 0.039),
-                        //     0 0px 236.3px rgba(0, 0, 0, 0.03),
-                        //     0 0px 500px rgba(0, 0, 0, 0.021);
-                        box-shadow: rgba($black, 0.125) 1.95px 1.95px 2.6px;
 
                         .price-info {
                             position: absolute;
@@ -478,18 +468,25 @@
 
                             a {
                                 transition: 0.3s all ease-in-out;
-                                svg {
-                                    fill: $white;
+                                .icon-heart{
+                                    display: inline-block;
+                                    width: 29px;
+                                    height: 25px;
+                                    background-image: url(../../images/heart_outline.png);
+                                    background-size: contain;
+                                    background-position: center;
+                                    background-repeat: no-repeat;
                                 }
 
                                 &:hover,
-                                &:focus{
-                                    svg {
-                                        fill: $accent;
+                                &:focus,
+                                &.selected{
+                                    .icon-heart{
+                                        background-image: url(../../images/heart_fill.png);
                                     }
                                 }
                                 &:active{
-                                    svg{
+                                    .icon-heart{
                                         transform: scale(0.8);
                                     }
                                 }
@@ -551,26 +548,34 @@
                             }
                         }
                         &:hover{
-                            box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.13) 0px 3px 6px;
+                            box-shadow: 0 0.9px 10px rgba(0, 0, 0, 0.024),
+                            0 2.5px 27.5px rgba(0, 0, 0, 0.035),
+                            0 6px 66.3px rgba(0, 0, 0, 0.046),
+                            0 20px 220px rgba(0, 0, 0, 0.07);
                         }
-
+                        @media(max-width:991px) {
+                            box-shadow: 0 0.9px 10px rgba(0, 0, 0, 0.024),
+                            0 2.5px 27.5px rgba(0, 0, 0, 0.035),
+                            0 6px 66.3px rgba(0, 0, 0, 0.046),
+                            0 20px 220px rgba(0, 0, 0, 0.07);   
+                        }
                     }
-                }
-            }
-        }
-        .btn-primary {
-            &:hover {
-                color: $black;
-                background-color: $primary-300;
-                img{
-                    -webkit-filter: invert(1);
-                            filter: invert(1);
                 }
             }
         }
     }
 }
 
+.btn-primary {
+    &:hover {
+        color: $black;
+        background-color: $primary-300;
+        img{
+            -webkit-filter: invert(1);
+                    filter: invert(1);
+        }
+    }
+}
 #ui-datepicker-div {
     background: #fff;
     box-shadow:
@@ -740,4 +745,23 @@
                     filter: invert(0);
         }
     }
+}
+[class*="-sidebar"],
+[class^="-sidebar"],
+[class*="sidebar-"],
+[class^="sidebar-"],
+[class*="sidebar"],
+[class^="sidebar"] {
+    @media(min-width:992px) and (max-width:1199px){
+        .search-result-inner .col-12.col-md-6.col-lg-4{
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
+    }
+    @media(min-width:992px) and (max-width:1440px){
+        .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn{
+            padding: 12px 14px !important;
+        }
+    }
+    
 }
