@@ -1030,12 +1030,12 @@ img {
   min-height: 55px;
 }
 
-.wrapper.search-page .banner .form-wrapper .form-inner .col-md-6 .form-group input {
-  background-position: 98% !important;
+.wrapper.search-page .banner .form-wrapper .form-inner .form-group .date-control.ship-icon-field {
+  background-position: 96% !important;
 }
 
 @media only screen and (max-width: 767px) {
-  .wrapper.search-page .banner .form-wrapper .form-inner .col-md-6 .form-group input {
+  .wrapper.search-page .banner .form-wrapper .form-inner .form-group .date-control.ship-icon-field {
     background-position: 90% !important;
   }
 }

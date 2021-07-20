@@ -390,14 +390,11 @@
                     .btn {
                         min-height: 55px;
                     }
-
-                    .col-md-6 {
-                        .form-group {
-                            input {
-                                background-position: 98% !important;
-                                @include mobile() {
-                                    background-position: 90% !important;
-                                }
+                    .form-group {
+                        .date-control.ship-icon-field {
+                            background-position: 96% !important;
+                            @include mobile() {
+                                background-position: 90% !important;
                             }
                         }
                     }
