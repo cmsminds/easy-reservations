@@ -1034,15 +1034,14 @@ img {
 
 .wrapper.search-page .content-part {
   margin-top: 0px;
+  padding-bottom: 52px;
 }
 
 .wrapper.search-page .content-part .search-results-wrapper {
   border-radius: 10px;
   padding: 36px 33px;
   margin-top: 47px;
-  margin-bottom: 52px;
-  -webkit-box-shadow: 0 0.9px 10px rgba(0, 0, 0, 0.024), 0 2.5px 27.5px rgba(0, 0, 0, 0.035), 0 6px 66.3px rgba(0, 0, 0, 0.046), 0 20px 220px rgba(0, 0, 0, 0.07);
-          box-shadow: 0 0.9px 10px rgba(0, 0, 0, 0.024), 0 2.5px 27.5px rgba(0, 0, 0, 0.035), 0 6px 66.3px rgba(0, 0, 0, 0.046), 0 20px 220px rgba(0, 0, 0, 0.07);
+  background-color: #fff;
 }
 
 @media only screen and (max-width: 767px) {
@@ -1074,8 +1073,8 @@ img {
   overflow: hidden;
   border: 0px solid transparent;
   margin-bottom: 21px;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.125) 1.95px 1.95px 2.6px;
-          box-shadow: rgba(0, 0, 0, 0.125) 1.95px 1.95px 2.6px;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
 }
 
 .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .price-info {
@@ -1113,15 +1112,21 @@ img {
   transition: 0.3s all ease-in-out;
 }
 
-.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .favorite a svg {
-  fill: #fff;
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .favorite a .icon-heart {
+  display: inline-block;
+  width: 29px;
+  height: 25px;
+  background-image: url(../../images/heart_outline.png);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .favorite a:hover svg, .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .favorite a:focus svg {
-  fill: #3ab166;
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .favorite a:hover .icon-heart, .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .favorite a:focus .icon-heart, .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .favorite a.selected .icon-heart {
+  background-image: url(../../images/heart_fill.png);
 }
 
-.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .favorite a:active svg {
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .favorite a:active .icon-heart {
   -webkit-transform: scale(0.8);
           transform: scale(0.8);
 }
@@ -1192,8 +1197,8 @@ img {
 }
 
 .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card:hover {
-  -webkit-box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.13) 0px 3px 6px;
-          box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.13) 0px 3px 6px;
+  -webkit-box-shadow: 0 0.9px 10px rgba(0, 0, 0, 0.024), 0 2.5px 27.5px rgba(0, 0, 0, 0.035), 0 6px 66.3px rgba(0, 0, 0, 0.046), 0 20px 220px rgba(0, 0, 0, 0.07);
+          box-shadow: 0 0.9px 10px rgba(0, 0, 0, 0.024), 0 2.5px 27.5px rgba(0, 0, 0, 0.035), 0 6px 66.3px rgba(0, 0, 0, 0.046), 0 20px 220px rgba(0, 0, 0, 0.07);
 }
 
 .wrapper.search-page .btn-primary:hover, .wrapper.search-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,

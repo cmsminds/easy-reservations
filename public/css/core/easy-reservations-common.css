@@ -21,6 +21,9 @@ table{
 .theme-astra .site-content > .ast-container > section{
     width: 100%;
 }
+.theme-astra .site-content .ast-container .content-area{
+    margin-bottom: 0px !important;
+}
 .non-clickable {
 	pointer-events: none;
 	opacity: 0.5;
