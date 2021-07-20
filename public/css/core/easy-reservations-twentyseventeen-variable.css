@@ -2,11 +2,11 @@
   color: #222;
 }
 
-.bgcolor-primary, .btn-primary, .btn-outline-fill-primary:hover, .btn-outline-primary:hover {
+.bgcolor-primary, .btn-primary, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:focus, .btn-outline-fill-primary:active, .btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active {
   background-color: #222;
 }
 
-.border-color-primary, .btn-primary, .btn-outline-fill-primary, .btn-outline-primary, .btn-outline-primary:hover {
+.border-color-primary, .btn-primary, .btn-outline-fill-primary, .btn-outline-primary, .btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active {
   border-color: #222;
 }
 
@@ -18,7 +18,7 @@
   background-color: #767676;
 }
 
-.border-color-primary-300, .btn-primary:hover {
+.border-color-primary-300, .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
   border-color: #767676;
 }
 
@@ -26,7 +26,7 @@
   color: #111;
 }
 
-.bgcolor-secondary, .btn-primary:hover {
+.bgcolor-secondary, .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
   background-color: #111;
 }
 
@@ -38,11 +38,11 @@
   color: #3ab166;
 }
 
-.bgcolor-accent {
+.bgcolor-accent, .btn-accent {
   background-color: #3ab166;
 }
 
-.border-color-accent {
+.border-color-accent, .btn-accent {
   border-color: #3ab166;
 }
 
@@ -50,7 +50,7 @@
   color: #cbefd9;
 }
 
-.bgcolor-accent-300 {
+.bgcolor-accent-300, .btn-accent:hover, .btn-accent:focus, .btn-accent:active {
   background-color: #cbefd9;
 }
 
@@ -70,7 +70,7 @@
   border-color: #17763a;
 }
 
-.color-white, .btn-primary, .btn-outline-fill-primary:hover, .btn-outline-primary:hover {
+.color-white, .btn-primary, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:focus, .btn-outline-fill-primary:active {
   color: #fff;
 }
 
@@ -569,10 +569,10 @@ img {
 }
 
 .date-control {
-  background-image: url("../../images/planner.png");
-  background-position: 90%;
-  background-size: 20px;
-  background-repeat: no-repeat;
+  background-image: url("../../images/planner.png") !important;
+  background-position: 90% !important;
+  background-size: 20px !important;
+  background-repeat: no-repeat !important;
   cursor: pointer;
   -webkit-transition: 0.3s ease-in-out;
   transition: 0.3s ease-in-out;
@@ -621,6 +621,14 @@ img {
   filter: brightness(0) invert(1);
 }
 
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+  color: #fff !important;
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active {
+  color: #fff !important;
+}
+
 .dropdown-item.active,
 .dropdown-item:active {
   color: #fff;
@@ -647,5 +655,17 @@ img {
 .btn,
 .no-svg .dropdown-toggle {
   padding: .375rem .75rem;
+}
+
+.search-page .btn-xl {
+  padding: 15px 41px;
+}
+
+.btn-accent {
+  color: #fff !important;
+}
+
+.btn-accent:hover, .btn-accent:focus, .btn-accent:active {
+  color: #000 !important;
 }
 /*# sourceMappingURL=easy-reservations-twentyseventeen-variable.css.map */

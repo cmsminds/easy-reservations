@@ -1446,29 +1446,4 @@ img {
     padding: 12px 14px !important;
   }
 }
-
-@media (min-width: 992px) and (max-width: 1199px) {
-  [class*="-sidebar"] .search-result-inner .col-12.col-md-6.col-lg-4,
-  [class^="-sidebar"] .search-result-inner .col-12.col-md-6.col-lg-4,
-  [class*="sidebar-"] .search-result-inner .col-12.col-md-6.col-lg-4,
-  [class^="sidebar-"] .search-result-inner .col-12.col-md-6.col-lg-4,
-  [class*="sidebar"] .search-result-inner .col-12.col-md-6.col-lg-4,
-  [class^="sidebar"] .search-result-inner .col-12.col-md-6.col-lg-4 {
-    -webkit-box-flex: 0;
-        -ms-flex: 0 0 50%;
-            flex: 0 0 50%;
-    max-width: 50%;
-  }
-}
-
-@media (min-width: 992px) and (max-width: 1440px) {
-  [class*="-sidebar"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn,
-  [class^="-sidebar"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn,
-  [class*="sidebar-"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn,
-  [class^="sidebar-"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn,
-  [class*="sidebar"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn,
-  [class^="sidebar"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn {
-    padding: 12px 14px !important;
-  }
-}
 /*# sourceMappingURL=easy-reservations-twentynineteen.css.map */

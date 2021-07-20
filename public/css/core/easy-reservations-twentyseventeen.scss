@@ -1,5 +1,5 @@
 @import 'easy-reservations-twentyseventeen-variable.scss';
-.single-reserve-page {
+.wrapper{
     background-color: #f8f8f8;
     .banner {
         min-height: 570px;
@@ -317,6 +317,228 @@
             padding-bottom: 41px;
         }
     }
+    &.search-page {
+        .banner {
+            background-image: url(../../images/search-banner-image.jpg);
+            padding-top: 207px;
+            padding-bottom: 52px;
+
+            .details {
+                max-width: 100%;
+            }
+
+            .page-title {
+                h1 {
+                    color: $white;
+                }
+
+                margin-bottom: 102px !important;
+            }
+
+            .form-wrapper {
+                background-color: rgba($white, 0.2);
+                border-radius: 7px;
+                padding: 26px 26px 29px 27px;
+
+                .form-inner {
+                    .bootstrap-select{
+                        overflow: hidden;
+                    }
+
+                    input,
+                    .btn {
+                        min-height: 55px;
+                    }
+                    .btn:not(.dropdown-toggle){
+                        @include flex-center(inline-flex);
+                        // &:hover,&:focus,&:active{
+                        //     img{
+                        //         filter: invert(1);
+                        //     }
+                        // }
+                    }
+                    .dropdown-toggle{
+                        right: 0px;
+                    }
+                    .form-group {
+                        .date-control.ship-icon-field {
+                            background-position: 96% !important;
+                            @include mobile() {
+                                background-position: 90% !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .content-part {
+            margin-top: 0px;
+            padding-bottom: 52px;
+            .search-results-wrapper {
+                border-radius: 10px;
+                padding: 36px 33px;
+                margin-top: 47px;
+                background-color: #fff;
+
+                @include mobile() {
+                    padding: 0px;
+                    background-color: transparent;
+                }
+
+                .title {
+                    font-size: 24px;
+                    line-height: 26px;
+                    color: $black;
+                    font-weight: 700;
+                    margin-bottom: 36px;
+                    text-align: center;
+                }
+
+                .search-result-inner {
+
+                    &.form-row>.col,
+                    &.form-row>[class*=col-] {
+                        padding-right: 7px;
+                        padding-left: 7px;
+                    }
+
+                    .card {
+                        position: relative;
+                        border-radius: 6px;
+                        overflow: hidden;
+                        border: 0px solid transparent;
+                        transition: 0.3s ease-in-out;
+                        margin-bottom: 21px;
+
+                        .price-info {
+                            position: absolute;
+                            top: 16px;
+                            left: 14px;
+                            max-width: 145px;
+
+                            .inner-wrapper {
+                                background-color: $white;
+                                border-radius: 4px;
+                                padding: 5px 14px;
+                                display: flex;
+                                align-items: center;
+                                font-weight: 600;
+
+                                span {
+                                    margin-right: 4px;
+                                }
+                            }
+                        }
+
+                        .favorite {
+                            position: absolute;
+                            top: 18px;
+                            right: 15px;
+
+                            a {
+                                transition: 0.3s all ease-in-out;
+                                .icon-heart{
+                                    display: inline-block;
+                                    width: 29px;
+                                    height: 25px;
+                                    background-image: url(../../images/heart_outline.png);
+                                    background-size: contain;
+                                    background-position: center;
+                                    background-repeat: no-repeat;
+                                }
+
+                                &:hover,
+                                &:focus,
+                                &.selected{
+                                    .icon-heart{
+                                        background-image: url(../../images/heart_fill.png);
+                                    }
+                                }
+                                &:active{
+                                    .icon-heart{
+                                        transform: scale(0.8);
+                                    }
+                                }
+                            }
+                        }
+
+                        .amenities {
+                            color: #5d6475;
+                            font-size: 14px;
+                            font-weight: 300;
+                            vertical-align: middle;
+                            margin-bottom: 21px;
+
+                            .icon {
+                                @include flex-center(inline-flex);
+                            }
+
+                            svg {
+                                fill: #5d6475;
+                                pointer-events: none;
+                                height: 14px;
+                                width: 16px;
+                                vertical-align: middle;
+                            }
+                        }
+
+                        .card-body {
+                            padding: 30px;
+                            padding-top: 45px;
+                        }
+
+                        .card-title {
+                            font-size: 20px;
+                            letter-spacing: 0px;
+                            line-height: 22px;
+                            color: $black;
+                            font-weight: 700;
+                            margin-bottom: 10px;
+                            a{
+                                color: $black;
+                                &:hover{
+                                    text-decoration: none;
+                                }
+                            }
+                        }
+
+                        .btns-group {
+                            .btn {
+                                padding: 8px 16px;
+                                font-size: 14px;
+                                line-height: 20px;
+                                font-weight: 700;
+
+                                @include desktop() {
+                                    padding: 10px 24px;
+                                    font-size: 16px;
+                                    line-height: 24px;
+                                }
+                            }
+                        }
+                        &:hover{
+                            box-shadow: 0 0.9px 10px rgba(0, 0, 0, 0.024),
+                            0 2.5px 27.5px rgba(0, 0, 0, 0.035),
+                            0 6px 66.3px rgba(0, 0, 0, 0.046),
+                            0 20px 220px rgba(0, 0, 0, 0.07);
+                        }
+                        @media(max-width:991px) {
+                            box-shadow: 0 0.9px 10px rgba(0, 0, 0, 0.024),
+                            0 2.5px 27.5px rgba(0, 0, 0, 0.035),
+                            0 6px 66.3px rgba(0, 0, 0, 0.046),
+                            0 20px 220px rgba(0, 0, 0, 0.07);   
+                        }
+                    }
+                }
+            }
+        }
+        a,a:hover, .hentry .entry-content a{
+            text-decoration: none;
+            // color: inherit;
+            box-shadow: none;
+        }
+    }
 }
 #ui-datepicker-div {
     background: $white;
@@ -454,4 +676,38 @@
 }
 .bootstrap-select>.dropdown-toggle.bs-placeholder, .bootstrap-select>.dropdown-toggle.bs-placeholder:active, .bootstrap-select>.dropdown-toggle.bs-placeholder:focus, .bootstrap-select>.dropdown-toggle.bs-placeholder:hover{
     color: inherit;
+}
+.dropdown-toggle.btn-outline-light{
+    color: #212529 !important;
+    background-color: #f8f9fa !important;
+    border-color: #f8f9fa !important;
+    &:hover,&:focus,&:active{
+        .filter-option .filter-option-inner .filter-option-inner-inner{
+            color: $black !important;
+        }
+        &::after{
+            -webkit-filter: invert(0);
+                    filter: invert(0);
+        }
+    }
+}
+// sidebar on search page
+[class*="-sidebar"],
+[class^="-sidebar"],
+[class*="sidebar-"],
+[class^="sidebar-"],
+[class*="sidebar"],
+[class^="sidebar"] {
+    @media(min-width:992px) and (max-width:1199px){
+        .search-result-inner .col-12.col-md-6.col-lg-4{
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
+    }
+    @media(min-width:992px) and (max-width:1440px){
+        .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn{
+            padding: 12px 14px !important;
+        }
+    }
+    
 }

@@ -97,8 +97,8 @@ $count: 0;
     height: $size;
 }
 
-@mixin flex-center() {
-    display: flex;
+@mixin flex-center($display:flex){
+    display: $display;
     align-items: center;
     justify-content: center;
 }
@@ -154,10 +154,10 @@ img {
 }
 
 .date-control {
-    background-image: url("../../images/planner.png");
-    background-position: 90%;
-    background-size: 20px;
-    background-repeat: no-repeat;
+    background-image: url("../../images/planner.png") !important;
+    background-position: 90% !important;
+    background-size: 20px !important;
+    background-repeat: no-repeat !important;
     cursor: pointer;
     transition: 0.3s ease-in-out;
 
@@ -216,8 +216,8 @@ img {
     @extend .color-white;
     @extend .bgcolor-primary;
     @extend .border-color-primary;
-    &:hover{
-        // @extend .color-white;
+    &:hover, &:focus, &:active {
+        color: $white !important;
         @extend .bgcolor-secondary;
         @extend .border-color-primary-300;
     }
@@ -226,7 +226,7 @@ img {
     @extend .color-primary;
     @extend .bgcolor-primary-300;
     @extend .border-color-primary;
-    &:hover{
+    &:hover, &:focus, &:active {
         @extend .color-white;
         @extend .bgcolor-primary;
     }
@@ -235,8 +235,8 @@ img {
     @extend .color-primary;
     @extend .border-color-primary;
     @extend .bgcolor-transparent;
-    &:hover{
-        @extend .color-white;
+    &:hover, &:focus, &:active {
+        color: $white !important;
         @extend .bgcolor-primary;
         @extend .border-color-primary;
     }
@@ -263,4 +263,16 @@ img {
 .btn,
 .no-svg .dropdown-toggle{
     padding: .375rem .75rem;
+}
+.search-page .btn-xl{
+    padding: 15px 41px;
+}
+.btn-accent{
+    color: $white !important;
+    @extend .bgcolor-accent;
+    @extend .border-color-accent;
+    &:hover, &:focus, &:active {
+        color: $black !important;
+        @extend .bgcolor-accent-300;
+    }
 }
