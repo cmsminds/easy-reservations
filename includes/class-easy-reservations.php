@@ -158,6 +158,12 @@ class Easy_Reservations {
 		$this->loader->add_filter( 'woocommerce_admin_order_preview_actions', $plugin_admin, 'ersrv_woocommerce_admin_order_preview_actions_callback', 20, 2 );
 		$this->loader->add_filter( 'woocommerce_admin_order_actions', $plugin_admin, 'ersrv_woocommerce_admin_order_actions_callback', 10, 2 );
 		$this->loader->add_action( 'woocommerce_order_actions_end', $plugin_admin, 'ersrv_woocommerce_order_actions_end_callback' );
+		$this->loader->add_action( 'woocommerce_order_status_completed', $plugin_admin, 'ersrv_woocommerce_order_status_completed_callback' );
+		$this->loader->add_action( 'woocommerce_order_status_processing', $plugin_admin, 'ersrv_woocommerce_order_status_processing_callback' );
+		$this->loader->add_action( 'woocommerce_order_status_refunded', $plugin_admin, 'ersrv_woocommerce_order_status_refunded_callback' );
+		$this->loader->add_action( 'woocommerce_order_status_on-hold', $plugin_admin, 'ersrv_woocommerce_order_status_on_hold_callback' );
+		$this->loader->add_action( 'woocommerce_order_status_pending', $plugin_admin, 'ersrv_woocommerce_order_status_pending_callback' );
+		$this->loader->add_action( 'woocommerce_order_status_cancelled', $plugin_admin, 'ersrv_woocommerce_order_status_cancelled_callback' );
 	}
 
 	/**
@@ -187,6 +193,10 @@ class Easy_Reservations {
 		$this->loader->add_filter( 'template_include', $plugin_public, 'ersrv_template_include_callback', 99, 1 );
 		$this->loader->add_shortcode( 'ersrv_search_reservations', $plugin_public, 'ersrv_ersrv_search_reservations_callback' );
 		$this->loader->add_action( 'ersrv_delete_reservation_pdf_receipts', $plugin_public, 'ersrv_ersrv_delete_reservation_pdf_receipts_callback' );
+		$this->loader->add_filter( 'woocommerce_my_account_my_orders_actions', $plugin_public, 'ersrv_woocommerce_my_account_my_orders_actions_callback', 10, 2 );
+		$this->loader->add_action( 'woocommerce_order_details_after_order_table', $plugin_public, 'ersrv_woocommerce_order_details_after_order_table_callback' );
+		$this->loader->add_filter( 'woocommerce_order_get_formatted_billing_address', $plugin_public, 'ersrv_woocommerce_order_get_formatted_billing_address_callback', 20, 2 );
+		$this->loader->add_action( 'dokan_order_detail_after_order_items', $plugin_public, 'ersrv_dokan_order_detail_after_order_items_callback' );
 	}
 
 	/**

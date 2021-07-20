@@ -1132,4 +1132,64 @@ class Easy_Reservations_Admin {
 		<?php
 		echo wp_kses_post( ob_get_clean() );
 	}
+
+	/**
+	 * Actions to be performed when order is marked as completed.
+	 *
+	 * @param int $order_id Holds the order ID.
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_order_status_completed_callback( $order_id ) {
+		ersrv_email_reservation_receipt_order_status_change( $order_id );
+	}
+
+	/**
+	 * Actions to be performed when order is marked as prcessing.
+	 *
+	 * @param int $order_id Holds the order ID.
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_order_status_processing_callback( $order_id ) {
+		ersrv_email_reservation_receipt_order_status_change( $order_id );
+	}
+
+	/**
+	 * Actions to be performed when order is marked as refunded.
+	 *
+	 * @param int $order_id Holds the order ID.
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_order_status_refunded_callback( $order_id ) {
+		ersrv_email_reservation_receipt_order_status_change( $order_id );
+	}
+
+	/**
+	 * Actions to be performed when order is marked as on-hold.
+	 *
+	 * @param int $order_id Holds the order ID.
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_order_status_on_hold_callback( $order_id ) {
+		ersrv_email_reservation_receipt_order_status_change( $order_id );
+	}
+
+	/**
+	 * Actions to be performed when order is marked as pending payment.
+	 *
+	 * @param int $order_id Holds the order ID.
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_order_status_pending_callback( $order_id ) {
+		ersrv_email_reservation_receipt_order_status_change( $order_id );
+	}
+
+	/**
+	 * Actions to be performed when order is marked as cancelled.
+	 *
+	 * @param int $order_id Holds the order ID.
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_order_status_cancelled_callback( $order_id ) {
+		ersrv_email_reservation_receipt_order_status_change( $order_id );
+	}
 }
