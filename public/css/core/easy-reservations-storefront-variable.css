@@ -35,42 +35,42 @@
 }
 
 .color-accent {
-  color: #3ab166;
+  color: #96588a;
 }
 
-.bgcolor-accent {
-  background-color: #3ab166;
+.bgcolor-accent, .btn-accent {
+  background-color: #96588a;
 }
 
-.border-color-accent {
-  border-color: #3ab166;
+.border-color-accent, .btn-accent {
+  border-color: #96588a;
 }
 
 .color-accent-300 {
-  color: #cbefd9;
+  color: #c09bb9;
 }
 
-.bgcolor-accent-300 {
-  background-color: #cbefd9;
+.bgcolor-accent-300, .btn-accent:hover {
+  background-color: #c09bb9;
 }
 
 .border-color-accent-300 {
-  border-color: #cbefd9;
+  border-color: #c09bb9;
 }
 
 .color-accent-700 {
-  color: #17763a;
+  color: #693e61;
 }
 
 .bgcolor-accent-700 {
-  background-color: #17763a;
+  background-color: #693e61;
 }
 
 .border-color-accent-700 {
-  border-color: #17763a;
+  border-color: #693e61;
 }
 
-.color-white, .btn-primary, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:focus, .btn-outline-fill-primary:active, .btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active, .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active {
+.color-white, .btn-primary, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:focus, .btn-outline-fill-primary:active, .btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active, .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-accent {
   color: #fff;
 }
 
@@ -106,7 +106,7 @@
   border-color: rgba(255, 255, 255, 0.5);
 }
 
-.color-black {
+.color-black, .btn-accent:hover {
   color: #000;
 }
 
@@ -645,5 +645,9 @@ img {
 
 .custom-control-input:focus:not(:checked) ~ .custom-control-label::before {
   border-color: #43454b;
+}
+
+.search-page .btn-xl {
+  padding: 15px 41px;
 }
 /*# sourceMappingURL=easy-reservations-storefront-variable.css.map */

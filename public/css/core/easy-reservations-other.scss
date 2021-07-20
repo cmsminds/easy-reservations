@@ -690,7 +690,6 @@
         }
     }
 }
-
 .bootstrap-select .dropdown-menu li a {
 
     &:hover,
@@ -698,7 +697,6 @@
         color: $accent;
     }
 }
-
 .ui-slider {
     background-color: $accent-300;
     border-radius: 4px;
@@ -718,7 +716,6 @@
         cursor: pointer;
     }
 }
-
 .bootstrap-select {
     .btn {
         min-height: 55px;
@@ -746,6 +743,7 @@
         }
     }
 }
+// sidebar on search page
 [class*="-sidebar"],
 [class^="-sidebar"],
 [class*="sidebar-"],

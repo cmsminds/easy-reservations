@@ -1,25 +1,25 @@
-.color-primary, .btn-primary:hover, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
+.color-primary, .btn-primary:hover, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
 #ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover, .btn-outline-fill-primary, .btn-outline-primary {
   color: #43454b;
 }
 
-.bgcolor-primary, .btn-primary, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:focus, .btn-outline-fill-primary:active, .btn-outline-primary:hover, .btn-outline-primary:focus, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:focus:hover,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:focus:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:focus:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:focus:hover, .btn-outline-primary:active, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:active:hover,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:active:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:active:hover,
+.bgcolor-primary, .btn-primary, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:focus, .btn-outline-fill-primary:active, .btn-outline-primary:hover, .btn-outline-primary:focus, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:focus:hover,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:focus:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:focus:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:focus:hover, .btn-outline-primary:active, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:active:hover,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:active:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:active:hover,
 #ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:active:hover, .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active {
   background-color: #43454b;
 }
 
-.border-color-primary, .btn-primary, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary, .btn-outline-primary, .btn-outline-primary:hover, .btn-outline-primary:focus, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:focus:hover,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:focus:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:focus:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:focus:hover, .btn-outline-primary:active, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:active:hover,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:active:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:active:hover,
+.border-color-primary, .btn-primary, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary, .btn-outline-primary, .btn-outline-primary:hover, .btn-outline-primary:focus, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:focus:hover,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:focus:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:focus:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:focus:hover, .btn-outline-primary:active, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:active:hover,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:active:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:active:hover,
 #ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:active:hover, .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active {
   border-color: #43454b;
 }
@@ -28,14 +28,14 @@
   color: #b4b5b7;
 }
 
-.bgcolor-primary-300, .btn-primary:hover, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
+.bgcolor-primary-300, .btn-primary:hover, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
 #ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover, .btn-outline-fill-primary {
   background-color: #b4b5b7;
 }
 
-.border-color-primary-300, .btn-primary:hover, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
+.border-color-primary-300, .btn-primary:hover, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
 #ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover {
   border-color: #b4b5b7;
 }
@@ -52,54 +52,54 @@
   border-color: #111;
 }
 
-.color-accent, .single-reserve-page .content-part .info-box a:hover {
-  color: #3ab166;
+.color-accent, .wrapper .content-part .info-box a:hover {
+  color: #96588a;
 }
 
-.bgcolor-accent {
-  background-color: #3ab166;
+.bgcolor-accent, .btn-accent {
+  background-color: #96588a;
 }
 
-.border-color-accent, .single-reserve-page .sidebar-wrapper .book-tour .details .social a:hover,
-.single-reserve-page .sidebar-wrapper .advanced-search .details .social a:hover {
-  border-color: #3ab166;
+.border-color-accent, .btn-accent, .wrapper .sidebar-wrapper .book-tour .details .social a:hover,
+.wrapper .sidebar-wrapper .advanced-search .details .social a:hover {
+  border-color: #96588a;
 }
 
 .color-accent-300 {
-  color: #cbefd9;
+  color: #c09bb9;
 }
 
-.bgcolor-accent-300 {
-  background-color: #cbefd9;
+.bgcolor-accent-300, .btn-accent:hover {
+  background-color: #c09bb9;
 }
 
 .border-color-accent-300 {
-  border-color: #cbefd9;
+  border-color: #c09bb9;
 }
 
 .color-accent-700 {
-  color: #17763a;
+  color: #693e61;
 }
 
 .bgcolor-accent-700 {
-  background-color: #17763a;
+  background-color: #693e61;
 }
 
 .border-color-accent-700 {
-  border-color: #17763a;
+  border-color: #693e61;
 }
 
-.color-white, .btn-primary, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:focus, .btn-outline-fill-primary:active, .btn-outline-primary:hover, .btn-outline-primary:focus, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:focus:hover,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:focus:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:focus:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:focus:hover, .btn-outline-primary:active, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:active:hover,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:active:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:active:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:active:hover, .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active {
+.color-white, .btn-primary, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:focus, .btn-outline-fill-primary:active, .btn-outline-primary:hover, .btn-outline-primary:focus, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:focus:hover,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:focus:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:focus:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:focus:hover, .btn-outline-primary:active, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:active:hover,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:active:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:active:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:active:hover, .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-accent {
   color: #fff;
 }
 
-.bgcolor-white, .single-reserve-page .content-part .info-box {
+.bgcolor-white, .wrapper .content-part .info-box {
   background-color: #fff;
 }
 
@@ -111,8 +111,8 @@
   color: #fafafa;
 }
 
-.bgcolor-white-300, .single-reserve-page .sidebar-wrapper .book-tour .details input,
-.single-reserve-page .sidebar-wrapper .advanced-search .details input {
+.bgcolor-white-300, .wrapper .sidebar-wrapper .book-tour .details input,
+.wrapper .sidebar-wrapper .advanced-search .details input {
   background-color: #fafafa;
 }
 
@@ -132,8 +132,8 @@
   border-color: rgba(255, 255, 255, 0.5);
 }
 
-.color-black, .single-reserve-page .sidebar-wrapper .book-tour .details input:focus,
-.single-reserve-page .sidebar-wrapper .advanced-search .details input:focus {
+.color-black, .btn-accent:hover, .wrapper .sidebar-wrapper .book-tour .details input:focus,
+.wrapper .sidebar-wrapper .advanced-search .details input:focus {
   color: #000;
 }
 
@@ -165,8 +165,8 @@
   background-color: rgba(0, 0, 0, 0.3);
 }
 
-.border-color-black-300, .single-reserve-page .sidebar-wrapper .book-tour .details input,
-.single-reserve-page .sidebar-wrapper .advanced-search .details input {
+.border-color-black-300, .wrapper .sidebar-wrapper .book-tour .details input,
+.wrapper .sidebar-wrapper .advanced-search .details input {
   border-color: rgba(0, 0, 0, 0.3);
 }
 
@@ -182,8 +182,8 @@
   border-color: rgba(0, 0, 0, 0.4);
 }
 
-.color-black-500, .single-reserve-page .sidebar-wrapper .book-tour .details input,
-.single-reserve-page .sidebar-wrapper .advanced-search .details input {
+.color-black-500, .wrapper .sidebar-wrapper .book-tour .details input,
+.wrapper .sidebar-wrapper .advanced-search .details input {
   color: rgba(0, 0, 0, 0.5);
 }
 
@@ -207,8 +207,8 @@
   border-color: rgba(0, 0, 0, 0.6);
 }
 
-.color-gray, .single-reserve-page .sidebar-wrapper .book-tour .details .social a,
-.single-reserve-page .sidebar-wrapper .advanced-search .details .social a {
+.color-gray, .wrapper .sidebar-wrapper .book-tour .details .social a,
+.wrapper .sidebar-wrapper .advanced-search .details .social a {
   color: #8a8f9c;
 }
 
@@ -236,8 +236,8 @@
   color: rgba(0, 0, 0, 0);
 }
 
-.bgcolor-transparent, .btn-outline-primary, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
+.bgcolor-transparent, .btn-outline-primary, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
 #ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover, .btn-outline-secondary {
   background-color: rgba(0, 0, 0, 0);
 }
@@ -256,19 +256,19 @@
   font-size: 13px;
 }
 
-.font-size-14, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev .ui-icon,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next .ui-icon, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-title, #ui-datepicker-div .ui-datepicker-calendar thead tr th, #ui-datepicker-div .ui-datepicker-calendar tbody tr td,
+.font-size-14, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev .ui-icon,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next .ui-icon, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-title, #ui-datepicker-div .ui-datepicker-calendar thead tr th, #ui-datepicker-div .ui-datepicker-calendar tbody tr td,
 #ui-datepicker-div .ui-datepicker-calendar tbody tr td a {
   font-size: 14px;
 }
 
-.font-size-15, .single-reserve-page .sidebar-wrapper .book-tour .details input,
-.single-reserve-page .sidebar-wrapper .advanced-search .details input {
+.font-size-15, .wrapper .sidebar-wrapper .book-tour .details input,
+.wrapper .sidebar-wrapper .advanced-search .details input {
   font-size: 15px;
 }
 
-.font-size-16, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-title, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar thead tr th, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a {
+.font-size-16, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-title, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar thead tr th, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a {
   font-size: 16px;
 }
 
@@ -593,9 +593,9 @@ img {
   font-weight: 500;
 }
 
-.font-weight-semibold, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev .ui-icon,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next .ui-icon, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-title, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar thead tr th, .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev .ui-icon,
+.font-weight-semibold, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev .ui-icon,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next .ui-icon, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-title, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar thead tr th, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev .ui-icon,
 #ui-datepicker-div .ui-datepicker-header .ui-datepicker-next .ui-icon, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-title, #ui-datepicker-div .ui-datepicker-calendar thead tr th, #ui-datepicker-div .ui-datepicker-calendar tbody tr td,
 #ui-datepicker-div .ui-datepicker-calendar tbody tr td a {
   font-weight: 600;
@@ -609,8 +609,8 @@ img {
   border-radius: 5.8px;
 }
 
-.date-control, .single-reserve-page .sidebar-wrapper .book-tour .details input.date-control,
-.single-reserve-page .sidebar-wrapper .advanced-search .details input.date-control {
+.date-control, .wrapper .sidebar-wrapper .book-tour .details input.date-control,
+.wrapper .sidebar-wrapper .advanced-search .details input.date-control {
   background-image: url("../../images/planner.png");
   background-position: 90%;
   background-size: 20px;
@@ -620,9 +620,9 @@ img {
   transition: 0.3s ease-in-out;
 }
 
-.date-control:focus, .single-reserve-page .sidebar-wrapper .book-tour .details input.date-control:focus,
-.single-reserve-page .sidebar-wrapper .advanced-search .details input.date-control:focus, .date-control:hover, .single-reserve-page .sidebar-wrapper .book-tour .details input.date-control:hover,
-.single-reserve-page .sidebar-wrapper .advanced-search .details input.date-control:hover {
+.date-control:focus, .wrapper .sidebar-wrapper .book-tour .details input.date-control:focus,
+.wrapper .sidebar-wrapper .advanced-search .details input.date-control:focus, .date-control:hover, .wrapper .sidebar-wrapper .book-tour .details input.date-control:hover,
+.wrapper .sidebar-wrapper .advanced-search .details input.date-control:hover {
   background-image: url("../../images/planner_active.png");
   background-blend-mode: luminosity;
 }
@@ -691,11 +691,15 @@ img {
   border-color: #43454b;
 }
 
-.single-reserve-page {
+.search-page .btn-xl {
+  padding: 15px 41px;
+}
+
+.wrapper {
   background-color: #f8f8f8;
 }
 
-.single-reserve-page .banner {
+.wrapper .banner {
   min-height: 570px;
   padding-top: 149px;
   padding-bottom: 256px;
@@ -705,41 +709,41 @@ img {
   background-repeat: no-repeat;
 }
 
-.single-reserve-page .banner .details {
+.wrapper .banner .details {
   max-width: 360px;
 }
 
-.single-reserve-page .content-part {
+.wrapper .content-part {
   margin-top: calc(86px - 256px);
 }
 
-.single-reserve-page .content-part .info-box {
+.wrapper .content-part .info-box {
   border-radius: 6px;
   padding: 23.5px 30px;
   margin-bottom: 20px;
 }
 
-.single-reserve-page .content-part .info-box .card {
+.wrapper .content-part .info-box .card {
   padding: 0px;
   border: 0px;
   background-color: transparent;
 }
 
-.single-reserve-page .content-part .info-box .dropdown-divider {
+.wrapper .content-part .info-box .dropdown-divider {
   margin-top: 22px;
   padding-bottom: 31px;
 }
 
-.single-reserve-page .content-part .info-box .section-title {
+.wrapper .content-part .info-box .section-title {
   position: relative;
   color: #43454b;
 }
 
-.single-reserve-page .content-part .info-box .section-title.show-on-load, .single-reserve-page .content-part .info-box .section-title[aria-expanded="true"] {
+.wrapper .content-part .info-box .section-title.show-on-load, .wrapper .content-part .info-box .section-title[aria-expanded="true"] {
   color: #000;
 }
 
-.single-reserve-page .content-part .info-box .section-title:not(.show-on-load):before, .single-reserve-page .content-part .info-box .section-title:not(.show-on-load):after {
+.wrapper .content-part .info-box .section-title:not(.show-on-load):before, .wrapper .content-part .info-box .section-title:not(.show-on-load):after {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
@@ -755,14 +759,14 @@ img {
   transition: transform 0.25s ease-out, -webkit-transform 0.25s ease-out;
 }
 
-.single-reserve-page .content-part .info-box .section-title:not(.show-on-load)[aria-expanded="false"]::before {
+.wrapper .content-part .info-box .section-title:not(.show-on-load)[aria-expanded="false"]::before {
   top: 0;
   width: 4px;
   height: 30px;
   margin-left: -2px;
 }
 
-.single-reserve-page .content-part .info-box .section-title:not(.show-on-load)::after {
+.wrapper .content-part .info-box .section-title:not(.show-on-load)::after {
   top: 40%;
   width: 30px;
   height: 4px;
@@ -770,19 +774,19 @@ img {
   right: 2px;
 }
 
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline {
+.wrapper .content-part .datepicker .ui-datepicker-inline {
   width: 100% !important;
   padding: 0px;
 }
 
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover {
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover {
   text-decoration: none;
   top: 2px;
   left: 2px;
 }
 
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next {
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next {
   width: 49px;
   height: 34px;
   display: -webkit-box;
@@ -799,8 +803,8 @@ img {
   cursor: pointer;
 }
 
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev .ui-icon,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next .ui-icon {
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev .ui-icon,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next .ui-icon {
   text-indent: 0px;
   position: relative;
   left: 0px;
@@ -812,72 +816,72 @@ img {
   margin: 0px;
 }
 
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover {
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover {
   text-decoration: none;
   top: 2px;
 }
 
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover {
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover {
   left: 2px;
 }
 
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover {
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover {
   right: 2px;
 }
 
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-buttonpane {
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-buttonpane {
   display: none;
 }
 
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar thead tr th {
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar thead tr th {
   color: #000;
 }
 
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a {
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a {
   color: #8a8f9c;
   text-align: center;
 }
 
 @media only screen and (min-width: 768px) {
-  .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td,
-  .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a {
+  .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td,
+  .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a {
     font-size: 14px;
   }
-  .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a,
-  .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a {
+  .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a,
+  .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a {
     padding: 4px;
   }
 }
 
 @media only screen and (min-width: 1280px) {
-  .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td,
-  .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a {
+  .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td,
+  .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a {
     font-size: 16px;
   }
-  .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a,
-  .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a {
+  .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a,
+  .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a {
     padding: 9px;
   }
 }
 
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-highlight,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ui-state-highlight {
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-highlight,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ui-state-highlight {
   color: #111;
-  background-color: #cbefd9;
+  background-color: #c09bb9;
   border-radius: 100%;
 }
 
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-active,
-.single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ui-state-active {
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-active,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ui-state-active {
   color: #fff;
-  background-color: #3ab166;
+  background-color: #96588a;
   border-radius: 100%;
 }
 
 @media only screen and (max-width: 767px) {
-  .single-reserve-page .content-part .datepicker .ui-datepicker-inline {
+  .wrapper .content-part .datepicker .ui-datepicker-inline {
     display: -webkit-box !important;
     display: -ms-flexbox !important;
     display: flex !important;
@@ -886,15 +890,15 @@ img {
         -ms-flex-direction: column;
             flex-direction: column;
   }
-  .single-reserve-page .content-part .datepicker .ui-datepicker-inline > div {
+  .wrapper .content-part .datepicker .ui-datepicker-inline > div {
     width: 100%;
   }
-  .single-reserve-page .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a {
+  .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a {
     padding: 6px;
   }
 }
 
-.single-reserve-page .content-part .gallery .img img {
+.wrapper .content-part .gallery .img img {
   height: 100%;
   width: 100%;
   -o-object-fit: cover;
@@ -902,7 +906,7 @@ img {
 }
 
 @media only screen and (min-width: 768px) {
-  .single-reserve-page .content-part .gallery .img {
+  .wrapper .content-part .gallery .img {
     max-width: calc(100% / 2);
     -ms-flex-preferred-size: calc(100% / 2);
         flex-basis: calc(100% / 2);
@@ -910,7 +914,7 @@ img {
 }
 
 @media only screen and (min-width: 1280px) {
-  .single-reserve-page .content-part .gallery .img {
+  .wrapper .content-part .gallery .img {
     max-width: calc(100% / 3);
     -ms-flex-preferred-size: calc(100% / 3);
         flex-basis: calc(100% / 3);
@@ -918,35 +922,35 @@ img {
 }
 
 @media only screen and (max-width: 767px) {
-  .single-reserve-page .content-part .gallery .img {
+  .wrapper .content-part .gallery .img {
     max-width: calc(100% / 1);
     -ms-flex-preferred-size: calc(100% / 1);
         flex-basis: calc(100% / 1);
   }
 }
 
-.single-reserve-page .sidebar-wrapper .price-box {
+.wrapper .sidebar-wrapper .price-box {
   margin-bottom: 17px;
 }
 
-.single-reserve-page .sidebar-wrapper .book-tour,
-.single-reserve-page .sidebar-wrapper .advanced-search {
+.wrapper .sidebar-wrapper .book-tour,
+.wrapper .sidebar-wrapper .advanced-search {
   padding: 30px 33px;
   margin-bottom: 23px;
 }
 
-.single-reserve-page .sidebar-wrapper .book-tour .details input,
-.single-reserve-page .sidebar-wrapper .advanced-search .details input {
+.wrapper .sidebar-wrapper .book-tour .details input,
+.wrapper .sidebar-wrapper .advanced-search .details input {
   min-height: 55px;
 }
 
-.single-reserve-page .sidebar-wrapper .book-tour .details input.date-control,
-.single-reserve-page .sidebar-wrapper .advanced-search .details input.date-control {
+.wrapper .sidebar-wrapper .book-tour .details input.date-control,
+.wrapper .sidebar-wrapper .advanced-search .details input.date-control {
   background-position: 95%;
 }
 
-.single-reserve-page .sidebar-wrapper .book-tour .details .btn,
-.single-reserve-page .sidebar-wrapper .advanced-search .details .btn {
+.wrapper .sidebar-wrapper .book-tour .details .btn,
+.wrapper .sidebar-wrapper .advanced-search .details .btn {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
@@ -958,19 +962,19 @@ img {
           align-items: center;
 }
 
-.single-reserve-page .sidebar-wrapper .book-tour .details .btn.btn-xl,
-.single-reserve-page .sidebar-wrapper .advanced-search .details .btn.btn-xl {
+.wrapper .sidebar-wrapper .book-tour .details .btn.btn-xl,
+.wrapper .sidebar-wrapper .advanced-search .details .btn.btn-xl {
   padding: 15.063px 1.5rem;
 }
 
-.single-reserve-page .sidebar-wrapper .book-tour .details .btn:hover img,
-.single-reserve-page .sidebar-wrapper .advanced-search .details .btn:hover img {
+.wrapper .sidebar-wrapper .book-tour .details .btn:hover img,
+.wrapper .sidebar-wrapper .advanced-search .details .btn:hover img {
   -webkit-filter: invert(0.76);
   filter: invert(0.76);
 }
 
-.single-reserve-page .sidebar-wrapper .book-tour .details .social a,
-.single-reserve-page .sidebar-wrapper .advanced-search .details .social a {
+.wrapper .sidebar-wrapper .book-tour .details .social a,
+.wrapper .sidebar-wrapper .advanced-search .details .social a {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
@@ -987,51 +991,282 @@ img {
   margin: 0px 4px;
 }
 
-.single-reserve-page .sidebar-wrapper .book-tour .details .social a svg,
-.single-reserve-page .sidebar-wrapper .advanced-search .details .social a svg {
+.wrapper .sidebar-wrapper .book-tour .details .social a svg,
+.wrapper .sidebar-wrapper .advanced-search .details .social a svg {
   pointer-events: none;
   fill: #8a8f9c;
   width: 20px;
   height: auto;
 }
 
-.single-reserve-page .sidebar-wrapper .book-tour .details .social a:hover svg,
-.single-reserve-page .sidebar-wrapper .advanced-search .details .social a:hover svg {
-  fill: #3ab166;
+.wrapper .sidebar-wrapper .book-tour .details .social a:hover svg,
+.wrapper .sidebar-wrapper .advanced-search .details .social a:hover svg {
+  fill: #96588a;
 }
 
-.single-reserve-page .sidebar-wrapper .book-tour .details .social a.facebook:hover,
-.single-reserve-page .sidebar-wrapper .advanced-search .details .social a.facebook:hover {
+.wrapper .sidebar-wrapper .book-tour .details .social a.facebook:hover,
+.wrapper .sidebar-wrapper .advanced-search .details .social a.facebook:hover {
   border-color: #4267B2;
 }
 
-.single-reserve-page .sidebar-wrapper .book-tour .details .social a.facebook:hover svg,
-.single-reserve-page .sidebar-wrapper .advanced-search .details .social a.facebook:hover svg {
+.wrapper .sidebar-wrapper .book-tour .details .social a.facebook:hover svg,
+.wrapper .sidebar-wrapper .advanced-search .details .social a.facebook:hover svg {
   fill: #4267B2;
 }
 
-.single-reserve-page .sidebar-wrapper .book-tour .details .social a.twitter:hover,
-.single-reserve-page .sidebar-wrapper .advanced-search .details .social a.twitter:hover {
+.wrapper .sidebar-wrapper .book-tour .details .social a.twitter:hover,
+.wrapper .sidebar-wrapper .advanced-search .details .social a.twitter:hover {
   border-color: #1DA1F2;
 }
 
-.single-reserve-page .sidebar-wrapper .book-tour .details .social a.twitter:hover svg,
-.single-reserve-page .sidebar-wrapper .advanced-search .details .social a.twitter:hover svg {
+.wrapper .sidebar-wrapper .book-tour .details .social a.twitter:hover svg,
+.wrapper .sidebar-wrapper .advanced-search .details .social a.twitter:hover svg {
   fill: #1DA1F2;
 }
 
-.single-reserve-page .sidebar-wrapper .book-tour .details .social a.pinterest:hover,
-.single-reserve-page .sidebar-wrapper .advanced-search .details .social a.pinterest:hover {
+.wrapper .sidebar-wrapper .book-tour .details .social a.pinterest:hover,
+.wrapper .sidebar-wrapper .advanced-search .details .social a.pinterest:hover {
   border-color: #E60023;
 }
 
-.single-reserve-page .sidebar-wrapper .book-tour .details .social a.pinterest:hover svg,
-.single-reserve-page .sidebar-wrapper .advanced-search .details .social a.pinterest:hover svg {
+.wrapper .sidebar-wrapper .book-tour .details .social a.pinterest:hover svg,
+.wrapper .sidebar-wrapper .advanced-search .details .social a.pinterest:hover svg {
   fill: #E60023;
 }
 
-.single-reserve-page .sidebar-wrapper .advanced-search {
+.wrapper .sidebar-wrapper .advanced-search {
   padding-bottom: 41px;
+}
+
+.wrapper.search-page .banner {
+  background-image: url(../../images/search-banner-image.jpg);
+  padding-top: 207px;
+  padding-bottom: 52px;
+}
+
+.wrapper.search-page .banner .details {
+  max-width: 100%;
+}
+
+.wrapper.search-page .banner .page-title {
+  margin-bottom: 102px !important;
+}
+
+.wrapper.search-page .banner .page-title h1 {
+  color: #fff;
+}
+
+.wrapper.search-page .banner .form-wrapper {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 7px;
+  padding: 26px 26px 29px 27px;
+}
+
+.wrapper.search-page .banner .form-wrapper .form-inner input,
+.wrapper.search-page .banner .form-wrapper .form-inner .btn {
+  min-height: 55px;
+}
+
+.wrapper.search-page .banner .form-wrapper .form-inner .btn {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.wrapper.search-page .banner .form-wrapper .form-inner .btn:hover img, .wrapper.search-page .banner .form-wrapper .form-inner .btn:focus img, .wrapper.search-page .banner .form-wrapper .form-inner .btn:active img {
+  -webkit-filter: invert(1);
+          filter: invert(1);
+}
+
+.wrapper.search-page .banner .form-wrapper .form-inner .form-group .date-control.ship-icon-field {
+  background-position: 96% !important;
+}
+
+@media only screen and (max-width: 767px) {
+  .wrapper.search-page .banner .form-wrapper .form-inner .form-group .date-control.ship-icon-field {
+    background-position: 90% !important;
+  }
+}
+
+.wrapper.search-page .content-part {
+  margin-top: 0px;
+  padding-bottom: 52px;
+}
+
+.wrapper.search-page .content-part .search-results-wrapper {
+  border-radius: 10px;
+  padding: 36px 33px;
+  margin-top: 47px;
+  background-color: #fff;
+}
+
+@media only screen and (max-width: 767px) {
+  .wrapper.search-page .content-part .search-results-wrapper {
+    padding: 0px;
+    background-color: transparent;
+  }
+}
+
+.wrapper.search-page .content-part .search-results-wrapper .title {
+  font-size: 24px;
+  line-height: 26px;
+  color: #000;
+  font-weight: 700;
+  margin-bottom: 36px;
+  text-align: center;
+}
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner.form-row > .col,
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner.form-row > [class*=col-] {
+  padding-right: 7px;
+  padding-left: 7px;
+}
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 0px solid transparent;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+  margin-bottom: 21px;
+}
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .price-info {
+  position: absolute;
+  top: 16px;
+  left: 14px;
+  max-width: 138px;
+}
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .price-info .inner-wrapper {
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 5px 14px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-weight: 600;
+}
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .price-info .inner-wrapper span {
+  margin-right: 4px;
+}
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .favorite {
+  position: absolute;
+  top: 18px;
+  right: 15px;
+}
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .favorite a {
+  -webkit-transition: 0.3s all ease-in-out;
+  transition: 0.3s all ease-in-out;
+}
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .favorite a .icon-heart {
+  display: inline-block;
+  width: 29px;
+  height: 25px;
+  background-image: url(../../images/heart_outline.png);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .favorite a:hover .icon-heart, .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .favorite a:focus .icon-heart, .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .favorite a.selected .icon-heart {
+  background-image: url(../../images/heart_fill.png);
+}
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .favorite a:active .icon-heart {
+  -webkit-transform: scale(0.8);
+          transform: scale(0.8);
+}
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .amenities {
+  color: #5d6475;
+  font-size: 14px;
+  font-weight: 300;
+  vertical-align: middle;
+  margin-bottom: 21px;
+}
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .amenities .icon {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .amenities svg {
+  fill: #5d6475;
+  pointer-events: none;
+  height: 14px;
+  width: 16px;
+  vertical-align: middle;
+}
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .card-body {
+  padding: 30px;
+  padding-top: 45px;
+}
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .card-title {
+  font-size: 20px;
+  letter-spacing: 0px;
+  line-height: 22px;
+  color: #000;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .card-title a {
+  color: #000;
+}
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .card-title a:hover {
+  text-decoration: none;
+}
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+@media only screen and (min-width: 1280px) {
+  .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn {
+    padding: 12px 26px;
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card:hover {
+  -webkit-box-shadow: 0 0.9px 10px rgba(0, 0, 0, 0.024), 0 2.5px 27.5px rgba(0, 0, 0, 0.035), 0 6px 66.3px rgba(0, 0, 0, 0.046), 0 20px 220px rgba(0, 0, 0, 0.07);
+          box-shadow: 0 0.9px 10px rgba(0, 0, 0, 0.024), 0 2.5px 27.5px rgba(0, 0, 0, 0.035), 0 6px 66.3px rgba(0, 0, 0, 0.046), 0 20px 220px rgba(0, 0, 0, 0.07);
+}
+
+@media (max-width: 991px) {
+  .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card {
+    -webkit-box-shadow: 0 0.9px 10px rgba(0, 0, 0, 0.024), 0 2.5px 27.5px rgba(0, 0, 0, 0.035), 0 6px 66.3px rgba(0, 0, 0, 0.046), 0 20px 220px rgba(0, 0, 0, 0.07);
+            box-shadow: 0 0.9px 10px rgba(0, 0, 0, 0.024), 0 2.5px 27.5px rgba(0, 0, 0, 0.035), 0 6px 66.3px rgba(0, 0, 0, 0.046), 0 20px 220px rgba(0, 0, 0, 0.07);
+  }
 }
 
 #ui-datepicker-div {
@@ -1116,34 +1351,34 @@ img {
 #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ui-state-highlight,
 #ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ui-state-highlight {
   color: #111;
-  background-color: #cbefd9;
+  background-color: #c09bb9;
   border-radius: 100%;
 }
 
 #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ui-state-active,
 #ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ui-state-active {
   color: #fff;
-  background-color: #3ab166;
+  background-color: #96588a;
   border-radius: 100%;
 }
 
 .bootstrap-select .dropdown-menu li a:hover, .bootstrap-select .dropdown-menu li a:focus {
-  color: #3ab166;
+  color: #96588a;
 }
 
 .ui-slider {
-  background-color: #cbefd9;
+  background-color: #c09bb9;
   border-radius: 4px;
   height: 6px;
 }
 
 .ui-slider .ui-slider-range {
-  background-color: #3ab166;
+  background-color: #96588a;
 }
 
 .ui-slider .ui-slider-handle {
   top: -.55em;
-  background-color: #3ab166;
+  background-color: #96588a;
   border: 3px solid #fff;
   border-radius: 100%;
   height: 22px;
@@ -1159,7 +1394,46 @@ img {
   color: #fff;
 }
 
+.dropdown-toggle.btn-outline-light:hover .filter-option .filter-option-inner .filter-option-inner-inner, .dropdown-toggle.btn-outline-light:focus .filter-option .filter-option-inner .filter-option-inner-inner, .dropdown-toggle.btn-outline-light:active .filter-option .filter-option-inner .filter-option-inner-inner {
+  color: #000;
+}
+
+.dropdown-toggle.btn-outline-light:hover::after, .dropdown-toggle.btn-outline-light:focus::after, .dropdown-toggle.btn-outline-light:active::after {
+  -webkit-filter: invert(0);
+  filter: invert(0);
+}
+
 .bootstrap-select > .dropdown-toggle.bs-placeholder, .bootstrap-select > .dropdown-toggle.bs-placeholder:active, .bootstrap-select > .dropdown-toggle.bs-placeholder:focus, .bootstrap-select > .dropdown-toggle.bs-placeholder:hover {
   color: inherit;
+}
+
+a, a:hover,
+.hentry .entry-content a {
+  text-decoration: none;
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  [class*="-sidebar"] .search-result-inner .col-12.col-md-6.col-lg-4,
+  [class^="-sidebar"] .search-result-inner .col-12.col-md-6.col-lg-4,
+  [class*="sidebar-"] .search-result-inner .col-12.col-md-6.col-lg-4,
+  [class^="sidebar-"] .search-result-inner .col-12.col-md-6.col-lg-4,
+  [class*="sidebar"] .search-result-inner .col-12.col-md-6.col-lg-4,
+  [class^="sidebar"] .search-result-inner .col-12.col-md-6.col-lg-4 {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 50%;
+            flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1440px) {
+  [class*="-sidebar"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn,
+  [class^="-sidebar"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn,
+  [class*="sidebar-"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn,
+  [class^="sidebar-"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn,
+  [class*="sidebar"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn,
+  [class^="sidebar"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn {
+    padding: 12px 14px !important;
+  }
 }
 /*# sourceMappingURL=easy-reservations-storefront.css.map */
