@@ -1208,7 +1208,7 @@ img {
           box-shadow: 0 0.9px 10px rgba(0, 0, 0, 0.024), 0 2.5px 27.5px rgba(0, 0, 0, 0.035), 0 6px 66.3px rgba(0, 0, 0, 0.046), 0 20px 220px rgba(0, 0, 0, 0.07);
 }
 
-@media only screen and (max-width: 767px) {
+@media (max-width: 991px) {
   .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card {
     -webkit-box-shadow: 0 0.9px 10px rgba(0, 0, 0, 0.024), 0 2.5px 27.5px rgba(0, 0, 0, 0.035), 0 6px 66.3px rgba(0, 0, 0, 0.046), 0 20px 220px rgba(0, 0, 0, 0.07);
             box-shadow: 0 0.9px 10px rgba(0, 0, 0, 0.024), 0 2.5px 27.5px rgba(0, 0, 0, 0.035), 0 6px 66.3px rgba(0, 0, 0, 0.046), 0 20px 220px rgba(0, 0, 0, 0.07);
@@ -1359,5 +1359,30 @@ img {
 .dropdown-toggle.btn-outline-light:hover::after, .dropdown-toggle.btn-outline-light:focus::after, .dropdown-toggle.btn-outline-light:active::after {
   -webkit-filter: invert(0);
   filter: invert(0);
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  [class*="-sidebar"] .search-result-inner .col-12.col-md-6.col-lg-4,
+  [class^="-sidebar"] .search-result-inner .col-12.col-md-6.col-lg-4,
+  [class*="sidebar-"] .search-result-inner .col-12.col-md-6.col-lg-4,
+  [class^="sidebar-"] .search-result-inner .col-12.col-md-6.col-lg-4,
+  [class*="sidebar"] .search-result-inner .col-12.col-md-6.col-lg-4,
+  [class^="sidebar"] .search-result-inner .col-12.col-md-6.col-lg-4 {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 50%;
+            flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1440px) {
+  [class*="-sidebar"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn,
+  [class^="-sidebar"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn,
+  [class*="sidebar-"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn,
+  [class^="sidebar-"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn,
+  [class*="sidebar"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn,
+  [class^="sidebar"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn {
+    padding: 12px 14px !important;
+  }
 }
 /*# sourceMappingURL=easy-reservations-other.css.map */
