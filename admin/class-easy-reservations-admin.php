@@ -978,20 +978,27 @@ class Easy_Reservations_Admin {
 	 * @since 1.0.0
 	 */
 	public function ersrv_add_meta_boxes_callback() {
-		$order_id       = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
-		$wc_order       = wc_get_order( $order_id );
-		$is_reservation = ersrv_order_is_reservation( $wc_order );
+		// Get the post ID.
+		$post_id = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
 
-		// Add meta box for reservations order.
-		if ( $is_reservation ) {
-			add_meta_box(
-				'ersrv-reservation-order-email-calendar-invites',
-				__( 'Easy Reservations: Calendar Invites', 'easy-reservations' ),
-				array( $this, 'ersrv_calendar_invites_reservation_order' ),
-				'shop_order',
-				'side',
-				'high'
-			);
+		if ( ! is_null( $post_id ) ) {
+			$wc_order = wc_get_order( $post_id );
+
+			// If this is a valid order.
+			if ( false !== $wc_order ) {
+				$is_reservation = ersrv_order_is_reservation( $wc_order );
+				// Add meta box for reservations order.
+				if ( $is_reservation ) {
+					add_meta_box(
+						'ersrv-reservation-order-email-calendar-invites',
+						__( 'Easy Reservations: Calendar Invites', 'easy-reservations' ),
+						array( $this, 'ersrv_calendar_invites_reservation_order' ),
+						'shop_order',
+						'side',
+						'high'
+					);
+				}
+			}
 		}
 	}
 
