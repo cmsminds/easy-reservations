@@ -679,87 +679,27 @@ class Easy_Reservations_Admin {
 	/**
 	 * AJAX to get the reservable item details.
 	 *
-	 * @param int $item_id Holds the item ID.
-	 * @return array
 	 * @since 1.0.0
 	 */
-	public function ersrv_get_reservable_item_details_callback( $item_id ) {
-		// If doing AJAX.
-		if ( DOING_AJAX ) {
-			$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+	public function ersrv_get_reservable_item_details_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
 
-			// Exit, if the action mismatches.
-			if ( empty( $action ) || 'get_reservable_item_details' !== $action ) {
-				echo 0;
-				wp_die();
-			}
-
-			// Posted data.
-			$item_id = filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
-		}
-
-		// Parse the item to integer type.
-		$item_id = (int) $item_id;
-
-		// Accomodation limit.
-		$accomodation_limit = get_post_meta( $item_id, '_ersrv_accomodation_limit', true );
-
-		// Reserved dates.
-		$reserved_dates = ersrv_get_reservation_item_blockout_dates( $item_id );
-
-		// Amenities.
-		$amenities = get_post_meta( $item_id, '_ersrv_reservation_amenities', true );
-		// Prepare the amenities HTML.
-		ob_start();
-		if ( ! empty( $amenities ) && is_array( $amenities ) ) {
-			foreach ( $amenities as $index => $amenity ) {
-				$title = ( ! empty( $amenity['title'] ) ) ? $amenity['title'] : '';
-				$cost  = ( ! empty( $amenity['cost'] ) ) ? $amenity['cost'] : '';
-
-				// Skip the HTML is either the title or the cost is missing.
-				if ( empty( $title ) || empty( $cost ) ) {
-					continue;
-				}
-
-				// WooCommerce currency symbol.
-				$currency = get_woocommerce_currency_symbol();
-				?>
-				<div data-amenity="<?php echo esc_attr( $title ); ?>" data-cost="<?php echo esc_attr( $cost ); ?>" class="ersrv-new-reservation-single-amenity <?php echo ( 2 < $index ) ? 'mtop' : ''; ?>">
-					<label class="ersrv-switch">
-						<input type="checkbox" class="ersrv-switch-input">
-						<span class="slider ersrv-switch-slider"></span>
-					</label>
-					<span><?php echo "{$title} [{$currency}{$cost}]"; ?></span>
-				</div>
-				<?php
-			}
-		}
-		$amenity_html = ob_get_clean();
-
-		// Put the details in an array.
-		$item_details = array(
-			'accomodation_limit'     => $accomodation_limit,
-			'reserved_dates'         => $reserved_dates,
-			'min_reservation_period' => get_post_meta( $item_id, '_ersrv_reservation_min_period', true ),
-			'max_reservation_period' => get_post_meta( $item_id, '_ersrv_reservation_max_period', true ),
-			'amenity_html'           => $amenity_html,
-			'adult_charge'           => get_post_meta( $item_id, '_ersrv_accomodation_adult_charge', true ),
-			'kid_charge'             => get_post_meta( $item_id, '_ersrv_accomodation_kid_charge', true ),
-			'security_amount'        => get_post_meta( $item_id, '_ersrv_security_amt', true ),
-			'currency'               => get_woocommerce_currency_symbol(),
-		);
-
-		// Send the AJAX response.
-		if ( DOING_AJAX ) {
-			$response = array(
-				'code'    => 'item-details-fetched',
-				'details' => $item_details,
-			);
-			wp_send_json_success( $response );
+		// Exit, if the action mismatches.
+		if ( empty( $action ) || 'get_reservable_item_details' !== $action ) {
+			echo 0;
 			wp_die();
 		}
 
-		return $item_details;
+		// Posted data.
+		$item_id = filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
+
+		// Send the AJAX response.
+		$response = array(
+			'code'    => 'item-details-fetched',
+			'details' => ersrv_get_item_details( $item_id ),
+		);
+		wp_send_json_success( $response );
+		wp_die();
 	}
 
 	/**

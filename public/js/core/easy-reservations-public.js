@@ -118,7 +118,7 @@ jQuery(document).ready(function ($) {
 	 */
 	if ( 'yes' === is_search_page ) {
 		// Send the AJAX now.
-		$.ajax({
+		$.ajax( {
 			dataType: 'JSON',
 			url: ajaxurl,
 			type: 'POST',
@@ -135,8 +135,46 @@ jQuery(document).ready(function ($) {
 				} else if ( 'no-items-found' === response.data.code ) { // If items are found.
 				}
 			},
-		});
+		} );
 	}
+
+	/**
+	 * Mark any reservation item as favourite item.
+	 */
+	$( document ).on( 'click', '.ersrv-mark-reservation-favourite', function() {
+		var this_button = $( this );
+		var item_id     = this_button.parents( '.ersrv-reservation-item-block' ).data( 'item' );
+
+		// Exit, if the item id is not a valid number.
+		if ( -1 === is_valid_number( item_id ) ) {
+			console.log( 'easy reservations: invalid item id, cannot mark item as favourite' );
+			return false;
+		}
+
+		// Block the element now.
+		block_element( this_button );
+
+		// Send the AJAX now.
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'mark_item_favourite',
+				item_id: item_id,
+			},
+			success: function ( response ) {
+				// Check for invalid ajax request.
+				if ( 0 === response ) {
+					console.log( 'easy reservations: invalid ajax request' );
+					return false;
+				} else if ( 'items-found' === response.data.code ) { // If items are found.
+					$( '.search-result-inner' ).html( response.data.html );
+				} else if ( 'no-items-found' === response.data.code ) { // If items are found.
+				}
+			},
+		} );
+	} );
 
 	/**
 	 * Block element.

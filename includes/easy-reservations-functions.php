@@ -1293,28 +1293,44 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 	function ersrv_get_reservation_item_block_html( $item_id ) {
 		$featured_image_id   = get_post_thumbnail_id( $item_id );
 		$item_featured_image = ersrv_get_attachment_url_from_attachment_id( $featured_image_id );
+		$item_link           = get_permalink( $item_id );
+		$item_details        = ersrv_get_item_details( $item_id );
+		$adult_charge        = ( ! empty( $item_details['adult_charge'] ) ) ? $item_details['adult_charge'] : 0;
 		ob_start();
 		?>
-		<div class="col-12 col-md-6 col-lg-4">
+		<div class="col-12 col-md-6 col-lg-4 ersrv-reservation-item-block" data-item="<?php echo esc_attr( $item_id ); ?>">
 			<div class="card">
 				<div class="media">
-					<a href="#">
+					<a href="<?php echo esc_url( $item_link ); ?>">
 						<img src="<?php echo esc_url( $item_featured_image ); ?>" alt="img" class="card-img" />
 					</a>
 				</div>
-				<div class="favorite">
-					<a href="#" class="favorite-link">
-						<span class="sr-only">Favorite</span>
-						<span class="icon-heart">&nbsp;</span>
-					</a>
-				</div>
+				<?php if ( is_user_logged_in() ) { ?>
+					<div class="favorite">
+						<a href="javascript:void(0);" class="favorite-link ersrv-mark-reservation-favourite">
+							<span class="sr-only"><?php esc_html_e( 'Favorite', 'easy-reservations' ); ?></span>
+							<span class="icon-heart">&nbsp;</span>
+						</a>
+					</div>
+				<?php } ?>
 				<div class="price-info">
 					<div class="inner-wrapper color-black font-size-12 font-weight-semibold">
-						<span class="color-accent font-size-18 font-Poppins">$500</span> - Per Night
+						<span class="color-accent font-size-18 font-Poppins">
+							<?php echo wp_kses(
+								wc_price( $adult_charge ),
+								array(
+									'span' => array(
+										'class' => array(),
+									),
+								)
+							); ?>
+						</span><?php esc_html_e( ' - Per Night', 'easy-reservations' ); ?>
 					</div>
 				</div>
 				<div class="card-body">
-					<h3 class="card-title"><a href="#">Galia 630 Soler</a></h3>
+					<h3 class="card-title">
+						<a href="<?php echo esc_url( $item_link ); ?>"><?php echo wp_kses_post( get_the_title( $item_id ) ); ?></a>
+					</h3>
 					<div class="review-stars mb-3">
 						<img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/stars.png' ); ?>" alt="stars">
 					</div>
@@ -1345,8 +1361,8 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 						</div>
 					</div>
 					<div class="btns-group">
-						<a href="#" class="btn btn-accent mr-2">Book Now</a>
-						<a href="#" class="btn btn-primary">Quick View</a>
+						<a href="<?php echo esc_url( $item_link ); ?>" class="btn btn-accent mr-2">Book Now</a>
+						<a href="javascript:void(0);" class="btn btn-primary">Quick View</a>
 					</div>
 				</div>
 			</div>
@@ -1370,5 +1386,68 @@ if ( ! function_exists( 'ersrv_get_attachment_url_from_attachment_id' ) ) {
 	function ersrv_get_attachment_url_from_attachment_id( $image_id ) {
 
 		return ( empty( $image_id ) ) ? wc_placeholder_img_src() : wp_get_attachment_url( $image_id );
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_item_details' ) ) {
+	/**
+	 * Return all the details about the reservable item.
+	 *
+	 * @param int $item_id Holds the item ID.
+	 * @return array
+	 */
+	function ersrv_get_item_details( $item_id ) {
+		// Accomodation limit.
+		$accomodation_limit = get_post_meta( $item_id, '_ersrv_accomodation_limit', true );
+
+		// Reserved dates.
+		$reserved_dates = ersrv_get_reservation_item_blockout_dates( $item_id );
+
+		// Amenities.
+		$amenities = get_post_meta( $item_id, '_ersrv_reservation_amenities', true );
+		// Prepare the amenities HTML.
+		ob_start();
+		if ( ! empty( $amenities ) && is_array( $amenities ) ) {
+			foreach ( $amenities as $index => $amenity ) {
+				$title = ( ! empty( $amenity['title'] ) ) ? $amenity['title'] : '';
+				$cost  = ( ! empty( $amenity['cost'] ) ) ? $amenity['cost'] : '';
+
+				// Skip the HTML is either the title or the cost is missing.
+				if ( empty( $title ) || empty( $cost ) ) {
+					continue;
+				}
+
+				// WooCommerce currency symbol.
+				$currency = get_woocommerce_currency_symbol();
+				?>
+				<div data-amenity="<?php echo esc_attr( $title ); ?>" data-cost="<?php echo esc_attr( $cost ); ?>" class="ersrv-new-reservation-single-amenity <?php echo ( 2 < $index ) ? 'mtop' : ''; ?>">
+					<label class="ersrv-switch">
+						<input type="checkbox" class="ersrv-switch-input">
+						<span class="slider ersrv-switch-slider"></span>
+					</label>
+					<span><?php echo "{$title} [{$currency}{$cost}]"; ?></span>
+				</div>
+				<?php
+			}
+		}
+		$amenity_html = ob_get_clean();
+
+		// Put the details in an array.
+		$item_details = array(
+			'accomodation_limit'     => $accomodation_limit,
+			'reserved_dates'         => $reserved_dates,
+			'min_reservation_period' => get_post_meta( $item_id, '_ersrv_reservation_min_period', true ),
+			'max_reservation_period' => get_post_meta( $item_id, '_ersrv_reservation_max_period', true ),
+			'amenity_html'           => $amenity_html,
+			'adult_charge'           => get_post_meta( $item_id, '_ersrv_accomodation_adult_charge', true ),
+			'kid_charge'             => get_post_meta( $item_id, '_ersrv_accomodation_kid_charge', true ),
+			'security_amount'        => get_post_meta( $item_id, '_ersrv_security_amt', true ),
+			'currency'               => get_woocommerce_currency_symbol(),
+		);
+
+		return $item_details;
 	}
 }
