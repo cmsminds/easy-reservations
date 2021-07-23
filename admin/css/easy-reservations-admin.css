@@ -207,3 +207,6 @@ height: 34px;
 	font-family: Dashicons;
 	content: "\f316";
 }
+.new-reservation-summary .form-table th, .new-reservation-summary .form-table td {
+    padding: 8px 20px 8px 0px;
+}
