@@ -200,6 +200,7 @@ class Easy_Reservations {
 		$this->loader->add_action( 'wp_ajax_get_reservation_items', $plugin_public, 'ersrv_get_reservation_items_callback' );
 		$this->loader->add_action( 'wp_ajax_nopriv_get_reservation_items', $plugin_public, 'ersrv_get_reservation_items_callback' );
 		$this->loader->add_action( 'wp_ajax_mark_item_favourite', $plugin_public, 'ersrv_mark_item_favourite_callback' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'ersrv_wp_footer_callback' );
 	}
 
 	/**

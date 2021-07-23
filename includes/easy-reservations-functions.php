@@ -1362,7 +1362,7 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 					</div>
 					<div class="btns-group">
 						<a href="<?php echo esc_url( $item_link ); ?>" class="btn btn-accent mr-2">Book Now</a>
-						<a href="javascript:void(0);" class="btn btn-primary">Quick View</a>
+						<a href="javascript:void(0);" class="btn btn-primary ersrv-quick-view-item">Quick View</a>
 					</div>
 				</div>
 			</div>

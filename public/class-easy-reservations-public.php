@@ -136,7 +136,15 @@ class Easy_Reservations_Public {
 				);
 			}
 
-			// Enqueue the public style only when the style url and path are available.
+			// Enqueue the modal public style.
+			wp_enqueue_style(
+				$this->plugin_name . '-modal',
+				ERSRV_PLUGIN_URL . 'public/css/core/easy-reservations-modal.css',
+				array(),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/css/core/easy-reservations-modal.css' )
+			);
+
+			// Enqueue the common public style.
 			wp_enqueue_style(
 				$this->plugin_name . '-common',
 				ERSRV_PLUGIN_URL . 'public/css/core/easy-reservations-common.css',
@@ -925,5 +933,21 @@ class Easy_Reservations_Public {
 			)
 		);
 		wp_die();
+	}
+
+	/**
+	 * Add custom assets to footer section.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_wp_footer_callback() {
+		global $post;
+		$is_search_page = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
+
+		// If it's the single reservation page or the search page.
+		if ( $is_search_page ) {
+			// Include the quick view modal.
+			require_once ERSRV_PLUGIN_PATH . 'public/templates/modals/item-quick-view.php';
+		}
 	}
 }

@@ -177,6 +177,29 @@ jQuery(document).ready(function ($) {
 	} );
 
 	/**
+	 * Open the item quick view.
+	 */
+	$( document ).on( 'click', '.ersrv-quick-view-item', function() {
+		$( '#ersrv-item-quick-view-modal' ).fadeIn( 'slow' );
+	} );
+
+	/**
+	 * Close modal.
+	 */
+	$( document ).on( 'click', '.ersrv-close-modal', function() {
+		$( '.ersrv-modal' ).fadeOut( 'slow' );
+	} );
+
+	/**
+	 * Close the modal when clicked outside the window.
+	 */
+	$( 'body' ).click( function( evt ) {
+		if ( 'ersrv-item-quick-view-modal' === evt.target.id ) {
+			$( '.ersrv-modal' ).fadeOut( 'slow' );
+		}
+	} );
+
+	/**
 	 * Block element.
 	 *
 	 * @param {string} element
