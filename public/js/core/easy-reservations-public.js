@@ -168,9 +168,9 @@ jQuery(document).ready(function ($) {
 				if ( 0 === response ) {
 					console.log( 'easy reservations: invalid ajax request' );
 					return false;
-				} else if ( 'items-found' === response.data.code ) { // If items are found.
-					$( '.search-result-inner' ).html( response.data.html );
-				} else if ( 'no-items-found' === response.data.code ) { // If items are found.
+				} else if ( 'item-marked-favourite' === response.data.code ) { // If items are found.
+					// Unblock the element.
+					unblock_element( this_button );
 				}
 			},
 		} );

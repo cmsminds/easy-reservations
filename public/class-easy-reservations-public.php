@@ -950,4 +950,39 @@ class Easy_Reservations_Public {
 			require_once ERSRV_PLUGIN_PATH . 'public/templates/modals/item-quick-view.php';
 		}
 	}
+
+	/**
+	 * AJAX to mark the item as favourite.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_mark_item_favourite_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+		// Exit, if the action mismatches.
+		if ( empty( $action ) || 'mark_item_favourite' !== $action ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Posted data.
+		$item_id         = (int) filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
+		$user_id         = get_current_user_id();
+		$favourite_items = get_user_meta( $user_id, 'ersrv_favourite_items', true );
+		$favourite_items = ( empty( $favourite_items ) || ! is_array( $favourite_items ) ) ? array() : $favourite_items;
+
+		// Push in the item now.
+		$favourite_items[] = $item_id;
+
+		// Update the database.
+		update_user_meta( $user_id, 'ersrv_favourite_items', $favourite_items );
+
+		// Send the response.
+		wp_send_json_success(
+			array(
+				'code' => 'item-marked-favourite',
+			)
+		);
+		wp_die();
+	}
 }

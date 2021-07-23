@@ -1291,11 +1291,13 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 	 * @param int $item_id Reservation item ID.
 	 */
 	function ersrv_get_reservation_item_block_html( $item_id ) {
+		$user_id             = get_current_user_id();
 		$featured_image_id   = get_post_thumbnail_id( $item_id );
 		$item_featured_image = ersrv_get_attachment_url_from_attachment_id( $featured_image_id );
 		$item_link           = get_permalink( $item_id );
 		$item_details        = ersrv_get_item_details( $item_id );
 		$adult_charge        = ( ! empty( $item_details['adult_charge'] ) ) ? $item_details['adult_charge'] : 0;
+		$is_item_favourite   = ersrv_is_favourite_item( $user_id, $item_id );
 		ob_start();
 		?>
 		<div class="col-12 col-md-6 col-lg-4 ersrv-reservation-item-block" data-item="<?php echo esc_attr( $item_id ); ?>">
@@ -1370,6 +1372,23 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 		<?php
 
 		return ob_get_clean();
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_is_favourite_item' ) ) {
+	/**
+	 * Returns the image URL by attachment ID.
+	 *
+	 * @param int $image_id Holds the attachment ID.
+	 * @return string
+	 */
+	function ersrv_is_favourite_item( $user_id, $item_id ) {
+		$favourite_items = get_user_meta( $user_id, 'ersrv_favourite_items', true );
+
+		return ( ! empty( $favourite_items ) && in_array( $item_id, $favourite_items, true ) ) ? true : false;
 	}
 }
 
