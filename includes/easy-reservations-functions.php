@@ -1297,7 +1297,22 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 		$item_link           = get_permalink( $item_id );
 		$item_details        = ersrv_get_item_details( $item_id );
 		$adult_charge        = ( ! empty( $item_details['adult_charge'] ) ) ? $item_details['adult_charge'] : 0;
-		$is_item_favourite   = ersrv_is_favourite_item( $user_id, $item_id );
+		$location            = ( ! empty( $item_details['location'] ) ) ? $item_details['location'] : '';
+		$capacity            = ( ! empty( $item_details['accomodation_limit'] ) ) ? $item_details['accomodation_limit'] : '';
+		$security_amt        = ( ! empty( $item_details['security_amount'] ) ) ? $item_details['security_amount'] : '';
+		$min_reservation     = ( ! empty( $item_details['min_reservation_period'] ) ) ? $item_details['min_reservation_period'] : '';
+		$max_reservation     = ( ! empty( $item_details['max_reservation_period'] ) ) ? $item_details['max_reservation_period'] : '';
+		$is_favourite        = ersrv_is_favourite_item( $user_id, $item_id );
+		$item_class          = ( $is_favourite ) ? 'selected' : '';
+		$reservation_period  = '';
+
+		// Generate the booking period restrictions.
+		if ( ! empty( $min_reservation ) && ! empty( $max_reservation ) ) {
+			$reservation_period = sprintf( __( 'Booking for min. %1$s to %2$s days.', 'easy-reservations' ), $min_reservation, $max_reservation );
+		} elseif ( ! empty( $min_reservation ) ) {
+			$reservation_period = sprintf( __( 'Booking for min. %1$s days.', 'easy-reservations' ), $min_reservation );
+		}
+
 		ob_start();
 		?>
 		<div class="col-12 col-md-6 col-lg-4 ersrv-reservation-item-block" data-item="<?php echo esc_attr( $item_id ); ?>">
@@ -1309,7 +1324,7 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 				</div>
 				<?php if ( is_user_logged_in() ) { ?>
 					<div class="favorite">
-						<a href="javascript:void(0);" class="favorite-link ersrv-mark-reservation-favourite">
+						<a href="javascript:void(0);" class="favorite-link ersrv-mark-reservation-favourite <?php echo esc_attr( $item_class ); ?>">
 							<span class="sr-only"><?php esc_html_e( 'Favorite', 'easy-reservations' ); ?></span>
 							<span class="icon-heart">&nbsp;</span>
 						</a>
@@ -1334,31 +1349,39 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 						<a href="<?php echo esc_url( $item_link ); ?>"><?php echo wp_kses_post( get_the_title( $item_id ) ); ?></a>
 					</h3>
 					<div class="review-stars mb-3">
-						<img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/stars.png' ); ?>" alt="stars">
+						<img src="<?php echo esc_url ( ERSRV_PLUGIN_URL . 'public/images/stars.png' ); ?>" alt="stars">
 					</div>
 					<div class="amenities mb-3">
-						<div class="location">
-							<span class="icon">
-								<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 48 48" width="24px" height="24px"><path d="M 23.951172 4 A 1.50015 1.50015 0 0 0 23.072266 4.3222656 L 8.859375 15.519531 C 7.0554772 16.941163 6 19.113506 6 21.410156 L 6 40.5 C 6 41.863594 7.1364058 43 8.5 43 L 18.5 43 C 19.863594 43 21 41.863594 21 40.5 L 21 30.5 C 21 30.204955 21.204955 30 21.5 30 L 26.5 30 C 26.795045 30 27 30.204955 27 30.5 L 27 40.5 C 27 41.863594 28.136406 43 29.5 43 L 39.5 43 C 40.863594 43 42 41.863594 42 40.5 L 42 21.410156 C 42 19.113506 40.944523 16.941163 39.140625 15.519531 L 24.927734 4.3222656 A 1.50015 1.50015 0 0 0 23.951172 4 z M 24 7.4101562 L 37.285156 17.876953 C 38.369258 18.731322 39 20.030807 39 21.410156 L 39 40 L 30 40 L 30 30.5 C 30 28.585045 28.414955 27 26.5 27 L 21.5 27 C 19.585045 27 18 28.585045 18 30.5 L 18 40 L 9 40 L 9 21.410156 C 9 20.030807 9.6307412 18.731322 10.714844 17.876953 L 24 7.4101562 z"/></svg>
-							</span>
-							<span>MotorBoat / Whithout Captain</span>
-						</div>
+						<?php if ( $location ) {?>
+							<div class="location">
+								<span class="icon"><i class="fas fa-location-arrow"></i></span>
+								<span><?php echo esc_html( $location ); ?></span>
+							</div>
+						<?php } ?>
 						<div class="d-flex align-items-center flex-wrap">
 							<div class="map-loaction mr-3">
-								<span class="icon">
-									<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
-										<path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
-									</svg>
-								</span>
-								<span>Cannes</span>
+								<span class="icon"><i class="fas fa-calendar-alt"></i></span>
+								<span class=""><?php echo esc_html( $reservation_period ); ?></span>
 							</div>
+							<?php if ( $capacity ) { ?>
 							<div class="capacity mr-3">
-								<span class="font-weight-bold mr-2">Capacity :</span>
-								<span class="">1</span>
+								<span class="font-weight-bold mr-2"><?php esc_html_e( 'Capacity:', 'easy-reservations' ); ?></span>
+								<span class=""><?php echo esc_html( $capacity ); ?></span>
 							</div>
+							<?php } ?>
 							<div class="cabins mr-3">
-								<span class="font-weight-bold mr-2">Cabins1 :</span>
-								<span class="">1</span>
+								<span class="icon"><i class="fas fa-money-bill-alt"></i></span>
+								<span class="font-weight-bold mr-2"><?php esc_html_e( 'Security Amt:', 'easy-reservations' ); ?></span>
+								<span class="">
+									<?php echo wp_kses(
+										wc_price( $security_amt ),
+										array(
+											'span' => array(
+												'class' => array(),
+											),
+										)
+									); ?>
+								</span>
 							</div>
 						</div>
 					</div>
@@ -1464,9 +1487,76 @@ if ( ! function_exists( 'ersrv_get_item_details' ) ) {
 			'adult_charge'           => get_post_meta( $item_id, '_ersrv_accomodation_adult_charge', true ),
 			'kid_charge'             => get_post_meta( $item_id, '_ersrv_accomodation_kid_charge', true ),
 			'security_amount'        => get_post_meta( $item_id, '_ersrv_security_amt', true ),
+			'location'               => get_post_meta( $item_id, '_ersrv_item_location', true ),
 			'currency'               => get_woocommerce_currency_symbol(),
 		);
 
 		return $item_details;
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_account_endpoint_favourite_reservations' ) ) {
+	/**
+	 * Get the endpoint slug for customer account - favourite reservable items.
+	 *
+	 * @return string
+	 * @since 1.0.0
+	 */
+	function ersrv_get_account_endpoint_favourite_reservations() {
+		$endpoint = 'favourite-reservable-items';
+		/**
+		 * This hook fires on customer's account page.
+		 *
+		 * This filter will help in modifying the favourite reservable items endpoint slug.
+		 *
+		 * @param string $endpoint Custom account endpoint slug.
+		 * @return string
+		 */
+		return apply_filters( 'ersrv_account_endpoint_favourite_reservations_slug', $endpoint );
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_account_endpoint_label_favourite_reservations' ) ) {
+	/**
+	 * Get the endpoint label for customer account - favourite reservable items.
+	 *
+	 * @return string
+	 * @since 1.0.0
+	 */
+	function ersrv_get_account_endpoint_label_favourite_reservations() {
+		$endpoint_label = __( 'Favourite Reservable Items', 'easy-reservations' );
+		/**
+		 * This hook fires on customer's account page.
+		 *
+		 * This filter will help in modifying the favourite reservable items endpoint label.
+		 *
+		 * @param string $endpoint_label Custom account endpoint label.
+		 * @return string
+		 */
+		return apply_filters( 'ersrv_account_endpoint_favourite_reservations_label', $endpoint_label );
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_page_id' ) ) {
+	/**
+	 * Get the page ID.
+	 *
+	 * @param string $page_slug Holds the page slug.
+	 * @return int
+	 * @since 1.0.0
+	 */
+	function ersrv_get_page_id( $page_slug ) {
+		$page = apply_filters( 'ersrv_get_' . $page_slug . '_page_id', get_option( 'ersrv_' . $page_slug . '_page_id' ) );
+
+		return $page ? absint( $page ) : -1;
 	}
 }

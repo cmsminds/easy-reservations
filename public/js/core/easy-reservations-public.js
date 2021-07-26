@@ -131,7 +131,7 @@ jQuery(document).ready(function ($) {
 					console.log( 'easy reservations: invalid ajax request' );
 					return false;
 				} else if ( 'items-found' === response.data.code ) { // If items are found.
-					$( '.search-result-inner' ).html( response.data.html );
+					$( '.ersrv-search-reservations-items-container' ).html( response.data.html );
 				} else if ( 'no-items-found' === response.data.code ) { // If items are found.
 				}
 			},
@@ -144,6 +144,12 @@ jQuery(document).ready(function ($) {
 	$( document ).on( 'click', '.ersrv-mark-reservation-favourite', function() {
 		var this_button = $( this );
 		var item_id     = this_button.parents( '.ersrv-reservation-item-block' ).data( 'item' );
+		var action      = 'mark_fav';
+
+		// Check, if the item is already marked as favoutite.
+		if ( this_button.hasClass( 'selected' ) ) {
+			action = 'unmark_fav';
+		}
 
 		// Exit, if the item id is not a valid number.
 		if ( -1 === is_valid_number( item_id ) ) {
@@ -160,7 +166,8 @@ jQuery(document).ready(function ($) {
 			url: ajaxurl,
 			type: 'POST',
 			data: {
-				action: 'mark_item_favourite',
+				action: 'item_favourite',
+				do: action,
 				item_id: item_id,
 			},
 			success: function ( response ) {
@@ -168,9 +175,16 @@ jQuery(document).ready(function ($) {
 				if ( 0 === response ) {
 					console.log( 'easy reservations: invalid ajax request' );
 					return false;
-				} else if ( 'item-marked-favourite' === response.data.code ) { // If items are found.
+				} else if ( 'item-favourite-done' === response.data.code ) { // If items are found.
 					// Unblock the element.
 					unblock_element( this_button );
+
+					// If the action was to unmark fav, remove the selected class from the button.
+					if ( 'unmark_fav' === action ) {
+						this_button.removeClass( 'selected' );
+					} else if ( 'mark_fav' === action ) {
+						this_button.addClass( 'selected' );
+					}
 				}
 			},
 		} );

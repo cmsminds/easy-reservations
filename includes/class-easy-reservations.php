@@ -164,6 +164,7 @@ class Easy_Reservations {
 		$this->loader->add_action( 'woocommerce_order_status_on-hold', $plugin_admin, 'ersrv_woocommerce_order_status_on_hold_callback' );
 		$this->loader->add_action( 'woocommerce_order_status_pending', $plugin_admin, 'ersrv_woocommerce_order_status_pending_callback' );
 		$this->loader->add_action( 'woocommerce_order_status_cancelled', $plugin_admin, 'ersrv_woocommerce_order_status_cancelled_callback' );
+		$this->loader->add_filter( 'display_post_states', $plugin_admin, 'ersrv_display_post_states_callback', 20, 2 );
 	}
 
 	/**
@@ -174,7 +175,8 @@ class Easy_Reservations {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
-		$plugin_public = new Easy_Reservations_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public      = new Easy_Reservations_Public( $this->get_plugin_name(), $this->get_version() );
+		$fav_items_endpoint = ersrv_get_account_endpoint_favourite_reservations();
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'ersrv_wp_enqueue_scripts_callback', 99 );
 		$this->loader->add_action( 'init', $plugin_public, 'ersrv_init_callback' );
@@ -199,8 +201,11 @@ class Easy_Reservations {
 		$this->loader->add_action( 'dokan_order_detail_after_order_items', $plugin_public, 'ersrv_dokan_order_detail_after_order_items_callback' );
 		$this->loader->add_action( 'wp_ajax_get_reservation_items', $plugin_public, 'ersrv_get_reservation_items_callback' );
 		$this->loader->add_action( 'wp_ajax_nopriv_get_reservation_items', $plugin_public, 'ersrv_get_reservation_items_callback' );
-		$this->loader->add_action( 'wp_ajax_mark_item_favourite', $plugin_public, 'ersrv_mark_item_favourite_callback' );
+		$this->loader->add_action( 'wp_ajax_item_favourite', $plugin_public, 'ersrv_item_favourite_callback' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'ersrv_wp_footer_callback' );
+		$this->loader->add_filter( 'woocommerce_account_menu_items', $plugin_public, 'ersrv_woocommerce_account_menu_items_callback' );
+		$this->loader->add_action( "woocommerce_account_{$fav_items_endpoint}_endpoint", $plugin_public, 'ersrv_woocommerce_account_fav_items_endpoint_endpoint_callback' );
+		$this->loader->add_filter( 'query_vars', $plugin_public, 'ersrv_query_vars_callback' );
 	}
 
 	/**

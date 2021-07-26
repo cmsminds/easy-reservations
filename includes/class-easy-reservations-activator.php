@@ -37,5 +37,31 @@ class Easy_Reservations_Activator {
 		if ( ! wp_next_scheduled( 'ersrv_delete_reservation_pdf_receipts' ) ) {
 			wp_schedule_event( time(), 'daily', 'ersrv_delete_reservation_pdf_receipts' );
 		}
+
+		// Create pages useful for ths is plugin.
+		$pages = array(
+			array(
+				'post_title'   => __( 'Search Reservations', 'easy-reservations' ),
+				'post_content' => '[ersrv_search_reservations]',
+				'post_status'  => 'publish',
+				'post_author'  => 1,
+				'post_type'    => 'page'
+			)
+		);
+
+		if ( ! empty( $pages ) && is_array( $pages ) ) {
+			foreach ( $pages as $page_data ) {
+				$page_exists = get_page_by_title( $page_data['post_title'] );
+
+				// Skip the page creation, if that already exists by title.
+				if ( ! is_null( $page_exists ) ) {
+					continue;
+				}
+
+				$page_id = wp_insert_post( $page_data );
+				$page    = get_post( $page_id );
+				update_option( 'ersrv_' . $page->post_name . '_page_id', $page_id, false );
+			}
+		}
 	}
 }

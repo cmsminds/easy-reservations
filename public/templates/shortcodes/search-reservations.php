@@ -71,7 +71,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
         <div class="container">
             <div class="search-results-wrapper">
                 <h4 class="title font-Poppins">Advanced Search: <span class="result-no">2 results</span></h4>
-                <div class="search-result-inner form-row">Please wait while we load items...</div>
+                <div class="search-result-inner ersrv-search-reservations-items-container form-row">Please wait while we load items...</div>
                 <div class="col-12 ersrv-load-more-reservation-items">
                     <div class="loadmore text-center mt-5 pt-2">
                         <a href="#" class="btn btn-outline-primary btn-xl font-size-18 loadmore-btn mx-auto">Load  More</a>

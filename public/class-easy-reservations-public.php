@@ -57,6 +57,24 @@ class Easy_Reservations_Public {
 	private $custom_product_type;
 
 	/**
+	 * My account custom endpoint slug - favourite reservation items.
+	 *
+	 * @since  1.0.0
+	 * @access private
+	 * @var    string $favourite_reservation_items_endpoint_slug Favourite reservations items endpoint slug.
+	 */
+	private $favourite_reservation_items_endpoint_slug;
+
+	/**
+	 * My account custom endpoint label - favourite reservation items.
+	 *
+	 * @since  1.0.0
+	 * @access private
+	 * @var    string $favourite_reservation_items_endpoint_label Favourite reservations items endpoint label.
+	 */
+	private $favourite_reservation_items_endpoint_label;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since 1.0.0
@@ -73,6 +91,12 @@ class Easy_Reservations_Public {
 
 		// Custom product type.
 		$this->custom_product_type = ersrv_get_custom_product_type_slug();
+
+		// Favourite reservation items endpoint slug - woocommerce my account page.
+		$this->favourite_reservation_items_endpoint_slug = ersrv_get_account_endpoint_favourite_reservations();
+
+		// Favourite reservation items endpoint label - woocommerce my account page.
+		$this->favourite_reservation_items_endpoint_label = ersrv_get_account_endpoint_label_favourite_reservations();
 	}
 
 	/**
@@ -90,6 +114,8 @@ class Easy_Reservations_Public {
 		$is_search_page      = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
 		$is_reservation_page = ersrv_product_is_reservation( get_the_ID() );
 
+		// var_dump( is_wc_endpoint_url( $this->favourite_reservation_items_endpoint_slug ) );
+		// die;
 		/* ---------------------------------------STYLES--------------------------------------- */
 
 		// If it's the single reservation page or the search page.
@@ -119,12 +145,10 @@ class Easy_Reservations_Public {
 			);
 
 			// Enqueue the free font-awesome style.
-			// wp_enqueue_style(
-			// 	$this->plugin_name . '-font-awesome-style',
-			// 	'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css',
-			// 	array(),
-			// 	'5.13.1'
-			// );
+			wp_enqueue_style(
+				$this->plugin_name . '-font-awesome-style',
+				'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css',
+			);
 
 			// Enqueue the public style only when the style url and path are available.
 			if ( ! empty( $active_style_url ) && ! empty( $active_style_path ) ) {
@@ -291,6 +315,14 @@ class Easy_Reservations_Public {
 	public function ersrv_init_callback() {
 		// Include the product type custom class.
 		require ERSRV_PLUGIN_PATH . 'includes/classes/class-wc-product-reservation.php';
+
+		// Add the custom rewrite for my account endpoints.
+		add_rewrite_endpoint( $this->favourite_reservation_items_endpoint_slug, EP_ROOT | EP_PAGES );
+		$rewrite_fav_items_endpoint = get_option( 'ersrv_rewrite_fav_items_endpoint_permalink' );
+        if ( 'yes' !== $rewrite_fav_items_endpoint ) {
+            flush_rewrite_rules( false );
+            update_option( 'ersrv_rewrite_fav_items_endpoint_permalink', 'yes', false );
+        }
 
 		// Check if the action is required to download iCalendar invite.
 		$action = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
@@ -956,23 +988,33 @@ class Easy_Reservations_Public {
 	 *
 	 * @since 1.0.0
 	 */
-	public function ersrv_mark_item_favourite_callback() {
+	public function ersrv_item_favourite_callback() {
 		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
 
 		// Exit, if the action mismatches.
-		if ( empty( $action ) || 'mark_item_favourite' !== $action ) {
+		if ( empty( $action ) || 'item_favourite' !== $action ) {
 			echo 0;
 			wp_die();
 		}
 
 		// Posted data.
 		$item_id         = (int) filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
+		$do_what         = filter_input( INPUT_POST, 'do', FILTER_SANITIZE_STRING );
 		$user_id         = get_current_user_id();
 		$favourite_items = get_user_meta( $user_id, 'ersrv_favourite_items', true );
 		$favourite_items = ( empty( $favourite_items ) || ! is_array( $favourite_items ) ) ? array() : $favourite_items;
 
-		// Push in the item now.
-		$favourite_items[] = $item_id;
+		if ( 'mark_fav' === $do_what ) {
+			// Push in the item now.
+			$favourite_items[] = $item_id;
+		} elseif ( 'unmark_fav' === $do_what ) {
+			// Remove the item from favourite list.
+			$item_index = array_search( $item_id, $favourite_items, true );
+
+			if ( false !== $item_index ) {
+				unset( $favourite_items[ $item_index ] );
+			}
+		}
 
 		// Update the database.
 		update_user_meta( $user_id, 'ersrv_favourite_items', $favourite_items );
@@ -980,9 +1022,44 @@ class Easy_Reservations_Public {
 		// Send the response.
 		wp_send_json_success(
 			array(
-				'code' => 'item-marked-favourite',
+				'code' => 'item-favourite-done',
 			)
 		);
 		wp_die();
+	}
+
+	/**
+	 * Add custom endpoint on custmer's account page for managing favourite reservatin items.
+	 *
+	 * @param array $endpoints Endpoints array.
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_account_menu_items_callback( $endpoints ) {
+		// Check if the custom endpoint already exists.
+		if ( array_key_exists( $this->favourite_reservation_items_endpoint_slug, $endpoints ) ) {
+			return $endpoints;
+		}
+
+		// Add the custom endpoint now.
+		$endpoints[ $this->favourite_reservation_items_endpoint_slug ] = $this->favourite_reservation_items_endpoint_label;
+
+		return $endpoints;
+	}
+
+	/**
+	 * Favourite reservation items content on my account.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_account_fav_items_endpoint_endpoint_callback() {
+		// Include the file to manage the endpoint content.
+		require ERSRV_PLUGIN_PATH . 'public/templates/woocommerce/favourite-reservation-items.php';
+	}
+
+	public function ersrv_query_vars_callback( $vars ) {
+		$vars[] = $this->favourite_reservation_items_endpoint_slug;
+
+		return $vars;
 	}
 }
