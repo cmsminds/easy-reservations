@@ -75,11 +75,11 @@ $posts_per_page                = (int) get_option( 'posts_per_page' );
 	<div class="content-part">
 		<div class="container">
 			<div class="search-results-wrapper">
-				<h4 class="title font-Poppins">Advanced Search: <span class="result-no">2 results</span></h4>
+				<h4 class="title font-Poppins"><?php echo sprintf( __( 'Advanced Search: %1$s%3$s items%2$s', 'easy-reservations' ), '<span class="result-no">', '</span>', count( $total_reservation_posts ) ) ?></h4>
 				<div class="search-result-inner ersrv-search-reservations-items-container form-row">Please wait while we load items...</div>
 				<div class="col-12 ersrv-load-more-reservation-items">
 					<div class="loadmore text-center mt-5 pt-2 ersrv-loadmore-container">
-						<?php if ( $total_reservation_posts > $posts_per_page ) { ?>
+						<?php if ( count( $total_reservation_posts ) > $posts_per_page ) { ?>
 							<input id="ersrv-posts-page" value="1" type="hidden" />
 							<a href="javascript:void(0);" class="btn btn-outline-primary btn-xl font-size-18 loadmore-btn mx-auto"><?php esc_html_e( 'Load More', 'easy-reservations' ); ?></a>
 						<?php } ?>
