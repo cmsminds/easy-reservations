@@ -708,3 +708,63 @@
     }
     
 }
+// quick modal UI 
+.quick-view-modal .modal-content {
+	// background-color: #fff;
+	// background-image: linear-gradient(90deg, $accent 50%, #fff 0);
+	box-shadow: 1px 1px 16px -6px $accent;
+    border: 1px solid $transparent;
+}
+.quick-view-modal .product-title,
+.quick-view-modal .readmore-link{
+    color: $accent;
+}
+.quick-view-modal .quick-close{
+    background-color: $accent;
+    &:hover{
+        background-color: $accent-700
+    }
+}
+.quick-view-modal .product-button{
+    margin-left: 0px;
+    @extend .btn-accent;
+}
+.quick-view-modal .modal-content input[type=email],
+.quick-view-modal .modal-content input[type=number],
+.quick-view-modal .modal-content input[type=password],
+.quick-view-modal .modal-content input[type=reset],
+.quick-view-modal .modal-content input[type=search],
+.quick-view-modal .modal-content input[type=tel],
+.quick-view-modal .modal-content input[type=text],
+.quick-view-modal .modal-content input[type=url],
+.quick-view-modal .modal-content select,
+.quick-view-modal .modal-content textarea{
+    border: 1px solid $black-400;
+    width: 100%;
+    padding: 6px 10px;
+}
+.custom-control-input:checked~.custom-control-label::before,
+.custom-control-input:not(:disabled):active~.custom-control-label::before {
+    color: #fff;
+    border-color: $accent;
+    background-color: $accent;
+}
+input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, input[type="checkbox"]:hover:checked, input[type="checkbox"]:focus:checked, input[type=range]::-webkit-slider-thumb{
+    border-color: $accent;
+    background-color: $accent;
+}
+.custom-control-input:focus~.custom-control-label::before{
+    box-shadow: none;
+}
+
+@media(min-width:768px){
+    .quick-view-modal .modal-content {
+        background-color: #fff;
+        background-image: linear-gradient(90deg, $accent 50%, #fff 0);
+    }
+}
+@media(max-width:767px){
+    .col-preview {
+		background-color: $accent;
+	}
+}

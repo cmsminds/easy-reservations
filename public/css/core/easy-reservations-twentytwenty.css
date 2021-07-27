@@ -714,13 +714,13 @@ img {
   padding: 15px 41px;
 }
 
-.btn-accent {
+.btn-accent, .quick-view-modal .product-button {
   color: #fff;
   background-color: #333;
   border-color: #000;
 }
 
-.btn-accent:hover, .btn-accent:focus, .btn-accent:active {
+.btn-accent:hover, .quick-view-modal .product-button:hover, .btn-accent:focus, .quick-view-modal .product-button:focus, .btn-accent:active, .quick-view-modal .product-button:active {
   color: #fff;
   background-color: #cd2653;
   border-color: #000;
@@ -1498,6 +1498,75 @@ label.inline, input[type="checkbox"] + label {
   [class*="sidebar"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn,
   [class^="sidebar"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn {
     padding: 12px 14px !important;
+  }
+}
+
+.quick-view-modal .modal-content {
+  -webkit-box-shadow: 1px 1px 16px -6px #cd2653;
+          box-shadow: 1px 1px 16px -6px #cd2653;
+  border: 1px solid rgba(0, 0, 0, 0);
+}
+
+.quick-view-modal .product-title,
+.quick-view-modal .readmore-link {
+  color: #cd2653;
+}
+
+.quick-view-modal .quick-close {
+  background-color: #cd2653;
+}
+
+.quick-view-modal .quick-close:hover {
+  background-color: #7b1732;
+}
+
+.quick-view-modal .product-button {
+  margin-left: 0px;
+}
+
+.quick-view-modal .modal-content input[type=email],
+.quick-view-modal .modal-content input[type=number],
+.quick-view-modal .modal-content input[type=password],
+.quick-view-modal .modal-content input[type=reset],
+.quick-view-modal .modal-content input[type=search],
+.quick-view-modal .modal-content input[type=tel],
+.quick-view-modal .modal-content input[type=text],
+.quick-view-modal .modal-content input[type=url],
+.quick-view-modal .modal-content select,
+.quick-view-modal .modal-content textarea {
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  width: 100%;
+  padding: 6px 10px;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before,
+.custom-control-input:not(:disabled):active ~ .custom-control-label::before {
+  color: #fff;
+  border-color: #cd2653;
+  background-color: #cd2653;
+}
+
+input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, input[type="checkbox"]:hover:checked, input[type="checkbox"]:focus:checked, input[type=range]::-webkit-slider-thumb {
+  border-color: #cd2653;
+  background-color: #cd2653;
+}
+
+.custom-control-input:focus ~ .custom-control-label::before {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+@media (min-width: 768px) {
+  .quick-view-modal .modal-content {
+    background-color: #fff;
+    background-image: -webkit-gradient(linear, left top, right top, color-stop(50%, #cd2653), color-stop(0, #fff));
+    background-image: linear-gradient(90deg, #cd2653 50%, #fff 0);
+  }
+}
+
+@media (max-width: 767px) {
+  .col-preview {
+    background-color: #cd2653;
   }
 }
 /*# sourceMappingURL=easy-reservations-twentytwenty.css.map */
