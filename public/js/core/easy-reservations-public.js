@@ -132,9 +132,54 @@ jQuery(document).ready(function ($) {
 					return false;
 				} else if ( 'items-found' === response.data.code ) { // If items are found.
 					$( '.ersrv-search-reservations-items-container' ).html( response.data.html );
+					$( '.ersrv-loadmore-container' ).html( response.data.load_more_html );
 				} else if ( 'no-items-found' === response.data.code ) { // If items are found.
 				}
 			},
+		} );
+
+		/**
+		 * Load more reservation items.
+		 */
+		$( document ).on( 'click', '.ersrv-loadmore-container a', function() {
+			var this_button  = $( this );
+			var current_page = parseInt( $( '#ersrv-posts-page' ).val() );
+			var next_page    = current_page + 1;
+
+			// Block the element now.
+			block_element( this_button );
+
+			// Send the AJAX now.
+			$.ajax( {
+				dataType: 'JSON',
+				url: ajaxurl,
+				type: 'POST',
+				data: {
+					action: 'loadmore_reservation_items',
+					page: next_page,
+				},
+				success: function ( response ) {
+					// Check for invalid ajax request.
+					if ( 0 === response ) {
+						console.log( 'easy reservations: invalid ajax request' );
+						return false;
+					}
+
+					// Unblock the element now.
+					unblock_element( this_button );
+					
+					// If there is a valid response.
+					if ( 'items-found' === response.data.code ) { // If items are found.
+						$( '.ersrv-search-reservations-items-container' ).append( response.data.html );
+
+						// Update the posts page number.
+						$( '#ersrv-posts-page' ).val( next_page );
+					} else if ( 'no-items-found' === response.data.code ) { // If items are found.
+						// Hide the load more button.
+						$( '.ersrv-loadmore-container' ).hide();
+					}
+				},
+			} );
 		} );
 	}
 

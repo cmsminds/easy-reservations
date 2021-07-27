@@ -134,12 +134,12 @@ if ( ! function_exists( 'ersrv_get_posts' ) ) {
 	 * @return object
 	 * @since 1.0.0
 	 */
-	function ersrv_get_posts( $post_type = 'post', $paged = 1, $posts_per_page = -1 ) {
+	function ersrv_get_posts( $post_type = 'post', $paged = 1, $posts_per_page = '' ) {
 		// Prepare the arguments array.
 		$args = array(
 			'post_type'      => $post_type,
 			'paged'          => $paged,
-			'posts_per_page' => $posts_per_page,
+			'posts_per_page' => ( ! empty( $posts_per_page ) ) ? $posts_per_page : get_option( 'posts_per_page' ),
 			'post_status'    => 'publish',
 			'fields'         => 'ids',
 			'orderby'        => 'date',
@@ -1352,13 +1352,13 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 						<img src="<?php echo esc_url ( ERSRV_PLUGIN_URL . 'public/images/stars.png' ); ?>" alt="stars">
 					</div>
 					<div class="amenities mb-3">
-						<?php if ( $location ) {?>
-							<div class="location">
-								<span class="icon"><i class="fas fa-location-arrow"></i></span>
-								<span><?php echo esc_html( $location ); ?></span>
-							</div>
-						<?php } ?>
-						<div class="d-flex align-items-center flex-wrap">
+						<div class="d-flex flex-column">
+							<?php if ( $location ) {?>
+								<div class="location">
+									<span class="icon"><i class="fas fa-location-arrow"></i></span>
+									<span><?php echo esc_html( $location ); ?></span>
+								</div>
+							<?php } ?>
 							<div class="map-loaction mr-3">
 								<span class="icon"><i class="fas fa-calendar-alt"></i></span>
 								<span class=""><?php echo esc_html( $reservation_period ); ?></span>
@@ -1386,8 +1386,8 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 						</div>
 					</div>
 					<div class="btns-group">
-						<a href="<?php echo esc_url( $item_link ); ?>" class="btn btn-accent mr-2">Book Now</a>
-						<a href="javascript:void(0);" class="btn btn-primary ersrv-quick-view-item">Quick View</a>
+						<a href="<?php echo esc_url( $item_link ); ?>" class="btn btn-accent mr-2"><?php esc_html_e( 'Book Now', 'easy-reservations' ); ?></a>
+						<a href="javascript:void(0);" class="btn btn-primary ersrv-quick-view-item"><?php esc_html_e( 'Quick View', 'easy-reservations' ); ?></a>
 					</div>
 				</div>
 			</div>
