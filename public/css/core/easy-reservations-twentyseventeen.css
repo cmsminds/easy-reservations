@@ -54,11 +54,11 @@
   color: #3ab166;
 }
 
-.bgcolor-accent, .btn-accent {
+.bgcolor-accent, .btn-accent, .quick-view-modal .product-button {
   background-color: #3ab166;
 }
 
-.border-color-accent, .btn-accent, .wrapper .sidebar-wrapper .book-tour .details .social a:hover,
+.border-color-accent, .btn-accent, .quick-view-modal .product-button, .wrapper .sidebar-wrapper .book-tour .details .social a:hover,
 .wrapper .sidebar-wrapper .advanced-search .details .social a:hover {
   border-color: #3ab166;
 }
@@ -67,7 +67,7 @@
   color: #cbefd9;
 }
 
-.bgcolor-accent-300, .btn-accent:hover, .btn-accent:focus, .btn-accent:active {
+.bgcolor-accent-300, .btn-accent:hover, .quick-view-modal .product-button:hover, .btn-accent:focus, .quick-view-modal .product-button:focus, .btn-accent:active, .quick-view-modal .product-button:active {
   background-color: #cbefd9;
 }
 
@@ -703,11 +703,11 @@ img {
   padding: 15px 41px;
 }
 
-.btn-accent {
+.btn-accent, .quick-view-modal .product-button {
   color: #fff !important;
 }
 
-.btn-accent:hover, .btn-accent:focus, .btn-accent:active {
+.btn-accent:hover, .quick-view-modal .product-button:hover, .btn-accent:focus, .quick-view-modal .product-button:focus, .btn-accent:active, .quick-view-modal .product-button:active {
   color: #000 !important;
 }
 
@@ -1458,6 +1458,75 @@ img {
   [class*="sidebar"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn,
   [class^="sidebar"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn {
     padding: 12px 14px !important;
+  }
+}
+
+.quick-view-modal .modal-content {
+  -webkit-box-shadow: 1px 1px 16px -6px #3ab166;
+          box-shadow: 1px 1px 16px -6px #3ab166;
+  border: 1px solid rgba(0, 0, 0, 0);
+}
+
+.quick-view-modal .product-title,
+.quick-view-modal .readmore-link {
+  color: #3ab166;
+}
+
+.quick-view-modal .quick-close {
+  background-color: #3ab166;
+}
+
+.quick-view-modal .quick-close:hover {
+  background-color: #17763a;
+}
+
+.quick-view-modal .product-button {
+  margin-left: 0px;
+}
+
+.quick-view-modal .modal-content input[type=email],
+.quick-view-modal .modal-content input[type=number],
+.quick-view-modal .modal-content input[type=password],
+.quick-view-modal .modal-content input[type=reset],
+.quick-view-modal .modal-content input[type=search],
+.quick-view-modal .modal-content input[type=tel],
+.quick-view-modal .modal-content input[type=text],
+.quick-view-modal .modal-content input[type=url],
+.quick-view-modal .modal-content select,
+.quick-view-modal .modal-content textarea {
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  width: 100%;
+  padding: 6px 10px;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before,
+.custom-control-input:not(:disabled):active ~ .custom-control-label::before {
+  color: #fff;
+  border-color: #3ab166;
+  background-color: #3ab166;
+}
+
+input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, input[type="checkbox"]:hover:checked, input[type="checkbox"]:focus:checked, input[type=range]::-webkit-slider-thumb {
+  border-color: #3ab166;
+  background-color: #3ab166;
+}
+
+.custom-control-input:focus ~ .custom-control-label::before {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+@media (min-width: 768px) {
+  .quick-view-modal .modal-content {
+    background-color: #fff;
+    background-image: -webkit-gradient(linear, left top, right top, color-stop(50%, #3ab166), color-stop(0, #fff));
+    background-image: linear-gradient(90deg, #3ab166 50%, #fff 0);
+  }
+}
+
+@media (max-width: 767px) {
+  .col-preview {
+    background-color: #3ab166;
   }
 }
 /*# sourceMappingURL=easy-reservations-twentyseventeen.css.map */

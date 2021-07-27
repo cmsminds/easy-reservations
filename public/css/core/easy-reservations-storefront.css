@@ -56,11 +56,11 @@
   color: #96588a;
 }
 
-.bgcolor-accent, .btn-accent {
+.bgcolor-accent, .btn-accent, .quick-view-modal .product-button {
   background-color: #96588a;
 }
 
-.border-color-accent, .btn-accent, .wrapper .sidebar-wrapper .book-tour .details .social a:hover,
+.border-color-accent, .btn-accent, .quick-view-modal .product-button, .wrapper .sidebar-wrapper .book-tour .details .social a:hover,
 .wrapper .sidebar-wrapper .advanced-search .details .social a:hover {
   border-color: #96588a;
 }
@@ -69,7 +69,7 @@
   color: #c09bb9;
 }
 
-.bgcolor-accent-300, .btn-accent:hover {
+.bgcolor-accent-300, .btn-accent:hover, .quick-view-modal .product-button:hover {
   background-color: #c09bb9;
 }
 
@@ -95,7 +95,7 @@
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:focus:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:focus:hover,
 #ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:focus:hover, .btn-outline-primary:active, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:active:hover,
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:active:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:active:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:active:hover, .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-accent {
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:active:hover, .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-accent, .quick-view-modal .product-button {
   color: #fff;
 }
 
@@ -132,7 +132,7 @@
   border-color: rgba(255, 255, 255, 0.5);
 }
 
-.color-black, .btn-accent:hover, .wrapper .sidebar-wrapper .book-tour .details input:focus,
+.color-black, .btn-accent:hover, .quick-view-modal .product-button:hover, .wrapper .sidebar-wrapper .book-tour .details input:focus,
 .wrapper .sidebar-wrapper .advanced-search .details input:focus {
   color: #000;
 }
@@ -1081,7 +1081,7 @@ img {
 
 .wrapper.search-page .banner .form-wrapper .form-inner .btn:hover img, .wrapper.search-page .banner .form-wrapper .form-inner .btn:focus img, .wrapper.search-page .banner .form-wrapper .form-inner .btn:active img {
   -webkit-filter: invert(1);
-          filter: invert(1);
+  filter: invert(1);
 }
 
 .wrapper.search-page .banner .form-wrapper .form-inner .form-group .date-control.ship-icon-field {
@@ -1433,6 +1433,75 @@ img {
   [class*="sidebar"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn,
   [class^="sidebar"] .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn {
     padding: 12px 14px !important;
+  }
+}
+
+.quick-view-modal .modal-content {
+  -webkit-box-shadow: 1px 1px 16px -6px #96588a;
+          box-shadow: 1px 1px 16px -6px #96588a;
+  border: 1px solid rgba(0, 0, 0, 0);
+}
+
+.quick-view-modal .product-title,
+.quick-view-modal .readmore-link {
+  color: #96588a;
+}
+
+.quick-view-modal .quick-close {
+  background-color: #96588a;
+}
+
+.quick-view-modal .quick-close:hover {
+  background-color: #693e61;
+}
+
+.quick-view-modal .product-button {
+  margin-left: 0px;
+}
+
+.quick-view-modal .modal-content input[type=email],
+.quick-view-modal .modal-content input[type=number],
+.quick-view-modal .modal-content input[type=password],
+.quick-view-modal .modal-content input[type=reset],
+.quick-view-modal .modal-content input[type=search],
+.quick-view-modal .modal-content input[type=tel],
+.quick-view-modal .modal-content input[type=text],
+.quick-view-modal .modal-content input[type=url],
+.quick-view-modal .modal-content select,
+.quick-view-modal .modal-content textarea {
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  width: 100%;
+  padding: 6px 10px;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before,
+.custom-control-input:not(:disabled):active ~ .custom-control-label::before {
+  color: #fff;
+  border-color: #96588a;
+  background-color: #96588a;
+}
+
+input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, input[type="checkbox"]:hover:checked, input[type="checkbox"]:focus:checked, input[type=range]::-webkit-slider-thumb {
+  border-color: #96588a;
+  background-color: #96588a;
+}
+
+.custom-control-input:focus ~ .custom-control-label::before {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+@media (min-width: 768px) {
+  .quick-view-modal .modal-content {
+    background-color: #fff;
+    background-image: -webkit-gradient(linear, left top, right top, color-stop(50%, #96588a), color-stop(0, #fff));
+    background-image: linear-gradient(90deg, #96588a 50%, #fff 0);
+  }
+}
+
+@media (max-width: 767px) {
+  .col-preview {
+    background-color: #96588a;
   }
 }
 /*# sourceMappingURL=easy-reservations-storefront.css.map */
