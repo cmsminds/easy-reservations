@@ -691,7 +691,7 @@ class Easy_Reservations_Admin {
 		}
 
 		// Posted data.
-		$item_id = filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
+		$item_id = (int) filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
 
 		// Send the AJAX response.
 		$response = array(

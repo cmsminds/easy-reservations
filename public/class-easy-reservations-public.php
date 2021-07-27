@@ -283,6 +283,7 @@ class Easy_Reservations_Public {
 	 * @since 1.0.0
 	 */
 	public static function ersrv_enqueue_plugin_core_js( $plugin_name, $is_search_page ) {
+		$reservation_item_details = ( ersrv_product_is_reservation( get_the_ID() ) ) ? ersrv_get_item_details( get_the_ID() ) : array();
 		// Custom public script.
 		wp_enqueue_script(
 			$plugin_name,
@@ -297,11 +298,12 @@ class Easy_Reservations_Public {
 			$plugin_name,
 			'ERSRV_Public_Script_Vars',
 			array(
-				'ajaxurl'        => admin_url( 'admin-ajax.php' ),
-				'remove_sidebar' => ersrv_get_plugin_settings( 'ersrv_remove_reservation_pages_sidebar' ),
-				'is_product'     => ( is_product() ) ? 'yes' : 'no',
-				'is_checkout'    => ( is_checkout() ) ? 'yes' : 'no',
-				'is_search_page' => ( $is_search_page ) ? 'yes' : 'no',
+				'ajaxurl'                  => admin_url( 'admin-ajax.php' ),
+				'remove_sidebar'           => ersrv_get_plugin_settings( 'ersrv_remove_reservation_pages_sidebar' ),
+				'is_product'               => ( is_product() ) ? 'yes' : 'no',
+				'is_checkout'              => ( is_checkout() ) ? 'yes' : 'no',
+				'is_search_page'           => ( $is_search_page ) ? 'yes' : 'no',
+				'reservation_item_details' => $reservation_item_details,
 			)
 		);
 	}
@@ -313,6 +315,8 @@ class Easy_Reservations_Public {
 	 * @since    1.0.0
 	 */
 	public function ersrv_init_callback() {
+		// Check if the action is required to download iCalendar invite.
+		$action = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
 		// Include the product type custom class.
 		require ERSRV_PLUGIN_PATH . 'includes/classes/class-wc-product-reservation.php';
 
@@ -324,8 +328,8 @@ class Easy_Reservations_Public {
             update_option( 'ersrv_rewrite_fav_items_endpoint_permalink', 'yes', false );
         }
 
-		// Check if the action is required to download iCalendar invite.
-		$action = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
+		// Register reservation item type taxonomy.
+		ersrv_register_reservation_type_taxonomy();
 
 		// If it's the download reservation receipt request.
 		if ( ! is_null( $action ) && 'ersrv-download-reservation-receipt' === $action ) {
@@ -388,24 +392,6 @@ class Easy_Reservations_Public {
 			echo $ics->to_string();
 			exit;
 		}
-	}
-
-	/**
-	 * Reservation item callback.
-	 *
-	 * @param array $args Holds the shortcode arguments.
-	 * @return string
-	 * @since 1.0.0
-	 */
-	public function ersrv_ersrv_reserve_item_callback( $args = array() ) {
-		// Return, if it's admin panel.
-		if ( is_admin() ) {
-			return;
-		}
-
-		ob_start();
-		require_once ERSRV_PLUGIN_PATH . 'public/templates/shortcodes/reservation.php';
-		return ob_get_clean();
 	}
 
 	/**

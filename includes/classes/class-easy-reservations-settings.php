@@ -124,6 +124,14 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 				'type'  => 'checkbox',
 			),
 			array(
+				'title'       => __( 'Google Maps API Key', 'easy-reservations' ),
+				'desc'        => __( 'This holds the google maps API key.', 'easy-reservations' ),
+				'desc_tip'    => true,
+				'id'          => 'ersrv_google_maps_api_key',
+				'placeholder' => __( 'Alz.........', 'easy-reservations' ),
+				'type'        => 'text',
+			),
+			array(
 				'type' => 'sectionend',
 				'id'   => 'ersrv_reservation_general_settings',
 			),

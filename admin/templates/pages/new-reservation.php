@@ -10,7 +10,7 @@
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 // Get the reservable items.
-$items_query = ersrv_get_posts( 'product' );
+$items_query = ersrv_get_posts( 'product', 1, -1 );
 $items       = $items_query->posts;
 
 // Get the customer.

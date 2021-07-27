@@ -2,11 +2,12 @@ jQuery(document).ready(function ($) {
 	'use strict';
 
 	// Localized variables.
-	var ajaxurl        = ERSRV_Public_Script_Vars.ajaxurl;
-	var remove_sidebar = ERSRV_Public_Script_Vars.remove_sidebar;
-	var is_product     = ERSRV_Public_Script_Vars.is_product;
-	var is_checkout    = ERSRV_Public_Script_Vars.is_checkout;
-	var is_search_page = ERSRV_Public_Script_Vars.is_search_page;
+	var ajaxurl                  = ERSRV_Public_Script_Vars.ajaxurl;
+	var remove_sidebar           = ERSRV_Public_Script_Vars.remove_sidebar;
+	var is_product               = ERSRV_Public_Script_Vars.is_product;
+	var is_checkout              = ERSRV_Public_Script_Vars.is_checkout;
+	var is_search_page           = ERSRV_Public_Script_Vars.is_search_page;
+	var reservation_item_details = ERSRV_Public_Script_Vars.reservation_item_details;
 
 	// Custom variables defined.
 	var reservation_item_id = $('.ersrv-reservation-container').data('item');
@@ -19,11 +20,50 @@ jQuery(document).ready(function ($) {
 	}
 
 	if ( 'yes' === is_product ) {
+		var reserved_dates         = reservation_item_details.reserved_dates;
+		var current_date           = new Date();
+		var current_month          = ( ( '0' + ( current_date.getMonth() + 1 ) ).slice( -2 ) );
+		var today_formatted        = current_date.getFullYear() + '-' + current_month + '-' + current_date.getDate();
+		var blocked_dates          = [];
 		var datepicker_date_format = 'yyyy-mm-dd';
-		$('.datepicker-inline').datepicker({
+
+		// Prepare the blocked out dates in a separate array.
+		if ( 0 < reserved_dates.length ) {
+			for ( var i in reserved_dates ) {
+				blocked_dates.push( reserved_dates[i].date );
+			}
+		}
+
+		$( '.ersrv-item-availability-calendar' ).datepicker( {
+			beforeShowDay: function( date ) {
+				var loop_month          = ( ( '0' + ( date.getMonth() + 1 ) ).slice( -2 ) );
+				var loop_date_formatted = date.getFullYear() + '-' + loop_month + '-' + date.getDate();
+				var date_enabled        = true;
+
+				// If not the past date.
+				if ( today_formatted <= loop_date_formatted ) {
+					console.log( 'loop_date_formatted', loop_date_formatted );
+					// Add custom class to the active dates of the current month.
+					var key = $.map( blocked_dates, function( val, i ) {
+						if ( val === loop_date_formatted ) {
+							return i;
+						}
+					} );
+
+					// If the loop date is a blocked date.
+					if ( 0 < key.length ) {
+						// date_enabled = false;
+					}
+				} else {
+					date_enabled = false;
+				}
+
+				// Return the datepicker day object.
+				return [ date_enabled ];
+			},
 			numberOfMonths: 2,
 			format: datepicker_date_format,
-		});
+		} );
 
 		$('.date-control').datepicker({
 			numberOfMonths: 1

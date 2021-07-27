@@ -180,7 +180,6 @@ class Easy_Reservations {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'ersrv_wp_enqueue_scripts_callback', 99 );
 		$this->loader->add_action( 'init', $plugin_public, 'ersrv_init_callback' );
-		$this->loader->add_shortcode( 'ersrv_reserve_item', $plugin_public, 'ersrv_ersrv_reserve_item_callback' );
 		$this->loader->add_action( 'woocommerce_after_single_product_summary', $plugin_public, 'ersrv_woocommerce_after_single_product_summary_callback' );
 		$this->loader->add_action( 'woocommerce_after_order_details', $plugin_public, 'ersrv_woocommerce_after_order_details_callback' );
 		$this->loader->add_action( 'wp_ajax_add_reservation_to_gcal', $plugin_public, 'ersrv_add_reservation_to_gcal_callback' );

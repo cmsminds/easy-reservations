@@ -466,6 +466,8 @@ jQuery( document ).ready( function( $ ) {
 						}
 					}
 
+					console.log( 'reserved_dates', reserved_dates );
+
 					// Set the calendar on checkin and checkout dates.
 					$( '#ersrv-checkin-date, #ersrv-checkout-date' ).datepicker( {
 						beforeShowDay: function( date ) {

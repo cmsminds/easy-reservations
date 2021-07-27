@@ -73,6 +73,11 @@ function ersrv_get_plugin_settings( $setting ) {
 			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : '';
 			break;
 
+		case 'ersrv_google_maps_api_key':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : '';
+			break;
+
 		default:
 			$data = -1;
 	}
@@ -391,11 +396,6 @@ if ( ! function_exists( 'ersrv_get_reservation_item_blockout_dates' ) ) {
 	 * @since 1.0.0
 	 */
 	function ersrv_get_reservation_item_blockout_dates( $item_id ) {
-		// Return, if the item ID is not integer.
-		if ( ! is_int( $item_id ) ) {
-			return false;
-		}
-
 		// Get the item type.
 		$item_type           = ersrv_get_wc_product_type( $item_id );
 		$custom_product_type = ersrv_get_custom_product_type_slug();
@@ -1558,5 +1558,53 @@ if ( ! function_exists( 'ersrv_get_page_id' ) ) {
 		$page = apply_filters( 'ersrv_get_' . $page_slug . '_page_id', get_option( 'ersrv_' . $page_slug . '_page_id' ) );
 
 		return $page ? absint( $page ) : -1;
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_register_reservation_type_taxonomy' ) ) {
+	/**
+	 * Register custom taxonomy - reservation item type.
+	 *
+	 * @since 1.0.0
+	 */
+	function ersrv_register_reservation_type_taxonomy() {
+		// Add new taxonomy, make it hierarchical (like categories)
+		$labels = array(
+			'name'              => _x( 'Reservation Item Types', 'taxonomy general name', 'easy-reservations' ),
+			'singular_name'     => _x( 'Reservation Item Type', 'taxonomy singular name', 'easy-reservations' ),
+			'search_items'      => __( 'Search Reservation Item Types', 'easy-reservations' ),
+			'all_items'         => __( 'All Reservation Item Types', 'easy-reservations' ),
+			'parent_item'       => __( 'Parent Reservation Item Type', 'easy-reservations' ),
+			'parent_item_colon' => __( 'Parent Reservation Item Type:', 'easy-reservations' ),
+			'edit_item'         => __( 'Edit Reservation Item Type', 'easy-reservations' ),
+			'update_item'       => __( 'Update Reservation Item Type', 'easy-reservations' ),
+			'add_new_item'      => __( 'Add New Reservation Item Type', 'easy-reservations' ),
+			'new_item_name'     => __( 'New Reservation Item Type Name', 'easy-reservations' ),
+			'menu_name'         => __( 'Reservation Item Types', 'easy-reservations' ),
+		);
+
+		/**
+		 * This hook fires in WordPress admin panel.
+		 *
+		 * This hook helps in modifying the reservation item type taxonomy arguments.
+		 *
+		 * @param array $labels Taxonomy labels array.
+		 * @return array
+		 * @since 1.0.0
+		 */
+		$labels = apply_filters( 'ersrv_reservation_type_taxonomy_args', $labels );
+		$args   = array(
+			'hierarchical'      => true,
+			'labels'            => $labels,
+			'show_ui'           => true,
+			'show_admin_column' => true,
+			'query_var'         => true,
+			'rewrite'           => array( 'slug' => 'reservation-item-type' ),
+		);
+	 
+		register_taxonomy( 'reservation-item-type', array( 'product' ), $args );
 	}
 }
