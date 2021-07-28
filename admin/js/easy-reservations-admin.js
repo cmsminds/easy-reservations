@@ -7,7 +7,7 @@ jQuery( document ).ready( function( $ ) {
 	var export_reservations                          = ERSRV_Admin_Script_Vars.export_reservations;
 	var accomodation_limit_text                      = ERSRV_Admin_Script_Vars.accomodation_limit_text;
 	var start_of_week                                = parseInt( ERSRV_Admin_Script_Vars.start_of_week );
-	var woo_currency                                 = ERSRV_Admin_Script_Vars.woo_currency;	
+	var woo_currency                                 = ERSRV_Admin_Script_Vars.woo_currency;
 	var reservation_customer_err_msg                 = ERSRV_Admin_Script_Vars.reservation_customer_err_msg;
 	var reservation_guests_err_msg                   = ERSRV_Admin_Script_Vars.reservation_guests_err_msg;
 	var reservation_only_kids_guests_err_msg         = ERSRV_Admin_Script_Vars.reservation_only_kids_guests_err_msg;

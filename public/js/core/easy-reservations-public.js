@@ -8,6 +8,7 @@ jQuery(document).ready(function ($) {
 	var is_checkout              = ERSRV_Public_Script_Vars.is_checkout;
 	var is_search_page           = ERSRV_Public_Script_Vars.is_search_page;
 	var reservation_item_details = ERSRV_Public_Script_Vars.reservation_item_details;
+	var woo_currency             = ERSRV_Public_Script_Vars.woo_currency;
 
 	// Custom variables defined.
 	var reservation_item_id = $('.ersrv-reservation-container').data('item');
@@ -124,6 +125,64 @@ jQuery(document).ready(function ($) {
 		});
 		$(".price-value").html("$" + $("#slider-range").slider("values", 0) + " to $" + $("#slider-range").slider("values", 1));
 	}
+
+	/**
+	 * Accomodation adult charge.
+	 */
+	 $( document ).on( 'keyup click', '#adult-accomodation-count', function() {
+		var this_input       = $( this );
+		var adult_count      = parseInt( this_input.val() );
+		adult_count          = ( -1 === is_valid_number( adult_count ) ) ? 0 : adult_count;
+		var per_adult_charge = parseFloat( $( '#adult-charge' ).val() );
+		var total_charge     = adult_count * per_adult_charge;
+		total_charge         = total_charge.toFixed( 2 );
+		$( 'tr.item-price-summary td span' ).html( woo_currency + total_charge );
+
+		// Calculate the total cost.
+		ersrv_calculate_reservation_total_cost();
+	} );
+
+	/**
+	 * Accomodation kids charge.
+	 */
+	 $( document ).on( 'keyup click', '#kid-accomodation-count', function() {
+		var this_input     = $( this );
+		var kids_count     = parseInt( this_input.val() );
+		kids_count         = ( -1 === is_valid_number( kids_count ) ) ? 0 : kids_count;
+		var per_kid_charge = parseFloat( $( '#kid-charge' ).val() );
+		var total_charge   = kids_count * per_kid_charge;
+		total_charge       = total_charge.toFixed( 2 );
+		$( 'tr.kids-charge-summary td span' ).html( woo_currency + total_charge );
+
+		// Calculate the total cost.
+		ersrv_calculate_reservation_total_cost();
+	} );
+
+	/**
+	 * Amenities charge summary.
+	 */
+	$( document ).on( 'click', '.ersrv-new-reservation-single-amenity', function() {
+		var amenities_summary_cost = 0.0;
+
+		// Collect the amenities and their charges.
+		$( '.ersrv-new-reservation-single-amenity' ).each ( function() {
+			var this_element = $( this );
+			var is_checked = this_element.is( ':checked' );
+			if ( true === is_checked ) {
+				var amenity_cost = this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost' );
+				amenities_summary_cost += parseFloat( amenity_cost );
+			}
+		} );
+
+		// Limit to 2 decimal places.
+		amenities_summary_cost = amenities_summary_cost.toFixed( 2 );
+
+		// Paste the final cost.
+		$( 'tr.amenities-summary td span' ).html( woo_currency + amenities_summary_cost );
+
+		// Calculate the total cost.
+		ersrv_calculate_reservation_total_cost();
+	} );
 
 	/**
 	 * Add the reservation to google calendar.
@@ -344,6 +403,81 @@ jQuery(document).ready(function ($) {
 	$( document ).on( 'click', '#liveToastBtn', function() {
 		$( '#liveToast' ).toast( 'show' );
 	} );
+
+	/**
+	 * Get the item subtotal.
+	 *
+	 * @returns number
+	 */
+	 function ersrv_get_reservation_item_subtotal() {
+		var item_subtotal = $( 'tr.item-price-summary td span' ).text();
+		item_subtotal     = parseFloat( item_subtotal.replace( /[^\d.]/g, '' ) );
+		item_subtotal     = ( -1 === is_valid_number( item_subtotal ) ) ? 0 : item_subtotal;
+		item_subtotal     = item_subtotal.toFixed( 2 );
+
+		return item_subtotal;
+	}
+
+	/**
+	 * Get the kids charge subtotal.
+	 *
+	 * @returns number
+	 */
+	function ersrv_get_reservation_kids_subtotal() {
+		var kids_subtotal = $( 'tr.kids-charge-summary td span' ).text();
+		kids_subtotal     = parseFloat( kids_subtotal.replace( /[^\d.]/g, '' ) );
+		kids_subtotal     = ( -1 === is_valid_number( kids_subtotal ) ) ? 0 : kids_subtotal;
+		kids_subtotal     = kids_subtotal.toFixed( 2 );
+
+		return kids_subtotal;
+	}
+
+	/**
+	 * Get the security amount subtotal.
+	 *
+	 * @returns number
+	 */
+	function ersrv_get_security_subtotal() {
+		var security_subtotal = $( 'tr.security-amount-summary td span' ).text();
+		security_subtotal     = parseFloat( security_subtotal.replace( /[^\d.]/g, '' ) );
+		security_subtotal     = ( -1 === is_valid_number( security_subtotal ) ) ? 0 : security_subtotal;
+		security_subtotal     = security_subtotal.toFixed( 2 );
+
+		return security_subtotal;
+	}
+
+	/**
+	 * Get the amenities charge subtotal.
+	 *
+	 * @returns number
+	 */
+	function ersrv_get_amenities_subtotal() {
+		var amenities_subtotal = $( 'tr.amenities-summary td span' ).text();
+		amenities_subtotal     = parseFloat( amenities_subtotal.replace( /[^\d.]/g, '' ) );
+		amenities_subtotal     = ( -1 === is_valid_number( amenities_subtotal ) ) ? 0 : amenities_subtotal;
+		amenities_subtotal     = amenities_subtotal.toFixed( 2 );
+
+		return amenities_subtotal;
+	}
+
+	/**
+	 * Calculate the reservation total cost.
+	 */
+	function ersrv_calculate_reservation_total_cost() {
+		var item_subtotal      = parseFloat( ersrv_get_reservation_item_subtotal() );
+		var kids_subtotal      = parseFloat( ersrv_get_reservation_kids_subtotal() );
+		var security_subtotal  = parseFloat( ersrv_get_security_subtotal() );
+		var amenities_subtotal = parseFloat( ersrv_get_amenities_subtotal() );
+
+		// Addup to the total cost.
+		var total_cost = item_subtotal + kids_subtotal + security_subtotal + amenities_subtotal;
+		total_cost = total_cost.toFixed( 2 );
+
+		console.log( 'total_cost', total_cost );
+
+		// Paste the final total.
+		$( 'tr.new-reservation-total-cost td span' ).html( woo_currency + total_cost );
+	}
 
 	/**
 	 * Block element.
