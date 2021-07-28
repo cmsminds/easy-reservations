@@ -268,7 +268,7 @@ $next_date = gmdate( 'Y-m-d', strtotime( $curr_date . ' +1 day' ) );
 									</div>
 									<div class="dropdown-divider my-4 py-2"></div>
 									<div class="contact-owner mb-3 pb-2">
-										<button class="btn btn-outline-fill-primary btn-block btn-xl font-lato font-size-18 font-weight-bold">
+										<button type="button" class="ersrv-contact-owner-button btn btn-outline-fill-primary btn-block btn-xl font-lato font-size-18 font-weight-bold">
 											<span><?php esc_html_e( 'Contact Owner', 'easy-reservations' ); ?></span>
 										</button>
 									</div>

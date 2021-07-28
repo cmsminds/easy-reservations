@@ -520,10 +520,14 @@ jQuery(document).ready(function ($) {
 		} );
 	} );
 
+	$( document ).on( 'click', '.ersrv-contact-owner-button', function() {
+		$( '#ersrv-contact-owner-modal' ).show();
+	} );
+
 	/**
 	 * Get the dates that faal between 2 dates.
 	 */
-	 function ersrv_get_dates_between_2_dates( from, to ) {
+	function ersrv_get_dates_between_2_dates( from, to ) {
 		var dates = [];
 
 		// Return, if either of the date is blank.
