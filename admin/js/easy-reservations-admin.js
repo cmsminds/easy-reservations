@@ -639,20 +639,20 @@ jQuery( document ).ready( function( $ ) {
 		} else if ( '' === checkout_date ) {
 			process_reservation = false;
 			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_checkout_missing_err_msg );
-		}
-
-		/**
-		 * If the reservation period is more than allowed.
-		 * Get the dates between checkin and checkout dates.
-		 */
-		var reservation_dates = ersrv_get_dates_between_2_dates( checkin_date, checkout_date );
-		var reservation_days  = reservation_dates.length;
-		if ( min_reservation_period > reservation_days ) {
-			process_reservation = false;
-			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_lesser_reservation_days_err_msg.replace( 'XX', min_reservation_period ) );
-		} else if ( max_reservation_period < reservation_days ) {
-			process_reservation = false;
-			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_greater_reservation_days_err_msg.replace( 'XX', max_reservation_period ) );
+		} else {
+			/**
+			 * If the reservation period is more than allowed.
+			 * Get the dates between checkin and checkout dates.
+			 */
+			var reservation_dates = ersrv_get_dates_between_2_dates( checkin_date, checkout_date );
+			var reservation_days  = reservation_dates.length;
+			if ( min_reservation_period > reservation_days ) {
+				process_reservation = false;
+				$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_lesser_reservation_days_err_msg.replace( 'XX', min_reservation_period ) );
+			} else if ( max_reservation_period < reservation_days ) {
+				process_reservation = false;
+				$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_greater_reservation_days_err_msg.replace( 'XX', max_reservation_period ) );
+			}
 		}
 
 		// Collect the amenities and their charges.

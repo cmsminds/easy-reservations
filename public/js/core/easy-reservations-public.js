@@ -446,37 +446,37 @@ jQuery(document).ready(function ($) {
 		} else if ( '' === checkout_date ) {
 			process_reservation = false;
 			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_checkout_missing_err_msg );
+		} else {
+			/**
+			 * If the reservation period is more than allowed.
+			 * Get the dates between checkin and checkout dates.
+			 */
+			var reservation_dates = ersrv_get_dates_between_2_dates( checkin_date, checkout_date );
+			var reservation_days  = reservation_dates.length;
+			if ( min_reservation_period > reservation_days ) {
+				process_reservation = false;
+				$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_lesser_reservation_days_err_msg.replace( 'XX', min_reservation_period ) );
+			} else if ( max_reservation_period < reservation_days ) {
+				process_reservation = false;
+				$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_greater_reservation_days_err_msg.replace( 'XX', max_reservation_period ) );
+			}
 		}
-
-		/**
-		 * If the reservation period is more than allowed.
-		 * Get the dates between checkin and checkout dates.
-		 */
-		var reservation_dates = ersrv_get_dates_between_2_dates( checkin_date, checkout_date );
-		var reservation_days  = reservation_dates.length;
-		if ( min_reservation_period > reservation_days ) {
-			process_reservation = false;
-			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_lesser_reservation_days_err_msg.replace( 'XX', min_reservation_period ) );
-		} else if ( max_reservation_period < reservation_days ) {
-			process_reservation = false;
-			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_greater_reservation_days_err_msg.replace( 'XX', max_reservation_period ) );
-		}
-
-		return false;
 
 		// Collect the amenities and their charges.
-		$( '.ersrv-new-reservation-single-amenity' ).each ( function() {
+		$( '.ersrv-new-reservation-single-amenity' ).each( function() {
 			var this_element = $( this );
-			var is_checked = this_element.find( 'input[type="checkbox"]' ).is( ':checked' );
+			var is_checked = this_element.is( ':checked' );
 			if ( true === is_checked ) {
 				amenities.push(
 					{
-						amenity: this_element.data( 'amenity' ),
-						cost: this_element.data( 'cost' ),
+						amenity: this_element.parents( '.ersrv-single-amenity-block' ).data( 'amenity' ),
+						cost: this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost' ),
 					}
 				);
 			}
 		} );
+		
+		console.log( 'amenities', amenities );
 
 		// Exit, if we cannot process the reservation.
 		if ( false === process_reservation ) {

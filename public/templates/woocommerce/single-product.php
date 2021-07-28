@@ -205,7 +205,7 @@ $next_date = gmdate( 'Y-m-d', strtotime( $curr_date . ' +1 day' ) );
 											$amenity_slug  = sanitize_title( $amenity_title );
 											$amenity_cost  = $amenity_data['cost'];
 											?>
-											<div class="custom-control custom-switch ersrv-single-amenity-block" data-cost="<?php echo esc_attr( $amenity_cost ); ?>">
+											<div class="custom-control custom-switch ersrv-single-amenity-block" data-cost="<?php echo esc_attr( $amenity_cost ); ?>" data-amenity="<?php echo esc_attr( $amenity_title ); ?>">
 												<input type="checkbox" class="custom-control-input ersrv-new-reservation-single-amenity" id="amenity-<?php echo esc_html( $amenity_slug ); ?>">
 												<label class="custom-control-label font-size-15" for="amenity-<?php echo esc_html( $amenity_slug ); ?>">
 													<span class="d-block font-lato font-weight-bold color-black pb-2"><?php echo esc_html( $amenity_title ); ?> - <span class="font-lato font-weight-bold color-accent"><?php echo wc_price( $amenity_cost ); ?></span></span>
@@ -216,7 +216,7 @@ $next_date = gmdate( 'Y-m-d', strtotime( $curr_date . ' +1 day' ) );
 									<?php } ?>
 									<div class="calc-wrapper mb-3">
 										<label class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Summary', 'easy-reservations' ); ?></label>
-										<table>
+										<table class="table table-borderless">
 											<tbody>
 												<tr class="item-price-summary">
 													<th><?php esc_html_e( 'Adults:', 'easy-reservations' ); ?></th>
