@@ -10,16 +10,13 @@ jQuery(document).ready(function ($) {
 	var reservation_item_details = ERSRV_Public_Script_Vars.reservation_item_details;
 	var woo_currency             = ERSRV_Public_Script_Vars.woo_currency;
 
-	// Custom variables defined.
-	var reservation_item_id = $('.ersrv-reservation-container').data('item');
-	var reservation_calendar = document.getElementById('calendar');
-
 	// If sidebar is to be removed on reservation single page.
 	if ('yes' === remove_sidebar) {
 		$( '#secondary' ).remove();
 		$( '#primary' ).css( 'width', '100%' );
 	}
 
+	// If it's the product page.
 	if ( 'yes' === is_product ) {
 		var reserved_dates         = reservation_item_details.reserved_dates;
 		var current_date           = new Date();
@@ -35,6 +32,7 @@ jQuery(document).ready(function ($) {
 			}
 		}
 
+		// Availability calendar 2 months.
 		$( '.ersrv-item-availability-calendar' ).datepicker( {
 			beforeShowDay: function( date ) {
 				var loop_month          = ( ( '0' + ( date.getMonth() + 1 ) ).slice( -2 ) );
@@ -245,17 +243,6 @@ jQuery(document).ready(function ($) {
 	}
 
 	/**
-	 * Proceed with reservation details and add the details to the cart.
-	 */
-	$( document ).on( 'click', '.ersrv-proceed-with-reservation-details', function () {
-		// Gather the amenities, if selected.
-		if ($('.card.amenities').length) {
-			$('.card.amenities .amenity').each(function () {
-			});
-		}
-	} );
-
-	/**
 	 * Fire the AJAX to load the reservation items on search page.
 	 */
 	if ( 'yes' === is_search_page ) {
@@ -402,6 +389,13 @@ jQuery(document).ready(function ($) {
 
 	$( document ).on( 'click', '#liveToastBtn', function() {
 		$( '#liveToast' ).toast( 'show' );
+	} );
+
+	/**
+	 * Proceed with reservation details and add the details to the cart.
+	 */
+	$( document ).on( 'click', '.ersrv-proceed-to-checkout-single-reservation-item', function() {
+
 	} );
 
 	/**
