@@ -89,7 +89,7 @@
 
 .color-white, .btn-primary, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev,
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:focus, .btn-outline-fill-primary:active {
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:focus, .btn-outline-fill-primary:active, .wrapper .sidebar-wrapper .price-box .amount {
   color: #fff;
 }
 
@@ -348,7 +348,7 @@
   font-size: 37px;
 }
 
-.font-size-38 {
+.font-size-38, .wrapper .sidebar-wrapper .price-box .amount {
   font-size: 38px;
 }
 
@@ -729,6 +729,10 @@ img {
   max-width: 500px;
 }
 
+.wrapper .banner .details a {
+  color: #fff;
+}
+
 .wrapper .content-part {
   margin-top: calc(86px - 256px);
 }
@@ -856,6 +860,11 @@ img {
   color: #000;
 }
 
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td {
+  -webkit-transform: scale(0.9);
+          transform: scale(0.9);
+}
+
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td,
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a {
   color: #8a8f9c;
@@ -884,17 +893,22 @@ img {
   }
 }
 
-.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-highlight,
-.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ui-state-highlight {
-  color: #111;
-  background-color: #cbefd9;
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ersrv-date-active,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ersrv-date-active {
+  color: #fff;
+  background-color: #3ab166;
   border-radius: 100%;
 }
 
-.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-active,
-.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ui-state-active {
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ersrv-date-active a,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ersrv-date-active a {
   color: #fff;
-  background-color: #3ab166;
+}
+
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-disabled.ersrv-date-disabled,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ui-state-disabled.ersrv-date-disabled {
+  color: #767676;
+  background-color: #e0e0e0;
   border-radius: 100%;
 }
 
@@ -949,6 +963,12 @@ img {
 
 .wrapper .sidebar-wrapper .price-box {
   margin-bottom: 17px;
+}
+
+.wrapper .sidebar-wrapper .price-box .amount {
+  padding: 0px .5rem;
+  margin-left: .25rem;
+  font-weight: 600;
 }
 
 .wrapper .sidebar-wrapper .price-box .old-price {
@@ -1528,5 +1548,39 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
   .col-preview {
     background-color: #3ab166;
   }
+}
+
+.ersrv-item-availability-calendar {
+  padding-bottom: 20px;
+}
+
+[class*=-notifier],
+[class^=-notifier] {
+  position: relative;
+  margin: 2px 0px;
+  padding-left: 30px;
+}
+
+[class*=-notifier]::before,
+[class^=-notifier]::before {
+  content: "";
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  margin: auto 0px;
+  height: 16px;
+  width: 16px;
+  vertical-align: middle;
+  background-color: #000;
+}
+
+.ersrv-available-dates-notifier::before {
+  color: #fff;
+  background-color: #3ab166;
+}
+
+.ersrv-unavailable-dates-notifier::before {
+  background-color: #e0e0e0;
 }
 /*# sourceMappingURL=easy-reservations-twentyseventeen.css.map */
