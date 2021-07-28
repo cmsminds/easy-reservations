@@ -192,7 +192,7 @@ $next_date = gmdate( 'Y-m-d', strtotime( $curr_date . ' +1 day' ) );
 									</div>
 									<div class="book-items-wrapper mb-4 pb-3">
 										<label for="book-items" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'No book items', 'easy-reservations' ); ?></label>
-										<input placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" type="number" class="form-control" />
+										<input placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" type="number" class="form-control mb-3" />
 										<input placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" type="number" class="form-control" />
 									</div>
 									<?php if ( ! empty( $amenities ) && is_array( $amenities ) ) { ?>
