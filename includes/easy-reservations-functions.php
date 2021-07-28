@@ -1483,6 +1483,7 @@ if ( ! function_exists( 'ersrv_get_item_details' ) ) {
 			'reserved_dates'         => $reserved_dates,
 			'min_reservation_period' => get_post_meta( $item_id, '_ersrv_reservation_min_period', true ),
 			'max_reservation_period' => get_post_meta( $item_id, '_ersrv_reservation_max_period', true ),
+			'amenities'              => $amenities,
 			'amenity_html'           => $amenity_html,
 			'adult_charge'           => get_post_meta( $item_id, '_ersrv_accomodation_adult_charge', true ),
 			'kid_charge'             => get_post_meta( $item_id, '_ersrv_accomodation_kid_charge', true ),

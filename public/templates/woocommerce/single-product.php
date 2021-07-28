@@ -19,6 +19,9 @@ $item_details = ersrv_get_item_details( $item_post->ID );
 $adult_charge = ( ! empty( $item_details['adult_charge'] ) ) ? $item_details['adult_charge'] : 0;
 $kid_charge   = ( ! empty( $item_details['kid_charge'] ) ) ? $item_details['kid_charge'] : 0;
 
+// Amenities.
+$amenities = ( ! empty( $item_details['amenities'] ) ) ? $item_details['amenities'] : array();
+
 // Location.
 $api_key = ersrv_get_plugin_settings( 'ersrv_google_maps_api_key' );
 
@@ -192,29 +195,20 @@ $next_date = gmdate( 'Y-m-d', strtotime( $curr_date . ' +1 day' ) );
 										<input placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" type="number" class="form-control" />
 										<input placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" type="number" class="form-control" />
 									</div>
+									<?php if ( ! empty( $amenities ) && is_array( $amenities ) ) { ?>
 									<div class="checkbox-wrapper mb-4 pb-3">
-										<div class="custom-control custom-checkbox mb-4">
-											<input type="checkbox" class="custom-control-input" id="single">
-											<label class="custom-control-label font-size-15" for="single">
-												<span class="d-block font-lato font-weight-bold color-black pb-2">On board consumables</span>
-												<span><span class="font-lato font-weight-bold color-accent">$ 40</span> | <span class="font-lato font-weight-normal color-black-500">Single Fee </span></span>
-											</label>
-										</div>
-										<div class="custom-control custom-checkbox mb-4">
-											<input type="checkbox" class="custom-control-input" id="double">
-											<label class="custom-control-label font-size-15" for="double">
-												<span class="d-block font-lato font-weight-bold color-black pb-2">On board consumables</span>
-												<span><span class="font-lato font-weight-bold color-accent">$ 40</span> | <span class="font-lato font-weight-normal color-black-500">Single Fee </span></span>
-											</label>
-										</div>
-										<div class="custom-control custom-checkbox">
-											<input type="checkbox" class="custom-control-input" id="large">
-											<label class="custom-control-label font-size-15" for="large">
-												<span class="d-block font-lato font-weight-bold color-black pb-2">On board consumables</span>
-												<span><span class="font-lato font-weight-bold color-accent">$ 40</span> | <span class="font-lato font-weight-normal color-black-500">Single Fee </span></span>
-											</label>
-										</div>
+										<label for="amenities" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Amenities', 'easy-reservations' ); ?></label>
+										<?php foreach ( $amenities as $amenity_data ) { ?>
+											<div class="custom-control custom-checkbox mb-4">
+												<input type="checkbox" class="custom-control-input" id="single">
+												<label class="custom-control-label font-size-15" for="single">
+													<span class="d-block font-lato font-weight-bold color-black pb-2"><?php echo esc_html( $amenity_data['title'] ); ?></span>
+													<span class="font-lato font-weight-bold color-accent"><?php echo wc_price( $amenity_data['cost'] ); ?></span>
+												</label>
+											</div>
+										<?php } ?>
 									</div>
+									<?php } ?>
 									<div class="calc-wrapper mb-3">
 										<h4 class="font-lato font-size-20 font-weight-bolder color-black text-center letter-spacing-10 mb-0">3 x $500 = $1500</h4>
 									</div>
