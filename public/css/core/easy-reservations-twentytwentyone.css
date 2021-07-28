@@ -950,6 +950,17 @@ img {
   background-position: 95%;
 }
 
+.wrapper .sidebar-wrapper .book-tour .details input[type=checkbox], .wrapper .sidebar-wrapper .book-tour .details input[type=radio],
+.wrapper .sidebar-wrapper .advanced-search .details input[type=checkbox],
+.wrapper .sidebar-wrapper .advanced-search .details input[type=radio] {
+  min-height: auto;
+}
+
+.wrapper .sidebar-wrapper .book-tour .details .custom-switch,
+.wrapper .sidebar-wrapper .advanced-search .details .custom-switch {
+  padding-left: 0.5rem;
+}
+
 .wrapper .sidebar-wrapper .book-tour .details .checkbox-wrapper .custom-control.custom-checkbox,
 .wrapper .sidebar-wrapper .advanced-search .details .checkbox-wrapper .custom-control.custom-checkbox {
   padding-left: 0px;

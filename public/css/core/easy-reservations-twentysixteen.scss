@@ -147,7 +147,9 @@
 
                     tbody {
                         tr {
-
+                            td{
+                                transform: scale(0.9);
+                            }
                             td,
                             td a {
                                 @extend .font-size-16;
@@ -261,6 +263,9 @@
                     &.date-control {
                         @extend .date-control;
                         background-position: 95%;
+                    }
+                    &[type=checkbox], &[type=radio]{
+                        min-height: auto;
                     }
                 }
                 .btn{
@@ -623,9 +628,6 @@
         }
         tbody {
             tr {
-                td{
-                    transform: scale(0.9);
-                }
                 td,
                 td a {
                     @extend .font-size-14;

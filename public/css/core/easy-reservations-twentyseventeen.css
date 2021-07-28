@@ -840,7 +840,7 @@ img {
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover {
   text-decoration: none;
   top: 2px;
-  color: #111;
+  color: #111 !important;
   background-color: rgba(0, 0, 0, 0);
 }
 
@@ -858,6 +858,10 @@ img {
 
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar thead tr th {
   color: #000;
+}
+
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr {
+  border: 0px;
 }
 
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td {
@@ -989,6 +993,12 @@ img {
 .wrapper .sidebar-wrapper .book-tour .details input.date-control,
 .wrapper .sidebar-wrapper .advanced-search .details input.date-control {
   background-position: 95%;
+}
+
+.wrapper .sidebar-wrapper .book-tour .details input[type=checkbox], .wrapper .sidebar-wrapper .book-tour .details input[type=radio],
+.wrapper .sidebar-wrapper .advanced-search .details input[type=checkbox],
+.wrapper .sidebar-wrapper .advanced-search .details input[type=radio] {
+  min-height: auto;
 }
 
 .wrapper .sidebar-wrapper .book-tour .details .btn,
@@ -1360,7 +1370,7 @@ img {
 #ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover {
   text-decoration: none;
   top: 2px;
-  color: #111;
+  color: #111 !important;
   background-color: rgba(0, 0, 0, 0);
 }
 
