@@ -189,6 +189,7 @@ $next_date = gmdate( 'Y-m-d', strtotime( $curr_date . ' +1 day' ) );
 										<input placeholder="<?php echo esc_html( $curr_date ); ?>" type="text" id="ersrv-single-reservation-checkin-datepicker" class="form-control date-control text-left rounded-lg">
 										<div class="input-group-addon font-Poppins font-size-18 font-weight-light color-black-400 py-2 my-1 text-center"><?php esc_html_e( 'to', 'easy-reservations' ); ?></div>
 										<input placeholder="<?php echo esc_html( $next_date ); ?>" type="text" id="ersrv-single-reservation-checkout-datepicker" class="form-control date-control text-left rounded-lg">
+										<p class="ersrv-reservation-error checkin-checkout-dates-error"></p>
 									</div>
 									<div class="book-items-wrapper mb-4 pb-3">
 										<label for="book-items" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'No book items', 'easy-reservations' ); ?></label>

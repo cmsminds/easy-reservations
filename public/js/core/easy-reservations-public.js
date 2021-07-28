@@ -436,8 +436,6 @@ jQuery(document).ready(function ($) {
 			$( '.ersrv-reservation-error.accomodation-error' ).text( reservation_guests_count_exceeded_err_msg );
 		}
 
-		return false;
-
 		// If the checkin and checkout dates are not available.
 		if ( '' === checkin_date && '' === checkout_date ) {
 			process_reservation = false;
@@ -463,6 +461,8 @@ jQuery(document).ready(function ($) {
 			process_reservation = false;
 			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_greater_reservation_days_err_msg.replace( 'XX', max_reservation_period ) );
 		}
+
+		return false;
 
 		// Collect the amenities and their charges.
 		$( '.ersrv-new-reservation-single-amenity' ).each ( function() {
@@ -529,6 +529,30 @@ jQuery(document).ready(function ($) {
 			},
 		} );
 	} );
+
+	/**
+	 * Get the dates that faal between 2 dates.
+	 */
+	 function ersrv_get_dates_between_2_dates( from, to ) {
+		var dates = [];
+
+		// Return, if either of the date is blank.
+		if ( '' === from || '' === to ) {
+			return dates;
+		}
+
+		// Get the date time javascript object.
+		from = new Date( from );
+		to   = new Date( to );
+
+		// Iterate through the end date to get the array of between dates.
+		while ( from <= to ) {
+			dates.push( new Date( from ) );
+			from.setDate( from.getDate() + 1 );
+		}
+
+		return dates;
+	}
 
 	/**
 	 * Get the item subtotal.
