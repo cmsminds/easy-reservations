@@ -43,6 +43,10 @@ if ( ! empty( $types ) && is_array( $types ) ) {
 
 	$type_str = implode( ', ', $type_links );
 }
+
+// Current date.
+$curr_date = ersrv_get_current_time( 'Y-m-d' );
+$next_date = gmdate( 'Y-m-d', strtotime( $curr_date . ' +1 day' ) );
 ?>
 <section class="wrapper single-reserve-page" id="wrapper">
 	<div class="banner text-center">
@@ -174,22 +178,19 @@ if ( ! empty( $types ) && is_array( $types ) ) {
 						</div>
 						<div class="book-tour bgcolor-white rounded-xl text-center">
 							<div class="title mb-4">
-								<h3 class="font-Poppins font-size-24 font-weight-bold color-black">Book The Tour</h3>
+								<h3 class="font-Poppins font-size-24 font-weight-bold color-black"><?php esc_html_e( 'Book The Tour', 'easy-reservations' ); ?></h3>
 							</div>
 							<div class="details text-left">
 								<form action="">
 									<div class="input-daterange d-flex flex-column flex-fill mb-3 pb-2">
-										<input type="text" class="form-control date-control text-left rounded-lg" value="2012-04-05">
-										<div class="input-group-addon font-Poppins font-size-18 font-weight-light color-black-400 py-2 my-1 text-center">to</div>
-										<input type="text" class="form-control date-control text-left rounded-lg" value="2012-04-19">
+										<input placeholder="<?php echo esc_html( $curr_date ); ?>" type="text" id="ersrv-single-reservation-checkin-datepicker" class="form-control date-control text-left rounded-lg">
+										<div class="input-group-addon font-Poppins font-size-18 font-weight-light color-black-400 py-2 my-1 text-center"><?php esc_html_e( 'to', 'easy-reservations' ); ?></div>
+										<input placeholder="<?php echo esc_html( $next_date ); ?>" type="text" id="ersrv-single-reservation-checkout-datepicker" class="form-control date-control text-left rounded-lg">
 									</div>
 									<div class="book-items-wrapper mb-4 pb-3">
-										<label for="book-items" class="font-Poppins font-size-16 color-black">No book items</label>
-										<select class="selectpicker form-control" id="book-items" data-size="5" data-style="btn-outline-primary focus-none">
-											<option>3 Guest</option>
-											<option>2 Guest</option>
-											<option>1 Guest</option>
-										</select>
+										<label for="book-items" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'No book items', 'easy-reservations' ); ?></label>
+										<input placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" type="number" class="form-control" />
+										<input placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" type="number" class="form-control" />
 									</div>
 									<div class="checkbox-wrapper mb-4 pb-3">
 										<div class="custom-control custom-checkbox mb-4">

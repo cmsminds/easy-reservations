@@ -68,9 +68,49 @@ jQuery(document).ready(function ($) {
 			format: datepicker_date_format,
 		} );
 
-		$('.date-control').datepicker({
-			numberOfMonths: 1
-		});
+		// Checkin and checkout datepicker.
+		$( '#ersrv-single-reservation-checkin-datepicker, #ersrv-single-reservation-checkout-datepicker' ).datepicker( {
+			beforeShowDay: function( date ) {
+				var loop_month          = ( ( '0' + ( date.getMonth() + 1 ) ).slice( -2 ) );
+				var loop_date_formatted = date.getFullYear() + '-' + loop_month + '-' + date.getDate();
+				var date_enabled        = true;
+				var date_class          = '';
+
+				// If not the past date.
+				if ( today_formatted <= loop_date_formatted ) {
+					console.log( 'loop_date_formatted', loop_date_formatted );
+					// Add custom class to the active dates of the current month.
+					var key = $.map( blocked_dates, function( val, i ) {
+						if ( val === loop_date_formatted ) {
+							return i;
+						}
+					} );
+
+					// If the loop date is a blocked date.
+					if ( 0 < key.length ) {
+						date_class = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+					} else {
+						date_class = 'ersrv-date-active';
+					}
+				} else {
+					date_class = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+				}
+
+				// Return the datepicker day object.
+				return [ date_enabled, date_class ];
+			},
+			onSelect: function ( selected_date, instance ) {
+				if ( 'ersrv-single-reservation-checkin-datepicker' === instance.id ) {
+					// Min date for checkout should be on/after the checkin date.
+					$( '#ersrv-single-reservation-checkout-datepicker' ).datepicker( 'option', 'minDate', selected_date );
+					setTimeout( function() {
+						$( '#ersrv-single-reservation-checkout-datepicker' ).datepicker( 'show' );
+					}, 16 );
+				}
+			},
+			numberOfMonths: 1,
+			format: datepicker_date_format,
+		} );
 
 		// range slider
 		$("#slider-range").slider({
