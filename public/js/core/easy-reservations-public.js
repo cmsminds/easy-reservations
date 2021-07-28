@@ -2,13 +2,21 @@ jQuery(document).ready(function ($) {
 	'use strict';
 
 	// Localized variables.
-	var ajaxurl                  = ERSRV_Public_Script_Vars.ajaxurl;
-	var remove_sidebar           = ERSRV_Public_Script_Vars.remove_sidebar;
-	var is_product               = ERSRV_Public_Script_Vars.is_product;
-	var is_checkout              = ERSRV_Public_Script_Vars.is_checkout;
-	var is_search_page           = ERSRV_Public_Script_Vars.is_search_page;
-	var reservation_item_details = ERSRV_Public_Script_Vars.reservation_item_details;
-	var woo_currency             = ERSRV_Public_Script_Vars.woo_currency;
+	var ajaxurl                                      = ERSRV_Public_Script_Vars.ajaxurl;
+	var remove_sidebar                               = ERSRV_Public_Script_Vars.remove_sidebar;
+	var is_product                                   = ERSRV_Public_Script_Vars.is_product;
+	var is_checkout                                  = ERSRV_Public_Script_Vars.is_checkout;
+	var is_search_page                               = ERSRV_Public_Script_Vars.is_search_page;
+	var reservation_item_details                     = ERSRV_Public_Script_Vars.reservation_item_details;
+	var woo_currency                                 = ERSRV_Public_Script_Vars.woo_currency;
+	var reservation_guests_err_msg                   = ERSRV_Public_Script_Vars.reservation_guests_err_msg;
+	var reservation_only_kids_guests_err_msg         = ERSRV_Public_Script_Vars.reservation_only_kids_guests_err_msg;
+	var reservation_guests_count_exceeded_err_msg    = ERSRV_Public_Script_Vars.reservation_guests_count_exceeded_err_msg;
+	var reservation_checkin_checkout_missing_err_msg = ERSRV_Public_Script_Vars.reservation_checkin_checkout_missing_err_msg;
+	var reservation_checkin_missing_err_msg          = ERSRV_Public_Script_Vars.reservation_checkin_missing_err_msg;
+	var reservation_checkout_missing_err_msg         = ERSRV_Public_Script_Vars.reservation_checkout_missing_err_msg;
+	var reservation_lesser_reservation_days_err_msg  = ERSRV_Public_Script_Vars.reservation_lesser_reservation_days_err_msg;
+	var reservation_greater_reservation_days_err_msg = ERSRV_Public_Script_Vars.reservation_greater_reservation_days_err_msg;
 
 	// If sidebar is to be removed on reservation single page.
 	if ('yes' === remove_sidebar) {
@@ -21,7 +29,8 @@ jQuery(document).ready(function ($) {
 		var reserved_dates         = reservation_item_details.reserved_dates;
 		var current_date           = new Date();
 		var current_month          = ( ( '0' + ( current_date.getMonth() + 1 ) ).slice( -2 ) );
-		var today_formatted        = current_date.getFullYear() + '-' + current_month + '-' + current_date.getDate();
+		var current_date_date      = ( ( '0' + ( current_date.getDate() ) ).slice( -2 ) );
+		var today_formatted        = current_date.getFullYear() + '-' + current_month + '-' + current_date_date;
 		var blocked_dates          = [];
 		var datepicker_date_format = 'yyyy-mm-dd';
 
@@ -35,14 +44,14 @@ jQuery(document).ready(function ($) {
 		// Availability calendar 2 months.
 		$( '.ersrv-item-availability-calendar' ).datepicker( {
 			beforeShowDay: function( date ) {
+				var loop_date           = ( ( '0' + ( date.getDate() ) ).slice( -2 ) );
 				var loop_month          = ( ( '0' + ( date.getMonth() + 1 ) ).slice( -2 ) );
-				var loop_date_formatted = date.getFullYear() + '-' + loop_month + '-' + date.getDate();
+				var loop_date_formatted = date.getFullYear() + '-' + loop_month + '-' + loop_date;
 				var date_enabled        = true;
 				var date_class          = '';
 
 				// If not the past date.
 				if ( today_formatted <= loop_date_formatted ) {
-					console.log( 'loop_date_formatted', loop_date_formatted );
 					// Add custom class to the active dates of the current month.
 					var key = $.map( blocked_dates, function( val, i ) {
 						if ( val === loop_date_formatted ) {
@@ -77,7 +86,6 @@ jQuery(document).ready(function ($) {
 
 				// If not the past date.
 				if ( today_formatted <= loop_date_formatted ) {
-					console.log( 'loop_date_formatted', loop_date_formatted );
 					// Add custom class to the active dates of the current month.
 					var key = $.map( blocked_dates, function( val, i ) {
 						if ( val === loop_date_formatted ) {
@@ -259,7 +267,9 @@ jQuery(document).ready(function ($) {
 				if ( 0 === response ) {
 					console.log( 'easy reservations: invalid ajax request' );
 					return false;
-				} else if ( 'items-found' === response.data.code ) { // If items are found.
+				}
+				
+				if ( 'items-found' === response.data.code ) { // If items are found.
 					$( '.ersrv-search-reservations-items-container' ).html( response.data.html );
 					$( '.ersrv-loadmore-container' ).html( response.data.load_more_html );
 				} else if ( 'no-items-found' === response.data.code ) { // If items are found.
@@ -588,8 +598,6 @@ jQuery(document).ready(function ($) {
 		// Addup to the total cost.
 		var total_cost = item_subtotal + kids_subtotal + security_subtotal + amenities_subtotal;
 		total_cost = total_cost.toFixed( 2 );
-
-		console.log( 'total_cost', total_cost );
 
 		// Paste the final total.
 		$( 'tr.new-reservation-total-cost td span' ).html( woo_currency + total_cost );

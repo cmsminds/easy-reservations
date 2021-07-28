@@ -298,13 +298,21 @@ class Easy_Reservations_Public {
 			$plugin_name,
 			'ERSRV_Public_Script_Vars',
 			array(
-				'ajaxurl'                  => admin_url( 'admin-ajax.php' ),
-				'remove_sidebar'           => ersrv_get_plugin_settings( 'ersrv_remove_reservation_pages_sidebar' ),
-				'is_product'               => ( is_product() ) ? 'yes' : 'no',
-				'is_checkout'              => ( is_checkout() ) ? 'yes' : 'no',
-				'is_search_page'           => ( $is_search_page ) ? 'yes' : 'no',
-				'reservation_item_details' => $reservation_item_details,
-				'woo_currency'             => get_woocommerce_currency_symbol(),
+				'ajaxurl'                                      => admin_url( 'admin-ajax.php' ),
+				'remove_sidebar'                               => ersrv_get_plugin_settings( 'ersrv_remove_reservation_pages_sidebar' ),
+				'is_product'                                   => ( is_product() ) ? 'yes' : 'no',
+				'is_checkout'                                  => ( is_checkout() ) ? 'yes' : 'no',
+				'is_search_page'                               => ( $is_search_page ) ? 'yes' : 'no',
+				'reservation_item_details'                     => $reservation_item_details,
+				'woo_currency'                                 => get_woocommerce_currency_symbol(),
+				'reservation_guests_err_msg'                   => __( 'Please provide the count of guests for the reservation.', 'easy-reservations' ),
+				'reservation_only_kids_guests_err_msg'         => __( 'We cannot proceed with only the kids in the reservation.', 'easy-reservations' ),
+				'reservation_guests_count_exceeded_err_msg'    => __( 'The guests count is more than the accomodation limit.', 'easy-reservations' ),
+				'reservation_checkin_checkout_missing_err_msg' => __( 'Please provide checkin and checkout dates.', 'easy-reservations' ),
+				'reservation_checkin_missing_err_msg'          => __( 'Please provide checkin dates.', 'easy-reservations' ),
+				'reservation_checkout_missing_err_msg'         => __( 'Please provide checkout dates.', 'easy-reservations' ),
+				'reservation_lesser_reservation_days_err_msg'  => __( 'The item can be reserved for a min. of XX days.', 'easy-reservations' ),
+				'reservation_greater_reservation_days_err_msg' => __( 'The item can be reserved for a max. of XX days.', 'easy-reservations' ),
 			)
 		);
 	}
