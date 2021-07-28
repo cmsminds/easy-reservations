@@ -76,7 +76,15 @@ $posts_per_page                = (int) get_option( 'posts_per_page' );
 		<div class="container">
 			<div class="search-results-wrapper">
 				<h4 class="title font-Poppins"><?php echo sprintf( __( 'Advanced Search: %1$s%3$s items%2$s', 'easy-reservations' ), '<span class="result-no">', '</span>', count( $total_reservation_posts ) ) ?></h4>
-				<div class="search-result-inner ersrv-search-reservations-items-container form-row">Please wait while we load items...</div>
+				<div class="search-result-inner ersrv-search-reservations-items-container form-row">
+					<div class="jumbotron text-center w-100 bg-transparent">
+						<h3 class="loading-title">Please wait while we load items...</h3>
+						<div class="loading-icon">
+							<i class="fa fa-circle-notch fa-spin fa-3x fa-fw"></i>
+							<span class="sr-only">Loading...</span>
+						</div>
+					</div>
+				</div>
 				<div class="col-12 ersrv-load-more-reservation-items">
 					<div class="loadmore text-center mt-5 pt-2 ersrv-loadmore-container">
 						<?php if ( count( $total_reservation_posts ) > $posts_per_page ) { ?>
