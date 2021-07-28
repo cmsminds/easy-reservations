@@ -207,6 +207,8 @@ class Easy_Reservations {
 		$this->loader->add_filter( 'query_vars', $plugin_public, 'ersrv_query_vars_callback' );
 		$this->loader->add_action( 'wp_ajax_loadmore_reservation_items', $plugin_public, 'ersrv_loadmore_reservation_items_callback' );
 		$this->loader->add_action( 'wp_ajax_nopriv_loadmore_reservation_items', $plugin_public, 'ersrv_loadmore_reservation_items_callback' );
+		$this->loader->add_action( 'wp_ajax_add_reservation_to_cart', $plugin_public, 'ersrv_add_reservation_to_cart_callback' );
+		$this->loader->add_action( 'wp_ajax_nopriv_add_reservation_to_cart', $plugin_public, 'ersrv_add_reservation_to_cart_callback' );
 	}
 
 	/**

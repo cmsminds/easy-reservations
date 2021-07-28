@@ -410,7 +410,7 @@ jQuery(document).ready(function ($) {
 
 		var accomodation_limit     = parseInt( $( '#accomodation-limit' ).val() );
 		var checkin_date           = $( '#ersrv-single-reservation-checkin-datepicker' ).val();
-		var checkout_date          = $( '#ersrv-single-reservation-checkin-datepicker' ).val();
+		var checkout_date          = $( '#ersrv-single-reservation-checkout-datepicker' ).val();
 		var adult_count            = parseInt( $( '#adult-accomodation-count' ).val() );
 		adult_count                = ( -1 !== is_valid_number( adult_count ) ) ? adult_count : 0;
 		var kid_count              = parseInt( $( '#kid-accomodation-count' ).val() );
@@ -475,8 +475,6 @@ jQuery(document).ready(function ($) {
 				);
 			}
 		} );
-		
-		console.log( 'amenities', amenities );
 
 		// Exit, if we cannot process the reservation.
 		if ( false === process_reservation ) {
@@ -488,15 +486,13 @@ jQuery(document).ready(function ($) {
 
 		// Send AJAX creating a reservation.
 		var data = {
-			action: 'create_reservation',
+			action: 'add_reservation_to_cart',
 			item_id: item_id,
-			customer_id: customer_id,
 			checkin_date: checkin_date,
 			checkout_date: checkout_date,
 			adult_count: adult_count,
 			kid_count: kid_count,
 			amenities: amenities,
-			customer_notes: $( '.ersrv-new-reservation-customer-note-row td textarea' ).val(),
 			item_subtotal: ersrv_get_reservation_item_subtotal(),
 			kids_subtotal: ersrv_get_reservation_kids_subtotal(),
 			security_subtotal: ersrv_get_security_subtotal(),
@@ -516,15 +512,9 @@ jQuery(document).ready(function ($) {
 				}
 
 				// If the reservation is added.
-				if ( 'reservation-created' === response.data.code ) {
+				if ( 'reservation-added-to-cart' === response.data.code ) {
 					// Unblock the element.
 					unblock_element( this_button );
-
-					// Button text.
-					this_button.text( response.data.button_text );
-
-					// Redirect to the order edit page.
-					window.location.href = response.data.redirect_to;
 				}
 			},
 		} );

@@ -261,7 +261,7 @@ $next_date = gmdate( 'Y-m-d', strtotime( $curr_date . ' +1 day' ) );
 										<input type="hidden" id="security-amount" value="<?php echo esc_html( $security_amount ); ?>" />
 									</div>
 									<div class="instant-booking">
-										<button class="ersrv-proceed-to-checkout-single-reservation-item btn btn-primary btn-block btn-xl font-lato font-size-18 font-weight-bold">
+										<button type="button" class="ersrv-proceed-to-checkout-single-reservation-item btn btn-primary btn-block btn-xl font-lato font-size-18 font-weight-bold">
 											<span class="mr-3"><img src="<?php echo esc_url( ERSRV_PLUGIN_URL . 'public/images/Instant-booking.png' ); ?>" alt="instant-booking"></span>
 											<span><?php esc_html_e( 'Instant Booking', 'easy-reservations' ); ?></span>
 										</button>

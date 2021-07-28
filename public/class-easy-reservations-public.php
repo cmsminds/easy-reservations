@@ -1111,4 +1111,59 @@ class Easy_Reservations_Public {
 		);
 		wp_die();
 	}
+
+	/**
+	 * AJAX to create new reservation.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_add_reservation_to_cart_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+		// Exit, if the action mismatches.
+		if ( empty( $action ) || 'add_reservation_to_cart' !== $action ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Posted data.
+		$item_id            = filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
+		$checkin_date       = filter_input( INPUT_POST, 'checkin_date', FILTER_SANITIZE_STRING );
+		$checkout_date      = filter_input( INPUT_POST, 'checkout_date', FILTER_SANITIZE_STRING );
+		$adult_count        = filter_input( INPUT_POST, 'adult_count', FILTER_SANITIZE_NUMBER_INT );
+		$kid_count          = filter_input( INPUT_POST, 'kid_count', FILTER_SANITIZE_NUMBER_INT );
+		$posted_array       = filter_input_array( INPUT_POST );
+		$amenities          = ( ! empty( $posted_array['amenities'] ) ) ? $posted_array['amenities'] : array();
+		$item_subtotal      = (float) filter_input( INPUT_POST, 'item_subtotal', FILTER_SANITIZE_STRING );
+		$kids_subtotal      = (float) filter_input( INPUT_POST, 'kids_subtotal', FILTER_SANITIZE_STRING );
+		$security_subtotal  = (float) filter_input( INPUT_POST, 'security_subtotal', FILTER_SANITIZE_STRING );
+		$amenities_subtotal = (float) filter_input( INPUT_POST, 'amenities_subtotal', FILTER_SANITIZE_STRING );
+
+		/**
+		 * This hook fires before the reservation item is added to the cart.
+		 *
+		 * This hook helps in adding actions before any reservation item is added to the cart.
+		 */
+		do_action( 'ersrv_add_reservation_to_cart_before' );
+
+		die("pool");
+
+		// Add the reservation item to the cart now.
+		WC()->cart->add_to_cart( $item_id, $adult_count );
+
+		/**
+		 * This hook fires after the reservation item is added to the cart.
+		 *
+		 * This hook helps in adding actions after any reservation item is added to the cart.
+		 */
+		do_action( 'ersrv_add_reservation_to_cart_after' );
+
+		// Prepare the response.
+		$response = array(
+			'code'    => 'reservation-added-to-cart',
+			'message' => __( 'Reservation has been added to the cart.', 'easy-reservations' ),
+		);
+		wp_send_json_success( $response );
+		wp_die();
+	}
 }
