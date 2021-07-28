@@ -1502,6 +1502,10 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
           box-shadow: none;
 }
 
+.custom-control-label {
+  line-height: 30px;
+}
+
 @media (min-width: 768px) {
   .quick-view-modal .modal-content {
     background-color: #fff;

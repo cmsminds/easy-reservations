@@ -46,11 +46,11 @@
   color: #3ab166;
 }
 
-.bgcolor-accent, .btn-accent, .quick-view-modal .product-button {
+.bgcolor-accent {
   background-color: #3ab166;
 }
 
-.border-color-accent, .btn-accent, .quick-view-modal .product-button, .wrapper .sidebar-wrapper .book-tour .details .social a:hover,
+.border-color-accent, .wrapper .sidebar-wrapper .book-tour .details .social a:hover,
 .wrapper .sidebar-wrapper .advanced-search .details .social a:hover {
   border-color: #3ab166;
 }
@@ -59,7 +59,7 @@
   color: #cbefd9;
 }
 
-.bgcolor-accent-300, .btn-accent:hover, .quick-view-modal .product-button:hover, .btn-accent:focus, .quick-view-modal .product-button:focus, .btn-accent:active, .quick-view-modal .product-button:active {
+.bgcolor-accent-300 {
   background-color: #cbefd9;
 }
 
@@ -667,10 +667,13 @@ img {
 
 .btn-accent, .quick-view-modal .product-button {
   color: #fff !important;
+  background-color: #3ab166 !important;
+  border-color: #3ab166 !important;
 }
 
 .btn-accent:hover, .quick-view-modal .product-button:hover, .btn-accent:focus, .quick-view-modal .product-button:focus, .btn-accent:active, .quick-view-modal .product-button:active {
   color: #000 !important;
+  background-color: #cbefd9 !important;
 }
 
 .wrapper {
@@ -1568,5 +1571,10 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
   .col-preview {
     background-color: #3ab166;
   }
+}
+
+.quickbuymodal input[type=checkbox],
+.quickbuymodal input[type=radio] {
+  position: absolute;
 }
 /*# sourceMappingURL=easy-reservations-twentytwentyone.css.map */

@@ -853,3 +853,7 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
 		background-color: $accent;
 	}
 }
+.quickbuymodal input[type=checkbox],
+.quickbuymodal input[type=radio]{
+    position: absolute;
+}

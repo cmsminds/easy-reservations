@@ -38,11 +38,11 @@
   color: #3ab166;
 }
 
-.bgcolor-accent, .btn-accent {
+.bgcolor-accent {
   background-color: #3ab166;
 }
 
-.border-color-accent, .btn-accent {
+.border-color-accent {
   border-color: #3ab166;
 }
 
@@ -50,7 +50,7 @@
   color: #cbefd9;
 }
 
-.bgcolor-accent-300, .btn-accent:hover, .btn-accent:focus, .btn-accent:active {
+.bgcolor-accent-300 {
   background-color: #cbefd9;
 }
 
@@ -637,9 +637,12 @@ img {
 
 .btn-accent {
   color: #fff !important;
+  background-color: #3ab166 !important;
+  border-color: #3ab166 !important;
 }
 
 .btn-accent:hover, .btn-accent:focus, .btn-accent:active {
   color: #000 !important;
+  background-color: #cbefd9 !important;
 }
 /*# sourceMappingURL=easy-reservations-twentytwentyone-variable.css.map */

@@ -781,3 +781,30 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
 		background-color: $accent;
 	}
 }
+.custom-switch {
+    padding-left: 3rem;
+}
+.quickbuymodal input[type=checkbox]{
+    position: absolute;
+    left: 0;
+    z-index: -1;
+    width: 1rem;
+    height: 1.25rem;
+    opacity: 0;
+}
+.custom-switch .custom-control-label::before {
+    left: -3.0rem;
+    width: 2.75rem;
+    height: 1.5rem;
+    pointer-events: all;
+    border-radius: 1.5rem;
+}
+.custom-switch .custom-control-label::after{
+    width: calc(1.5rem - 4px);
+    height: calc(1.5rem - 4px);
+    left: calc(-3rem + 2px);
+}
+.custom-switch .custom-control-input:checked~.custom-control-label::after {
+    background-color: #fff;
+    transform: translateX(1.1rem);
+}
