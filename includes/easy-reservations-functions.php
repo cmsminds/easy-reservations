@@ -1608,3 +1608,21 @@ if ( ! function_exists( 'ersrv_register_reservation_type_taxonomy' ) ) {
 		register_taxonomy( 'reservation-item-type', array( 'product' ), $args );
 	}
 }
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_current_time' ) ) {
+	/**
+	 * Return the current date/time according to local server time.
+	 *
+	 * @param string $format Date format.
+	 * @return string
+	 * @since 1.0.0
+	 */
+	function ersrv_get_current_time( $format = 'Y-m-d H:i:s' ) {
+		$timezone_format = _x( $format, 'timezone date format' );
+
+		return date_i18n( $timezone_format );
+	}
+}
