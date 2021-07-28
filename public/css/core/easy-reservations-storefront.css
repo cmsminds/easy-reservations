@@ -1356,6 +1356,11 @@ img {
   color: #000;
 }
 
+#ui-datepicker-div .ui-datepicker-calendar tbody tr td {
+  -webkit-transform: scale(0.9);
+          transform: scale(0.9);
+}
+
 #ui-datepicker-div .ui-datepicker-calendar tbody tr td,
 #ui-datepicker-div .ui-datepicker-calendar tbody tr td a {
   color: #8a8f9c;

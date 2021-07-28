@@ -174,7 +174,9 @@
 
                     tbody {
                         tr {
-
+                            td{
+                                transform: scale(0.9);
+                            }
                             td,
                             td a {
                                 @extend .font-lato;
@@ -198,8 +200,6 @@
                                         padding: 9px;
                                     }
                                 }
-                                &.ui-state-highlight {}
-                                &.ui-state-active {}
                                 &.ersrv-date-active{
                                     color: $white;
                                     background-color: $accent;
