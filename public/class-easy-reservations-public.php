@@ -972,6 +972,9 @@ class Easy_Reservations_Public {
 		if ( $is_search_page ) {
 			// Include the quick view modal.
 			require_once ERSRV_PLUGIN_PATH . 'public/templates/modals/item-quick-view.php';
+
+			// Include the notification html.
+			require_once ERSRV_PLUGIN_PATH . 'public/templates/notifications/notification.php';
 		}
 	}
 

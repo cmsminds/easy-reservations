@@ -301,6 +301,10 @@ jQuery(document).ready(function ($) {
 		}
 	} );
 
+	$( document ).on( 'click', '#liveToastBtn', function() {
+		$( '#liveToast' ).toast( 'show' );
+	} );
+
 	/**
 	 * Block element.
 	 *
