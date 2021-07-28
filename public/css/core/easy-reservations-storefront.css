@@ -95,7 +95,7 @@
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:focus:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:focus:hover,
 #ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:focus:hover, .btn-outline-primary:active, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:active:hover,
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:active:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:active:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:active:hover, .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-accent, .quick-view-modal .product-button {
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:active:hover, .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-accent, .quick-view-modal .product-button, .wrapper .sidebar-wrapper .price-box .amount {
   color: #fff;
 }
 
@@ -356,7 +356,7 @@
   font-size: 37px;
 }
 
-.font-size-38 {
+.font-size-38, .wrapper .sidebar-wrapper .price-box .amount {
   font-size: 38px;
 }
 
@@ -936,6 +936,12 @@ img {
 
 .wrapper .sidebar-wrapper .price-box {
   margin-bottom: 17px;
+}
+
+.wrapper .sidebar-wrapper .price-box .amount {
+  padding: 0px .5rem;
+  margin-left: .25rem;
+  font-weight: 600;
 }
 
 .wrapper .sidebar-wrapper .book-tour,

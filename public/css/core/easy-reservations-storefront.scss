@@ -250,6 +250,13 @@
     .sidebar-wrapper {
         .price-box {
             margin-bottom: 17px;
+            .amount{
+                @extend .font-size-38;
+                padding: 0px .5rem;
+                margin-left: .25rem;
+                @extend .color-white;
+                font-weight: 600;
+            }
         }
 
         .book-tour,
