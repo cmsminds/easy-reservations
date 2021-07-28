@@ -192,36 +192,82 @@ $next_date = gmdate( 'Y-m-d', strtotime( $curr_date . ' +1 day' ) );
 									</div>
 									<div class="book-items-wrapper mb-4 pb-3">
 										<label for="book-items" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'No book items', 'easy-reservations' ); ?></label>
-										<input placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" type="number" class="form-control mb-3" />
-										<input placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" type="number" class="form-control" />
+										<input id="adult-accomodation-count" placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" type="number" class="form-control mb-3" />
+										<input id="kid-accomodation-count" placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" type="number" class="form-control" />
 									</div>
 									<?php if ( ! empty( $amenities ) && is_array( $amenities ) ) { ?>
 									<div class="checkbox-wrapper mb-4 pb-3">
 										<label for="amenities" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Amenities', 'easy-reservations' ); ?></label>
-										<?php foreach ( $amenities as $amenity_data ) { ?>
-											<div class="custom-control custom-checkbox mb-4">
-												<input type="checkbox" class="custom-control-input" id="single">
-												<label class="custom-control-label font-size-15" for="single">
-													<span class="d-block font-lato font-weight-bold color-black pb-2"><?php echo esc_html( $amenity_data['title'] ); ?></span>
-													<span class="font-lato font-weight-bold color-accent"><?php echo wc_price( $amenity_data['cost'] ); ?></span>
+										<?php foreach ( $amenities as $amenity_data ) {
+											$amenity_title = $amenity_data['title'];
+											$amenity_slug  = sanitize_title( $amenity_title );
+											$amenity_cost  = $amenity_data['cost'];
+											?>
+											<div class="custom-control custom-switch ersrv-single-amenity-block" data-cost="<?php echo esc_attr( $amenity_cost ); ?>">
+												<input type="checkbox" class="custom-control-input ersrv-new-reservation-single-amenity" id="amenity-<?php echo esc_html( $amenity_slug ); ?>">
+												<label class="custom-control-label font-size-15" for="amenity-<?php echo esc_html( $amenity_slug ); ?>">
+													<span class="d-block font-lato font-weight-bold color-black pb-2"><?php echo esc_html( $amenity_title ); ?> - <span class="font-lato font-weight-bold color-accent"><?php echo wc_price( $amenity_cost ); ?></span></span>
 												</label>
 											</div>
 										<?php } ?>
 									</div>
 									<?php } ?>
 									<div class="calc-wrapper mb-3">
-										<h4 class="font-lato font-size-20 font-weight-bolder color-black text-center letter-spacing-10 mb-0">3 x $500 = $1500</h4>
+										<label class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Summary', 'easy-reservations' ); ?></label>
+										<table>
+											<tbody>
+												<tr class="item-price-summary">
+													<th><?php esc_html_e( 'Adults:', 'easy-reservations' ); ?></th>
+													<td><span class="font-lato font-weight-bold color-accent">--</span></td>
+												</tr>
+												<tr class="kids-charge-summary">
+													<th><?php esc_html_e( 'Kids:', 'easy-reservations' ); ?></th>
+													<td><span class="font-lato font-weight-bold color-accent">--</span></td>
+												</tr>
+												<tr class="security-amount-summary">
+													<th><?php esc_html_e( 'Security:', 'easy-reservations' ); ?></th>
+													<td>
+														<span class="font-lato font-weight-bold color-accent">
+															<?php
+															echo wp_kses(
+																wc_price( $security_amount ),
+																array(
+																	'span' => array(
+																		'class' => array(),
+																	),
+																)
+															);
+															?>
+														</span>
+													</td>
+												</tr>
+												<tr class="amenities-summary">
+													<th><?php esc_html_e( 'Amenities:', 'easy-reservations' ); ?></th>
+													<td><span class="font-lato font-weight-bold color-accent">--</span></td>
+												</tr>
+												<tr class="new-reservation-total-cost">
+													<th><?php esc_html_e( 'Total:', 'easy-reservations' ); ?></th>
+													<td><span class="font-lato font-weight-bold color-accent">--</span></td>
+												</tr>
+											</tbody>
+										</table>
+										<input type="hidden" id="accomodation-limit" value="<?php echo esc_html( $accomodation_limit ); ?>" />
+										<input type="hidden" id="min-reservation-period" value="<?php echo esc_html( $min_reservation_period ); ?>" />
+										<input type="hidden" id="max-reservation-period" value="<?php echo esc_html( $max_reservation_period ); ?>" />
+										<input type="hidden" id="adult-charge" value="<?php echo esc_html( $adult_charge ); ?>" />
+										<input type="hidden" id="kid-charge" value="<?php echo esc_html( $kid_charge ); ?>" />
+										<input type="hidden" id="security-amount" value="<?php echo esc_html( $security_amount ); ?>" />
 									</div>
 									<div class="instant-booking">
-										<button class="btn btn-primary btn-block btn-xl font-lato font-size-18 font-weight-bold">
-											<span class="mr-3"><img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/Instant-booking.png' ); ?>" alt="instant-booking"></span>
-											<span>Instant Booking</span>
+										<button class="ersrv-proceed-to-checkout-single-reservation-item btn btn-primary btn-block btn-xl font-lato font-size-18 font-weight-bold">
+											<span class="mr-3"><img src="<?php echo esc_url( ERSRV_PLUGIN_URL . 'public/images/Instant-booking.png' ); ?>" alt="instant-booking"></span>
+											<span><?php esc_html_e( 'Instant Booking', 'easy-reservations' ); ?></span>
 										</button>
 									</div>
 									<div class="dropdown-divider my-4 py-2"></div>
 									<div class="contact-owner mb-3 pb-2">
 										<button class="btn btn-outline-fill-primary btn-block btn-xl font-lato font-size-18 font-weight-bold">
-											<span> Contact Owner</span>
+											<span><?php esc_html_e( 'Contact Owner', 'easy-reservations' ); ?></span>
 										</button>
 									</div>
 									<div class="social">

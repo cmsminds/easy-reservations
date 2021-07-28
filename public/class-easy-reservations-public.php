@@ -304,6 +304,7 @@ class Easy_Reservations_Public {
 				'is_checkout'              => ( is_checkout() ) ? 'yes' : 'no',
 				'is_search_page'           => ( $is_search_page ) ? 'yes' : 'no',
 				'reservation_item_details' => $reservation_item_details,
+				'woo_currency'             => get_woocommerce_currency_symbol(),
 			)
 		);
 	}
