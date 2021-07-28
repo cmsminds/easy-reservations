@@ -873,10 +873,23 @@ img {
   border-radius: 100%;
 }
 
-.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-active,
-.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ui-state-active {
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-active, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ersrv-date-active,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ui-state-active,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ersrv-date-active {
   color: #fff;
   background-color: #96588a;
+  border-radius: 100%;
+}
+
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ersrv-date-active a,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ersrv-date-active a {
+  color: #fff;
+}
+
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-disabled.ersrv-date-disabled,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ui-state-disabled.ersrv-date-disabled {
+  color: #b4b5b7;
+  background-color: #e0e0e0;
   border-radius: 100%;
 }
 
@@ -1359,8 +1372,10 @@ img {
   border-radius: 100%;
 }
 
-#ui-datepicker-div .ui-datepicker-calendar tbody tr td.ui-state-active,
-#ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ui-state-active {
+#ui-datepicker-div .ui-datepicker-calendar tbody tr td.ui-state-active, #ui-datepicker-div .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ersrv-date-active, .wrapper .content-part .datepicker .ui-datepicker-inline #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ersrv-date-active,
+#ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ui-state-active,
+#ui-datepicker-div .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ersrv-date-active,
+.wrapper .content-part .datepicker .ui-datepicker-inline #ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ersrv-date-active {
   color: #fff;
   background-color: #96588a;
   border-radius: 100%;
@@ -1503,5 +1518,39 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
   .col-preview {
     background-color: #96588a;
   }
+}
+
+.ersrv-item-availability-calendar {
+  padding-bottom: 20px;
+}
+
+[class*=-notifier],
+[class^=-notifier] {
+  position: relative;
+  margin: 2px 0px;
+  padding-left: 30px;
+}
+
+[class*=-notifier]::before,
+[class^=-notifier]::before {
+  content: "";
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  margin: auto 0px;
+  height: 16px;
+  width: 16px;
+  vertical-align: middle;
+  background-color: #000;
+}
+
+.ersrv-available-dates-notifier::before {
+  color: #fff;
+  background-color: #96588a;
+}
+
+.ersrv-unavailable-dates-notifier::before {
+  background-color: #e0e0e0;
 }
 /*# sourceMappingURL=easy-reservations-storefront.css.map */
