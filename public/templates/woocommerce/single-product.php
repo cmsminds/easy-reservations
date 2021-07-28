@@ -51,7 +51,7 @@ if ( ! empty( $types ) && is_array( $types ) ) {
 $curr_date = ersrv_get_current_time( 'Y-m-d' );
 $next_date = gmdate( 'Y-m-d', strtotime( $curr_date . ' +1 day' ) );
 ?>
-<section class="wrapper single-reserve-page" id="wrapper">
+<section class="wrapper single-reserve-page" id="wrapper" data-item="<?php echo esc_attr( $item_post->ID ); ?>">
 	<div class="banner text-center">
 		<div class="container">
 			<div class="details mx-auto font-lato">
@@ -194,6 +194,7 @@ $next_date = gmdate( 'Y-m-d', strtotime( $curr_date . ' +1 day' ) );
 										<label for="book-items" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'No book items', 'easy-reservations' ); ?></label>
 										<input id="adult-accomodation-count" placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" type="number" class="form-control mb-3" />
 										<input id="kid-accomodation-count" placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" type="number" class="form-control" />
+										<p class="ersrv-reservation-error accomodation-error"></p>
 									</div>
 									<?php if ( ! empty( $amenities ) && is_array( $amenities ) ) { ?>
 									<div class="checkbox-wrapper mb-4 pb-3">

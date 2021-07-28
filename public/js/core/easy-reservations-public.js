@@ -395,7 +395,129 @@ jQuery(document).ready(function ($) {
 	 * Proceed with reservation details and add the details to the cart.
 	 */
 	$( document ).on( 'click', '.ersrv-proceed-to-checkout-single-reservation-item', function() {
+		var this_button            = $( this );
+		var item_id                = $( '.single-reserve-page' ).data( 'item' );
 
+		var accomodation_limit     = parseInt( $( '#accomodation-limit' ).val() );
+		var checkin_date           = $( '#ersrv-single-reservation-checkin-datepicker' ).val();
+		var checkout_date          = $( '#ersrv-single-reservation-checkin-datepicker' ).val();
+		var adult_count            = parseInt( $( '#adult-accomodation-count' ).val() );
+		adult_count                = ( -1 !== is_valid_number( adult_count ) ) ? adult_count : 0;
+		var kid_count              = parseInt( $( '#kid-accomodation-count' ).val() );
+		kid_count                  = ( -1 !== is_valid_number( kid_count ) ) ? kid_count : 0;
+		var guests                 = adult_count + kid_count;
+		var process_reservation    = true;
+		var amenities              = [];
+		var min_reservation_period = parseInt( $( '#min-reservation-period' ).val() );
+		var max_reservation_period = parseInt( $( '#max-reservation-period' ).val() );
+
+		// Vacate the error message.
+		$( '.ersrv-reservation-error' ).text( '' );
+
+		// Guests count.
+		if ( -1 === is_valid_number( adult_count ) && -1 === is_valid_number( kid_count ) ) {
+			process_reservation = false;
+			$( '.ersrv-reservation-error.accomodation-error' ).text( reservation_guests_err_msg );
+		} else if ( -1 === is_valid_number( adult_count ) && -1 !== is_valid_number( kid_count ) ) {
+			process_reservation = false;
+			$( '.ersrv-reservation-error.accomodation-error' ).text( reservation_only_kids_guests_err_msg );
+		} else if ( accomodation_limit < guests ) {
+			process_reservation = false;
+			$( '.ersrv-reservation-error.accomodation-error' ).text( reservation_guests_count_exceeded_err_msg );
+		}
+
+		return false;
+
+		// If the checkin and checkout dates are not available.
+		if ( '' === checkin_date && '' === checkout_date ) {
+			process_reservation = false;
+			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_checkin_checkout_missing_err_msg );
+		} else if ( '' === checkin_date ) {
+			process_reservation = false;
+			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_checkin_missing_err_msg );
+		} else if ( '' === checkout_date ) {
+			process_reservation = false;
+			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_checkout_missing_err_msg );
+		}
+
+		/**
+		 * If the reservation period is more than allowed.
+		 * Get the dates between checkin and checkout dates.
+		 */
+		var reservation_dates = ersrv_get_dates_between_2_dates( checkin_date, checkout_date );
+		var reservation_days  = reservation_dates.length;
+		if ( min_reservation_period > reservation_days ) {
+			process_reservation = false;
+			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_lesser_reservation_days_err_msg.replace( 'XX', min_reservation_period ) );
+		} else if ( max_reservation_period < reservation_days ) {
+			process_reservation = false;
+			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_greater_reservation_days_err_msg.replace( 'XX', max_reservation_period ) );
+		}
+
+		// Collect the amenities and their charges.
+		$( '.ersrv-new-reservation-single-amenity' ).each ( function() {
+			var this_element = $( this );
+			var is_checked = this_element.find( 'input[type="checkbox"]' ).is( ':checked' );
+			if ( true === is_checked ) {
+				amenities.push(
+					{
+						amenity: this_element.data( 'amenity' ),
+						cost: this_element.data( 'cost' ),
+					}
+				);
+			}
+		} );
+
+		// Exit, if we cannot process the reservation.
+		if ( false === process_reservation ) {
+			return false;
+		}
+
+		// Block element.
+		block_element( this_button );
+
+		// Send AJAX creating a reservation.
+		var data = {
+			action: 'create_reservation',
+			item_id: item_id,
+			customer_id: customer_id,
+			checkin_date: checkin_date,
+			checkout_date: checkout_date,
+			adult_count: adult_count,
+			kid_count: kid_count,
+			amenities: amenities,
+			customer_notes: $( '.ersrv-new-reservation-customer-note-row td textarea' ).val(),
+			item_subtotal: ersrv_get_reservation_item_subtotal(),
+			kids_subtotal: ersrv_get_reservation_kids_subtotal(),
+			security_subtotal: ersrv_get_security_subtotal(),
+			amenities_subtotal: ersrv_get_amenities_subtotal(),
+		};
+
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: data,
+			success: function ( response ) {
+				// Return, if the response is not proper.
+				if ( 0 === response ) {
+					console.warn( 'easy-reservations: invalid ajax call' );
+					return false;
+				}
+
+				// If the reservation is added.
+				if ( 'reservation-created' === response.data.code ) {
+					// Unblock the element.
+					unblock_element( this_button );
+
+					// Button text.
+					this_button.text( response.data.button_text );
+
+					// Redirect to the order edit page.
+					window.location.href = response.data.redirect_to;
+				}
+			},
+		} );
 	} );
 
 	/**
