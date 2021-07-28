@@ -302,8 +302,10 @@
                         @extend .date-control;
                         background-position: 95%;
                     }
+                    &[type=checkbox], &[type=radio]{
+                        min-height: auto;
+                    }
                 }
-
                 .btn-xl {
                     padding: 15.063px 1.5rem;
                 }
