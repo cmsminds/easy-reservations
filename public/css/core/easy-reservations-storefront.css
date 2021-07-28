@@ -866,15 +866,7 @@ img {
   }
 }
 
-.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-highlight,
-.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ui-state-highlight {
-  color: #111;
-  background-color: #c09bb9;
-  border-radius: 100%;
-}
-
-.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-active, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ersrv-date-active,
-.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ui-state-active,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ersrv-date-active,
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ersrv-date-active {
   color: #fff;
   background-color: #96588a;
@@ -1372,10 +1364,8 @@ img {
   border-radius: 100%;
 }
 
-#ui-datepicker-div .ui-datepicker-calendar tbody tr td.ui-state-active, #ui-datepicker-div .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ersrv-date-active, .wrapper .content-part .datepicker .ui-datepicker-inline #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ersrv-date-active,
-#ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ui-state-active,
-#ui-datepicker-div .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ersrv-date-active,
-.wrapper .content-part .datepicker .ui-datepicker-inline #ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ersrv-date-active {
+#ui-datepicker-div .ui-datepicker-calendar tbody tr td.ui-state-active,
+#ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ui-state-active {
   color: #fff;
   background-color: #96588a;
   border-radius: 100%;
