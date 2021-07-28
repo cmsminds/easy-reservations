@@ -860,6 +860,10 @@ img {
   color: #000;
 }
 
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr {
+  border: 0px;
+}
+
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td {
   -webkit-transform: scale(0.9);
           transform: scale(0.9);
