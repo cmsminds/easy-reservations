@@ -751,6 +751,9 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
 .custom-control-input:focus~.custom-control-label::before{
     box-shadow: none;
 }
+.custom-control-label{
+    line-height: 30px;
+}
 
 @media(min-width:768px){
     .quick-view-modal .modal-content {
