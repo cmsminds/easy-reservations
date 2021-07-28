@@ -39,6 +39,7 @@ jQuery(document).ready(function ($) {
 				var loop_month          = ( ( '0' + ( date.getMonth() + 1 ) ).slice( -2 ) );
 				var loop_date_formatted = date.getFullYear() + '-' + loop_month + '-' + date.getDate();
 				var date_enabled        = true;
+				var date_class          = '';
 
 				// If not the past date.
 				if ( today_formatted <= loop_date_formatted ) {
@@ -52,14 +53,14 @@ jQuery(document).ready(function ($) {
 
 					// If the loop date is a blocked date.
 					if ( 0 < key.length ) {
-						// date_enabled = false;
+						date_class = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
 					}
 				} else {
-					date_enabled = false;
+					date_class = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
 				}
 
 				// Return the datepicker day object.
-				return [ date_enabled ];
+				return [ date_enabled, date_class ];
 			},
 			numberOfMonths: 2,
 			format: datepicker_date_format,
