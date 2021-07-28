@@ -14,6 +14,9 @@
 
         .details {
             max-width: 360px;
+            a{
+                color: $white;
+            }
         }
     }
 
@@ -178,13 +181,8 @@
                                         padding: 9px;
                                     }
                                 }
-                                &.ui-state-highlight {
-                                    // color: $secondary;
-                                    // background-color: $accent-300;
-                                    // border-radius: 100%;
-                                }
-                                &.ui-state-active {
-                                }
+                                &.ui-state-highlight {}
+                                &.ui-state-active {}
                                 &.ersrv-date-active{
                                     color: $white;
                                     background-color: $accent;

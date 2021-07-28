@@ -713,6 +713,10 @@ img {
   max-width: 360px;
 }
 
+.wrapper .banner .details a {
+  color: #fff;
+}
+
 .wrapper .content-part {
   margin-top: calc(86px - 256px);
 }
