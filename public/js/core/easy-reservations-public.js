@@ -139,7 +139,7 @@ jQuery(document).ready(function ($) {
 		} );
 
 		// range slider
-		$("#slider-range").slider({
+		$( '.ersrv-search-item-price-range' ).slider({
 			range: true,
 			min: 0,
 			max: 500,
@@ -148,7 +148,7 @@ jQuery(document).ready(function ($) {
 				$(".price-value").html("$" + ui.values[0] + " to $" + ui.values[1]);
 			}
 		});
-		$(".price-value").html("$" + $("#slider-range").slider("values", 0) + " to $" + $("#slider-range").slider("values", 1));
+		$(".price-value").html("$" + $( '.ersrv-search-item-price-range' ).slider("values", 0) + " to $" + $( '.ersrv-search-item-price-range' ).slider("values", 1));
 	}
 
 	/**
@@ -557,10 +557,10 @@ jQuery(document).ready(function ($) {
 		// Take an empty array.
 		var query_params_array = {
 			'checkin': checkin_date,
-			'checkout_date': checkout_date,
+			'checkout': checkout_date,
 			'location': location,
-			'price_min_range': price_min_range,
-			'price_max_range': price_max_range,
+			'price_min': price_min_range,
+			'price_max': price_max_range,
 			'boat_type': boat_type,
 		};
 
