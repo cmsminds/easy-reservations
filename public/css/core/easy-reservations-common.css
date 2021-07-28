@@ -83,3 +83,16 @@ h1:not(.site-title):before, h2:before,
 .theme-astra .site-content > .ast-container .ast-article-single{
     padding: 0px;
 }
+.form-control{
+    border-radius: 4.8px;
+}
+.ersrv-reservation-error{
+    color: #f00;
+    font-size: 14px;
+    font-weight: 400;
+    border: 2px solid #f00;
+    padding: 4px 8px;
+    line-height: 20px;
+    text-transform: capitalize;
+    margin: 10px 0px 0px 4px;
+}
