@@ -87,8 +87,8 @@ if ( ! empty( $types ) && is_array( $types ) ) {
 							<div class="card">
 								<div class="datepicker datepicker-inline ersrv-item-availability-calendar"></div>
 								<div class="d-flex flex-wrap flex-column">
-									<div class="ersrv-available-dates-notifier"><span>Available Dates</span></div>
-									<div class="ersrv-unavailable-dates-notifier"><span>Unvailable Dates</span></div>
+									<div class="ersrv-available-dates-notifier"><span><?php esc_html_e( 'Available Dates', 'easy-reservations' ); ?></span></div>
+									<div class="ersrv-unavailable-dates-notifier"><span><?php esc_html_e( 'Unvailable Dates', 'easy-reservations' ); ?></span></div>
 								</div>
 							</div>
 						</div>
@@ -159,15 +159,17 @@ if ( ! empty( $types ) && is_array( $types ) ) {
 					<div class="sidebar-wrapper">
 						<div class="price-box bgcolor-accent rounded-xl py-2">
 							<div class="d-flex align-items-center justify-content-center py-1">
-								<span class="old-price font-size-20 font-Poppins font-weight-medium color-accent-700 text-decoration-line-through">
-									$700
-								</span>
-								<span class="new-price font-size-38 font-Poppins font-weight-semibold color-white px-2 ml-1">
-									$500
-								</span>
-								<span class="price-info font-size-20 font-lato font-weight-medium color-white">
-									(Per Night)
-								</span>
+								<?php
+								echo wp_kses(
+									wc_price( $adult_charge ),
+									array(
+										'span' => array(
+											'class' => array(),
+										),
+									)
+								);
+								?>
+								<span class="price-info font-size-20 font-lato font-weight-medium color-white">(<?php esc_html_e( 'Per Night', 'easy-reservations' ); ?>)</span>
 							</div>
 						</div>
 						<div class="book-tour bgcolor-white rounded-xl text-center">
