@@ -86,6 +86,10 @@ if ( ! empty( $types ) && is_array( $types ) ) {
 							<div class="dropdown-divider"></div>
 							<div class="card">
 								<div class="datepicker datepicker-inline ersrv-item-availability-calendar"></div>
+								<div class="d-flex flex-wrap">
+									<div class="ersrv-available-dates-notifier"><span>Available Dates</span></div>
+									<div class="ersrv-unavailable-dates-notifier"><span>Unvailable Dates</span></div>
+								</div>
 							</div>
 						</div>
 					</div>

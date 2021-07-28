@@ -54,6 +54,8 @@ jQuery(document).ready(function ($) {
 					// If the loop date is a blocked date.
 					if ( 0 < key.length ) {
 						date_class = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+					} else {
+						date_class = 'ersrv-date-active';
 					}
 				} else {
 					date_class = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
