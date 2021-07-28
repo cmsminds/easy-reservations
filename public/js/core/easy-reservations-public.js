@@ -539,6 +539,9 @@ jQuery(document).ready(function ($) {
 		} );
 	} );
 
+	/**
+	 * Open the contact owner modal.
+	 */
 	$( document ).on( 'click', '.ersrv-contact-owner-button', function() {
 		$( '#ersrv-contact-owner-modal' ).show();
 	} );
@@ -579,6 +582,123 @@ jQuery(document).ready(function ($) {
 		// Redirect now.
 		window.location.href = search_reservations_page_url;
 	} );
+
+	/**
+	 * Submit contact owner request.
+	 */
+	$( document ).on( 'click', '.ersrv-submit-contact-owner-request', function() {
+		var this_button        = $( this );
+		var this_button_text   = this_button.text();
+		var name               = $( '#contact-owner-customer-name' ).val();
+		var email              = $( '#contact-owner-customer-email' ).val();
+		var phone              = $( '#contact-owner-customer-phone' ).val();
+		var subject            = $( '#contact-owner-customer-query-subject' ).val();
+		var message            = $( '#contact-owner-customer-message' ).val();
+		var submit_contact_req = true;
+
+		// Vacate the errors.
+		$( '.ersrv-reservation-error' ).text( '' );
+
+		// Validate the first name.
+		if ( -1 === is_valid_string( name ) ) {
+			$( '.ersrv-reservation-error.contact-owner-customer-name' ).text( 'Name is required.' );
+			submit_contact_req = false;
+		}
+
+		// Validate email.
+		if ( -1 === is_valid_string( email ) ) {
+			$( '.ersrv-reservation-error.contact-owner-customer-email' ).text( 'Email is required.' );
+			submit_contact_req = false;
+		} else if ( -1 === is_valid_email( email ) ) {
+			$( '.ersrv-reservation-error.contact-owner-customer-email' ).text( 'Email is invalid.' );
+			submit_contact_req = false;
+		}
+
+		// Validate the phone.
+		if ( '' === phone ) {
+			$( '.ersrv-reservation-error.contact-owner-customer-phone' ).text( 'Phone is required.' );
+			submit_contact_req = false;
+		}
+
+		// Validate the subject.
+		if ( '' === subject ) {
+			$( '.ersrv-reservation-error.contact-owner-customer-query-subject' ).text( 'Subject is required.' );
+			submit_contact_req = false;
+		}
+
+		// Validate the message.
+		if ( '' === message ) {
+			$( '.ersrv-reservation-error.contact-owner-customer-message' ).text( 'Message is required.' );
+			submit_contact_req = false;
+		}
+
+		// Exit, if user registration is set to false.
+		if ( false === submit_contact_req ) {
+			return false;
+		}
+
+		// Block the button.
+		block_element( this_button );
+
+		// Activate loader.
+		this_button.html( '<span class="ajax-request-in-process"><i class="fa fa-refresh fa-spin"></i></span> Please wait...' );
+
+		// Send the AJAX now.
+		var data = {
+			action: 'submit_contact_owner_request',
+			name: name,
+			email: email,
+			phone: phone,
+			subject: subject,
+			message: message,
+		};
+
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: data,
+			success: function ( response ) {
+				// In case of invalid AJAX call.
+				if ( 0 === response ) {
+					console.warn( 'easy reservations: invalid AJAX call' );
+					return false;
+				}
+
+				// If user already exists.
+				if ( 'contact-owner-request-saved' === response.data.code ) {
+					// Unblock the button.
+					unblock_element( this_button );
+
+					// Activate loader.
+					this_button.html( this_button_text );
+
+					// Vacate all the values in the modal.
+					$( '#contact-owner-customer-name' ).val( '' );
+					$( '#contact-owner-customer-email' ).val( '' );
+					$( '#contact-owner-customer-phone' ).val( '' );
+					$( '#contact-owner-customer-query-subject' ).val( '' );
+					$( '#contact-owner-customer-message' ).val( '' );
+
+					// Close the modal.
+					setTimeout( function() {
+						$( '#ersrv-contact-owner-modal' ).hide();
+					}, 2000 );
+				}
+			}
+		} );
+	} );
+
+	/**
+	 * Check if a email is valid.
+	 *
+	 * @param {string} email
+	 */
+	function is_valid_email( email ) {
+		var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+		return ( ! regex.test( email ) ) ? -1 : 1;
+	}
 
 	/**
 	 * Get the dates that faal between 2 dates.

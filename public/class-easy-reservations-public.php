@@ -1174,4 +1174,112 @@ class Easy_Reservations_Public {
 		wp_send_json_success( $response );
 		wp_die();
 	}
+
+	/**
+	 * AJAX request to submit the request for contacting owner.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_submit_contact_owner_request_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+		// Exit, if the action mismatches.
+		if ( empty( $action ) || 'submit_contact_owner_request' !== $action ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Posted data.
+		$name    = filter_input( INPUT_POST, 'name', FILTER_SANITIZE_STRING );
+		$email   = filter_input( INPUT_POST, 'email', FILTER_SANITIZE_STRING );
+		$phone   = filter_input( INPUT_POST, 'phone', FILTER_SANITIZE_STRING );
+		$subject = filter_input( INPUT_POST, 'subject', FILTER_SANITIZE_STRING );
+		$message = filter_input( INPUT_POST, 'message', FILTER_SANITIZE_STRING );
+
+		/**
+		 * This hook fires before the contact owner request is saved.
+		 *
+		 * This hook helps in adding actions before any contact owner request is saved.
+		 */
+		do_action( 'ersrv_save_contact_owner_request_before' );
+
+		// Send the email now.
+		$mail_body  = '';
+		$mail_body .= '<p>Hello Admin,</p>';
+		$mail_body .= '<p>There is a request from a customer on the item: </p>';
+		$mail_body .= '<p>Following are the customer details:</p>';
+		$mail_body .= '<p>Name: ' . $name . '</p>';
+		$mail_body .= '<p>Email: ' . $email . '</p>';
+		$mail_body .= '<p>Phone: ' . $phone . '</p>';
+		$mail_body .= '<p>Subject: ' . $subject . '</p>';
+		$mail_body .= '<p>Message: ' . $message . '</p>';
+
+		/**
+		 * This filter fires when the contact owner request is in process.
+		 *
+		 * This filter helps modify the mail content that is being sent to the admin.
+		 *
+		 * @param string $mail_body Holds the email body.
+		 * @return string
+		 * @since 1.0.0
+		 */
+		$mail_body = apply_filters( 'ersrv_contact_owner_request_email_body', $mail_body );
+
+		// Email recipients.
+		$mail_recipients = array( get_option( 'admin_email' ) );
+		/**
+		 * This filter fires when the contact owner request is in process.
+		 *
+		 * This filter helps modify the mail recipients.
+		 *
+		 * @param array $mail_recipients Email recipients.
+		 * @return array
+		 * @since 1.0.0
+		 */
+		$mail_recipients = apply_filters( 'ersrv_contact_owner_request_email_recipients', $mail_recipients );
+
+		// Email subject.
+		$mail_subject = __( 'Contact Request', 'easy-reservations' );
+		/**
+		 * This filter fires when the contact owner request is in process.
+		 *
+		 * This filter helps modify the mail subject.
+		 *
+		 * @param string $mail_subject Email subject.
+		 * @return string
+		 * @since 1.0.0
+		 */
+		$mail_subject = apply_filters( 'ersrv_contact_owner_request_email_subject', $mail_subject );
+
+		// Email additonal headers.
+		$mail_headers = array();
+		/**
+		 * This filter fires when the contact owner request is in process.
+		 *
+		 * This filter helps modify the mail additional headers.
+		 *
+		 * @param array $mail_headers Email additional headers.
+		 * @return array
+		 * @since 1.0.0
+		 */
+		$mail_headers = apply_filters( 'ersrv_contact_owner_request_email_additional_headers', $mail_headers );
+
+		// Send the email now.
+		wp_mail( $mail_recipients, $mail_subject, $mail_body, $mail_headers );
+
+		/**
+		 * This hook fires after the contact owner request is saved.
+		 *
+		 * This hook helps in adding actions after any contact owner request is saved.
+		 */
+		do_action( 'ersrv_save_contact_owner_request_after' );
+
+		// Prepare the response.
+		$response = array(
+			'code'    => 'contact-owner-request-saved',
+			'message' => __( 'Contact request is saved successfully. One of our teammates will get back to you soon.', 'easy-reservations' ),
+		);
+		wp_send_json_success( $response );
+		wp_die();
+	}
 }

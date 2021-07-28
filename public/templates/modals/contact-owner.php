@@ -1,49 +1,52 @@
 <?php
-
 /**
- * This file is used for templating the reservable item quick view modal.
+ * This file is used for templating the reservable item contact owner modal.
  *
  * @since 1.0.0
  * @package Easy_Reservations
  * @subpackage Easy_Reservations/public/templates/modals
  */
 
-defined('ABSPATH') || exit; // Exit if accessed directly.
+defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 ?>
 <div id="ersrv-contact-owner-modal" class="ersrv-modal">
 	<div class="ersrv-modal-content modal-content modal-lg m-auto p-3">
-		<h3><?php esc_html_e('Contact Owner', 'easy-reservations'); ?></h3>
+		<h3><?php esc_html_e( 'Contact Owner', 'easy-reservations' ); ?></h3>
 		<span class="ersrv-close-modal quick-close close">×</span>
 		<div class="modal-body">
 			<form method="post">
-				<!-- <h3>Drop Us a Message</h3> -->
 				<div class="row form-row">
 					<div class="col-12 col-md-6">
 						<div class="form-group">
-							<input type="text" name="txtName" class="form-control" placeholder="Your Name" value="" />
+							<input type="text" id="contact-owner-customer-name" class="form-control" placeholder="<?php esc_html_e( 'Your Name', 'easy-reservations' ); ?>" />
+							<p class="ersrv-reservation-error contact-owner-customer-name"></p>
 						</div>
 					</div>
 					<div class="col-12 col-md-6">
 						<div class="form-group">
-							<input type="email" name="txtEmail" class="form-control" placeholder="Your Email" value="" />
+							<input type="email" id="contact-owner-customer-email" class="form-control" placeholder="<?php esc_html_e( 'Your Email', 'easy-reservations' ); ?>" />
+							<p class="ersrv-reservation-error contact-owner-customer-email"></p>
 						</div>
 					</div>
 					<div class="col-12 col-md-6">
 						<div class="form-group">
-							<input type="text" name="txtPhone" class="form-control" placeholder="Your Phone Number" value="" />
+							<input type="text" id="contact-owner-customer-phone" class="form-control" placeholder="<?php esc_html_e( 'Your Phone Number', 'easy-reservations' ); ?>" />
+							<p class="ersrv-reservation-error contact-owner-customer-phone"></p>
 						</div>
 					</div>
 					<div class="col-12 col-md-6">
 						<div class="form-group">
-							<input type="text" name="txtSubject" class="form-control" placeholder="Your Subject" value="" />
+							<input type="text" id="contact-owner-customer-query-subject" class="form-control" placeholder="<?php esc_html_e( 'Query Subject', 'easy-reservations' ); ?>" />
+							<p class="ersrv-reservation-error contact-owner-customer-query-subject"></p>
 						</div>
 					</div>
 					<div class="col-12">
 						<div class="form-group">
-							<textarea name="txtMsg" class="form-control" placeholder="Your Message" style="width: 100%; height: 100px;"></textarea>
+							<textarea id="contact-owner-customer-message" class="form-control" placeholder="<?php esc_html_e( 'Your Message', 'easy-reservations' ); ?>" style="width: 100%; height: 100px;"></textarea>
+							<p class="ersrv-reservation-error contact-owner-customer-message"></p>
 						</div>
 						<div class="form-group text-right">
-							<button class="btn btn-primary" type="submit">Send Message</button>
+							<button class="ersrv-submit-contact-owner-request btn btn-primary" type="button"><?php esc_html_e( 'Send Message', 'easy-reservations' ); ?></button>
 						</div>
 					</div>
 				</div>
