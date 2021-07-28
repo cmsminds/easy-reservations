@@ -17,6 +17,10 @@ jQuery(document).ready(function ($) {
 	var reservation_checkout_missing_err_msg         = ERSRV_Public_Script_Vars.reservation_checkout_missing_err_msg;
 	var reservation_lesser_reservation_days_err_msg  = ERSRV_Public_Script_Vars.reservation_lesser_reservation_days_err_msg;
 	var reservation_greater_reservation_days_err_msg = ERSRV_Public_Script_Vars.reservation_greater_reservation_days_err_msg;
+	var search_reservations_page_url                 = ERSRV_Public_Script_Vars.search_reservations_page_url;
+
+	// Custom variables.
+	var datepicker_date_format = 'yyyy-mm-dd';
 
 	// If sidebar is to be removed on reservation single page.
 	if ('yes' === remove_sidebar) {
@@ -24,15 +28,30 @@ jQuery(document).ready(function ($) {
 		$( '#primary' ).css( 'width', '100%' );
 	}
 
+	// Search page checkin and checkout dates.
+	if ( $( '#ersrv-search-checkin' ).length ) {
+		$( '#ersrv-search-checkin, #ersrv-search-checkout' ).datepicker( {
+			onSelect: function ( selected_date, instance ) {
+				if ( 'ersrv-search-checkin' === instance.id ) {
+					// Min date for checkout should be on/after the checkin date.
+					$( '#ersrv-search-checkout' ).datepicker( 'option', 'minDate', selected_date );
+					setTimeout( function() {
+						$( '#ersrv-search-checkout' ).datepicker( 'show' );
+					}, 16 );
+				}
+			},
+			format: datepicker_date_format,
+		} );
+	}
+
 	// If it's the product page.
 	if ( 'yes' === is_product ) {
-		var reserved_dates         = reservation_item_details.reserved_dates;
-		var current_date           = new Date();
-		var current_month          = ( ( '0' + ( current_date.getMonth() + 1 ) ).slice( -2 ) );
-		var current_date_date      = ( ( '0' + ( current_date.getDate() ) ).slice( -2 ) );
-		var today_formatted        = current_date.getFullYear() + '-' + current_month + '-' + current_date_date;
-		var blocked_dates          = [];
-		var datepicker_date_format = 'yyyy-mm-dd';
+		var reserved_dates    = reservation_item_details.reserved_dates;
+		var current_date      = new Date();
+		var current_month     = ( ( '0' + ( current_date.getMonth() + 1 ) ).slice( -2 ) );
+		var current_date_date = ( ( '0' + ( current_date.getDate() ) ).slice( -2 ) );
+		var today_formatted   = current_date.getFullYear() + '-' + current_month + '-' + current_date_date;
+		var blocked_dates     = [];
 
 		// Prepare the blocked out dates in a separate array.
 		if ( 0 < reserved_dates.length ) {
@@ -525,7 +544,48 @@ jQuery(document).ready(function ($) {
 	} );
 
 	/**
+	 * Submit search request from single item page.
+	 */
+	$( document ).on( 'click', '.ersrv-submit-search-request', function() {
+		var checkin_date    = $( '#ersrv-search-checkin' ).val();
+		var checkout_date   = $( '#ersrv-search-checkout' ).val();
+		var location        = $( '.ersrv-item-search-location' ).val();
+		var price_min_range = $( '.ersrv-search-item-price-range' ).slider( 'values', 0 );
+		var price_max_range = $( '.ersrv-search-item-price-range' ).slider( 'values', 1 );
+		var boat_type       = parseInt( $( '#boat-types' ).val() );
+
+		// Take an empty array.
+		var query_params_array = {
+			'checkin': checkin_date,
+			'checkout_date': checkout_date,
+			'location': location,
+			'price_min_range': price_min_range,
+			'price_max_range': price_max_range,
+			'boat_type': boat_type,
+		};
+
+		// Iterate through the items in the object to create query parameters.
+		var index = 0;
+		$.each( query_params_array, function( key, value ) {
+			if ( 0 === index ) {
+				search_reservations_page_url += '?' + key + '=' + value;
+			} else {
+				search_reservations_page_url += '&' + key + '=' + value;
+			}
+
+			index++;
+		} );
+
+		// Redirect now.
+		window.location.href = search_reservations_page_url;
+	} );
+
+	/**
 	 * Get the dates that faal between 2 dates.
+	 *
+	 * @param {*} from 
+	 * @param {*} to 
+	 * @returns
 	 */
 	function ersrv_get_dates_between_2_dates( from, to ) {
 		var dates = [];

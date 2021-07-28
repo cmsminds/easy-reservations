@@ -50,6 +50,14 @@ if ( ! empty( $types ) && is_array( $types ) ) {
 // Current date.
 $curr_date = ersrv_get_current_time( 'Y-m-d' );
 $next_date = gmdate( 'Y-m-d', strtotime( $curr_date . ' +1 day' ) );
+
+// Reservation item types.
+$reservation_item_types = get_terms(
+	array(
+		'taxonomy' => 'reservation-item-type',
+		'hide_empty' => true,
+	)
+);
 ?>
 <section class="wrapper single-reserve-page" id="wrapper" data-item="<?php echo esc_attr( $item_post->ID ); ?>">
 	<div class="banner text-center">
@@ -309,34 +317,37 @@ $next_date = gmdate( 'Y-m-d', strtotime( $curr_date . ' +1 day' ) );
 						</div>
 						<div class="advanced-search bgcolor-white rounded-xl text-center">
 							<div class="title mb-4 pb-2">
-								<h3 class="font-Poppins font-size-24 font-weight-bold color-black">Advanced Search</h3>
+								<h3 class="font-Poppins font-size-24 font-weight-bold color-black"><?php esc_html_e( 'Advanced Search', 'easy-reservations' ); ?></h3>
 							</div>
 							<div class="details text-left">
 								<form action="">
 									<div class="form-group">
-										<input type="text" class="form-control date-control ship-icon-field text-left rounded-lg" placeholder="June 20, 2021">
+										<input type="text" class="ersrv-item-search-location form-control ship-icon-field text-left rounded-lg" placeholder="<?php esc_html_e( 'Desired location', 'easy-reservations' ); ?>">
 									</div>
 									<div class="input-daterange d-flex flex-column flex-fill mb-4 pb-3">
-										<input type="text" class="form-control date-control text-left rounded-lg mb-3" placeholder="Check in">
-										<input type="text" class="form-control date-control text-left rounded-lg" placeholder="Check out">
+										<input id="ersrv-search-checkin" type="text" class="form-control date-control text-left rounded-lg mb-3" placeholder="Check in">
+										<input id="ersrv-search-checkout" type="text" class="form-control date-control text-left rounded-lg" placeholder="Check out">
 									</div>
 									<div class="range-slider-wrapper mb-4 pb-2">
-										<h4 class="font-lato font-size-14 font-weight-normal color-black text-center mb-2">Price Range</h4>
+										<h4 class="font-lato font-size-14 font-weight-normal color-black text-center mb-2"><?php esc_html_e( 'Price Range', 'easy-reservations' ); ?></h4>
 										<h4 class="font-lato font-size-20 font-weight-bolder color-black text-center mb-0 price-value">$ 5,000 to $ 10,000</h4>
 										<div class="slider-wrapper mt-3">
-											<div id="slider-range"></div>
+											<div class="ersrv-search-item-price-range" id="slider-range"></div>
 										</div>
 									</div>
 									<div class="book-items-wrapper mb-4 pb-3">
-										<select class="selectpicker form-control Boat-Types" id="boat-types" data-size="5" data-style="btn-outline-secondary focus-none" title="Boat Type">
-											<option>Single Boat</option>
-											<option>Cruse</option>
+										<select class="selectpicker form-control Boat-Types" id="boat-types" data-size="5" data-style="btn-outline-secondary focus-none" title="<?php esc_html_e( 'Select Item Type', 'easy-reservations' ); ?>">
+											<?php if ( ! empty( $reservation_item_types ) && is_array( $reservation_item_types ) ) { ?>
+												<?php foreach ( $reservation_item_types as $item_type ) { ?>
+													<option value="<?php echo esc_attr( $item_type->term_id ); ?>"><?php echo esc_html( $item_type->name ); ?></option>
+												<?php } ?>
+											<?php } ?>
 										</select>
 									</div>
 									<div class="search-box">
-										<button class="btn btn-primary btn-block btn-xl font-lato font-size-18 font-weight-bold">
-											<span class="mr-3"><img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/Search.png' ); ?>" alt="Search"></span>
-											<span>Search</span>
+										<button type="button" class="ersrv-submit-search-request btn btn-primary btn-block btn-xl font-lato font-size-18 font-weight-bold">
+											<span class="mr-3"><img src="<?php echo esc_url( ERSRV_PLUGIN_URL . 'public/images/Search.png' ); ?>" alt="Search"></span>
+											<span><?php esc_html_e( 'Search', 'easy-reservations' ); ?></span>
 										</button>
 									</div>
 								</form>

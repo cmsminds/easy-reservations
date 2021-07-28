@@ -284,6 +284,7 @@ class Easy_Reservations_Public {
 	 */
 	public static function ersrv_enqueue_plugin_core_js( $plugin_name, $is_search_page ) {
 		$reservation_item_details = ( ersrv_product_is_reservation( get_the_ID() ) ) ? ersrv_get_item_details( get_the_ID() ) : array();
+		$search_reservations_page = ersrv_get_page_id( 'search-reservations' );
 		// Custom public script.
 		wp_enqueue_script(
 			$plugin_name,
@@ -313,6 +314,7 @@ class Easy_Reservations_Public {
 				'reservation_checkout_missing_err_msg'         => __( 'Please provide checkout dates.', 'easy-reservations' ),
 				'reservation_lesser_reservation_days_err_msg'  => __( 'The item can be reserved for a min. of XX days.', 'easy-reservations' ),
 				'reservation_greater_reservation_days_err_msg' => __( 'The item can be reserved for a max. of XX days.', 'easy-reservations' ),
+				'search_reservations_page_url'                 => get_permalink( $search_reservations_page ),
 			)
 		);
 	}
@@ -1096,7 +1098,7 @@ class Easy_Reservations_Public {
 		if ( empty( $reservation_item_ids ) || ! is_array( $reservation_item_ids ) ) {
 			wp_send_json_success(
 				array(
-					'code' => 'no-items-found'
+					'code' => 'no-items-found',
 				)
 			);
 			wp_die();
@@ -1111,9 +1113,8 @@ class Easy_Reservations_Public {
 		// Send the response.
 		wp_send_json_success(
 			array(
-				'code'           => 'items-found',
-				'html'           => $html,
-				'load_more_html' => $load_more_html,
+				'code' => 'items-found',
+				'html' => $html,
 			)
 		);
 		wp_die();
