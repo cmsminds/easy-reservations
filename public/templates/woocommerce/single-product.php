@@ -257,7 +257,20 @@ $reservation_item_types = get_terms(
 												</tr>
 												<tr class="new-reservation-total-cost">
 													<th><?php esc_html_e( 'Total:', 'easy-reservations' ); ?></th>
-													<td><span class="font-lato font-weight-bold color-accent">--</span></td>
+													<td>
+														<span class="font-lato font-weight-bold color-accent">
+															<?php
+															echo wp_kses(
+																wc_price( $security_amount ),
+																array(
+																	'span' => array(
+																		'class' => array(),
+																	),
+																)
+															);
+															?>
+														</span>
+													</td>
 												</tr>
 											</tbody>
 										</table>

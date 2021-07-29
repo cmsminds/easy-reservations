@@ -516,6 +516,7 @@ jQuery(document).ready(function ($) {
 			kids_subtotal: ersrv_get_reservation_kids_subtotal(),
 			security_subtotal: ersrv_get_security_subtotal(),
 			amenities_subtotal: ersrv_get_amenities_subtotal(),
+			item_total: ersrv_get_item_total(),
 		};
 
 		$.ajax( {
@@ -534,6 +535,8 @@ jQuery(document).ready(function ($) {
 				if ( 'reservation-added-to-cart' === response.data.code ) {
 					// Unblock the element.
 					unblock_element( this_button );
+
+					alert( 'reservation has been added to the cart' );
 				}
 			},
 		} );
@@ -799,6 +802,20 @@ jQuery(document).ready(function ($) {
 
 		// Paste the final total.
 		$( 'tr.new-reservation-total-cost td span' ).html( woo_currency + total_cost );
+	}
+
+	/**
+	 * Get the item total charge.
+	 *
+	 * @returns number
+	 */
+	 function ersrv_get_item_total() {
+		var item_total = $( 'tr.new-reservation-total-cost td span' ).text();
+		item_total     = parseFloat( item_total.replace( /[^\d.]/g, '' ) );
+		item_total     = ( -1 === is_valid_number( item_total ) ) ? 0 : item_total;
+		item_total     = item_total.toFixed( 2 );
+
+		return item_total;
 	}
 
 	/**

@@ -19,31 +19,31 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 					<div class="col-12 col-md-6">
 						<div class="form-group">
 							<input type="text" id="contact-owner-customer-name" class="form-control" placeholder="<?php esc_html_e( 'Your Name', 'easy-reservations' ); ?>" />
-							<p class="ersrv-reservation-error contact-owner-customer-name"></p>
+							<span class="ersrv-reservation-error contact-owner-customer-name"></span>
 						</div>
 					</div>
 					<div class="col-12 col-md-6">
 						<div class="form-group">
 							<input type="email" id="contact-owner-customer-email" class="form-control" placeholder="<?php esc_html_e( 'Your Email', 'easy-reservations' ); ?>" />
-							<p class="ersrv-reservation-error contact-owner-customer-email"></p>
+							<span class="ersrv-reservation-error contact-owner-customer-email"></span>
 						</div>
 					</div>
 					<div class="col-12 col-md-6">
 						<div class="form-group">
 							<input type="text" id="contact-owner-customer-phone" class="form-control" placeholder="<?php esc_html_e( 'Your Phone Number', 'easy-reservations' ); ?>" />
-							<p class="ersrv-reservation-error contact-owner-customer-phone"></p>
+							<span class="ersrv-reservation-error contact-owner-customer-phone"></span>
 						</div>
 					</div>
 					<div class="col-12 col-md-6">
 						<div class="form-group">
 							<input type="text" id="contact-owner-customer-query-subject" class="form-control" placeholder="<?php esc_html_e( 'Query Subject', 'easy-reservations' ); ?>" />
-							<p class="ersrv-reservation-error contact-owner-customer-query-subject"></p>
+							<span class="ersrv-reservation-error contact-owner-customer-query-subject"></span>
 						</div>
 					</div>
 					<div class="col-12">
 						<div class="form-group">
 							<textarea id="contact-owner-customer-message" class="form-control" placeholder="<?php esc_html_e( 'Your Message', 'easy-reservations' ); ?>" style="width: 100%; height: 100px;"></textarea>
-							<p class="ersrv-reservation-error contact-owner-customer-message"></p>
+							<span class="ersrv-reservation-error contact-owner-customer-message"></span>
 						</div>
 						<div class="form-group text-right">
 							<button class="ersrv-submit-contact-owner-request btn btn-primary" type="button"><?php esc_html_e( 'Send Message', 'easy-reservations' ); ?></button>

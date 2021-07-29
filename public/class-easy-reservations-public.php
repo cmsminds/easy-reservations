@@ -1146,6 +1146,7 @@ class Easy_Reservations_Public {
 		$kids_subtotal      = (float) filter_input( INPUT_POST, 'kids_subtotal', FILTER_SANITIZE_STRING );
 		$security_subtotal  = (float) filter_input( INPUT_POST, 'security_subtotal', FILTER_SANITIZE_STRING );
 		$amenities_subtotal = (float) filter_input( INPUT_POST, 'amenities_subtotal', FILTER_SANITIZE_STRING );
+		$item_total         = (float) filter_input( INPUT_POST, 'item_total', FILTER_SANITIZE_STRING );
 
 		/**
 		 * This hook fires before the reservation item is added to the cart.
@@ -1154,10 +1155,30 @@ class Easy_Reservations_Public {
 		 */
 		do_action( 'ersrv_add_reservation_to_cart_before' );
 
-		die("pool");
+		// Prepare an array of all the posted data.
+		$reservation_data = array(
+			'item_id'         => $item_id,
+			'checkin_date'    => $checkin_date,
+			'checkout_date'   => $checkout_date,
+			'adult_count'     => $adult_count,
+			'adult_subtotal'  => $item_subtotal,
+			'kid_count'       => $kid_count,
+			'kid_subtotal'    => $kids_subtotal,
+			'security_amount' => $security_subtotal,
+			'item_total'      => $item_total,
+		);
+
+		// Iterate through the amenities array to add them to session.
+		if ( ! empty( $amenities ) && is_array( $amenities ) ) {
+			$reservation_data['amenities']          = $amenities;
+			$reservation_data['amenities_subtotal'] = $amenities_subtotal;
+		}
+
+		// Add all the posted data in the session.
+		WC()->session->set( 'reservation_data', $reservation_data );
 
 		// Add the reservation item to the cart now.
-		WC()->cart->add_to_cart( $item_id, $adult_count );
+		WC()->cart->add_to_cart( $item_id, 1 );
 
 		/**
 		 * This hook fires after the reservation item is added to the cart.
@@ -1281,5 +1302,198 @@ class Easy_Reservations_Public {
 		);
 		wp_send_json_success( $response );
 		wp_die();
+	}
+
+	/**
+	 * Initiate the woocommerce customer session when the user is a non-loggedin user.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_init_callback() {
+		// Return, if it's admin.
+		if ( is_admin() ) {
+			return;
+		}
+
+		// Set the session, if there is no session initiated.
+		if ( isset( WC()->session ) && ! WC()->session->has_session() ) {
+			WC()->session->set_customer_session_cookie( true );
+		}
+	}
+
+	/**
+	 * Add the reservation data to the woocommerce cart item data.
+	 *
+	 * @param array $cart_item_data WooCommerce cart item data.
+	 * @param int   $product_id WooCommerce product ID.
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_add_cart_item_data_callback( $cart_item_data, $product_id ) {
+		$session_reservation_data = WC()->session->get( 'reservation_data' );
+		$session_reservation_item = ( ! empty( $session_reservation_data['item_id'] ) ) ? (int) $session_reservation_data['item_id'] : '';
+
+		// Return, if the session item ID is empty.
+		if ( empty( $session_reservation_item ) ) {
+			return $cart_item_data;
+		}
+
+		// Check if the item ID matches with the product ID that is being added to the cart.
+		if ( $session_reservation_item === $product_id ) {
+			$cart_item_data['reservation_data'] = $session_reservation_data;
+		}
+
+		return $cart_item_data;
+	}
+
+	/**
+	 * Calculate the cart item subtotal for reservation items.
+	 *
+	 * @param array $cart_obj Holds the cart contents.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_before_calculate_totals_callback( $cart_obj ) {
+		$session_reservation_data = WC()->session->get( 'reservation_data' );
+		$session_reservation_item = ( ! empty( $session_reservation_data['item_id'] ) ) ? (int) $session_reservation_data['item_id'] : '';
+
+		// Return, if the session item ID is empty.
+		if ( empty( $session_reservation_item ) ) {
+			return;
+		}
+
+		// Item total cost.
+		$session_reservation_item_total = ( ! empty( $session_reservation_data['item_total'] ) ) ? $session_reservation_data['item_total'] : 0;
+
+		// Return, if the session item total is 0.
+		if ( 0 === $session_reservation_item_total ) {
+			return;
+		}
+
+		// Iterate through the cart items to set the price.
+		foreach ( $cart_obj->get_cart() as $cart_item ) {
+			$product_id = $cart_item['product_id'];
+
+			if ( $session_reservation_item === $product_id ) {
+				$cart_item['data']->set_price( $session_reservation_item_total );
+			}
+		}
+	}
+
+	/**
+	 * Add custom data to the cart item data.
+	 *
+	 * @param array $item_data Holds the item data.
+	 * @param array $cart_item_data Holds the cart item data.
+	 * @return array
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_get_item_data_callback( $item_data, $cart_item_data ) {
+		// Return, if the reservation data is not set in the cart.
+		if ( ! isset( $cart_item_data['reservation_data'] ) || empty( $cart_item_data['reservation_data'] ) ) {
+			return $item_data;
+		}
+
+		// Add the checkin date to the cart item.
+		$item_data[] = array(
+			'key'   => __( 'Checkin Date', 'easy-reservations' ),
+			'value' => $cart_item_data['reservation_data']['checkin_date'],
+		);
+
+		// Add the checkin date to the cart item.
+		$item_data[] = array(
+			'key'   => __( 'Checkout Date', 'easy-reservations' ),
+			'value' => $cart_item_data['reservation_data']['checkout_date'],
+		);
+
+		// Add the adult count to the cart item.
+		$item_data[] = array(
+			'key'   => __( 'Adult Count', 'easy-reservations' ),
+			'value' => $cart_item_data['reservation_data']['adult_count'],
+		);
+
+		// Add the adult subtotal to the cart item.
+		$item_data[] = array(
+			'key'   => __( 'Adult Subtotal', 'easy-reservations' ),
+			'value' => wc_price( $cart_item_data['reservation_data']['adult_subtotal'] ),
+		);
+
+		// Add the kids count to the cart item.
+		$item_data[] = array(
+			'key'   => __( 'Kids Count', 'easy-reservations' ),
+			'value' => $cart_item_data['reservation_data']['kid_count'],
+		);
+
+		// Add the adult subtotal to the cart item.
+		$item_data[] = array(
+			'key'   => __( 'Kids Subtotal', 'easy-reservations' ),
+			'value' => wc_price( $cart_item_data['reservation_data']['kid_subtotal'] ),
+		);
+
+		// Add the security subtotal to the cart item.
+		$item_data[] = array(
+			'key'   => __( 'Security Amount', 'easy-reservations' ),
+			'value' => wc_price( $cart_item_data['reservation_data']['security_amount'] ),
+		);
+
+		// Check if there are amenities.
+		if ( ! empty( $cart_item_data['reservation_data']['amenities'] ) && is_array( $cart_item_data['reservation_data']['amenities'] ) ) {
+			foreach ( $cart_item_data['reservation_data']['amenities'] as $amenity_data ) {
+				$item_data[] = array(
+					'key'   => __( 'Amenity', 'easy-reservations' ),
+					'value' => $amenity_data['amenity'] . ' - ' . wc_price( $amenity_data['cost'] ),
+				);
+			}
+
+			// Add the amenities subtotal to the cart item.
+			$item_data[] = array(
+				'key'   => __( 'Amenities Subtotal', 'easy-reservations' ),
+				'value' => wc_price( $cart_item_data['reservation_data']['amenities_subtotal'] ),
+			);
+		}
+
+		return apply_filters( 'ersrv_reservation_item_data', $item_data, $cart_item_data );
+	}
+
+	/**
+	 * Save the reservation data from the cart item as order item meta data.
+	 *
+	 * @param object   $item WooCommerce order item.
+	 * @param string   $cart_item_key WooCommerce cart item key.
+	 * @param array    $cart_item_data WooCommerce cart item data.
+	 * @param WC_Order $wc_order WooCommerce order
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_checkout_create_order_line_item_callback( $item, $cart_item_key, $cart_item_data, $wc_order ) {
+		// Return, if the reservation data is not set in the cart.
+		if ( ! isset( $cart_item_data['reservation_data'] ) || empty( $cart_item_data['reservation_data'] ) ) {
+			return $item_data;
+		}
+
+		// Iterate through the amenities array to add them to session.
+		if ( ! empty( $amenities ) && is_array( $amenities ) ) {
+			$reservation_data['amenities']          = $amenities;
+			$reservation_data['amenities_subtotal'] = $amenities_subtotal;
+		}
+
+		// Update the other reservation data to order item meta.
+		$item->update_meta_data( 'Checkin Date', $cart_item_data['reservation_data']['checkin_date'] ); // Update the checkin date.
+		$item->update_meta_data( 'Checkout Date', $cart_item_data['reservation_data']['checkout_date'] ); // Update the checkout date.
+		$item->update_meta_data( 'Adult Count', $cart_item_data['reservation_data']['adult_count'] ); // Update the adult count.
+		$item->update_meta_data( 'Adult Subtotal', $cart_item_data['reservation_data']['adult_subtotal'] ); // Update the adult subtotal.
+		$item->update_meta_data( 'Kids Count', $cart_item_data['reservation_data']['kid_count'] ); // Update the kids count.
+		$item->update_meta_data( 'Kids Subtotal', $cart_item_data['reservation_data']['kid_subtotal'] ); // Update the kids subtotal.
+		$item->update_meta_data( 'Security Amount', $cart_item_data['reservation_data']['security_amount'] ); // Update the security subtotal.
+
+		// Check, if there are amenities.
+		// Check if there are amenities.
+		if ( ! empty( $cart_item_data['reservation_data']['amenities'] ) && is_array( $cart_item_data['reservation_data']['amenities'] ) ) {
+			foreach ( $cart_item_data['reservation_data']['amenities'] as $amenity_data ) {
+				$item->update_meta_data( 'Amenity: ' . $amenity_data['amenity'], $amenity_data['cost'] ); // Update the amenity data.
+			}
+
+			// Add the amenities subtotal to the item meta.
+			$item->update_meta_data( 'Amenities Subtotal', $cart_item_data['reservation_data']['amenities_subtotal'] ); // Update the security subtotal.
+		}
 	}
 }

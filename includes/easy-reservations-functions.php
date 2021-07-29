@@ -735,7 +735,7 @@ if ( ! function_exists( 'ersrv_email_reservation_receipt_order_status_change' ) 
 /**
  * Check if the function exists.
  */
-if ( ! function_exists( 'ersrv_email_reservation_receipt_order_status_change' ) ) {
+if ( ! function_exists( 'ersrv_email_reservation_receipt' ) ) {
 	/**
 	 * Function to send reservation receipt as email attachment.
 	 *
