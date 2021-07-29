@@ -137,8 +137,11 @@ jQuery(document).ready(function ($) {
 			numberOfMonths: 1,
 			format: datepicker_date_format,
 		} );
+	}
 
-		// range slider
+	// If it's the search page or product page.
+	if ( 'yes' === is_product || 'yes' === is_search_page ) {
+		// Price range slider.
 		$( '.ersrv-search-item-price-range' ).slider( {
 			range: true,
 			min: 0,
@@ -148,7 +151,7 @@ jQuery(document).ready(function ($) {
 				$( '.price-value' ).html( woo_currency + ui.values[0] + ' to ' + woo_currency + ui.values[1]);
 			}
 		} );
-		$( '.price-value' ).html( woo_currency + $( '.ersrv-search-item-price-range' ).slider( values, 0 ) + ' to ' + woo_currency + $( '.ersrv-search-item-price-range' ).slider( values, 1 ) );
+		// $( '.price-value' ).html( woo_currency + $( '.ersrv-search-item-price-range' ).slider( values, 0 ) + ' to ' + woo_currency + $( '.ersrv-search-item-price-range' ).slider( values, 1 ) );
 	}
 
 	/**
