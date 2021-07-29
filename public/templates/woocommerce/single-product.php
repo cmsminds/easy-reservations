@@ -58,6 +58,9 @@ $reservation_item_types = get_terms(
 		'hide_empty' => true,
 	)
 );
+
+// WooCommerce currency.
+$woo_currency = get_woocommerce_currency_symbol();
 ?>
 <section class="wrapper single-reserve-page" id="wrapper" data-item="<?php echo esc_attr( $item_post->ID ); ?>">
 	<div class="banner text-center">
@@ -343,7 +346,7 @@ $reservation_item_types = get_terms(
 									</div>
 									<div class="range-slider-wrapper mb-4 pb-2">
 										<h4 class="font-lato font-size-14 font-weight-normal color-black text-center mb-2"><?php esc_html_e( 'Price Range', 'easy-reservations' ); ?></h4>
-										<h4 class="font-lato font-size-20 font-weight-bolder color-black text-center mb-0 price-value">$ 5,000 to $ 10,000</h4>
+										<h4 class="font-lato font-size-20 font-weight-bolder color-black text-center mb-0 price-value"><?php echo esc_html( $woo_currency );?>5,000 to <?php echo esc_html( $woo_currency );?>10,000</h4>
 										<div class="slider-wrapper mt-3">
 											<div class="ersrv-search-item-price-range" id="slider-range"></div>
 										</div>

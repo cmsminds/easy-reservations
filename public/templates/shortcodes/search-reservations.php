@@ -35,6 +35,9 @@ $search_price_max = filter_input( INPUT_GET, 'price_max', FILTER_SANITIZE_STRING
 $search_price_max = ( ! is_null( $search_price_max ) ) ? $search_price_max : '';
 $search_boat_type = (int) filter_input( INPUT_GET, 'boat_type', FILTER_SANITIZE_NUMBER_INT );
 $search_boat_type = ( ! is_null( $search_boat_type ) ) ? $search_boat_type : 0;
+
+// WooCommerce currency.
+$woo_currency = get_woocommerce_currency_symbol();
 ?>
 <section class="wrapper search-page" id="wrapper">
 	<div class="banner text-center">
@@ -67,6 +70,8 @@ $search_boat_type = ( ! is_null( $search_boat_type ) ) ? $search_boat_type : 0;
 						<div class="form-row">
 							<div class="col-12 col-md-5 col-lg-6">
 								<div class="slider-wrapper">
+									<h4 class="font-lato font-size-14 font-weight-normal color-black text-center mb-2"><?php esc_html_e( 'Price Range', 'easy-reservations' ); ?></h4>
+									<h4 class="font-lato font-size-20 font-weight-bolder color-black text-center mb-0 price-value"><?php echo esc_html( $woo_currency );?>5,000 to <?php echo esc_html( $woo_currency );?>10,000</h4>
 									<div class="search-price-range-slider ersrv-search-item-price-range"></div>
 								</div>
 							</div>

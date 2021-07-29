@@ -139,16 +139,16 @@ jQuery(document).ready(function ($) {
 		} );
 
 		// range slider
-		$( '.ersrv-search-item-price-range' ).slider({
+		$( '.ersrv-search-item-price-range' ).slider( {
 			range: true,
 			min: 0,
 			max: 500,
 			values: [75, 300],
 			slide: function (event, ui) {
-				$(".price-value").html("$" + ui.values[0] + " to $" + ui.values[1]);
+				$( '.price-value' ).html( woo_currency + ui.values[0] + ' to ' + woo_currency + ui.values[1]);
 			}
-		});
-		$(".price-value").html("$" + $( '.ersrv-search-item-price-range' ).slider("values", 0) + " to $" + $( '.ersrv-search-item-price-range' ).slider("values", 1));
+		} );
+		$( '.price-value' ).html( woo_currency + $( '.ersrv-search-item-price-range' ).slider( values, 0 ) + ' to ' + woo_currency + $( '.ersrv-search-item-price-range' ).slider( values, 1 ) );
 	}
 
 	/**
