@@ -344,8 +344,10 @@ class Easy_Reservations_Public {
 
 		// If it's the download reservation receipt request.
 		if ( ! is_null( $action ) && 'ersrv-download-reservation-receipt' === $action ) {
-			$order_id = filter_input( INPUT_GET, 'atts', FILTER_SANITIZE_NUMBER_INT );
-			ersrv_download_reservation_receipt_callback( $order_id );
+			$order_id = (int) filter_input( INPUT_GET, 'atts', FILTER_SANITIZE_NUMBER_INT );
+			if ( ! is_null( $order_id ) || 0 !== $order_id ) {
+				ersrv_download_reservation_receipt_callback( $order_id );
+			}
 		} elseif ( ! is_null( $action ) && 'download_ical_invite' === $action ) {
 			$order_id = filter_input( INPUT_GET, 'order_id', FILTER_SANITIZE_NUMBER_INT );
 			// Include the ical library file.

@@ -749,6 +749,187 @@ if ( ! function_exists( 'ersrv_email_reservation_receipt' ) ) {
 /**
  * Check if the function exists.
  */
+if ( ! function_exists( 'ersrv_get_order_shipping_data' ) ) {
+	/**
+	 * Return the order shipping data.
+	 *
+	 * @param object $wc_order Holds the WooCommerce order object.
+	 * @return array
+	 */
+	function ersrv_get_order_shipping_data( $wc_order ) {
+		$method_id    = '';
+		$method_title = '';
+
+		// Loop into the shipping items to get the shipping data.
+		foreach ( $wc_order->get_items( 'shipping' ) as $item_id => $item_obj ) {
+			$method_title = $item_obj->get_method_title();
+			$method_id    = $item_obj->get_method_id();
+			$amount       = $item_obj->get_total();
+		}
+
+		return array(
+			'id'               => $method_id,
+			'title'            => $method_title,
+			'amount'           => (float) $amount,
+			'formatted_amount' => wc_price( $amount ),
+		);
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_store_formatted_address' ) ) {
+	/**
+	 * Get store formatted address.
+	 *
+	 * @return string
+	 */
+	function ersrv_get_store_formatted_address() {
+		$store_name    = ersrv_get_plugin_settings( 'ersrv_reservation_receipt_store_name' );
+		$address       = WC_Countries::get_base_address();
+		$address_2     = WC_Countries::get_base_address_2();
+		$city          = WC_Countries::get_base_city();
+		$state         = WC_Countries::get_base_state();
+		$country       = WC_Countries::get_base_country();
+		$postcode      = WC_Countries::get_base_postcode();
+		$store_country = WC()->countries->countries[ $country ];
+		$contries_obj  = new WC_Countries();
+		$store_states  = $contries_obj->get_states( $country );
+		$store_state   = ( ! empty( $store_states ) && ! empty( $state ) ) ? $store_states[ $state ] : '';
+		$store_address = "{$store_name},<br />{$address},<br />{$address_2},<br />{$city} - {$postcode},<br />{$store_state} - {$store_country}<br />";
+
+		/**
+		 * Store address filter.
+		 *
+		 * This filter helps in modifying the store formatted address.
+		 *
+		 * @param string $store_address Holds the formatted store address.
+		 * @return string
+		 */
+		return apply_filters( 'ersrv_store_address', $store_address );
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_receipt_watermarks' ) ) {
+	/**
+	 * Return the receipt pdf watermarks.
+	 *
+	 * @return array
+	 */
+	function ersrv_get_receipt_watermarks() {
+		$watermarks = array(
+			'pending'    => array(
+				'text'  => __( 'PENDING', 'easy-reservations' ),
+				'color' => '',
+			),
+			'processing' => array(
+				'text'  => __( 'PAID', 'easy-reservations' ),
+				'color' => '',
+			),
+			'on-hold'    => array(
+				'text'  => __( 'ON HOLD', 'easy-reservations' ),
+				'color' => '',
+			),
+			'completed'  => array(
+				'text'  => __( 'SHIPPED', 'easy-reservations' ),
+				'color' => '',
+			),
+			'cancelled'  => array(
+				'text'  => __( 'CANCELLED', 'easy-reservations' ),
+				'color' => '',
+			),
+			'refunded'   => array(
+				'text'  => __( 'REFUNDED', 'easy-reservations' ),
+				'color' => '',
+			),
+			'failed'     => array(
+				'text'  => __( 'FAILED', 'easy-reservations' ),
+				'color' => '',
+			),
+		);
+
+		/**
+		 * Watermarks filter.
+		 *
+		 * This filter helps in modifying the receipt pdf watermarks.
+		 *
+		 * @param array $watermarks Holds the array of watermarks.
+		 * @return array
+		 */
+		return apply_filters( 'wpir_receipt_watermarks', $watermarks );
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_order_coupon_data' ) ) {
+	/**
+	 * Return the order coupon data.
+	 *
+	 * @param object $wc_order Holds the WooCommerce order object.
+	 * @return array
+	 */
+	function ersrv_get_order_coupon_data( $wc_order ) {
+		$coupon_code = '';
+		$coupon_cost = 0.00;
+
+		// Loop into the coupon items to get the coupon data.
+		foreach ( $wc_order->get_items( 'coupon' ) as $item_id => $item_obj ) {
+			$coupon_code = $item_obj->get_code();
+			$coupon_cost = $item_obj->get_discount();
+		}
+
+		return array(
+			'code'           => $coupon_code,
+			'cost'           => (float) $coupon_cost,
+			'formatted_cost' => wc_price( $coupon_cost ),
+		);
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_coupon_string' ) ) {
+	/**
+	 * Return the coupon string.
+	 *
+	 * @param array $coupon_data Holds the coupon data array.
+	 * @return string
+	 */
+	function ersrv_get_coupon_string( $coupon_data ) {
+		$code = ( ! empty( $coupon_data['code'] ) ) ? $coupon_data['code'] : '';
+		$cost = ( ! empty( $coupon_data['formatted_cost'] ) ) ? $coupon_data['formatted_cost'] : '';
+
+		return "{$code} ({$cost})";
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_product_id' ) ) {
+	/**
+	 * Function to decide, which of the product IDs to be considered.
+	 *
+	 * @param int $product_id Holds the product ID.
+	 * @param int $variation_id Holds the variation ID.
+	 * @return int
+	 */
+	function ersrv_product_id( $product_id, $variation_id ) {
+
+		return ( 0 !== $variation_id ) ? $variation_id : $product_id;
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
 if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 	/**
 	 * Function hooked to generate the Receipt PDF from order id.
@@ -757,17 +938,16 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 	 * @param string $action Holds the receipt action.
 	 */
 	function ersrv_download_reservation_receipt_callback( $order_id, $action = '' ) {
-		return;
 		// Include the main TCF classes.
 		include_once ERSRV_PLUGIN_PATH . 'includes/lib/tcpdf/tcpdf.php';
-		include_once ERSRV_PLUGIN_PATH . 'public/class-wpir-receipts-tcpdf.php';
+		include_once ERSRV_PLUGIN_PATH . 'includes/lib/class-easy-reservations-tcpdf-receipt.php';
 
 		// PDF title.
 		/* translators: 1: %s: site title, 2: %d: order ID */
-		$pdf_title = sprintf( __( '%1$s - Order Receipt #%2$d', 'wc-print-invoice-receipts' ), get_bloginfo( 'title' ), $order_id );
+		$pdf_title = sprintf( __( '%1$s - Order Receipt #%2$d', 'easy-reservations' ), get_bloginfo( 'title' ), $order_id );
 
 		// Start PDF generation.
-		$pdf = new WPIR_Receipts_TCPDF( PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false );
+		$pdf = new Easy_Reservations_TCPDF_Receipt( PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false );
 		$pdf->SetCreator( PDF_CREATOR );
 		$pdf->SetAuthor( 'Nicola Asuni' );
 		$pdf->SetTitle( $pdf_title );
@@ -797,49 +977,32 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 		$raw_shipping_address    = $wc_order->get_address( 'shipping' );
 		$order_status            = $wc_order->get_status();
 		$line_items              = $wc_order->get_items();
-		$shipping_data           = wpir_get_order_shipping_data( $wc_order );
+		$shipping_data           = ersrv_get_order_shipping_data( $wc_order );
 		$shipping_method         = ( ! empty( $shipping_data['title'] ) ) ? $shipping_data['title'] : '';
 		$shipping_cost           = ( ! empty( $shipping_data['amount'] ) ) ? $shipping_data['amount'] : '';
 		$shipping_cost_formatted = ( ! empty( $shipping_data['formatted_amount'] ) ) ? $shipping_data['formatted_amount'] : '';
+		$store_thanks_note       = ersrv_get_plugin_settings( 'ersrv_easy_reservations_reservation_thanks_note' );
 
 		// Store info.
-		$store_address          = wpir_get_store_formatted_address();
+		$store_address          = ersrv_get_store_formatted_address();
 		$date_created           = $wc_order->get_date_created();
 		$date_created_formatted = gmdate( 'F j, Y, g:i A', strtotime( $date_created ) );
-
-		// Plugin settings.
-		$show_shipping_method  = wpir_get_plugin_setting( 'show-shipping-method' );
-		$show_customer_details = wpir_get_plugin_setting( 'show-customer-details' );
-		$show_customer_note    = wpir_get_plugin_setting( 'show-customer-note' );
-		$store_thanks_note     = wpir_get_plugin_setting( 'store-thanks-note' );
-
-		// Differences in billing and shipping addresses.
-		$billing_shipping_addresses_difference = array_diff( $raw_billing_address, $raw_shipping_address );
-
-		// Remove the billing email and phone number from the billing differences.
-		if ( ! empty( $billing_shipping_addresses_difference['email'] ) ) {
-			unset( $billing_shipping_addresses_difference['email'] );
-		}
-
-		if ( ! empty( $billing_shipping_addresses_difference['phone'] ) ) {
-			unset( $billing_shipping_addresses_difference['phone'] );
-		}
 
 		// Payment details.
 		$payment_method       = $wc_order->payment_method;
 		$payment_method_title = $wc_order->payment_method_title;
 
 		// Watermark.
-		$watermarks = wpir_receipt_watermarks();
+		$watermarks = ersrv_get_receipt_watermarks();
 		$watermark  = $watermarks[ $order_status ]['text'];
 
 		// Coupons usage.
 		$used_coupons = $wc_order->get_used_coupons();
-		$coupon_data  = ( ! empty( $used_coupons ) ) ? wpir_get_order_coupon_data( $wc_order ) : array();
-		$coupon_str   = ( ! empty( $coupon_data ) ) ? wpir_get_coupon_string( $coupon_data ) : '';
+		$coupon_data  = ( ! empty( $used_coupons ) ) ? ersrv_get_order_coupon_data( $wc_order ) : array();
+		$coupon_str   = ( ! empty( $coupon_data ) ) ? ersrv_get_coupon_string( $coupon_data ) : '';
 
 		// Shipment tracking details.
-		$date_shipped_formatted    = __( 'Yet to ship!', 'wc-print-invoice-receipts' );
+		$date_shipped_formatted    = __( 'Yet to ship!', 'easy-reservations' );
 		$tracking_number           = '--';
 		$tracking_id               = '--';
 		$shipment_tracking_details = get_post_meta( $order_id, '_wc_shipment_tracking_items', true );
@@ -860,55 +1023,23 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 				<td colspan="2">
 					<table cellspacing="0" cellpadding="0" width="100%" border="0">
 						<tr width="100%">
-							<?php
-							if ( empty( $billing_shipping_addresses_difference ) ) {
-								?>
-									<td style="width:35%">
-										<table cellspacing="0" cellpadding="0" width="100%" border="0">
-											<tr width="100%"><td style="line-height:28px;font-size:14px;"><b><?php esc_html_e( 'BILL & SHIP ADDRESS:', 'wc-print-invoice-receipts' ); ?></b></td></tr>
-											<tr width="100%"><td style="line-height:14px;font-size:12px;"><?php echo wp_kses_post( $billing_address ); ?></td></tr>
-											<tr><td style="height:3px"></td></tr>
-										</table>
-									</td>
-								<?php
-							} else {
-								?>
-								<td style="<?php echo ( true === $show_shipping_method ) ? 'width:17.5%' : 'width:35%'; ?>">
-									<table cellspacing="0" cellpadding="0" width="100%" border="0">
-										<tr width="100%">
-											<td style="line-height:28px;font-size:14px;">
-												<b><?php esc_html_e( 'BILL ADDRESS:', 'wc-print-invoice-receipts' ); ?></b>
-											</td>
-										</tr>
-										<tr width="100%">
-											<td style="line-height:14px;font-size:12px;"><?php echo wp_kses_post( $billing_address ); ?></td>
-										</tr>
-									</table>
-								</td>
-								<?php if ( true === $show_shipping_method ) { ?>
-									<td style="width:17.5%">
-										<table cellspacing="0" cellpadding="0" width="100%" border="0">
-											<tr width="100%">
-												<td style="line-height:28px;font-size:14px;">
-													<b><?php esc_html_e( 'SHIP ADDRESS:', 'wc-print-invoice-receipts' ); ?></b>
-												</td>
-											</tr>
-											<tr width="100%">
-												<?php if ( $show_shipping_method ) { ?>
-													<td style="line-height:14px;font-size:12px;">
-														<?php echo wp_kses_post( $shipping_address ); ?>
-													</td>
-												<?php } ?>
-											</tr>
-										</table>
-									</td>
-								<?php } ?>
-							<?php } ?>
+							<td style="width:35%">
+								<table cellspacing="0" cellpadding="0" width="100%" border="0">
+									<tr width="100%">
+										<td style="line-height:28px;font-size:14px;">
+											<b><?php esc_html_e( 'BILL ADDRESS:', 'easy-reservations' ); ?></b>
+										</td>
+									</tr>
+									<tr width="100%">
+										<td style="line-height:14px;font-size:12px;"><?php echo wp_kses_post( $billing_address ); ?></td>
+									</tr>
+								</table>
+							</td>
 							<td style="width:35%">
 								<table cellspacing="0" cellpadding="0" width="100%" border="0">
 									<tr width="100%">
 										<td style="line-height:28px;font-size:14px;vertical-align:middle;" colspan="2">
-											<b><?php esc_html_e( 'ORDER:', 'wc-print-invoice-receipts' ); ?></b>
+											<b><?php esc_html_e( 'ORDER:', 'easy-reservations' ); ?></b>
 										</td>
 									</tr>
 									<tr width="100%">
@@ -917,7 +1048,7 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 									<tr><td style="height:3px"></td></tr>
 									<tr width="100%">
 										<td style="line-height:28px;font-size:14px;vertical-align:middle;" colspan="2">
-											<b><?php esc_html_e( 'DATE:', 'wc-print-invoice-receipts' ); ?></b>
+											<b><?php esc_html_e( 'DATE:', 'easy-reservations' ); ?></b>
 										</td>
 									</tr>
 									<tr width="100%">
@@ -946,7 +1077,7 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 												?>
 												<tr>
 													<td style="line-height:16px;font-size:12px;">
-														<b style="text-transform:uppercase;"><?php esc_html_e( 'Store address', 'wc-print-invoice-receipts' ); ?></b>
+														<b style="text-transform:uppercase;"><?php esc_html_e( 'Store address', 'easy-reservations' ); ?></b>
 														<br/><?php echo wp_kses_post( $store_address ); ?>
 													</td>
 												</tr>
@@ -961,7 +1092,7 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 														<span>
 															<?php
 															/* translators 1: %s: br tag, 2: %s: bank name, 3: %s: account name, 4: %s: sort code, 5: %s: account number, 6: %s: bic */
-															echo wp_kses_post( sprintf( __( 'Bank Name: %2$s%1$sAccount Name: %3$s%1$sRouting Name: %4$s%1$sAccount: %5$s%1$sBIC: %6$s%1$s', 'wc-print-invoice-receipts' ), '<br />', esc_html( $account['bank_name'] ), esc_html( $account['account_name'] ), esc_html( $account['sort_code'] ), esc_html( $account['account_number'] ), esc_html( $account['bic'] ) ) );
+															echo wp_kses_post( sprintf( __( 'Bank Name: %2$s%1$sAccount Name: %3$s%1$sRouting Name: %4$s%1$sAccount: %5$s%1$sBIC: %6$s%1$s', 'easy-reservations' ), '<br />', esc_html( $account['bank_name'] ), esc_html( $account['account_name'] ), esc_html( $account['sort_code'] ), esc_html( $account['account_number'] ), esc_html( $account['bic'] ) ) );
 															?>
 														</span>
 													</td>
@@ -973,11 +1104,11 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 										?>
 										<tr>
 											<td style="line-height:16px;font-size:12px;">
-												<b style="text-transform:uppercase;"><?php esc_html_e( 'Pay by cheque:', 'wc-print-invoice-receipts' ); ?></b>
+												<b style="text-transform:uppercase;"><?php esc_html_e( 'Pay by cheque:', 'easy-reservations' ); ?></b>
 												<br/>
 												<?php
 												/* translators: 1: %s: br tag, 2: %s: store address */
-												echo wp_kses_post( sprintf( __( 'Mail your cheque to:%1$s%2$s', 'wc-print-invoice-receipts' ), '<br />', $store_address ) );
+												echo wp_kses_post( sprintf( __( 'Mail your cheque to:%1$s%2$s', 'easy-reservations' ), '<br />', $store_address ) );
 												?>
 											</td>
 										</tr>
@@ -987,7 +1118,7 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 										?>
 										<tr>
 											<td style="line-height:16px;font-size:12px;">
-												<b style="text-transform:uppercase;"><?php esc_html_e( 'Store address', 'wc-print-invoice-receipts' ); ?></b>
+												<b style="text-transform:uppercase;"><?php esc_html_e( 'Store address', 'easy-reservations' ); ?></b>
 												<br/><?php echo wp_kses_post( $store_address ); ?>
 											</td>
 										</tr>
@@ -1007,21 +1138,21 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 						<tr style="background-color:#ccc">
 							<td style="line-height:24px;font-size:12px;padding:5px" width="10%"></td>
 							<td style="line-height:24px;font-size:12px;padding:5px"
-								width="25%"><?php esc_html_e( 'ITEM', 'wc-print-invoice-receipts' ); ?></td>
+								width="25%"><?php esc_html_e( 'ITEM', 'easy-reservations' ); ?></td>
 							<td style="line-height:24px;font-size:12px;padding:5px"
-								width="35%"><?php esc_html_e( 'DESCRIPTION', 'wc-print-invoice-receipts' ); ?></td>
+								width="35%"><?php esc_html_e( 'DESCRIPTION', 'easy-reservations' ); ?></td>
 							<td style="line-height:24px;font-size:12px;padding:5px"
-								width="5%"><?php esc_html_e( 'QTY', 'wc-print-invoice-receipts' ); ?></td>
+								width="5%"><?php esc_html_e( 'QTY', 'easy-reservations' ); ?></td>
 							<td style="line-height:24px;font-size:12px;text-align:right;padding:5px"
-								width="10%"><?php esc_html_e( 'COST', 'wc-print-invoice-receipts' ); ?></td>
+								width="10%"><?php esc_html_e( 'COST', 'easy-reservations' ); ?></td>
 							<td style="line-height:24px;font-size:12px;text-align:right;padding:5px"
-								width="15%"><?php esc_html_e( 'TOTAL', 'wc-print-invoice-receipts' ); ?></td>
+								width="15%"><?php esc_html_e( 'TOTAL', 'easy-reservations' ); ?></td>
 						</tr>
 						<?php
 						if ( ! empty( $line_items ) && is_array( $line_items ) ) {
 							foreach ( $line_items as $item ) {
 								$quantity          = $item->get_quantity();
-								$prod_id           = wpir_product_id( $item->get_product_id(), $item->get_variation_id() );
+								$prod_id           = ersrv_product_id( $item->get_product_id(), $item->get_variation_id() );
 								$wc_product        = $item->get_product();
 								$sku               = $wc_product->get_sku();
 								$item_subtotal     = (float) $item->get_subtotal();
@@ -1029,7 +1160,7 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 								$item_cost         = $item_total / $quantity;
 								$order_totals     += $item_total;
 								$product_image_id  = get_post_thumbnail_id( $prod_id );
-								$product_image_url = wpir_get_image_url( $product_image_id );
+								$product_image_url = ersrv_get_attachment_url_from_attachment_id( $product_image_id );
 
 								// Prepare the item total cost with the cost difference, in case coupon is applied.
 								$item_discount = $item_subtotal - $item_total;
@@ -1038,7 +1169,7 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 								if ( 0 < $item_discount ) {
 									$item_discount_formatted = ( 0 !== $item_discount ) ? wc_price( $item_discount ) : '';
 									/* translators: 1: %s: br tag, 2: %s: discount amount */
-									$item_total = wc_price( $item_total ) . sprintf( __( '%1$s%2$s discount', 'wc-print-invoice-receipts' ), '<br />', $item_discount_formatted );
+									$item_total = wc_price( $item_total ) . sprintf( __( '%1$s%2$s discount', 'easy-reservations' ), '<br />', $item_discount_formatted );
 								}
 
 								?>
@@ -1067,7 +1198,7 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 								<td style="line-height:16px;font-size:12px;" width="20%"></td>
 								<td style="line-height:16px;font-size:12px;" width="50%"></td>
 								<td style="line-height:16px;font-size:12px;" width="5%"></td>
-								<td style="line-height:16px;font-size:12px;text-align:right" width="10%"><?php esc_html_e( 'SUBTOTAL:', 'wc-print-invoice-receipts' ); ?></td>
+								<td style="line-height:16px;font-size:12px;text-align:right" width="10%"><?php esc_html_e( 'SUBTOTAL:', 'easy-reservations' ); ?></td>
 								<td style="line-height:16px;font-size:12px;text-align:right" width="15%"><?php echo wp_kses_post( $subtotal ); ?></td>
 							</tr>
 							<?php
@@ -1079,7 +1210,7 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 										width="50%"></td>
 									<td style="line-height:20px;font-size:12px;" width="5%"></td>
 									<td style="line-height:20px;font-size:12px;text-align:right"
-										width="10%"><?php esc_html_e( 'COUPON:', 'wc-print-invoice-receipts' ); ?></td>
+										width="10%"><?php esc_html_e( 'COUPON:', 'easy-reservations' ); ?></td>
 									<td style="line-height:20px;font-size:12px;text-align:right"
 										width="15%"><?php echo wp_kses_post( $coupon_str ); ?></td>
 								</tr>
@@ -1090,7 +1221,7 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 							?>
 							<tr>
 								<?php /* translators: 1: %s: shipping method name */ ?>
-								<td colspan="5" style="line-height:16px;font-size:12px;text-align:right;" width="85%"><span style="text-transform:uppercase;"><?php echo esc_html( sprintf( __( 'Shipping: %1$s', 'wc-print-invoice-receipts' ), $shipping_method ) ); ?></span></td>
+								<td colspan="5" style="line-height:16px;font-size:12px;text-align:right;" width="85%"><span style="text-transform:uppercase;"><?php echo esc_html( sprintf( __( 'Shipping: %1$s', 'easy-reservations' ), $shipping_method ) ); ?></span></td>
 								<td style="line-height:16px;font-size:12px;text-align:right" width="15%"><?php echo wp_kses_post( $shipping_cost_formatted ); ?></td>
 							</tr>
 
@@ -1108,7 +1239,7 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 									break;
 								}
 								$order_totals += $tax_amount;
-								$tax_label     = empty( $tax_label ) ? __( 'TAX', 'wc-print-invoice-receipts' ) : $tax_label;
+								$tax_label     = empty( $tax_label ) ? __( 'TAX', 'easy-reservations' ) : $tax_label;
 
 								?>
 								<tr>
@@ -1126,7 +1257,7 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 							?>
 							<tr>
 								<td colspan="5" style="line-height:16px;font-size:12px;"
-									width="20%"><?php esc_html_e( 'No items found !!', 'wc-print-invoice-receipts' ); ?></td>
+									width="20%"><?php esc_html_e( 'No items found !!', 'easy-reservations' ); ?></td>
 							</tr>
 							<?php
 						}
@@ -1143,7 +1274,7 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 					<table cellspacing="0" cellpadding="0" width="100%" border="0">
 						<tr width="100%">
 							<td style="width:70%"></td>
-							<td style="width:10%; line-height:28px;font-size:14px;text-align:right;"><?php esc_html_e( 'TOTAL', 'wc-print-invoice-receipts' ); ?></td>
+							<td style="width:10%; line-height:28px;font-size:14px;text-align:right;"><?php esc_html_e( 'TOTAL', 'easy-reservations' ); ?></td>
 							<td style="width:20%; line-height:28px;font-size:14px;text-align:right;font-weight:bold"><?php echo wp_kses_post( wc_price( $order_totals ) ); ?></td>
 						</tr>
 					</table>
@@ -1160,13 +1291,13 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 						<table width="100%" cellpadding="2px">
 							<tr width="100%">
 								<td colspan="3">
-									<h5 style="text-transform:uppercase;"><?php esc_html_e( 'Refunds', 'wc-print-invoice-receipts' ); ?></h5>
+									<h5 style="text-transform:uppercase;"><?php esc_html_e( 'Refunds', 'easy-reservations' ); ?></h5>
 								</td>
 							</tr>
 							<tr width="100%" style="background-color:#ccc;">
-								<td style="width:10%;font-size:12px;line-height:24px;padding:5px"><?php esc_html_e( 'SR.NO.', 'wc-print-invoice-receipts' ); ?></td>
-								<td style="width:80%;font-size:12px;line-height:24px;padding:5px"><?php esc_html_e( 'REASON', 'wc-print-invoice-receipts' ); ?></td>
-								<td style="width:10%;font-size:12px;line-height:24px;text-align:right;padding:5px"><?php esc_html_e( 'AMOUNT', 'wc-print-invoice-receipts' ); ?></td>
+								<td style="width:10%;font-size:12px;line-height:24px;padding:5px"><?php esc_html_e( 'SR.NO.', 'easy-reservations' ); ?></td>
+								<td style="width:80%;font-size:12px;line-height:24px;padding:5px"><?php esc_html_e( 'REASON', 'easy-reservations' ); ?></td>
+								<td style="width:10%;font-size:12px;line-height:24px;text-align:right;padding:5px"><?php esc_html_e( 'AMOUNT', 'easy-reservations' ); ?></td>
 							</tr>
 							<?php
 							foreach ( $order_refunds as $key => $order_refund ) {
@@ -1178,7 +1309,7 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 									?>
 									<tr width="100%">
 										<td style="width:10%;font-size:12px;line-height:28px;"><?php echo esc_html( "{$index}." ); ?></td>
-										<td style="width:80%;font-size:12px;line-height:28px;"><?php echo esc_html( ( empty( $refund_reason ) ) ? __( 'N/A', 'wc-print-invoice-receipts' ) : $refund_reason ); ?></td>
+										<td style="width:80%;font-size:12px;line-height:28px;"><?php echo esc_html( ( empty( $refund_reason ) ) ? __( 'N/A', 'easy-reservations' ) : $refund_reason ); ?></td>
 										<td style="width:10%;color:red;font-size:12px;line-height:28px;text-align:right;"><?php echo '- ' . wp_kses_post( wc_price( $refund_amount ) ); ?></td>
 									</tr>
 									<?php
@@ -1196,7 +1327,7 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 						<table cellspacing="0" cellpadding="0" width="100%" border="0">
 							<tr width="100%">
 								<td style="width:70%"></td>
-								<td style="width:10%; line-height:28px;font-size:14px;text-align:right;"><?php esc_html_e( 'TOTAL', 'wc-print-invoice-receipts' ); ?></td>
+								<td style="width:10%; line-height:28px;font-size:14px;text-align:right;"><?php esc_html_e( 'TOTAL', 'easy-reservations' ); ?></td>
 								<td style="width:20%; line-height:28px;font-size:16px;text-align:right;font-weight:bold"><?php echo wp_kses_post( wc_price( $order_totals ) ); ?></td>
 							</tr>
 						</table>
@@ -1208,14 +1339,14 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 			<!-- CUSTOMER NOTES -->
 			<?php
 			$customer_note = $wc_order->customer_message;
-			if ( ! empty( $customer_note ) && true === $show_customer_note ) {
+			if ( ! empty( $customer_note ) ) {
 				?>
 				<tr width="100%">
 					<td colspan="2">
 						<table cellspacing="0" cellpadding="0" width="100%" border="0">
 							<tr width="100%">
 								<td width="100%" style="line-height:16px;font-size:12px;">
-									<span style="text-transform:uppercase;"><?php esc_html_e( 'Customer Note:', 'wc-print-invoice-receipts' ); ?></span><br/>
+									<span style="text-transform:uppercase;"><?php esc_html_e( 'Customer Note:', 'easy-reservations' ); ?></span><br/>
 									<span><?php echo esc_html( $customer_note ); ?></span>
 								</td>
 							</tr>
@@ -1273,10 +1404,8 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 			$body        = 'Hello, please find the attached receipt.';
 			wp_mail( $customer_email, $subject, $body, $headers, $attachments );
 		} else {
-			// The PDF is either to be viewed or downloaded.
-			$view_receipt = wpir_get_plugin_setting( 'view-order-receipt' );
-			$pdf_action   = ( true === $view_receipt ) ? 'I' : 'D';
-			$pdf->Output( $pdf_file_title, $pdf_action );
+			// $pdf->Output( $pdf_file_title, 'I' ); // View PDF.
+			$pdf->Output( $pdf_file_title, 'D' ); // View PDF.
 		}
 	}
 }
