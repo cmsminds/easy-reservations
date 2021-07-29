@@ -1495,7 +1495,7 @@ class Easy_Reservations_Public {
 			}
 
 			// Add the amenities subtotal to the item meta.
-			$item->update_meta_data( 'Amenities Subtotal', $cart_item_data['reservation_data']['amenities_subtotal'] ); // Update the security subtotal.
+			$item->update_meta_data( 'Amenities Subtotal', $cart_item_data['reservation_data']['amenities_subtotal'] ); // Update the amenities subtotal.
 		}
 	}
 }

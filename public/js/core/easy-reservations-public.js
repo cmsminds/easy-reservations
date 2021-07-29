@@ -809,7 +809,7 @@ jQuery(document).ready(function ($) {
 	 *
 	 * @returns number
 	 */
-	 function ersrv_get_item_total() {
+	function ersrv_get_item_total() {
 		var item_total = $( 'tr.new-reservation-total-cost td span' ).text();
 		item_total     = parseFloat( item_total.replace( /[^\d.]/g, '' ) );
 		item_total     = ( -1 === is_valid_number( item_total ) ) ? 0 : item_total;

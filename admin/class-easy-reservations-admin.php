@@ -730,6 +730,7 @@ class Easy_Reservations_Admin {
 		$kids_subtotal      = (float) filter_input( INPUT_POST, 'kids_subtotal', FILTER_SANITIZE_STRING );
 		$security_subtotal  = (float) filter_input( INPUT_POST, 'security_subtotal', FILTER_SANITIZE_STRING );
 		$amenities_subtotal = (float) filter_input( INPUT_POST, 'amenities_subtotal', FILTER_SANITIZE_STRING );
+		$item_total         = (float) filter_input( INPUT_POST, 'item_total', FILTER_SANITIZE_STRING );
 
 		// Prepare the billing address.
 		$billing_address = array(
@@ -773,60 +774,38 @@ class Easy_Reservations_Admin {
 		);
 
 		$wc_product = wc_get_product( $item_id );
-		$item_id    = $wc_order->add_product( $wc_product, $adult_count );
+		$item_id    = $wc_order->add_product(
+			$wc_product,
+			1,
+			array(
+				'total' => $item_total,
+			)
+		);
+
 		$line_item  = $wc_order->get_item( $item_id, false );
 		$line_item->calculate_taxes( $calculate_tax_for );
-		$line_item->save();
-
-		// Update the item meta details.
-		wc_add_order_item_meta( $item_id, 'Adult Count', $adult_count );
-		wc_add_order_item_meta( $item_id, 'Kid(s) Count', $kid_count );
-		wc_add_order_item_meta( $item_id, 'Checkin Date', $checkin_date );
-		wc_add_order_item_meta( $item_id, 'Checkout Date', $checkout_date );
+		$line_item->update_meta_data( 'Checkin Date', $checkin_date ); // Update the checkin date.
+		$line_item->update_meta_data( 'Checkout Date', $checkout_date ); // Update the checkout date.
+		$line_item->update_meta_data( 'Adult Count', $adult_count ); // Update the adult count.
+		$line_item->update_meta_data( 'Adult Subtotal', $item_subtotal ); // Update the adult subtotal.
+		$line_item->update_meta_data( 'Kids Count', $kid_count ); // Update the kids count.
+		$line_item->update_meta_data( 'Kids Subtotal', $kids_subtotal ); // Update the kids subtotal.
+		$line_item->update_meta_data( 'Security Amount', $security_amt ); // Update the security subtotal.
 
 		// Update the amenities to order item meta.
 		if ( ! empty( $amenities ) && is_array( $amenities ) ) {
-			foreach ( $amenities as $amenity ) {
-				$amenity_title = $amenity['amenity'];
-				$amenity_cost  = $amenity['cost'];
-				wc_add_order_item_meta( $item_id, 'Amenity', $amenity_title );
-				wc_add_order_item_meta( $item_id, "{$amenity_title} Cost", $amenity_cost );
+			foreach ( $amenities as $amenity_data ) {
+				$line_item->update_meta_data( 'Amenity: ' . $amenity_data['amenity'], $amenity_data['cost'] ); // Update the amenity data.
 			}
+
+			// Add the amenities subtotal to the item meta.
+			$line_item->update_meta_data( 'Amenities Subtotal', $amenities_subtotal ); // Update the amenities subtotal.
 		}
 
+		// Save the line item.
+		$line_item->save();
+
 		$wc_order->set_address( $billing_address, 'billing' );
-		$wc_order->set_address( $billing_address, 'shipping' );
-
-		// Kid's subtotal fee.
-		$kids_subtotal_fee = new WC_Order_Item_Fee();
-		$kids_subtotal_fee->set_name( __( 'Kid(s) Subtotal', 'easy-reservations' ) );
-		$kids_subtotal_fee->set_amount( $kids_subtotal );
-		$kids_subtotal_fee->set_tax_class( '' );
-		$kids_subtotal_fee->set_tax_status( 'taxable' );
-		$kids_subtotal_fee->set_total( $kids_subtotal );
-		$kids_subtotal_fee->calculate_taxes( $calculate_tax_for );
-		$wc_order->add_item( $kids_subtotal_fee );
-
-		// Security subtotal fee.
-		$security_subtotal_fee = new WC_Order_Item_Fee();
-		$security_subtotal_fee->set_name( __( 'Security Subtotal', 'easy-reservations' ) );
-		$security_subtotal_fee->set_amount( $security_subtotal );
-		$security_subtotal_fee->set_tax_class( '' );
-		$security_subtotal_fee->set_tax_status( 'taxable' );
-		$security_subtotal_fee->set_total( $security_subtotal );
-		$security_subtotal_fee->calculate_taxes( $calculate_tax_for );
-		$wc_order->add_item( $security_subtotal_fee );
-
-		// Amenities subtotal fee.
-		$amenities_subtotal_fee = new WC_Order_Item_Fee();
-		$amenities_subtotal_fee->set_name( __( 'Amenities Subtotal', 'easy-reservations' ) );
-		$amenities_subtotal_fee->set_amount( $amenities_subtotal );
-		$amenities_subtotal_fee->set_tax_class( '' );
-		$amenities_subtotal_fee->set_tax_status( 'taxable' );
-		$amenities_subtotal_fee->set_total( $amenities_subtotal );
-		$amenities_subtotal_fee->calculate_taxes( $calculate_tax_for );
-		$wc_order->add_item( $amenities_subtotal_fee );
-
 		$wc_order->calculate_totals();
 		$wc_order->save();
 
