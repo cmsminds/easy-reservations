@@ -133,6 +133,15 @@ jQuery(document).ready(function ($) {
 						$( '#ersrv-single-reservation-checkout-datepicker' ).datepicker( 'show' );
 					}, 16 );
 				}
+
+				// Also check if the checkin and checkout dates are available, unblock the amenities wrapper.
+				var checkin_date  = $( '#ersrv-single-reservation-checkin-datepicker' ).val();
+				var checkout_date = $( '#ersrv-single-reservation-checkout-datepicker' ).val();
+				if ( '' !== checkin_date && '' !== checkout_date ) {
+					unblock_element( $( '.ersrv-item-amenities-wrapper' ) );
+				} else {
+					block_element( $( '.ersrv-item-amenities-wrapper' ) );
+				}
 			},
 			numberOfMonths: 1,
 			format: datepicker_date_format,
@@ -145,14 +154,28 @@ jQuery(document).ready(function ($) {
 		$( '.ersrv-search-item-price-range' ).slider( {
 			range: true,
 			min: 0,
-			max: 500,
-			values: [75, 300],
+			max: 10000,
+			values: [0, 10000],
 			slide: function (event, ui) {
 				$( '.price-value' ).html( woo_currency + ui.values[0] + ' to ' + woo_currency + ui.values[1]);
 			}
 		} );
 		// $( '.price-value' ).html( woo_currency + $( '.ersrv-search-item-price-range' ).slider( values, 0 ) + ' to ' + woo_currency + $( '.ersrv-search-item-price-range' ).slider( values, 1 ) );
 	}
+
+	/**
+	 * Block/unblock amenities block based on checkin and checkout dates.
+	 */
+	$( document ).on( 'click', '#ersrv-single-reservation-checkin-datepicker, #ersrv-single-reservation-checkout-datepicker', function() {
+		// Also check if the checkin and checkout dates are available, unblock the amenities wrapper.
+		var checkin_date  = $( '#ersrv-single-reservation-checkin-datepicker' ).val();
+		var checkout_date = $( '#ersrv-single-reservation-checkout-datepicker' ).val();
+		if ( '' !== checkin_date && '' !== checkout_date ) {
+			unblock_element( $( '.ersrv-item-amenities-wrapper' ) );
+		} else {
+			block_element( $( '.ersrv-item-amenities-wrapper' ) );
+		}
+	} );
 
 	/**
 	 * Accomodation adult charge.
@@ -190,14 +213,20 @@ jQuery(document).ready(function ($) {
 	 * Amenities charge summary.
 	 */
 	$( document ).on( 'click', '.ersrv-new-reservation-single-amenity', function() {
-		var amenities_summary_cost = 0.0;
+		var amenities_summary_cost  = 0.0;
+		var checkin_date            = $( '#ersrv-single-reservation-checkin-datepicker' ).val();
+		var checkout_date           = $( '#ersrv-single-reservation-checkout-datepicker' ).val();
+		var reservation_dates       = ersrv_get_dates_between_2_dates( checkin_date, checkout_date );
+		var reservation_dates_count = reservation_dates.length;
 
 		// Collect the amenities and their charges.
 		$( '.ersrv-new-reservation-single-amenity' ).each ( function() {
 			var this_element = $( this );
 			var is_checked = this_element.is( ':checked' );
 			if ( true === is_checked ) {
-				var amenity_cost = this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost' );
+				var amenity_cost      = parseFloat( this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost' ) );
+				var amenity_cost_type = this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost_type' );
+				amenity_cost          = ( 'per_day' === amenity_cost_type ) ? ( amenity_cost * reservation_dates_count ) : amenity_cost;
 				amenities_summary_cost += parseFloat( amenity_cost );
 			}
 		} );

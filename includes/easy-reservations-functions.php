@@ -310,17 +310,23 @@ if ( ! function_exists( 'ersrv_get_amenity_html' ) ) {
 	/**
 	 * Get the amenity HTML.
 	 *
-	 * @param string $amenity_title Holds the amenity title.
-	 * @param string $amenity_cost Holds the amenity cost.
+	 * @param string $amenity_data Holds the amenity data.
 	 * @return string
 	 * @since 1.0.0
 	 */
-	function ersrv_get_amenity_html( $amenity_title = '', $amenity_cost = '' ) {
+	function ersrv_get_amenity_html( $amenity_data ) {
+		$title     = ( ! empty( $amenity_data['title'] ) ) ? $amenity_data['title'] : '';
+		$cost      = ( ! empty( $amenity_data['cost'] ) ) ? $amenity_data['cost'] : '';
+		$cost_type = ( ! empty( $amenity_data['cost_type'] ) ) ? $amenity_data['cost_type'] : '';
 		ob_start();
 		?>
 		<p class="form-field reservation_amenity_field amenities-row">
-			<input type="text" value="<?php echo esc_html( $amenity_title ); ?>" required name="amenity_title[]" class="short addTitle-field" placeholder="<?php esc_html_e( 'Amenity Title', 'easy-reservations' ); ?>">
-			<input type="number" value="<?php echo esc_html( $amenity_cost ); ?>" required name="amenity_cost[]" class="short addNumber-field" placeholder="0.0" step="0.01" min="0.01">
+			<input type="text" value="<?php echo esc_html( $title ); ?>" required name="amenity_title[]" class="short addTitle-field" placeholder="<?php esc_html_e( 'Amenity Title', 'easy-reservations' ); ?>">
+			<input type="number" value="<?php echo esc_html( $cost ); ?>" required name="amenity_cost[]" class="short addNumber-field" placeholder="0.0" step="0.01" min="0.01">
+			<select class="ersrv-amenity-charge-type" name="amenity_cost_type[]">
+				<option <?php echo ( ! empty( $cost_type ) && 'per_day' === $cost_type ) ? 'selected' : ''; ?> value="per_day"><?php esc_html_e( 'Per Day Cost', 'easy-reservations' ); ?></option>
+				<option <?php echo ( ! empty( $cost_type ) && 'one_time' === $cost_type ) ? 'selected' : ''; ?> value="one_time"><?php esc_html_e( 'One Time Cost', 'easy-reservations' ); ?></option>
+			</select>
 			<button type="button" class="button button-secondary btn-submit ersrv-remove-amenity-html"></button>
 		</p>
 		<?php
@@ -1583,8 +1589,9 @@ if ( ! function_exists( 'ersrv_get_item_details' ) ) {
 		ob_start();
 		if ( ! empty( $amenities ) && is_array( $amenities ) ) {
 			foreach ( $amenities as $index => $amenity ) {
-				$title = ( ! empty( $amenity['title'] ) ) ? $amenity['title'] : '';
-				$cost  = ( ! empty( $amenity['cost'] ) ) ? $amenity['cost'] : '';
+				$title     = ( ! empty( $amenity['title'] ) ) ? $amenity['title'] : '';
+				$cost      = ( ! empty( $amenity['cost'] ) ) ? $amenity['cost'] : '';
+				$cost_type = ( ! empty( $amenity['cost_type'] ) ) ? $amenity['cost_type'] : '';
 
 				// Skip the HTML is either the title or the cost is missing.
 				if ( empty( $title ) || empty( $cost ) ) {
@@ -1594,7 +1601,7 @@ if ( ! function_exists( 'ersrv_get_item_details' ) ) {
 				// WooCommerce currency symbol.
 				$currency = get_woocommerce_currency_symbol();
 				?>
-				<div data-amenity="<?php echo esc_attr( $title ); ?>" data-cost="<?php echo esc_attr( $cost ); ?>" class="ersrv-new-reservation-single-amenity <?php echo ( 2 < $index ) ? 'mtop' : ''; ?>">
+				<div data-amenity="<?php echo esc_attr( $title ); ?>" data-cost_type="<?php echo esc_attr( $cost_type ); ?>" data-cost="<?php echo esc_attr( $cost ); ?>" class="ersrv-new-reservation-single-amenity <?php echo ( 2 < $index ) ? 'mtop' : ''; ?>">
 					<label class="ersrv-switch">
 						<input type="checkbox" class="ersrv-switch-input">
 						<span class="slider ersrv-switch-slider"></span>

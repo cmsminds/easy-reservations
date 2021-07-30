@@ -276,6 +276,7 @@ class Easy_Reservations_Admin {
 		$posted_array              = filter_input_array( INPUT_POST );
 		$amenities_titles          = ( $posted_array['amenity_title'] ) ? $posted_array['amenity_title'] : array();
 		$amenities_costs           = ( $posted_array['amenity_cost'] ) ? $posted_array['amenity_cost'] : array();
+		$amenity_cost_types        = ( $posted_array['amenity_cost_type'] ) ? $posted_array['amenity_cost_type'] : array();
 		$amenities                 = array();
 		$blockout_dates            = ( $posted_array['blockout_date'] ) ? $posted_array['blockout_date'] : array();
 		$blockout_dates_messages   = ( $posted_array['blockout_date_message'] ) ? $posted_array['blockout_date_message'] : array();
@@ -284,8 +285,9 @@ class Easy_Reservations_Admin {
 		if ( ! empty( $amenities_titles ) && is_array( $amenities_titles ) ) {
 			foreach ( $amenities_titles as $index => $amenity_title ) {
 				$amenities[] = array(
-					'title' => $amenity_title,
-					'cost'  => $amenities_costs[ $index ],
+					'title'     => $amenity_title,
+					'cost'      => $amenities_costs[ $index ],
+					'cost_type' => $amenity_cost_types[ $index ],
 				);
 			}
 
@@ -478,7 +480,7 @@ class Easy_Reservations_Admin {
 		// Return the amenity html response.
 		$response = array(
 			'code' => 'amenity-html-fetched',
-			'html' => ersrv_get_amenity_html(),
+			'html' => ersrv_get_amenity_html( array() ),
 		);
 		wp_send_json_success( $response );
 		wp_die();

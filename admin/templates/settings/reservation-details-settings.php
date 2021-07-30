@@ -194,7 +194,7 @@ $amenities         = get_post_meta( $product_id, '_ersrv_reservation_amenities',
 			if ( ! empty( $amenities ) && is_array( $amenities ) ) {
 				foreach ( $amenities as $amenity_data ) {
 					echo wp_kses(
-						ersrv_get_amenity_html( $amenity_data['title'], $amenity_data['cost'] ),
+						ersrv_get_amenity_html( $amenity_data ),
 						array(
 							'p'      => array(
 								'class' => array(),
@@ -212,6 +212,14 @@ $amenities         = get_post_meta( $product_id, '_ersrv_reservation_amenities',
 							'button' => array(
 								'type'  => array(),
 								'class' => array(),
+							),
+							'select' => array(
+								'class' => array(),
+								'name'  => array(),
+							),
+							'option' => array(
+								'value'    => array(),
+								'selected' => array(),
 							),
 						)
 					);

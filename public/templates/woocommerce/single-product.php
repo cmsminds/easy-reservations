@@ -136,7 +136,7 @@ $woo_currency = get_woocommerce_currency_symbol();
 						</a>
 						<div class="collapse" id="ship-location-collapse">
 							<div class="dropdown-divider"></div>
-							<iframe src="https://www.google.com/maps/embed/v1/place?key=<?php echo $api_key; ?>&q=Space+Needle,Seattle+WA" style="border:0" loading="lazy" allowfullscreen></iframe>
+							<iframe width="100%" height="400px" src="https://www.google.com/maps/embed/v1/place?key=<?php echo $api_key; ?>&q=Space+Needle,Seattle+WA" style="border:0" loading="lazy" allowfullscreen></iframe>
 						</div>
 					</div>
 					<div class="ship-details info-box">
@@ -209,14 +209,15 @@ $woo_currency = get_woocommerce_currency_symbol();
 										<p class="ersrv-reservation-error accomodation-error"></p>
 									</div>
 									<?php if ( ! empty( $amenities ) && is_array( $amenities ) ) { ?>
-									<div class="checkbox-wrapper mb-4 pb-3">
+									<div class="ersrv-item-amenities-wrapper non-clickable checkbox-wrapper mb-4 pb-3">
 										<label for="amenities" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Amenities', 'easy-reservations' ); ?></label>
 										<?php foreach ( $amenities as $amenity_data ) {
-											$amenity_title = $amenity_data['title'];
-											$amenity_slug  = sanitize_title( $amenity_title );
-											$amenity_cost  = $amenity_data['cost'];
+											$amenity_title     = $amenity_data['title'];
+											$amenity_slug      = sanitize_title( $amenity_title );
+											$amenity_cost      = $amenity_data['cost'];
+											$amenity_cost_type = $amenity_data['cost_type'];
 											?>
-											<div class="custom-control custom-switch ersrv-single-amenity-block" data-cost="<?php echo esc_attr( $amenity_cost ); ?>" data-amenity="<?php echo esc_attr( $amenity_title ); ?>">
+											<div class="custom-control custom-switch ersrv-single-amenity-block" data-cost_type="<?php echo esc_attr( $amenity_cost_type ); ?>" data-cost="<?php echo esc_attr( $amenity_cost ); ?>" data-amenity="<?php echo esc_attr( $amenity_title ); ?>">
 												<input type="checkbox" class="custom-control-input ersrv-new-reservation-single-amenity" id="amenity-<?php echo esc_html( $amenity_slug ); ?>">
 												<label class="custom-control-label font-size-15" for="amenity-<?php echo esc_html( $amenity_slug ); ?>">
 													<span class="d-block font-lato font-weight-bold color-black pb-2"><?php echo esc_html( $amenity_title ); ?> - <span class="font-lato font-weight-bold color-accent"><?php echo wc_price( $amenity_cost ); ?></span></span>
@@ -346,7 +347,7 @@ $woo_currency = get_woocommerce_currency_symbol();
 									</div>
 									<div class="range-slider-wrapper mb-4 pb-2">
 										<h4 class="font-lato font-size-14 font-weight-normal color-black text-center mb-2"><?php esc_html_e( 'Price Range', 'easy-reservations' ); ?></h4>
-										<h4 class="font-lato font-size-20 font-weight-bolder color-black text-center mb-0 price-value"><?php echo esc_html( $woo_currency );?>5,000 to <?php echo esc_html( $woo_currency );?>10,000</h4>
+										<h4 class="font-lato font-size-20 font-weight-bolder color-black text-center mb-0 price-value"><?php echo esc_html( $woo_currency );?>0 to <?php echo esc_html( $woo_currency );?>10,000</h4>
 										<div class="slider-wrapper mt-3">
 											<div class="ersrv-search-item-price-range" id="slider-range"></div>
 										</div>

@@ -404,7 +404,6 @@ jQuery( document ).ready( function( $ ) {
 			block_element( $( 'tr.ersrv-new-reservation-customer-row' ) );
 			block_element( $( 'tr.ersrv-new-reservation-accomodation-row' ) );
 			block_element( $( 'tr.ersrv-new-reservation-checkin-checkout-row' ) );
-			block_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
 			block_element( $( 'tr.ersrv-new-reservation-customer-note-row' ) );
 			block_element( $( '.ersrv-add-new-reservation' ) );
 			block_element( $( '.new-reservation-summary' ) );
@@ -442,7 +441,6 @@ jQuery( document ).ready( function( $ ) {
 					unblock_element( $( 'tr.ersrv-new-reservation-customer-row' ) );
 					unblock_element( $( 'tr.ersrv-new-reservation-accomodation-row' ) );
 					unblock_element( $( 'tr.ersrv-new-reservation-checkin-checkout-row' ) );
-					unblock_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
 					unblock_element( $( 'tr.ersrv-new-reservation-customer-note-row' ) );
 					unblock_element( $( '.ersrv-add-new-reservation' ) );
 					unblock_element( $( '.new-reservation-summary' ) );
@@ -465,8 +463,6 @@ jQuery( document ).ready( function( $ ) {
 							reserved_dates.push( blocked_dates[i].date );
 						}
 					}
-
-					console.log( 'reserved_dates', reserved_dates );
 
 					// Set the calendar on checkin and checkout dates.
 					$( '#ersrv-checkin-date, #ersrv-checkout-date' ).datepicker( {
@@ -503,6 +499,15 @@ jQuery( document ).ready( function( $ ) {
 									$( '#ersrv-checkout-date' ).datepicker( 'show' );
 								}, 16 );
 							}
+
+							// Also check if the checkin and checkout dates are available, unblock the amenities wrapper.
+							var checkin_date  = $( '#ersrv-checkin-date' ).val();
+							var checkout_date = $( '#ersrv-checkout-date' ).val();
+							if ( '' !== checkin_date && '' !== checkout_date ) {
+								unblock_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
+							} else {
+								block_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
+							}
 						},
 						dateFormat: 'yy-mm-dd',
 						minDate: 0,
@@ -533,6 +538,20 @@ jQuery( document ).ready( function( $ ) {
 				}
 			}
 		} );
+	} );
+
+	/**
+	 * Block/unblock amenities block based on checkin and checkout dates.
+	 */
+	 $( document ).on( 'click', '#ersrv-checkin-date, #ersrv-checkout-date', function() {
+		// Also check if the checkin and checkout dates are available, unblock the amenities wrapper.
+		var checkin_date  = $( '#ersrv-checkin-date' ).val();
+		var checkout_date = $( '#ersrv-checkout-date' ).val();
+		if ( '' !== checkin_date && '' !== checkout_date ) {
+			unblock_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
+		} else {
+			block_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
+		}
 	} );
 
 	/**
@@ -569,14 +588,21 @@ jQuery( document ).ready( function( $ ) {
 	 * Amenities charge summary.
 	 */
 	$( document ).on( 'click', '.ersrv-new-reservation-single-amenity', function() {
-		var amenities_summary_cost = 0.0;
+		var amenities_summary_cost  = 0.0;
+		var checkin_date            = $( '#ersrv-checkin-date' ).val();
+		var checkout_date           = $( '#ersrv-checkout-date' ).val();
+		var reservation_dates       = ersrv_get_dates_between_2_dates( checkin_date, checkout_date );
+		var reservation_dates_count = reservation_dates.length;
 
 		// Collect the amenities and their charges.
-		$( '.ersrv-new-reservation-single-amenity' ).each ( function() {
+		$( '.ersrv-new-reservation-single-amenity' ).each( function() {
 			var this_element = $( this );
 			var is_checked = this_element.find( 'input[type="checkbox"]' ).is( ':checked' );
 			if ( true === is_checked ) {
-				amenities_summary_cost += parseFloat( this_element.data( 'cost' ) );
+				var amenity_cost      = parseFloat( this_element.data( 'cost' ) );
+				var amenity_cost_type = this_element.data( 'cost_type' );
+				amenity_cost          = ( 'per_day' === amenity_cost_type ) ? ( amenity_cost * reservation_dates_count ) : amenity_cost;
+				amenities_summary_cost += parseFloat( amenity_cost );
 			}
 		} );
 

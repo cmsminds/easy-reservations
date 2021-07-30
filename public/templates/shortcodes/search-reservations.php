@@ -71,7 +71,7 @@ $woo_currency = get_woocommerce_currency_symbol();
 							<div class="col-12 col-md-5 col-lg-6">
 								<div class="slider-wrapper">
 									<h4 class="font-lato font-size-14 font-weight-normal color-black text-center mb-2"><?php esc_html_e( 'Price Range', 'easy-reservations' ); ?></h4>
-									<h4 class="font-lato font-size-20 font-weight-bolder color-black text-center mb-0 price-value"><?php echo esc_html( $woo_currency );?>5,000 to <?php echo esc_html( $woo_currency );?>10,000</h4>
+									<h4 class="font-lato font-size-20 font-weight-bolder color-black text-center mb-0 price-value"><?php echo esc_html( $woo_currency );?>0 to <?php echo esc_html( $woo_currency );?>10,000</h4>
 									<div class="search-price-range-slider ersrv-search-item-price-range"></div>
 								</div>
 							</div>
@@ -90,9 +90,9 @@ $woo_currency = get_woocommerce_currency_symbol();
 											</select>
 										</div>
 										<div class="col-12 col-md-6">
-											<button class="btn btn-primary btn-block font-lato font-size-18 font-weight-bold">
-												<span class="mr-3"><img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/Search.png' ); ?>" alt="Search"></span>
-												<span>Search</span>
+											<button type="button" class="ersrv-submit-reservation-search btn btn-primary btn-block font-lato font-size-18 font-weight-bold">
+												<span class="mr-3"><img src="<?php echo esc_url( ERSRV_PLUGIN_URL . 'public/images/Search.png' ); ?>" alt="Search"></span>
+												<span><?php esc_html_e( 'Search', 'easy-reservations' ); ?></span>
 											</button>
 										</div>
 									</div>
@@ -110,10 +110,10 @@ $woo_currency = get_woocommerce_currency_symbol();
 				<h4 class="title font-Poppins"><?php echo sprintf( __( 'Advanced Search: %1$s%3$s items%2$s', 'easy-reservations' ), '<span class="result-no">', '</span>', count( $total_reservation_posts ) ) ?></h4>
 				<div class="search-result-inner ersrv-search-reservations-items-container form-row">
 					<div class="jumbotron text-center w-100 bg-transparent">
-						<h3 class="loading-title">Please wait while we load items...</h3>
+						<h3 class="loading-title"><?php esc_html_e( 'Please wait while we load items...', 'easy-reservations' ); ?></h3>
 						<div class="loading-icon">
 							<i class="fa fa-circle-notch fa-spin fa-3x fa-fw"></i>
-							<span class="sr-only">Loading...</span>
+							<span class="sr-only"><?php esc_html_e( 'Loading...', 'easy-reservations' ); ?></span>
 						</div>
 					</div>
 				</div>
