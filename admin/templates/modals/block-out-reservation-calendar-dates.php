@@ -16,11 +16,11 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 		<div class="ersrv-date-ranges">
 			<div class="from">
 				<label for="ersrv-blockout-date-from"><?php esc_html_e( 'From', 'easy-reservations' ); ?></label>
-				<input type="date" id="ersrv-blockout-date-from" min="<?php echo esc_attr( gmdate( 'Y-m-d' ) ); ?>" />
+				<input type="text" id="ersrv-blockout-date-from" class="ersrv-has-datepicker" />
 			</div>
 			<div class="to">
 				<label for="ersrv-blockout-date-to"><?php esc_html_e( 'To', 'easy-reservations' ); ?></label>
-				<input type="date" id="ersrv-blockout-date-to" min="<?php echo esc_attr( gmdate( 'Y-m-d' ) ); ?>" />
+				<input type="text" id="ersrv-blockout-date-to" class="ersrv-has-datepicker" />
 			</div>
 		</div>
 		<div class="ersrv-blockout-dates-message">

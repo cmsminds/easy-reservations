@@ -315,6 +315,7 @@ class Easy_Reservations_Public {
 				'reservation_lesser_reservation_days_err_msg'  => __( 'The item can be reserved for a min. of XX days.', 'easy-reservations' ),
 				'reservation_greater_reservation_days_err_msg' => __( 'The item can be reserved for a max. of XX days.', 'easy-reservations' ),
 				'search_reservations_page_url'                 => get_permalink( $search_reservations_page ),
+				'date_format'                                  => ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' ),
 			)
 		);
 	}
@@ -657,7 +658,7 @@ class Easy_Reservations_Public {
 		}
 
 		// Now that we have item ID, get the unavailability dates.
-		$blocked_dates = ersrv_get_reservation_item_blockout_dates( $item_id );
+		$blockedout_dates = get_post_meta( $item_id, '_ersrv_reservation_blockout_dates', true );
 
 		// If doing AJAX.
 		if ( DOING_AJAX ) {

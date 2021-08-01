@@ -48,8 +48,9 @@ if ( ! empty( $types ) && is_array( $types ) ) {
 }
 
 // Current date.
-$curr_date = ersrv_get_current_time( 'Y-m-d' );
-$next_date = gmdate( 'Y-m-d', strtotime( $curr_date . ' +1 day' ) );
+$php_date_format = ersrv_get_php_date_format();
+$curr_date       = ersrv_get_current_date( $php_date_format );
+$next_date       = gmdate( $php_date_format, ( strtotime( 'now' ) + 86400 ) );
 
 // Reservation item types.
 $reservation_item_types = get_terms(
@@ -197,9 +198,9 @@ $woo_currency = get_woocommerce_currency_symbol();
 							<div class="details text-left">
 								<form action="">
 									<div class="input-daterange d-flex flex-column flex-fill mb-3 pb-2">
-										<input placeholder="<?php echo esc_html( $curr_date ); ?>" type="text" id="ersrv-single-reservation-checkin-datepicker" class="form-control date-control text-left rounded-lg">
+										<input placeholder="E.g.: <?php echo esc_html( $curr_date ); ?>" type="text" id="ersrv-single-reservation-checkin-datepicker" class="form-control date-control text-left rounded-lg">
 										<div class="input-group-addon font-Poppins font-size-18 font-weight-light color-black-400 py-2 my-1 text-center"><?php esc_html_e( 'to', 'easy-reservations' ); ?></div>
-										<input placeholder="<?php echo esc_html( $next_date ); ?>" type="text" id="ersrv-single-reservation-checkout-datepicker" class="form-control date-control text-left rounded-lg">
+										<input placeholder="E.g.: <?php echo esc_html( $next_date ); ?>" type="text" id="ersrv-single-reservation-checkout-datepicker" class="form-control date-control text-left rounded-lg">
 										<p class="ersrv-reservation-error checkin-checkout-dates-error"></p>
 									</div>
 									<div class="book-items-wrapper mb-4 pb-3">

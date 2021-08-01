@@ -165,6 +165,7 @@ class Easy_Reservations {
 		$this->loader->add_action( 'woocommerce_order_status_pending', $plugin_admin, 'ersrv_woocommerce_order_status_pending_callback' );
 		$this->loader->add_action( 'woocommerce_order_status_cancelled', $plugin_admin, 'ersrv_woocommerce_order_status_cancelled_callback' );
 		$this->loader->add_filter( 'display_post_states', $plugin_admin, 'ersrv_display_post_states_callback', 20, 2 );
+		$this->loader->add_filter( 'ersrv_php_date_format', $plugin_admin, 'ersrv_ersrv_php_date_format_callback' );
 	}
 
 	/**

@@ -28,6 +28,8 @@ jQuery( document ).ready( function( $ ) {
 	var reservation_customer_city_err_msg            = ERSRV_Admin_Script_Vars.reservation_customer_city_err_msg;
 	var reservation_customer_postcode_err_msg        = ERSRV_Admin_Script_Vars.reservation_customer_postcode_err_msg;
 	var ersrv_product_type                           = ERSRV_Admin_Script_Vars.ersrv_product_type;
+	var date_format                                  = ERSRV_Admin_Script_Vars.date_format;
+	var blocked_dates                                = ERSRV_Admin_Script_Vars.blocked_dates;
 
 	// Add HTML after the kid charge number field.
 	$( '<a class="ersrv-copy-adult-charge" href="javascript:void(0);">' + same_as_adult + '</a>' ).insertAfter( '#accomodation_kid_charge' );
@@ -35,6 +37,69 @@ jQuery( document ).ready( function( $ ) {
 	// Add the dropdown on the order's page.
 	var export_reservations_button = '<a class="page-title-action ersrv-export-reservations" href="javascript:void(0);">' + export_reservations + '</a>';
 	$( export_reservations_button ).insertAfter( 'body.woocommerce-page.post-type-shop_order .wrap h1.wp-heading-inline' );
+
+	if ( $( '.ersrv-has-datepicker' ).length ) {
+		$( '.ersrv-has-datepicker' ).datepicker( {
+			minDate: 0,
+			dateFormat: 'yy-mm-dd',
+			onSelect: function ( selected_date, instance ) {
+				if ( 'ersrv-blockout-date-from' === instance.id ) {
+					// Min date for checkout should be on/after the checkin date.
+					$( '#ersrv-blockout-date-to' ).datepicker( 'option', 'minDate', selected_date );
+					setTimeout( function() {
+						$( '#ersrv-blockout-date-to' ).datepicker( 'show' );
+					}, 16 );
+				}
+			},
+		} );
+
+		// If we're on the reservation item edit page.
+		if ( -1 !== is_valid_string( ersrv_product_type ) ) {
+			var current_date      = new Date();
+			var current_month     = ( ( '0' + ( current_date.getMonth() + 1 ) ).slice( -2 ) );
+			var current_date_date = ( ( '0' + current_date.getDate() ).slice( -2 ) );
+			var today_formatted   = current_date.getFullYear() + '-' + current_month + '-' + current_date_date;
+			var reserved_dates    = [];
+
+			// Prepare the blocked out dates in a separate array.
+			if ( 0 < blocked_dates.length ) {
+				for ( var i in blocked_dates ) {
+					reserved_dates.push( blocked_dates[i].date );
+				}
+			}
+			console.log( 'reserved_dates', reserved_dates );
+			$( '.ersrv-has-datepicker' ).datepicker( {
+				beforeShowDay: function( date ) {
+					var loop_date          = ( ( '0' + date.getDate() ).slice( -2 ) );
+					var loop_month          = ( ( '0' + ( date.getMonth() + 1 ) ).slice( -2 ) );
+					var loop_date_formatted = date.getFullYear() + '-' + loop_month + '-' + loop_date;
+					var date_enabled        = true;
+
+					// If not the past date.
+					if ( today_formatted <= loop_date_formatted ) {
+						// Add custom class to the active dates of the current month.
+						var key = $.map( reserved_dates, function( val, i ) {
+							if ( val === loop_date_formatted ) {
+								return i;
+							}
+						} );
+
+						// If the loop date is a blocked date.
+						if ( 0 < key.length ) {
+							date_enabled = false;
+						}
+					} else {
+						date_enabled = false;
+					}
+
+					// console.log( loop_date_formatted, date_enabled );
+
+					// Return the datepicker day object.
+					return [ date_enabled ];
+				},
+			} );
+		}
+	}
 
 	/**
 	 * Copy the adult charge to the kid's charge.
@@ -185,6 +250,13 @@ jQuery( document ).ready( function( $ ) {
 
 				// Hide the modal.
 				$( '#ersrv-blockout-reservation-calendar-dates-modal' ).fadeOut( 'slow' );
+
+				if ( $( '.ersrv-has-datepicker' ).length ) {
+					$( '.ersrv-has-datepicker' ).datepicker( {
+						minDate: 0,
+						dateFormat: 'yy-mm-dd',
+					} );
+				}
 			},
 		} );
 	} );
@@ -451,11 +523,12 @@ jQuery( document ).ready( function( $ ) {
 					$( '#accomodation-limit' ).val( accomodation_limit );
 					$( '.ersrv-new-reservation-limit-text' ).text( accomodation_limit_text.replace( '--', accomodation_limit ) );
 
-					var blocked_dates          = item_details.reserved_dates;
-					var current_date           = new Date();
-					var current_month          = ( ( '0' + ( current_date.getMonth() + 1 ) ).slice( -2 ) );
-					var today_formatted        = current_date.getFullYear() + '-' + current_month + '-' + current_date.getDate();
-					var reserved_dates         = [];
+					var blocked_dates     = item_details.reserved_dates;
+					var current_date      = new Date();
+					var current_month     = ( ( '0' + ( current_date.getMonth() + 1 ) ).slice( -2 ) );
+					var current_date_date = ( ( '0' + current_date.getDate() ).slice( -2 ) );
+					var today_formatted   = current_date.getFullYear() + '-' + current_month + '-' + current_date_date;
+					var reserved_dates    = [];
 
 					// Prepare the blocked out dates in a separate array.
 					if ( 0 < blocked_dates.length ) {
@@ -467,8 +540,9 @@ jQuery( document ).ready( function( $ ) {
 					// Set the calendar on checkin and checkout dates.
 					$( '#ersrv-checkin-date, #ersrv-checkout-date' ).datepicker( {
 						beforeShowDay: function( date ) {
+							var loop_date           = ( ( '0' + date.getDate() ).slice( -2 ) );
 							var loop_month          = ( ( '0' + ( date.getMonth() + 1 ) ).slice( -2 ) );
-							var loop_date_formatted = date.getFullYear() + '-' + loop_month + '-' + date.getDate();
+							var loop_date_formatted = date.getFullYear() + '-' + loop_month + '-' + loop_date;
 							var date_enabled        = true;
 
 							// If not the past date.
@@ -509,7 +583,6 @@ jQuery( document ).ready( function( $ ) {
 								block_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
 							}
 						},
-						dateFormat: 'yy-mm-dd',
 						minDate: 0,
 						weekStart: start_of_week,
 						changeMonth: true,

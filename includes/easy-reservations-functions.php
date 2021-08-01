@@ -78,6 +78,11 @@ function ersrv_get_plugin_settings( $setting ) {
 			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : '';
 			break;
 
+		case 'ersrv_datepicker_date_format':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : 'mm-dd-yyyy';
+			break;
+
 		default:
 			$data = -1;
 	}
@@ -393,33 +398,6 @@ if ( ! function_exists( 'ersrv_get_widget_settings' ) ) {
 /**
  * Check if the function exists.
  */
-if ( ! function_exists( 'ersrv_get_reservation_item_blockout_dates' ) ) {
-	/**
-	 * Get the blockedout dates for the reservable item.
-	 *
-	 * @param int $item_id Holds the reservation item ID.
-	 * @return boolean|array
-	 * @since 1.0.0
-	 */
-	function ersrv_get_reservation_item_blockout_dates( $item_id ) {
-		// Get the item type.
-		$item_type           = ersrv_get_wc_product_type( $item_id );
-		$custom_product_type = ersrv_get_custom_product_type_slug();
-
-		// If it's not reservation, return false.
-		if ( false === $item_type || $custom_product_type !== $item_type ) {
-			return false;
-		}
-
-		$blockout_dates = get_post_meta( $item_id, '_ersrv_reservation_blockout_dates', true );
-
-		return ( empty( $blockout_dates ) ) ? array() : $blockout_dates;
-	}
-}
-
-/**
- * Check if the function exists.
- */
 if ( ! function_exists( 'ersrv_get_blockout_date_html' ) ) {
 	/**
 	 * Get the amenity HTML.
@@ -433,7 +411,7 @@ if ( ! function_exists( 'ersrv_get_blockout_date_html' ) ) {
 		ob_start();
 		?>
 		<p class="form-field reservation_blockout_date_field blockout-dates-row">
-			<input type="text" value="<?php echo esc_html( $date ); ?>" required name="blockout_date[]" class="short addTitle-field" placeholder="YYYY-MM-DD">
+			<input type="text" value="<?php echo esc_html( $date ); ?>" required name="blockout_date[]" class="short addTitle-field ersrv-has-datepicker" placeholder="YYYY-MM-DD">
 			<input type="text" value="<?php echo esc_html( $message ); ?>" required name="blockout_date_message[]" class="short addTitle-field">
 			<button type="button" class="button button-secondary btn-submit ersrv-remove-blockout-date-html"></button>
 		</p>
@@ -511,7 +489,7 @@ if ( ! function_exists( 'ersrv_get_admin_script_vars' ) ) {
 	 */
 	function ersrv_get_admin_script_vars() {
 		$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
-		$post = (int) filter_input( INPUT_GET, 'page', FILTER_SANITIZE_NUMBER_INT );
+		$post = (int) filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
 		$vars = array(
 			'ajaxurl'             => admin_url( 'admin-ajax.php' ),
 			'same_as_adult'       => __( 'Same as Adult!', 'easy-reservations' ),
@@ -520,7 +498,10 @@ if ( ! function_exists( 'ersrv_get_admin_script_vars' ) ) {
 
 		// Add some script variables on product edit page.
 		if ( ! is_null( $post ) && 'product' === get_post_type( $post ) ) {
+			$blocked_dates = get_post_meta( $post, '_ersrv_reservation_blockout_dates', true );
+			$blocked_dates = ( empty( $blocked_dates ) || ! is_array( $blocked_dates ) ) ? array() : $blocked_dates;
 			$vars['ersrv_product_type'] = ersrv_get_custom_product_type_slug();
+			$vars['blocked_dates']      = $blocked_dates;
 		}
 
 		// Add the error message to the array on new reservation page.
@@ -548,6 +529,9 @@ if ( ! function_exists( 'ersrv_get_admin_script_vars' ) ) {
 			$vars['reservation_customer_city_err_msg']            = __( 'City is required.', 'easy-reservations' );
 			$vars['reservation_customer_postcode_err_msg']        = __( 'Postcode is required.', 'easy-reservations' );
 		}
+
+		// Date format.
+		$vars['date_format'] = 'dd-mm-yy'; // ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' );
 
 		/**
 		 * This hook fires in admin panel.
@@ -1581,7 +1565,7 @@ if ( ! function_exists( 'ersrv_get_item_details' ) ) {
 		$accomodation_limit = get_post_meta( $item_id, '_ersrv_accomodation_limit', true );
 
 		// Reserved dates.
-		$reserved_dates = ersrv_get_reservation_item_blockout_dates( $item_id );
+		$reserved_dates = get_post_meta( $item_id, '_ersrv_reservation_blockout_dates', true );
 
 		// Amenities.
 		$amenities = get_post_meta( $item_id, '_ersrv_reservation_amenities', true );
@@ -1749,7 +1733,7 @@ if ( ! function_exists( 'ersrv_register_reservation_type_taxonomy' ) ) {
 /**
  * Check if the function exists.
  */
-if ( ! function_exists( 'ersrv_get_current_time' ) ) {
+if ( ! function_exists( 'ersrv_get_current_date' ) ) {
 	/**
 	 * Return the current date/time according to local server time.
 	 *
@@ -1757,9 +1741,39 @@ if ( ! function_exists( 'ersrv_get_current_time' ) ) {
 	 * @return string
 	 * @since 1.0.0
 	 */
-	function ersrv_get_current_time( $format = 'Y-m-d H:i:s' ) {
-		$timezone_format = _x( $format, 'timezone date format' );
+	function ersrv_get_current_date( $format = 'Y-m-d H:i:s' ) {
 
-		return date_i18n( $timezone_format );
+		return date_i18n( _x( $format, 'timezone date format' ) );
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_php_date_format' ) ) {
+	/**
+	 * Return the date format.
+	 *
+	 * @param string $format Date format.
+	 * @return string
+	 * @since 1.0.0
+	 */
+	function ersrv_get_php_date_format() {
+		$datepicker_format = ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' );
+		$datepicker_format = str_replace( 'mm', 'm', $datepicker_format );
+		$datepicker_format = str_replace( 'dd', 'd', $datepicker_format );
+		$datepicker_format = str_replace( 'yy', 'Y', $datepicker_format );
+		/**
+		 * This filters fires when a date is printed.
+		 *
+		 * This filter helps in modifying the date format.
+		 *
+		 * @param string $datepicker_format Datepicker format.
+		 * @return string
+		 * @since 1.0.0
+		 */
+		$datepicker_format = apply_filters( 'ersrv_php_date_format', $datepicker_format );
+
+		return $datepicker_format;
 	}
 }

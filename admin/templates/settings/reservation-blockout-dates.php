@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
 $product_type_slug = ersrv_get_custom_product_type_slug();
 $product_id        = (int) filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
-$blockedout_dates  = ersrv_get_reservation_item_blockout_dates( $product_id );
+$blockedout_dates  = get_post_meta( $product_id, '_ersrv_reservation_blockout_dates', true );
 ?>
 <div id="reservation_blockout_dates_product_options" class="panel woocommerce_options_panel">
 	<div class="options_group reservations-blockout-dates">

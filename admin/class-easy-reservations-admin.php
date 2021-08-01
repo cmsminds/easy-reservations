@@ -69,26 +69,33 @@ class Easy_Reservations_Admin {
 	 * @since    1.0.0
 	 */
 	public function ersrv_admin_enqueue_scripts_callback() {
-		$post_type           = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
-		$product_id          = (int) filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
-		$page                = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
-		$include_modal_style = false;
+		$post_type                 = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
+		$product_id                = (int) filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
+		$page                      = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
+		$include_modal_style       = false;
+		$include_datepicker_style  = false;
+		$include_datepicker_script = false;
 
 		// Include the blocked out reservation dates modal only on orders page.
 		if ( ! is_null( $product_id ) && 'product' === get_post_type( $product_id ) ) {
-			$include_modal_style = true;
+			$include_modal_style       = true;
+			$include_datepicker_style  = true;
+			$include_datepicker_script = true;
 		} elseif ( ! is_null( $post_type ) && 'shop_order' === $post_type ) { // Include the modal style only on orders page.
 			$include_modal_style = true;
 		} elseif ( ! is_null( $page ) && 'new-reservation' === $page ) {
-			$include_modal_style = true;
+			$include_modal_style       = true;
+			$include_datepicker_style  = true;
+			$include_datepicker_script = true;
 		}
 
 		// Enqueue bootstrap datepicker on new reservation page.
-		if ( ! is_null( $page ) && 'new-reservation' === $page ) {
-			// Enqueue the ui style.
+		if ( $include_datepicker_style ) {
 			wp_enqueue_style(
 				$this->plugin_name . '-jquery-ui-style',
-				'//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css'
+				ERSRV_PLUGIN_URL . 'public/css/ui/jquery-ui.min.css',
+				array(),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/css/ui/jquery-ui.min.css' )
 			);
 		}
 
@@ -109,6 +116,16 @@ class Easy_Reservations_Admin {
 			array(),
 			filemtime( ERSRV_PLUGIN_PATH . 'admin/css/easy-reservations-admin.css' )
 		);
+
+		// Enqueue bootstrap datepicker.
+		if ( $include_datepicker_script ) {
+			wp_enqueue_script(
+				$this->plugin_name . '-jquery-ui-script',
+				ERSRV_PLUGIN_URL . 'public/js/ui/jquery-ui.min.js',
+				array( 'jquery' ),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/js/ui/jquery-ui.min.js' )
+			);
+		}
 
 		// Custom admin script.
 		wp_enqueue_script(
@@ -299,19 +316,8 @@ class Easy_Reservations_Admin {
 
 		// Prepare the blockout calendar dates array.
 		if ( ! empty( $blockout_dates ) && is_array( $blockout_dates ) ) {
-			// Get the already blockedout dates.
-			$blockedout_dates = ersrv_get_reservation_item_blockout_dates( $post_id );
-			$blockedout_dates = ( false === $blockedout_dates || ! is_array( $blockedout_dates ) ) ? array() : $blockedout_dates;
-
 			// Iterate through the blockout dates to add them to database.
 			foreach ( $blockout_dates as $index => $blockout_date ) {
-				$existing_dates = array_column( $blockedout_dates, 'date' );
-
-				// Skip the existing date.
-				if ( in_array( $blockout_date, $existing_dates, true ) ) {
-					continue;
-				}
-
 				$blockedout_dates[] = array(
 					'date'    => $blockout_date,
 					'message' => $blockout_dates_messages[ $index ],
@@ -320,6 +326,8 @@ class Easy_Reservations_Admin {
 
 			// Update the blocked out dates to the database.
 			update_post_meta( $post_id, '_ersrv_reservation_blockout_dates', $blockedout_dates );
+		} else {
+			delete_post_meta( $post_id, '_ersrv_reservation_blockout_dates' );
 		}
 
 		// If item location is available.
@@ -536,7 +544,7 @@ class Easy_Reservations_Admin {
 			if ( ! empty( $dates_range ) ) {
 				foreach ( $dates_range as $date ) {
 					$dates[] = array(
-						'date'    => $date->format( 'Y-m-d' ),
+						'date'    => $date->format( ersrv_get_php_date_format() ),
 						'message' => $message,
 					);
 				}
@@ -1147,5 +1155,20 @@ class Easy_Reservations_Admin {
 		}
 
 		return $post_states;
+	}
+
+	/**
+	 * Change the date format for admin panel.
+	 *
+	 * @param string $format Date format.
+	 * @return string
+	 * @since 1.0.0
+	 */
+	public function ersrv_ersrv_php_date_format_callback( $format ) {
+		if ( ! is_admin() ) {
+			return $format;
+		}
+
+		return 'Y-m-d';
 	}
 }

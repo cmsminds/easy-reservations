@@ -18,9 +18,9 @@ jQuery(document).ready(function ($) {
 	var reservation_lesser_reservation_days_err_msg  = ERSRV_Public_Script_Vars.reservation_lesser_reservation_days_err_msg;
 	var reservation_greater_reservation_days_err_msg = ERSRV_Public_Script_Vars.reservation_greater_reservation_days_err_msg;
 	var search_reservations_page_url                 = ERSRV_Public_Script_Vars.search_reservations_page_url;
+	var date_format                                  = ERSRV_Public_Script_Vars.date_format;
 
-	// Custom variables.
-	var datepicker_date_format = 'yyyy-mm-dd';
+	console.log( 'date_format', date_format );
 
 	// If sidebar is to be removed on reservation single page.
 	if ('yes' === remove_sidebar) {
@@ -40,13 +40,15 @@ jQuery(document).ready(function ($) {
 					}, 16 );
 				}
 			},
-			format: datepicker_date_format,
+			dateFormat: date_format,
+			minDate: 0,
 		} );
 	}
 
 	// If it's the product page.
 	if ( 'yes' === is_product ) {
 		var reserved_dates    = reservation_item_details.reserved_dates;
+		console.log( 'reserved_dates', reserved_dates );
 		var current_date      = new Date();
 		var current_month     = ( ( '0' + ( current_date.getMonth() + 1 ) ).slice( -2 ) );
 		var current_date_date = ( ( '0' + ( current_date.getDate() ) ).slice( -2 ) );
@@ -92,14 +94,16 @@ jQuery(document).ready(function ($) {
 				return [ date_enabled, date_class ];
 			},
 			numberOfMonths: 2,
-			format: datepicker_date_format,
+			dateFormat: date_format,
+			minDate: 0,
 		} );
 
 		// Checkin and checkout datepicker.
 		$( '#ersrv-single-reservation-checkin-datepicker, #ersrv-single-reservation-checkout-datepicker' ).datepicker( {
 			beforeShowDay: function( date ) {
+				var loop_date           = ( ( '0' + ( date.getDate() ) ).slice( -2 ) );
 				var loop_month          = ( ( '0' + ( date.getMonth() + 1 ) ).slice( -2 ) );
-				var loop_date_formatted = date.getFullYear() + '-' + loop_month + '-' + date.getDate();
+				var loop_date_formatted = date.getFullYear() + '-' + loop_month + '-' + loop_date;
 				var date_enabled        = true;
 				var date_class          = '';
 
@@ -143,8 +147,8 @@ jQuery(document).ready(function ($) {
 					block_element( $( '.ersrv-item-amenities-wrapper' ) );
 				}
 			},
-			numberOfMonths: 1,
-			format: datepicker_date_format,
+			dateFormat: date_format,
+			minDate: 0,
 		} );
 	}
 
