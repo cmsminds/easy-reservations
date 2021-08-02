@@ -27,9 +27,13 @@ jQuery( document ).ready( function( $ ) {
 	var reservation_customer_country_err_msg         = ERSRV_Admin_Script_Vars.reservation_customer_country_err_msg;
 	var reservation_customer_city_err_msg            = ERSRV_Admin_Script_Vars.reservation_customer_city_err_msg;
 	var reservation_customer_postcode_err_msg        = ERSRV_Admin_Script_Vars.reservation_customer_postcode_err_msg;
+	var reservation_blocked_dates_err_msg            = ERSRV_Admin_Script_Vars.reservation_blocked_dates_err_msg;
 	var ersrv_product_type                           = ERSRV_Admin_Script_Vars.ersrv_product_type;
 	var date_format                                  = ERSRV_Admin_Script_Vars.date_format;
 	var blocked_dates                                = ERSRV_Admin_Script_Vars.blocked_dates;
+
+	// Custom vars.
+	var new_reservation_item_reserved_dates = [];
 
 	// Add HTML after the kid charge number field.
 	$( '<a class="ersrv-copy-adult-charge" href="javascript:void(0);">' + same_as_adult + '</a>' ).insertAfter( '#accomodation_kid_charge' );
@@ -479,6 +483,7 @@ jQuery( document ).ready( function( $ ) {
 			block_element( $( 'tr.ersrv-new-reservation-customer-note-row' ) );
 			block_element( $( '.ersrv-add-new-reservation' ) );
 			block_element( $( '.new-reservation-summary' ) );
+			block_element( $( 'tr.ersrv-new-reservation-item-availability-row' ) );
 			return false;
 		}
 
@@ -516,6 +521,7 @@ jQuery( document ).ready( function( $ ) {
 					unblock_element( $( 'tr.ersrv-new-reservation-customer-note-row' ) );
 					unblock_element( $( '.ersrv-add-new-reservation' ) );
 					unblock_element( $( '.new-reservation-summary' ) );
+					unblock_element( $( 'tr.ersrv-new-reservation-item-availability-row' ) );
 
 					// Item details.
 					var item_details       = response.data.details;
@@ -528,17 +534,19 @@ jQuery( document ).ready( function( $ ) {
 					var current_month     = ( ( '0' + ( current_date.getMonth() + 1 ) ).slice( -2 ) );
 					var current_date_date = ( ( '0' + current_date.getDate() ).slice( -2 ) );
 					var today_formatted   = current_date.getFullYear() + '-' + current_month + '-' + current_date_date;
-					var reserved_dates    = [];
 
 					// Prepare the blocked out dates in a separate array.
 					if ( 0 < blocked_dates.length ) {
 						for ( var i in blocked_dates ) {
-							reserved_dates.push( blocked_dates[i].date );
+							new_reservation_item_reserved_dates.push( blocked_dates[i].date );
 						}
 					}
 
+					// Remove the html from the availability calendar.
+					$( '.ersrv-item-availability-calendar' ).text( '' );
+
 					// Set the calendar on checkin and checkout dates.
-					$( '#ersrv-checkin-date, #ersrv-checkout-date' ).datepicker( {
+					$( '.ersrv-item-availability-calendar, #ersrv-checkin-date, #ersrv-checkout-date' ).datepicker( {
 						beforeShowDay: function( date ) {
 							var loop_date           = ( ( '0' + date.getDate() ).slice( -2 ) );
 							var loop_month          = ( ( '0' + ( date.getMonth() + 1 ) ).slice( -2 ) );
@@ -548,7 +556,7 @@ jQuery( document ).ready( function( $ ) {
 							// If not the past date.
 							if ( today_formatted <= loop_date_formatted ) {
 								// Add custom class to the active dates of the current month.
-								var key = $.map( reserved_dates, function( val, i ) {
+								var key = $.map( new_reservation_item_reserved_dates, function( val, i ) {
 									if ( val === loop_date_formatted ) {
 										return i;
 									}
@@ -751,6 +759,27 @@ jQuery( document ).ready( function( $ ) {
 			} else if ( max_reservation_period < reservation_days ) {
 				process_reservation = false;
 				$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_greater_reservation_days_err_msg.replace( 'XX', max_reservation_period ) );
+			} else {
+				// Iterate through the reservation dates to collect the readable dates.
+				var readable_reservation_dates = [];
+				for ( var i in reservation_dates ) {
+					var reservation_date           = ( ( '0' + ( reservation_dates[i].getDate() ) ).slice( -2 ) );
+					var reservation_month          = ( ( '0' + ( reservation_dates[i].getMonth() + 1 ) ).slice( -2 ) );
+					var reservation_date_formatted = reservation_dates[i].getFullYear() + '-' + reservation_month + '-' + reservation_date;
+					readable_reservation_dates.push( reservation_date_formatted );
+				}
+
+				// Check here, if the dates selected by the customer contains dates that are already reserved.
+				// If there are common dates between reservation dates and blocked dates, display an error.
+				var common_dates = $.grep( readable_reservation_dates, function( element ) {
+					return $.inArray( element, new_reservation_item_reserved_dates ) !== -1;
+				} );
+
+				// If there are common dates.
+				if ( 0 < common_dates.length ) {
+					process_reservation = false;
+					$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_blocked_dates_err_msg );
+				}
 			}
 		}
 

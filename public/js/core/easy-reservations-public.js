@@ -17,10 +17,9 @@ jQuery(document).ready(function ($) {
 	var reservation_checkout_missing_err_msg         = ERSRV_Public_Script_Vars.reservation_checkout_missing_err_msg;
 	var reservation_lesser_reservation_days_err_msg  = ERSRV_Public_Script_Vars.reservation_lesser_reservation_days_err_msg;
 	var reservation_greater_reservation_days_err_msg = ERSRV_Public_Script_Vars.reservation_greater_reservation_days_err_msg;
+	var reservation_blocked_dates_err_msg            = ERSRV_Public_Script_Vars.reservation_blocked_dates_err_msg;
 	var search_reservations_page_url                 = ERSRV_Public_Script_Vars.search_reservations_page_url;
 	var date_format                                  = ERSRV_Public_Script_Vars.date_format;
-
-	console.log( 'date_format', date_format );
 
 	// If sidebar is to be removed on reservation single page.
 	if ('yes' === remove_sidebar) {
@@ -48,7 +47,6 @@ jQuery(document).ready(function ($) {
 	// If it's the product page.
 	if ( 'yes' === is_product ) {
 		var reserved_dates    = reservation_item_details.reserved_dates;
-		console.log( 'reserved_dates', reserved_dates );
 		var current_date      = new Date();
 		var current_month     = ( ( '0' + ( current_date.getMonth() + 1 ) ).slice( -2 ) );
 		var current_date_date = ( ( '0' + ( current_date.getDate() ) ).slice( -2 ) );
@@ -462,7 +460,6 @@ jQuery(document).ready(function ($) {
 	$( document ).on( 'click', '.ersrv-proceed-to-checkout-single-reservation-item', function() {
 		var this_button            = $( this );
 		var item_id                = $( '.single-reserve-page' ).data( 'item' );
-
 		var accomodation_limit     = parseInt( $( '#accomodation-limit' ).val() );
 		var checkin_date           = $( '#ersrv-single-reservation-checkin-datepicker' ).val();
 		var checkout_date          = $( '#ersrv-single-reservation-checkout-datepicker' ).val();
@@ -514,6 +511,37 @@ jQuery(document).ready(function ($) {
 			} else if ( max_reservation_period < reservation_days ) {
 				process_reservation = false;
 				$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_greater_reservation_days_err_msg.replace( 'XX', max_reservation_period ) );
+			} else {
+				// Iterate through the reservation dates to collect the readable dates.
+				var readable_reservation_dates = [];
+				for ( var i in reservation_dates ) {
+					var reservation_date           = ( ( '0' + ( reservation_dates[i].getDate() ) ).slice( -2 ) );
+					var reservation_month          = ( ( '0' + ( reservation_dates[i].getMonth() + 1 ) ).slice( -2 ) );
+					var reservation_date_formatted = reservation_dates[i].getFullYear() + '-' + reservation_month + '-' + reservation_date;
+					readable_reservation_dates.push( reservation_date_formatted );
+				}
+
+				// Check here, if the dates selected by the customer contains dates that are already reserved.
+				var reserved_dates = reservation_item_details.reserved_dates;
+				var blocked_dates  = [];
+
+				// Prepare the blocked out dates in a separate array.
+				if ( 0 < reserved_dates.length ) {
+					for ( var l in reserved_dates ) {
+						blocked_dates.push( reserved_dates[l].date );
+					}
+				}
+
+				// If there are common dates between reservation dates and blocked dates, display an error.
+				var common_dates = $.grep( readable_reservation_dates, function( element ) {
+					return $.inArray( element, blocked_dates ) !== -1;
+				} );
+
+				// If there are common dates.
+				if ( 0 < common_dates.length ) {
+					process_reservation = false;
+					$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_blocked_dates_err_msg );
+				}
 			}
 		}
 

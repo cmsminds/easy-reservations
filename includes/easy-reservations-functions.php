@@ -518,6 +518,7 @@ if ( ! function_exists( 'ersrv_get_admin_script_vars' ) ) {
 			$vars['reservation_checkout_missing_err_msg']         = __( 'Please provide checkout dates.', 'easy-reservations' );
 			$vars['reservation_lesser_reservation_days_err_msg']  = __( 'The item can be reserved for a min. of XX days.', 'easy-reservations' );
 			$vars['reservation_greater_reservation_days_err_msg'] = __( 'The item can be reserved for a max. of XX days.', 'easy-reservations' );
+			$vars['reservation_blocked_dates_err_msg']            = __( 'The dates you have selected for reservation contain the dates that are already reserved. Kindly check the availability on the left hand side and then proceed with the reservation.', 'easy-reservations' );
 			$vars['reservation_customer_first_name_err_msg']      = __( 'First name is required.', 'easy-reservations' );
 			$vars['reservation_customer_last_name_err_msg']       = __( 'Last name is required.', 'easy-reservations' );
 			$vars['reservation_customer_email_err_msg']           = __( 'Email address is required.', 'easy-reservations' );

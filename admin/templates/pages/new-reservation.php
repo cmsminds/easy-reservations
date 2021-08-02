@@ -48,6 +48,12 @@ $customers = get_users();
 				</td>
 			</tr>
 
+			<!-- AVAILABILITY -->
+			<tr class="ersrv-new-reservation-item-availability-row non-clickable">
+				<th scope="row"><label for="availability"><?php esc_html_e( 'Availability', 'easy-reservations' ); ?></label></th>
+				<td><div class="ersrv-item-availability-calendar">--</div></td>
+			</tr>
+
 			<!-- CHECKIN/CHECKOUT DATE -->
 			<tr class="ersrv-new-reservation-checkin-checkout-row non-clickable">
 				<th scope="row">
