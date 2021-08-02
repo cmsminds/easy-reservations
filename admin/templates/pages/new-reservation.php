@@ -51,7 +51,7 @@ $customers = get_users();
 			<!-- AVAILABILITY -->
 			<tr class="ersrv-new-reservation-item-availability-row non-clickable">
 				<th scope="row"><label for="availability"><?php esc_html_e( 'Availability', 'easy-reservations' ); ?></label></th>
-				<td><div class="ersrv-item-availability-calendar">--</div></td>
+				<td><div class="ersrv-item-availability-calendar"></div></td>
 			</tr>
 
 			<!-- CHECKIN/CHECKOUT DATE -->
@@ -103,8 +103,8 @@ $customers = get_users();
 					<small class="ersrv-new-reservation-limit-text"><?php esc_html_e( 'Limit: --', 'easy-reservations' ); ?></small>
 				</th>
 				<td>
-					<p><input type="number" id="adult-accomodation-count" min="1" max="12" step="1" class="regular-text" placeholder="<?php esc_html_e( 'No. of adults.', 'easy-reservations' ); ?>"></p>
-					<p><input type="number" id="kid-accomodation-count" min="1" max="12" step="1" class="regular-text" placeholder="<?php esc_html_e( 'No. of kids.', 'easy-reservations' ); ?>"></p>
+					<input type="number" id="adult-accomodation-count" min="1" max="12" step="1" class="regular-text" placeholder="<?php esc_html_e( 'No. of adults.', 'easy-reservations' ); ?>">
+					<input type="number" id="kid-accomodation-count" min="1" max="12" step="1" class="regular-text" placeholder="<?php esc_html_e( 'No. of kids.', 'easy-reservations' ); ?>">
 					<p class="ersrv-reservation-error accomodation-error"></p>
 				</td>
 			</tr>

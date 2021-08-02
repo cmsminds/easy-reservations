@@ -487,6 +487,9 @@ jQuery( document ).ready( function( $ ) {
 			return false;
 		}
 
+		// Vacate the reservation dates array.
+		new_reservation_item_reserved_dates = [];
+
 		// Change the accomodation limit text.
 		$( '.ersrv-new-reservation-limit-text' ).text( accomodation_limit_text );
 
@@ -542,9 +545,6 @@ jQuery( document ).ready( function( $ ) {
 						}
 					}
 
-					// Remove the html from the availability calendar.
-					$( '.ersrv-item-availability-calendar' ).text( '' );
-
 					// Set the calendar on checkin and checkout dates.
 					$( '.ersrv-item-availability-calendar, #ersrv-checkin-date, #ersrv-checkout-date' ).datepicker( {
 						beforeShowDay: function( date ) {
@@ -573,6 +573,13 @@ jQuery( document ).ready( function( $ ) {
 							// Return the datepicker day object.
 							return [ date_enabled ];
 						},
+						minDate: 0,
+						weekStart: start_of_week,
+						changeMonth: true,
+					} );
+
+					// Set the calendar on checkin and checkout dates.
+					$( '#ersrv-checkin-date, #ersrv-checkout-date' ).datepicker( {
 						onSelect: function ( selected_date, instance ) {
 							if ( 'ersrv-checkin-date' === instance.id ) {
 								// Min date for checkout should be on/after the checkin date.
@@ -590,10 +597,7 @@ jQuery( document ).ready( function( $ ) {
 							} else {
 								block_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
 							}
-						},
-						minDate: 0,
-						weekStart: start_of_week,
-						changeMonth: true,
+						}
 					} );
 
 					// Min and max reservation periods.
