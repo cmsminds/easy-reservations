@@ -856,12 +856,18 @@ jQuery(document).ready(function ($) {
 	 */
 	function ersrv_calculate_reservation_total_cost() {
 		var item_subtotal      = parseFloat( ersrv_get_reservation_item_subtotal() );
+		item_subtotal          = item_subtotal.toFixed( 2 );
 		var kids_subtotal      = parseFloat( ersrv_get_reservation_kids_subtotal() );
+		kids_subtotal          = kids_subtotal.toFixed( 2 );
 		var security_subtotal  = parseFloat( ersrv_get_security_subtotal() );
+		security_subtotal      = security_subtotal.toFixed( 2 );
 		var amenities_subtotal = parseFloat( ersrv_get_amenities_subtotal() );
+		amenities_subtotal     = amenities_subtotal.toFixed( 2 );
 
 		// Addup to the total cost.
 		var total_cost = item_subtotal + kids_subtotal + security_subtotal + amenities_subtotal;
+
+		// Limit to 2 decimal places.
 		total_cost = total_cost.toFixed( 2 );
 
 		// Paste the final total.

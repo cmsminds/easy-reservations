@@ -490,6 +490,9 @@ jQuery( document ).ready( function( $ ) {
 		// Vacate the reservation dates array.
 		new_reservation_item_reserved_dates = [];
 
+		// Destroy the datepickers.
+		$( '.ersrv-item-availability-calendar, #ersrv-checkin-date, #ersrv-checkout-date' ).datepicker( 'destroy' );
+
 		// Change the accomodation limit text.
 		$( '.ersrv-new-reservation-limit-text' ).text( accomodation_limit_text );
 
@@ -547,6 +550,24 @@ jQuery( document ).ready( function( $ ) {
 
 					// Set the calendar on checkin and checkout dates.
 					$( '.ersrv-item-availability-calendar, #ersrv-checkin-date, #ersrv-checkout-date' ).datepicker( {
+						onSelect: function ( selected_date, instance ) {
+							if ( 'ersrv-checkin-date' === instance.id ) {
+								// Min date for checkout should be on/after the checkin date.
+								$( '#ersrv-checkout-date' ).datepicker( 'option', 'minDate', selected_date );
+								setTimeout( function() {
+									$( '#ersrv-checkout-date' ).datepicker( 'show' );
+								}, 16 );
+							}
+
+							// Also check if the checkin and checkout dates are available, unblock the amenities wrapper.
+							var checkin_date  = $( '#ersrv-checkin-date' ).val();
+							var checkout_date = $( '#ersrv-checkout-date' ).val();
+							if ( '' !== checkin_date && '' !== checkout_date ) {
+								unblock_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
+							} else {
+								block_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
+							}
+						},
 						beforeShowDay: function( date ) {
 							var loop_date           = ( ( '0' + date.getDate() ).slice( -2 ) );
 							var loop_month          = ( ( '0' + ( date.getMonth() + 1 ) ).slice( -2 ) );
@@ -578,28 +599,6 @@ jQuery( document ).ready( function( $ ) {
 						changeMonth: true,
 					} );
 
-					// Set the calendar on checkin and checkout dates.
-					$( '#ersrv-checkin-date, #ersrv-checkout-date' ).datepicker( {
-						onSelect: function ( selected_date, instance ) {
-							if ( 'ersrv-checkin-date' === instance.id ) {
-								// Min date for checkout should be on/after the checkin date.
-								$( '#ersrv-checkout-date' ).datepicker( 'option', 'minDate', selected_date );
-								setTimeout( function() {
-									$( '#ersrv-checkout-date' ).datepicker( 'show' );
-								}, 16 );
-							}
-
-							// Also check if the checkin and checkout dates are available, unblock the amenities wrapper.
-							var checkin_date  = $( '#ersrv-checkin-date' ).val();
-							var checkout_date = $( '#ersrv-checkout-date' ).val();
-							if ( '' !== checkin_date && '' !== checkout_date ) {
-								unblock_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
-							} else {
-								block_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
-							}
-						}
-					} );
-
 					// Min and max reservation periods.
 					var min_reservation_period = ( -1 !== is_valid_number( item_details.min_reservation_period ) ) ? parseInt( item_details.min_reservation_period ) : -1;
 					var max_reservation_period = ( -1 !== is_valid_number( item_details.max_reservation_period ) ) ? parseInt( item_details.max_reservation_period ) : -1;
@@ -628,7 +627,7 @@ jQuery( document ).ready( function( $ ) {
 	/**
 	 * Block/unblock amenities block based on checkin and checkout dates.
 	 */
-	 $( document ).on( 'click', '#ersrv-checkin-date, #ersrv-checkout-date', function() {
+	$( document ).on( 'click', '#ersrv-checkin-date, #ersrv-checkout-date', function() {
 		// Also check if the checkin and checkout dates are available, unblock the amenities wrapper.
 		var checkin_date  = $( '#ersrv-checkin-date' ).val();
 		var checkout_date = $( '#ersrv-checkout-date' ).val();
@@ -648,6 +647,7 @@ jQuery( document ).ready( function( $ ) {
 		adult_count          = ( -1 === is_valid_number( adult_count ) ) ? 0 : adult_count;
 		var per_adult_charge = parseFloat( $( '#adult-charge' ).val() );
 		var total_charge     = adult_count * per_adult_charge;
+		total_charge         = total_charge.toFixed( 2 );
 		$( 'tr.item-price-summary td' ).html( woo_currency + total_charge );
 
 		// Calculate the total cost.
@@ -657,12 +657,13 @@ jQuery( document ).ready( function( $ ) {
 	/**
 	 * Accomodation kids charge.
 	 */
-	 $( document ).on( 'keyup click', '#kid-accomodation-count', function() {
+	$( document ).on( 'keyup click', '#kid-accomodation-count', function() {
 		var this_input     = $( this );
 		var kids_count     = parseInt( this_input.val() );
 		kids_count         = ( -1 === is_valid_number( kids_count ) ) ? 0 : kids_count;
 		var per_kid_charge = parseFloat( $( '#kid-charge' ).val() );
 		var total_charge   = kids_count * per_kid_charge;
+		total_charge         = total_charge.toFixed( 2 );
 		$( 'tr.kids-charge-summary td' ).html( woo_currency + total_charge );
 
 		// Calculate the total cost.
@@ -690,6 +691,9 @@ jQuery( document ).ready( function( $ ) {
 				amenities_summary_cost += parseFloat( amenity_cost );
 			}
 		} );
+
+		// Limit to 2 decimal places.
+		amenities_summary_cost = amenities_summary_cost.toFixed( 2 );
 
 		// Paste the final cost.
 		$( 'tr.amenities-summary td' ).html( woo_currency + amenities_summary_cost );
@@ -1021,6 +1025,9 @@ jQuery( document ).ready( function( $ ) {
 
 		// Addup to the total cost.
 		var total_cost = item_subtotal + kids_subtotal + security_subtotal + amenities_subtotal;
+
+		// Limit to 2 decimal places.
+		total_cost = total_cost.toFixed( 2 );
 
 		// Paste the final total.
 		$( 'tr.new-reservation-total-cost td' ).html( woo_currency + total_cost );

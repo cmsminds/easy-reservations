@@ -93,9 +93,9 @@ class Easy_Reservations_Admin {
 		if ( $include_datepicker_style ) {
 			wp_enqueue_style(
 				$this->plugin_name . '-jquery-ui-style',
-				ERSRV_PLUGIN_URL . 'public/css/ui/jquery-ui.min.css',
+				ERSRV_PLUGIN_URL . 'admin/css/ui/jquery-ui.min.css',
 				array(),
-				filemtime( ERSRV_PLUGIN_PATH . 'public/css/ui/jquery-ui.min.css' )
+				filemtime( ERSRV_PLUGIN_PATH . 'admin/css/ui/jquery-ui.min.css' )
 			);
 		}
 
@@ -788,7 +788,7 @@ class Easy_Reservations_Admin {
 			$wc_product,
 			1,
 			array(
-				'total' => $item_total,
+				'subtotal' => $item_total,
 			)
 		);
 
