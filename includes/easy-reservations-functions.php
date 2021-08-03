@@ -532,7 +532,7 @@ if ( ! function_exists( 'ersrv_get_admin_script_vars' ) ) {
 		}
 
 		// Date format.
-		$vars['date_format'] = 'dd-mm-yy'; // ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' );
+		$vars['date_format'] = ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' );
 
 		/**
 		 * This hook fires in admin panel.
@@ -1776,5 +1776,85 @@ if ( ! function_exists( 'ersrv_get_php_date_format' ) ) {
 		$datepicker_format = apply_filters( 'ersrv_php_date_format', $datepicker_format );
 
 		return $datepicker_format;
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_block_dates_after_reservation_thankyou' ) ) {
+	/**
+	 * Block the reservation dates of the order items.
+	 *
+	 * @param WC_Order $wc_order WooCommerce order.
+	 * @since 1.0.0
+	 */
+	function ersrv_block_dates_after_reservation_thankyou( $wc_order ) {
+		// Block the dates of the items so they show as reserved.
+		$dates_blocked = get_post_meta( $wc_order->get_id(), 'ersrv_blocked_dates_of_reservation_items', true );
+
+		// Return, if the dates are already blocked.
+		if ( ! empty( $dates_blocked ) ) {
+			return;
+		}
+
+		// Get the items.
+		$order_line_items = $wc_order->get_items();
+
+		// If there are line items.
+		if ( ! empty( $order_line_items ) && is_array( $order_line_items ) ) {
+			foreach ( $order_line_items as $order_line_item ) {
+				$line_item_id = $order_line_item->get_id();
+				$product_id   = $order_line_item->get_product_id();
+				
+				// If this product is a reservation product.
+				$is_reservation_product = ersrv_product_is_reservation( $product_id );
+
+				// Skip the loop, if the product is not reservation type.
+				if ( ! $is_reservation_product ) {
+					continue;
+				}
+
+				// Get the blocked dates.
+				$blocked_dates = get_post_meta( $product_id, '_ersrv_reservation_blockout_dates', true );
+				$blocked_dates = ( ! empty( $blocked_dates ) && is_array( $blocked_dates ) ) ? $blocked_dates : array();
+
+				// Gather the reservation dates.
+				$order_checkin_date    = wc_get_order_item_meta( $line_item_id, 'Checkin Date', true );
+				$order_checkout_date   = wc_get_order_item_meta( $line_item_id, 'Checkout Date', true );
+				$reservation_dates     = ersrv_get_dates_within_2_dates( $order_checkin_date, $order_checkout_date );
+				$new_reservation_dates = array();
+				$block_date_message    = sprintf( __( 'Reserved with order #%1$d', 'easy-reservations' ), $wc_order->get_id() );
+
+				/**
+				 * This filter fires on the checkout page.
+				 *
+				 * This filter helps in mpdifying the block date message.
+				 *
+				 * @param string $block_date_message Block message.
+				 * @return string
+				 * @since 1.0.0
+				 */
+				$block_date_message = apply_filters( 'ersrv_reservation_block_date_message', $block_date_message );
+
+				if ( ! empty( $reservation_dates ) ) {
+					foreach ( $reservation_dates as $date ) {
+						$new_reservation_dates[] = array(
+							'date'    => $date->format( ersrv_get_php_date_format() ),
+							'message' => $block_date_message,
+						);
+					}
+				}
+
+				// Merge the dates now.
+				$blocked_dates = array_merge( $blocked_dates, $new_reservation_dates );
+
+				// Update the database finally.
+				update_post_meta( $product_id, '_ersrv_reservation_blockout_dates', $blocked_dates );
+			}
+		}
+
+		// Update the database, so this is not fired again.
+		update_post_meta( $wc_order->get_id(), 'ersrv_blocked_dates_of_reservation_items', 1 );
 	}
 }

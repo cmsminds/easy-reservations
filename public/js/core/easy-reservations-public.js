@@ -46,12 +46,9 @@ jQuery(document).ready(function ($) {
 
 	// If it's the product page.
 	if ( 'yes' === is_product ) {
-		var reserved_dates    = reservation_item_details.reserved_dates;
-		var current_date      = new Date();
-		var current_month     = ( ( '0' + ( current_date.getMonth() + 1 ) ).slice( -2 ) );
-		var current_date_date = ( ( '0' + ( current_date.getDate() ) ).slice( -2 ) );
-		var today_formatted   = current_date.getFullYear() + '-' + current_month + '-' + current_date_date;
-		var blocked_dates     = [];
+		var reserved_dates  = reservation_item_details.reserved_dates;
+		var today_formatted = ersrv_get_formatted_date( new Date() );
+		var blocked_dates   = [];
 
 		// Prepare the blocked out dates in a separate array.
 		if ( 0 < reserved_dates.length ) {
@@ -63,9 +60,7 @@ jQuery(document).ready(function ($) {
 		// Availability calendar 2 months.
 		$( '.ersrv-item-availability-calendar' ).datepicker( {
 			beforeShowDay: function( date ) {
-				var loop_date           = ( ( '0' + ( date.getDate() ) ).slice( -2 ) );
-				var loop_month          = ( ( '0' + ( date.getMonth() + 1 ) ).slice( -2 ) );
-				var loop_date_formatted = date.getFullYear() + '-' + loop_month + '-' + loop_date;
+				var loop_date_formatted = ersrv_get_formatted_date( date );
 				var date_enabled        = true;
 				var date_class          = '';
 
@@ -85,7 +80,7 @@ jQuery(document).ready(function ($) {
 						date_class = 'ersrv-date-active';
 					}
 				} else {
-					date_class = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+					date_class = 'ersrv-date-disabled';
 				}
 
 				// Return the datepicker day object.
@@ -99,9 +94,7 @@ jQuery(document).ready(function ($) {
 		// Checkin and checkout datepicker.
 		$( '#ersrv-single-reservation-checkin-datepicker, #ersrv-single-reservation-checkout-datepicker' ).datepicker( {
 			beforeShowDay: function( date ) {
-				var loop_date           = ( ( '0' + ( date.getDate() ) ).slice( -2 ) );
-				var loop_month          = ( ( '0' + ( date.getMonth() + 1 ) ).slice( -2 ) );
-				var loop_date_formatted = date.getFullYear() + '-' + loop_month + '-' + loop_date;
+				var loop_date_formatted = ersrv_get_formatted_date( date );
 				var date_enabled        = true;
 				var date_class          = '';
 
@@ -121,7 +114,7 @@ jQuery(document).ready(function ($) {
 						date_class = 'ersrv-date-active';
 					}
 				} else {
-					date_class = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+					date_class = 'ersrv-date-disabled';
 				}
 
 				// Return the datepicker day object.
@@ -285,7 +278,7 @@ jQuery(document).ready(function ($) {
 				}
 
 				// Unblock the element.
-				unblock_element($('.ersrv-reservation-calendars-container'));
+				unblock_element( $( '.ersrv-reservation-calendars-container' ) );
 			},
 		});
 	} );
@@ -757,6 +750,22 @@ jQuery(document).ready(function ($) {
 	} );
 
 	/**
+	 * Return the formatted date based on the global date format.
+	 */
+	function ersrv_get_formatted_date( date_obj ) {
+		var month = ( ( '0' + ( date_obj.getMonth() + 1 ) ).slice( -2 ) );
+		var date  = ( ( '0' + ( date_obj.getDate() ) ).slice( -2 ) );
+		var year  = date_obj.getFullYear();
+
+		// Replace the variables now.
+		var formatted_date = date_format.replace( 'dd', date );
+		formatted_date = formatted_date.replace( 'mm', month );
+		formatted_date = formatted_date.replace( 'yy', year );
+
+		return formatted_date;
+	}
+
+	/**
 	 * Check if a email is valid.
 	 *
 	 * @param {string} email
@@ -856,13 +865,9 @@ jQuery(document).ready(function ($) {
 	 */
 	function ersrv_calculate_reservation_total_cost() {
 		var item_subtotal      = parseFloat( ersrv_get_reservation_item_subtotal() );
-		item_subtotal          = item_subtotal.toFixed( 2 );
 		var kids_subtotal      = parseFloat( ersrv_get_reservation_kids_subtotal() );
-		kids_subtotal          = kids_subtotal.toFixed( 2 );
 		var security_subtotal  = parseFloat( ersrv_get_security_subtotal() );
-		security_subtotal      = security_subtotal.toFixed( 2 );
 		var amenities_subtotal = parseFloat( ersrv_get_amenities_subtotal() );
-		amenities_subtotal     = amenities_subtotal.toFixed( 2 );
 
 		// Addup to the total cost.
 		var total_cost = item_subtotal + kids_subtotal + security_subtotal + amenities_subtotal;

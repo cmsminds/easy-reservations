@@ -819,6 +819,9 @@ class Easy_Reservations_Admin {
 		$wc_order->calculate_totals();
 		$wc_order->save();
 
+		// Update order meta to be a reservation order.
+		update_post_meta( $wc_order->get_id(), 'ersrv_reservation_order', 1 );
+
 		/**
 		 * This hook fires after reservation is created as WooCommerce order.
 		 *
@@ -1155,20 +1158,5 @@ class Easy_Reservations_Admin {
 		}
 
 		return $post_states;
-	}
-
-	/**
-	 * Change the date format for admin panel.
-	 *
-	 * @param string $format Date format.
-	 * @return string
-	 * @since 1.0.0
-	 */
-	public function ersrv_ersrv_php_date_format_callback( $format ) {
-		if ( ! is_admin() ) {
-			return $format;
-		}
-
-		return 'Y-m-d';
 	}
 }

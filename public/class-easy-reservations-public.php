@@ -344,6 +344,9 @@ class Easy_Reservations_Public {
 		// Register reservation item type taxonomy.
 		ersrv_register_reservation_type_taxonomy();
 
+		// Send reminder emails to the customers.
+		$this->ersrv_send_reminder_emails();
+
 		// If it's the download reservation receipt request.
 		if ( ! is_null( $action ) && 'ersrv-download-reservation-receipt' === $action ) {
 			$order_id = (int) filter_input( INPUT_GET, 'atts', FILTER_SANITIZE_NUMBER_INT );
@@ -584,6 +587,12 @@ class Easy_Reservations_Public {
 		if ( ! $is_reservation_order ) {
 			return;
 		}
+
+		// Update order meta to be a reservation order.
+		update_post_meta( $order_id, 'ersrv_reservation_order', 1 );
+
+		// Block the dates after reservation is successfully filed by the customer.
+		ersrv_block_dates_after_reservation_thankyou( $wc_order );
 
 		// Check if the order status is allowed for receipts.
 		$display_order_receipt = ersrv_should_display_receipt_button( $order_id );
@@ -1499,5 +1508,15 @@ class Easy_Reservations_Public {
 			// Add the amenities subtotal to the item meta.
 			$item->update_meta_data( 'Amenities Subtotal', $cart_item_data['reservation_data']['amenities_subtotal'] ); // Update the amenities subtotal.
 		}
+	}
+
+	/**
+	 * Send reminder emails to the customer's about their reservation.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_send_reminder_emails() {
+		// Get the woocommerce orders.
+		// if (  )
 	}
 }
