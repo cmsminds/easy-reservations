@@ -38,18 +38,6 @@ table{
 	pointer-events: none;
 	opacity: 0.5;
 }
-/* #page::after {
-    position: fixed;
-    z-index: 1000;
-    height: 100%;
-    width: 100%;
-    background: rgba(0,0,0,.5);
-    content: "";
-    display: inline-block;
-    pointer-events: none;
-    top: 0px;
-    left: 0px;
-} */
 h1:not(.site-title):before, h2:before,
 .page .entry-header,
 .page .entry-footer{
@@ -110,3 +98,31 @@ h1:not(.site-title):before, h2:before,
 .ersrv-notification a{
     text-decoration: underline;
 }
+.ui-datepicker td span{
+    padding: 9px;
+    text-align: center;
+}
+#ui-datepicker-div td span{
+    padding: 6px;
+}
+.ui-datepicker-calendar .ui-state-disabled *,
+.ui-datepicker-calendar .ersrv-date-disabled *{
+    color: #b4b5b7;
+    background-color: #e0e0e0;
+    border-radius: 100%;
+}
+
+
+/* Experimental */
+/* body::after {
+    position: fixed;
+    z-index: 99999;
+    height: 100%;
+    width: 100%;
+    background: rgba(0,0,0,.5);
+    content: "";
+    display: inline-block;
+    pointer-events: none;
+    top: 0px;
+    left: 0px;
+} */
