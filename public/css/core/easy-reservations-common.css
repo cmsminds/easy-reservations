@@ -100,3 +100,13 @@ h1:not(.site-title):before, h2:before,
     padding: 0px 0px 5px;
     font-size: 16px;
 }
+.ersrv-notification.bg-success *,
+.ersrv-notification.bg-danger *{
+    color: #fff;
+}
+.ersrv-notification.bg-warning *{
+    color: #000;
+}
+.ersrv-notification a{
+    text-decoration: underline;
+}
