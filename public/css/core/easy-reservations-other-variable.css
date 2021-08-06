@@ -3,7 +3,7 @@
   color: #0c71c3;
 }
 
-.bgcolor-primary, .btn-primary, .btn-outline-fill-primary:hover {
+.bgcolor-primary, .btn-primary, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:active, .btn-outline-fill-primary:focus, .btn-outline-fill-primary.hover, .btn-outline-fill-primary.active, .btn-outline-fill-primary.focus {
   background-color: #0c71c3;
 }
 
@@ -51,7 +51,7 @@
   color: #cbefd9;
 }
 
-.bgcolor-accent-300, .btn-accent:hover {
+.bgcolor-accent-300, .btn-accent:hover, .btn-accent:active, .btn-accent:focus, .btn-accent.hover, .btn-accent.active, .btn-accent.focus {
   background-color: #cbefd9;
 }
 
@@ -71,7 +71,7 @@
   border-color: #17763a;
 }
 
-.color-white, .btn-primary, .btn-outline-fill-primary:hover, .btn-accent {
+.color-white, .btn-primary, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:active, .btn-outline-fill-primary:focus, .btn-outline-fill-primary.hover, .btn-outline-fill-primary.active, .btn-outline-fill-primary.focus, .btn-accent {
   color: #fff;
 }
 
@@ -107,7 +107,7 @@
   border-color: rgba(255, 255, 255, 0.5);
 }
 
-.color-black, .btn-accent:hover {
+.color-black, .btn-accent:hover, .btn-accent:active, .btn-accent:focus, .btn-accent.hover, .btn-accent.active, .btn-accent.focus {
   color: #000;
 }
 

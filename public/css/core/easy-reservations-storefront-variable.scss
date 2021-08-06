@@ -97,7 +97,7 @@ $count: 0;
     height: $size;
 }
 
-@mixin flex-center($display:flex){
+@mixin flex-center($display:flex) {
     display: $display;
     align-items: center;
     justify-content: center;
@@ -164,7 +164,7 @@ img {
     &:focus,
     &:hover {
         background-image: url("../../images/planner_active.png");
-        background-blend-mode:luminosity;
+        background-blend-mode: luminosity;
     }
 }
 
@@ -175,9 +175,10 @@ img {
     background-repeat: no-repeat;
     cursor: pointer;
     transition: 0.3s ease-in-out;
+
     &:focus,
     &:hover {
-        background-blend-mode:difference !important;
+        background-blend-mode: difference !important;
     }
 }
 
@@ -186,7 +187,7 @@ img {
 .focus-none,
 .bootstrap-select .dropdown-toggle:focus,
 .bootstrap-select>select.mobile-device:focus+.dropdown-toggle,
-.custom-control-input:focus~.custom-control-label::before{
+.custom-control-input:focus~.custom-control-label::before {
     outline: none !important;
     box-shadow: none !important;
 }
@@ -201,7 +202,7 @@ img {
         width: 15px;
         height: 10px;
         -webkit-filter: brightness(0) invert(0.4);
-                filter: brightness(0) invert(0.4);
+        filter: brightness(0) invert(0.4);
     }
 
     &:hover,
@@ -217,70 +218,116 @@ img {
     @extend .color-white;
     @extend .bgcolor-primary;
     @extend .border-color-primary;
+
     &:hover{
-        @extend .color-primary;
-        @extend .bgcolor-primary-300;
-        @extend .border-color-primary-300;
+        color: $primary !important;
+        background-color: $primary-300 !important;
+        border-color: $primary-300 !important;
     }
+}
+.btn-primary:not(:disabled):not(.disabled).focus,
+.btn-primary:not(:disabled):not(.disabled):focus,
+.btn-primary:not(:disabled):not(.disabled).active,
+.btn-primary:not(:disabled):not(.disabled):active,
+.show>.btn-primary.dropdown-toggle {
+    color: $primary !important;
+    background-color: $primary-300 !important;
+    border-color: $primary-300 !important;
 }
 
 .btn-outline-fill-primary {
     @extend .color-primary;
     @extend .bgcolor-primary-300;
     @extend .border-color-primary;
-    &:hover, &:focus, &:active {
+
+    &:hover,
+    &:focus,
+    &:active {
         @extend .color-white;
         @extend .bgcolor-primary;
     }
 }
 
-.btn-outline-primary {
+.btn-outline-primary{
     @extend .color-primary;
     @extend .border-color-primary;
     @extend .bgcolor-transparent;
-    &:hover, &:focus, &:active {
+
+    &:hover,
+    &:focus,
+    &:active {
         @extend .color-white;
         @extend .border-color-primary;
         @extend .bgcolor-primary;
     }
+}
+.btn-outline-primary:not(:disabled):not(.disabled).focus,
+.btn-outline-primary:not(:disabled):not(.disabled):focus,
+.btn-outline-primary:not(:disabled):not(.disabled).active,
+.btn-outline-primary:not(:disabled):not(.disabled):active,
+.show>.btn-outline-primary.dropdown-toggle {
+    color: $white !important;
+    background-color: $primary !important;
+    border-color: $primary !important;
 }
 .btn-outline-secondary {
     @extend .color-secondary;
     @extend .border-color-secondary;
     @extend .bgcolor-transparent;
-    &:hover, &:focus, &:active {
+
+    &:hover,
+    &:focus,
+    &:active {
         @extend .color-white;
         @extend .border-color-primary;
         @extend .bgcolor-primary;
     }
 }
+.btn-outline-secondary:not(:disabled):not(.disabled).focus,
+.btn-outline-secondary:not(:disabled):not(.disabled):focus,
+.btn-outline-secondary:not(:disabled):not(.disabled).active,
+.btn-outline-secondary:not(:disabled):not(.disabled):active,
+.show>.btn-outline-secondary.dropdown-toggle {
+    color: $white !important;
+    background-color: $primary !important;
+    border-color: $primary !important;
+}
+
 .dropdown-item.active,
 .dropdown-item:active {
     color: $white;
     text-decoration: none;
     background-color: $primary;
 }
-.custom-control-input:checked~.custom-control-label::before{
+
+.custom-control-input:checked~.custom-control-label::before {
     color: $white;
     border-color: $primary;
     background-color: $primary;
 }
+
 .custom-control-input:not(:disabled):active~.custom-control-label::before {
     color: $white;
     background-color: $primary-300;
     border-color: $primary-300;
 }
-.custom-control-input:focus:not(:checked)~.custom-control-label::before{
+
+.custom-control-input:focus:not(:checked)~.custom-control-label::before {
     border-color: $primary;
 }
-.search-page .btn-xl{
+
+.search-page .btn-xl {
     padding: 15px 41px;
 }
-.btn-accent{
+
+.btn-accent {
     @extend .color-white;
     @extend .bgcolor-accent;
     @extend .border-color-accent;
-    &:hover{
+
+    &:hover,
+    &:focus,
+    &:active {
         @extend .color-black;
         @extend .bgcolor-accent-300;
     }

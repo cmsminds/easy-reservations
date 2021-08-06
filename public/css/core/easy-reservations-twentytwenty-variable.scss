@@ -171,9 +171,9 @@ img {
 
 .ship-icon-field {
     background-image: url("../../images/ship-gray.png") !important;
-    background-position: 90%;
-    background-size: 20px;
-    background-repeat: no-repeat;
+    background-position: 90% !important;
+    background-size: 20px !important;
+    background-repeat: no-repeat !important;
     cursor: pointer;
     transition: 0.3s ease-in-out;
     &:focus,
@@ -217,29 +217,33 @@ img {
     color: $white;
     background-color: $primary;
     border-color: $primary;
-    &:hover,&:focus,&:active{
-        background-color: $secondary;
-        border-color: $secondary;
+    &:hover,&:active,&:focus,
+    &.hover,&.active,&.focus{
+        color: $white !important;
+        background-color: $secondary !important;
+        border-color: $secondary !important;
     }
 }
 .btn-outline-fill-primary{
     color: $white;
     background-color: $secondary-300;
     border-color: $secondary;
-    &:hover,&:focus,&:active{
-        color: $white;
-        background-color: $primary;
-        border-color: $secondary;
+    &:hover,&:active,&:focus,
+    &.hover,&.active,&.focus{
+        color: $white !important;
+        background-color: $primary !important;
+        border-color: $secondary !important;
     }
 }
 .btn-outline-primary{
     @extend .color-primary;
     @extend .border-color-primary;
     @extend .bgcolor-transparent;
-    &:hover,&:focus,&:active{
-        @extend .color-white;
-        @extend .bgcolor-primary;
-        @extend .border-color-primary;
+    &:hover,&:active,&:focus,
+    &.hover,&.active,&.focus{
+        color: $white !important;
+        background-color: $primary !important;
+        border-color: $primary !important;
     }
 }
 .dropdown-item.active,
@@ -272,9 +276,10 @@ img {
     color: $white;
     background-color: $secondary-300;
     border-color: $secondary;
-    &:hover,&:focus,&:active{
-        color: $white;
-        background-color: $primary;
-        border-color: $secondary;
+    &:hover,&:active,&:focus,
+    &.hover,&.active,&.focus{
+        color: $white !important;
+        background-color: $primary !important;
+        border-color: $secondary !important;
     }
 }
