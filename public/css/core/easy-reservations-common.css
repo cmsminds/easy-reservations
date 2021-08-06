@@ -88,6 +88,27 @@ h1:not(.site-title):before, h2:before,
     padding: 0px 0px 5px;
     font-size: 16px;
 }
+.ersrv-notification-wrapper{
+    bottom: 40px;
+    left: 0px;
+    right: 0px;
+    display: inline-flex;
+    justify-content: center;
+}
+.ersrv-notification{
+    border: 1px solid transparent;
+    transform: translateY(100px);
+    transition: 0.3s ease-in-out;
+    transform-origin: bottom;
+}
+.ersrv-notification.toast.hide{
+    display: block;
+}
+.ersrv-notification.fade:not(.show),
+.ersrv-notification.toast:not(.hide){
+    transform: translateY(0px);
+    transform-origin: top;
+}
 .ersrv-notification.bg-success *,
 .ersrv-notification.bg-danger *{
     color: #fff;
@@ -107,7 +128,7 @@ h1:not(.site-title):before, h2:before,
 }
 .ui-datepicker-calendar .ui-state-disabled *,
 .ui-datepicker-calendar .ersrv-date-disabled *{
-    color: #b4b5b7;
+    color: #fff;
     background-color: #e0e0e0;
     border-radius: 100%;
 }
