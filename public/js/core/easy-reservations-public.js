@@ -24,6 +24,10 @@ jQuery(document).ready(function ($) {
 	var toast_error_heading                          = ERSRV_Public_Script_Vars.toast_error_heading;
 	var toast_notice_heading                         = ERSRV_Public_Script_Vars.toast_notice_heading;
 	var invalid_reservation_item_is_error_text       = ERSRV_Public_Script_Vars.invalid_reservation_item_is_error_text;
+	var reservation_add_to_cart_error_message        = ERSRV_Public_Script_Vars.reservation_add_to_cart_error_message;
+
+	// Custom vars.
+	var quick_view_reserved_dates = [];
 
 	// If sidebar is to be removed on reservation single page.
 	if ('yes' === remove_sidebar) {
@@ -193,6 +197,22 @@ jQuery(document).ready(function ($) {
 	} );
 
 	/**
+	 * Accomodation adult charge - quick view modal.
+	 */
+	$( document ).on( 'keyup click', '#quick-view-adult-accomodation-count', function() {
+		var this_input       = $( this );
+		var adult_count      = parseInt( this_input.val() );
+		adult_count          = ( -1 === is_valid_number( adult_count ) ) ? 0 : adult_count;
+		var per_adult_charge = parseFloat( $( '#quick-view-adult-charge' ).val() );
+		var total_charge     = adult_count * per_adult_charge;
+		total_charge         = total_charge.toFixed( 2 );
+		$( '#quick-view-adult-subtotal' ).val( total_charge );
+
+		// Calculate the total cost.
+		ersrv_calculate_reservation_total_cost_quick_view();
+	} );
+
+	/**
 	 * Accomodation kids charge.
 	 */
 	 $( document ).on( 'keyup click', '#kid-accomodation-count', function() {
@@ -206,6 +226,22 @@ jQuery(document).ready(function ($) {
 
 		// Calculate the total cost.
 		ersrv_calculate_reservation_total_cost();
+	} );
+
+	/**
+	 * Accomodation kids charge - quick view modal.
+	 */
+	$( document ).on( 'keyup click', '#quick-view-kid-accomodation-count', function() {
+		var this_input     = $( this );
+		var kids_count     = parseInt( this_input.val() );
+		kids_count         = ( -1 === is_valid_number( kids_count ) ) ? 0 : kids_count;
+		var per_kid_charge = parseFloat( $( '#quick-view-kid-charge' ).val() );
+		var total_charge   = kids_count * per_kid_charge;
+		total_charge       = total_charge.toFixed( 2 );
+		$( '#quick-view-kid-subtotal' ).val( total_charge );
+
+		// Calculate the total cost.
+		ersrv_calculate_reservation_total_cost_quick_view();
 	} );
 
 	/**
@@ -238,6 +274,38 @@ jQuery(document).ready(function ($) {
 
 		// Calculate the total cost.
 		ersrv_calculate_reservation_total_cost();
+	} );
+
+	/**
+	 * Amenities charge summary - quick view modal.
+	 */
+	$( document ).on( 'click', '.ersrv-quick-view-reservation-single-amenity', function() {
+		var amenities_summary_cost  = 0.0;
+		var checkin_date            = $( '#ersrv-quick-view-item-checkin-date' ).val();
+		var checkout_date           = $( '#ersrv-quick-view-item-checkout-date' ).val();
+		var reservation_dates       = ersrv_get_dates_between_2_dates( checkin_date, checkout_date );
+		var reservation_dates_count = reservation_dates.length;
+
+		// Collect the amenities and their charges.
+		$( '.ersrv-quick-view-reservation-single-amenity' ).each ( function() {
+			var this_element = $( this );
+			var is_checked = this_element.is( ':checked' );
+			if ( true === is_checked ) {
+				var amenity_cost      = parseFloat( this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost' ) );
+				var amenity_cost_type = this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost_type' );
+				amenity_cost          = ( 'per_day' === amenity_cost_type ) ? ( amenity_cost * reservation_dates_count ) : amenity_cost;
+				amenities_summary_cost += parseFloat( amenity_cost );
+			}
+		} );
+
+		// Limit to 2 decimal places.
+		amenities_summary_cost = amenities_summary_cost.toFixed( 2 );
+
+		// Paste the final cost.
+		$( '#quick-view-amenities-subtotal' ).val( amenities_summary_cost );
+
+		// Calculate the total cost.
+		ersrv_calculate_reservation_total_cost_quick_view();
 	} );
 
 	/**
@@ -469,6 +537,70 @@ jQuery(document).ready(function ($) {
 
 					$( '#ersrv-item-quick-view-modal .modal-body .quickbuymodal' ).html( response.data.html );
 					$( '#ersrv-item-quick-view-modal' ).fadeIn( 'slow' );
+
+					// Checkin and checkout datepicker.
+					var reserved_dates        = response.data.reserved_dates;
+					quick_view_reserved_dates = reserved_dates;
+					var today_formatted       = ersrv_get_formatted_date( new Date() );
+					var blocked_dates         = [];
+
+					// Prepare the blocked out dates in a separate array.
+					if ( 0 < reserved_dates.length ) {
+						for ( var i in reserved_dates ) {
+							blocked_dates.push( reserved_dates[i].date );
+						}
+					}
+
+					// Availability calendar 2 months.
+					$( '#ersrv-quick-view-item-checkin-date, #ersrv-quick-view-item-checkout-date' ).datepicker( {
+						beforeShowDay: function( date ) {
+							var loop_date_formatted = ersrv_get_formatted_date( date );
+							var date_enabled        = true;
+							var date_class          = '';
+
+							// If not the past date.
+							if ( today_formatted <= loop_date_formatted ) {
+								// Add custom class to the active dates of the current month.
+								var key = $.map( blocked_dates, function( val, i ) {
+									if ( val === loop_date_formatted ) {
+										return i;
+									}
+								} );
+
+								// If the loop date is a blocked date.
+								if ( 0 < key.length ) {
+									date_class = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+								} else {
+									date_class = 'ersrv-date-active';
+								}
+							} else {
+								date_class = 'ersrv-date-disabled';
+							}
+
+							// Return the datepicker day object.
+							return [ date_enabled, date_class ];
+						},
+						onSelect: function ( selected_date, instance ) {
+							if ( 'ersrv-quick-view-item-checkin-date' === instance.id ) {
+								// Min date for checkout should be on/after the checkin date.
+								$( '#ersrv-quick-view-item-checkout-date' ).datepicker( 'option', 'minDate', selected_date );
+								setTimeout( function() {
+									$( '#ersrv-quick-view-item-checkout-date' ).datepicker( 'show' );
+								}, 16 );
+							}
+			
+							// Also check if the checkin and checkout dates are available, unblock the amenities wrapper.
+							var checkin_date  = $( '#ersrv-quick-view-item-checkin-date' ).val();
+							var checkout_date = $( '#ersrv-quick-view-item-checkout-date' ).val();
+							if ( '' !== checkin_date && '' !== checkout_date ) {
+								unblock_element( $( '.ersrv-item-amenities-wrapper' ) );
+							} else {
+								block_element( $( '.ersrv-item-amenities-wrapper' ) );
+							}
+						},
+						dateFormat: date_format,
+						minDate: 0,
+					} );
 				}
 			},
 		} );
@@ -604,7 +736,7 @@ jQuery(document).ready(function ($) {
 
 		// Exit, if we cannot process the reservation.
 		if ( false === process_reservation ) {
-			ersrv_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, 'There are a few errors that need to be addressed.' );
+			ersrv_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, reservation_add_to_cart_error_message );
 			return false;
 		}
 
@@ -625,6 +757,157 @@ jQuery(document).ready(function ($) {
 			security_subtotal: ersrv_get_security_subtotal(),
 			amenities_subtotal: ersrv_get_amenities_subtotal(),
 			item_total: ersrv_get_item_total(),
+		};
+
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: data,
+			success: function ( response ) {
+				// Return, if the response is not proper.
+				if ( 0 === response ) {
+					console.warn( 'easy-reservations: invalid ajax call' );
+					return false;
+				}
+
+				// If the reservation is added.
+				if ( 'reservation-added-to-cart' === response.data.code ) {
+					// Unblock the element.
+					unblock_element( this_button );
+
+					// Show toast.
+					ersrv_show_toast( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
+				}
+			},
+		} );
+	} );
+
+	/**
+	 * Proceed with reservation details and add the details to the cart from quick view modal.
+	 */
+	$( document ).on( 'click', '.ersrv-add-quick-view-reservation-to-cart', function() {
+		var this_button            = $( this );
+		var item_id                = parseInt( $( '#quick-view-item-id' ).val() );
+		var accomodation_limit     = parseInt( $( '#quick-view-accomodation-limit' ).val() );
+		var checkin_date           = $( '#ersrv-quick-view-item-checkin-date' ).val();
+		var checkout_date          = $( '#ersrv-quick-view-item-checkout-date' ).val();
+		var adult_count            = parseInt( $( '#quick-view-adult-accomodation-count' ).val() );
+		adult_count                = ( -1 !== is_valid_number( adult_count ) ) ? adult_count : 0;
+		var kid_count              = parseInt( $( '#quick-view-kid-accomodation-count' ).val() );
+		kid_count                  = ( -1 !== is_valid_number( kid_count ) ) ? kid_count : 0;
+		var guests                 = adult_count + kid_count;
+		var process_reservation    = true;
+		var amenities              = [];
+		var min_reservation_period = parseInt( $( '#quick-view-min-reservation-period' ).val() );
+		var max_reservation_period = parseInt( $( '#quick-view-max-reservation-period' ).val() );
+
+		// Vacate the error message.
+		$( '.ersrv-reservation-error' ).text( '' );
+
+		// Guests count.
+		if ( -1 === is_valid_number( adult_count ) && -1 === is_valid_number( kid_count ) ) {
+			process_reservation = false;
+			$( '.ersrv-reservation-error.accomodation-error' ).text( reservation_guests_err_msg );
+		} else if ( -1 === is_valid_number( adult_count ) && -1 !== is_valid_number( kid_count ) ) {
+			process_reservation = false;
+			$( '.ersrv-reservation-error.accomodation-error' ).text( reservation_only_kids_guests_err_msg );
+		} else if ( accomodation_limit < guests ) {
+			process_reservation = false;
+			$( '.ersrv-reservation-error.accomodation-error' ).text( reservation_guests_count_exceeded_err_msg );
+		}
+
+		// If the checkin and checkout dates are not available.
+		if ( '' === checkin_date && '' === checkout_date ) {
+			process_reservation = false;
+			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_checkin_checkout_missing_err_msg );
+		} else if ( '' === checkin_date ) {
+			process_reservation = false;
+			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_checkin_missing_err_msg );
+		} else if ( '' === checkout_date ) {
+			process_reservation = false;
+			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_checkout_missing_err_msg );
+		} else {
+			/**
+			 * If the reservation period is more than allowed.
+			 * Get the dates between checkin and checkout dates.
+			 */
+			var reservation_dates = ersrv_get_dates_between_2_dates( checkin_date, checkout_date );
+			var reservation_days  = reservation_dates.length;
+			if ( min_reservation_period > reservation_days ) {
+				process_reservation = false;
+				$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_lesser_reservation_days_err_msg.replace( 'XX', min_reservation_period ) );
+			} else if ( max_reservation_period < reservation_days ) {
+				process_reservation = false;
+				$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_greater_reservation_days_err_msg.replace( 'XX', max_reservation_period ) );
+			} else {
+				// Iterate through the reservation dates to collect the readable dates.
+				var readable_reservation_dates = [];
+				for ( var i in reservation_dates ) {
+					var reservation_date_formatted = ersrv_get_formatted_date( reservation_dates[i] );
+					readable_reservation_dates.push( reservation_date_formatted );
+				}
+
+				// Check here, if the dates selected by the customer contains dates that are already reserved.
+				var blocked_dates = [];
+
+				// Prepare the blocked out dates in a separate array.
+				if ( 0 < quick_view_reserved_dates.length ) {
+					for ( var l in quick_view_reserved_dates ) {
+						blocked_dates.push( quick_view_reserved_dates[l].date );
+					}
+				}
+
+				// If there are common dates between reservation dates and blocked dates, display an error.
+				var common_dates = $.grep( readable_reservation_dates, function( element ) {
+					return $.inArray( element, blocked_dates ) !== -1;
+				} );
+
+				// If there are common dates.
+				if ( 0 < common_dates.length ) {
+					process_reservation = false;
+					$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_blocked_dates_err_msg );
+				}
+			}
+		}
+
+		// Collect the amenities and their charges.
+		$( '.ersrv-quick-view-reservation-single-amenity' ).each ( function() {
+			var this_element = $( this );
+			var is_checked = this_element.is( ':checked' );
+			if ( true === is_checked ) {
+				amenities.push(
+					{
+						amenity: this_element.parents( '.ersrv-single-amenity-block' ).data( 'amenity' ),
+						cost: parseFloat( this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost' ) ),
+					}
+				);
+			}
+		} );
+
+		// Exit, if we cannot process the reservation.
+		if ( false === process_reservation ) {
+			ersrv_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, reservation_add_to_cart_error_message );
+			return false;
+		}
+
+		// Block element.
+		block_element( this_button );
+
+		// Send AJAX creating a reservation.
+		var data = {
+			action: 'add_reservation_to_cart',
+			item_id: item_id,
+			checkin_date: checkin_date,
+			checkout_date: checkout_date,
+			adult_count: adult_count,
+			kid_count: kid_count,
+			amenities: amenities,
+			item_subtotal: parseFloat( $( '#quick-view-adult-subtotal' ).val() ),
+			kids_subtotal: parseFloat( $( '#quick-view-kid-subtotal' ).val() ),
+			security_subtotal: parseFloat( $( '#quick-view-security-subtotal' ).val() ),
+			amenities_subtotal: parseFloat( $( '#quick-view-amenities-subtotal' ).val() ),
+			item_total: parseFloat( ersrv_get_quick_view_item_total() ),
 		};
 
 		$.ajax( {
@@ -932,12 +1215,49 @@ jQuery(document).ready(function ($) {
 	}
 
 	/**
+	 * Calculate the reservation total cost.
+	 */
+	function ersrv_calculate_reservation_total_cost_quick_view() {
+		var item_subtotal      = parseFloat( $( '#quick-view-adult-subtotal' ).val() );
+		item_subtotal          = ( -1 === is_valid_number( item_subtotal ) ) ? 0.0 : item_subtotal;
+		var kid_subtotal       = parseFloat( $( '#quick-view-kid-subtotal' ).val() );
+		kid_subtotal           = ( -1 === is_valid_number( kid_subtotal ) ) ? 0.0 : kid_subtotal;
+		var amenities_subtotal = parseFloat( $( '#quick-view-amenities-subtotal' ).val() );
+		amenities_subtotal     = ( -1 === is_valid_number( amenities_subtotal ) ) ? 0.0 : amenities_subtotal;
+		var security_subtotal  = parseFloat( $( '#quick-view-security-subtotal' ).val() );
+		security_subtotal      = ( -1 === is_valid_number( security_subtotal ) ) ? 0.0 : security_subtotal;
+
+		// Addup to the total cost.
+		var total_cost = item_subtotal + kid_subtotal + security_subtotal + amenities_subtotal;
+
+		// Limit to 2 decimal places.
+		total_cost = total_cost.toFixed( 2 );
+
+		// Paste the final total.
+		$( '.ersrv-quick-view-item-subtotal' ).html( woo_currency + total_cost );
+	}
+
+	/**
 	 * Get the item total charge.
 	 *
 	 * @returns number
 	 */
 	function ersrv_get_item_total() {
 		var item_total = $( 'tr.new-reservation-total-cost td span' ).text();
+		item_total     = parseFloat( item_total.replace( /[^\d.]/g, '' ) );
+		item_total     = ( -1 === is_valid_number( item_total ) ) ? 0 : item_total;
+		item_total     = item_total.toFixed( 2 );
+
+		return item_total;
+	}
+
+	/**
+	 * Get the item total charge in quick view modal.
+	 *
+	 * @returns number
+	 */
+	 function ersrv_get_quick_view_item_total() {
+		var item_total = $( '.ersrv-quick-view-item-subtotal' ).text();
 		item_total     = parseFloat( item_total.replace( /[^\d.]/g, '' ) );
 		item_total     = ( -1 === is_valid_number( item_total ) ) ? 0 : item_total;
 		item_total     = item_total.toFixed( 2 );
