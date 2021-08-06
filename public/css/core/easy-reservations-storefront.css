@@ -1,26 +1,22 @@
-.color-primary, .btn-primary:hover, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
+.color-primary, .btn-outline-fill-primary, .btn-outline-primary, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover, .btn-outline-fill-primary, .btn-outline-primary {
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover {
   color: #43454b;
 }
 
 .bgcolor-primary, .btn-primary, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev,
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:focus, .btn-outline-fill-primary:active, .btn-outline-primary:hover, .btn-outline-primary:focus, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:focus:hover,
-.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:focus:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:focus:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:focus:hover, .btn-outline-primary:active, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:active:hover,
-.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:active:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:active:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:active:hover, .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active {
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:focus, .btn-outline-fill-primary:active, .btn-outline-primary:hover, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover, .btn-outline-primary:focus, .btn-outline-primary:active, .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active {
   background-color: #43454b;
 }
 
 .border-color-primary, .btn-primary, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev,
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary, .btn-outline-primary, .btn-outline-primary:hover, .btn-outline-primary:focus, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:focus:hover,
-.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:focus:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:focus:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:focus:hover, .btn-outline-primary:active, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:active:hover,
-.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:active:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:active:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:active:hover, .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active {
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary, .btn-outline-primary, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover, .btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active, .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active {
   border-color: #43454b;
 }
 
@@ -28,15 +24,11 @@
   color: #b4b5b7;
 }
 
-.bgcolor-primary-300, .btn-primary:hover, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
-.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover, .btn-outline-fill-primary {
+.bgcolor-primary-300, .btn-outline-fill-primary {
   background-color: #b4b5b7;
 }
 
-.border-color-primary-300, .btn-primary:hover, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
-.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover {
+.border-color-primary-300 {
   border-color: #b4b5b7;
 }
 
@@ -69,7 +61,7 @@
   color: #c09bb9;
 }
 
-.bgcolor-accent-300, .btn-accent:hover, .quick-view-modal .product-button:hover {
+.bgcolor-accent-300, .btn-accent:hover, .quick-view-modal .product-button:hover, .btn-accent:focus, .quick-view-modal .product-button:focus, .btn-accent:active, .quick-view-modal .product-button:active {
   background-color: #c09bb9;
 }
 
@@ -91,11 +83,9 @@
 
 .color-white, .btn-primary, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev,
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:focus, .btn-outline-fill-primary:active, .btn-outline-primary:hover, .btn-outline-primary:focus, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:focus:hover,
-.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:focus:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:focus:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:focus:hover, .btn-outline-primary:active, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:active:hover,
-.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:active:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:active:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:active:hover, .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-accent, .quick-view-modal .product-button, .wrapper .sidebar-wrapper .price-box .amount {
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:focus, .btn-outline-fill-primary:active, .btn-outline-primary:hover, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover, .btn-outline-primary:focus, .btn-outline-primary:active, .btn-outline-secondary:hover, .btn-outline-secondary:focus, .btn-outline-secondary:active, .btn-accent, .quick-view-modal .product-button, .wrapper .sidebar-wrapper .price-box .amount {
   color: #fff;
 }
 
@@ -132,7 +122,7 @@
   border-color: rgba(255, 255, 255, 0.5);
 }
 
-.color-black, .btn-accent:hover, .quick-view-modal .product-button:hover, .wrapper .sidebar-wrapper .book-tour .details input:focus,
+.color-black, .btn-accent:hover, .quick-view-modal .product-button:hover, .btn-accent:focus, .quick-view-modal .product-button:focus, .btn-accent:active, .quick-view-modal .product-button:active, .wrapper .sidebar-wrapper .book-tour .details input:focus,
 .wrapper .sidebar-wrapper .advanced-search .details input:focus {
   color: #000;
 }
@@ -668,6 +658,80 @@ img {
   filter: brightness(0) invert(1);
 }
 
+.btn-primary:hover, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover {
+  color: #43454b !important;
+  background-color: #b4b5b7 !important;
+  border-color: #b4b5b7 !important;
+}
+
+.btn-primary:not(:disabled):not(.disabled).focus, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:not(:disabled):not(.disabled).focus,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:not(:disabled):not(.disabled).focus, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:not(:disabled):not(.disabled).focus,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:not(:disabled):not(.disabled).focus,
+.btn-primary:not(:disabled):not(.disabled):focus,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:not(:disabled):not(.disabled):focus,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:not(:disabled):not(.disabled):focus,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:not(:disabled):not(.disabled):focus,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:not(:disabled):not(.disabled):focus,
+.btn-primary:not(:disabled):not(.disabled).active,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:not(:disabled):not(.disabled).active,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:not(:disabled):not(.disabled).active,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:not(:disabled):not(.disabled).active,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:not(:disabled):not(.disabled).active,
+.btn-primary:not(:disabled):not(.disabled):active,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:not(:disabled):not(.disabled):active,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:not(:disabled):not(.disabled):active,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:not(:disabled):not(.disabled):active,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:not(:disabled):not(.disabled):active,
+.show > .btn-primary.dropdown-toggle,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .show > .dropdown-toggle.ui-datepicker-prev,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .show > .dropdown-toggle.ui-datepicker-next,
+#ui-datepicker-div .ui-datepicker-header .show > .dropdown-toggle.ui-datepicker-prev,
+#ui-datepicker-div .ui-datepicker-header .show > .dropdown-toggle.ui-datepicker-next {
+  color: #43454b !important;
+  background-color: #b4b5b7 !important;
+  border-color: #b4b5b7 !important;
+}
+
+.btn-outline-primary:not(:disabled):not(.disabled).focus, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:not(:disabled):not(.disabled).focus:hover,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:not(:disabled):not(.disabled).focus:hover, #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:not(:disabled):not(.disabled).focus:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:not(:disabled):not(.disabled).focus:hover,
+.btn-outline-primary:not(:disabled):not(.disabled):focus,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:not(:disabled):not(.disabled):focus:hover,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:not(:disabled):not(.disabled):focus:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:not(:disabled):not(.disabled):focus:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:not(:disabled):not(.disabled):focus:hover,
+.btn-outline-primary:not(:disabled):not(.disabled).active,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:not(:disabled):not(.disabled).active:hover,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:not(:disabled):not(.disabled).active:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:not(:disabled):not(.disabled).active:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:not(:disabled):not(.disabled).active:hover,
+.btn-outline-primary:not(:disabled):not(.disabled):active,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:not(:disabled):not(.disabled):active:hover,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:not(:disabled):not(.disabled):active:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:not(:disabled):not(.disabled):active:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:not(:disabled):not(.disabled):active:hover,
+.show > .btn-outline-primary.dropdown-toggle,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .show > .dropdown-toggle.ui-datepicker-prev:hover,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .show > .dropdown-toggle.ui-datepicker-next:hover,
+#ui-datepicker-div .ui-datepicker-header .show > .dropdown-toggle.ui-datepicker-prev:hover,
+#ui-datepicker-div .ui-datepicker-header .show > .dropdown-toggle.ui-datepicker-next:hover {
+  color: #fff !important;
+  background-color: #43454b !important;
+  border-color: #43454b !important;
+}
+
+.btn-outline-secondary:not(:disabled):not(.disabled).focus,
+.btn-outline-secondary:not(:disabled):not(.disabled):focus,
+.btn-outline-secondary:not(:disabled):not(.disabled).active,
+.btn-outline-secondary:not(:disabled):not(.disabled):active,
+.show > .btn-outline-secondary.dropdown-toggle {
+  color: #fff !important;
+  background-color: #43454b !important;
+  border-color: #43454b !important;
+}
+
 .dropdown-item.active,
 .dropdown-item:active {
   color: #fff;
@@ -993,8 +1057,10 @@ img {
   padding: 15.063px 1.5rem;
 }
 
-.wrapper .sidebar-wrapper .book-tour .details .btn:hover img,
-.wrapper .sidebar-wrapper .advanced-search .details .btn:hover img {
+.wrapper .sidebar-wrapper .book-tour .details .btn:hover img, .wrapper .sidebar-wrapper .book-tour .details .btn:focus img, .wrapper .sidebar-wrapper .book-tour .details .btn:active img,
+.wrapper .sidebar-wrapper .advanced-search .details .btn:hover img,
+.wrapper .sidebar-wrapper .advanced-search .details .btn:focus img,
+.wrapper .sidebar-wrapper .advanced-search .details .btn:active img {
   -webkit-filter: invert(0.76);
   filter: invert(0.76);
 }

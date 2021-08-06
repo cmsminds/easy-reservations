@@ -2,11 +2,11 @@
   color: #222;
 }
 
-.bgcolor-primary, .btn-primary, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:focus, .btn-outline-fill-primary:active, .btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active {
+.bgcolor-primary, .btn-primary {
   background-color: #222;
 }
 
-.border-color-primary, .btn-primary, .btn-outline-fill-primary, .btn-outline-primary, .btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active {
+.border-color-primary, .btn-primary, .btn-outline-fill-primary, .btn-outline-primary {
   border-color: #222;
 }
 
@@ -18,7 +18,7 @@
   background-color: #767676;
 }
 
-.border-color-primary-300, .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+.border-color-primary-300 {
   border-color: #767676;
 }
 
@@ -26,7 +26,7 @@
   color: #111;
 }
 
-.bgcolor-secondary, .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+.bgcolor-secondary {
   background-color: #111;
 }
 
@@ -50,7 +50,7 @@
   color: #cbefd9;
 }
 
-.bgcolor-accent-300, .btn-accent:hover, .btn-accent:focus, .btn-accent:active {
+.bgcolor-accent-300 {
   background-color: #cbefd9;
 }
 
@@ -70,7 +70,7 @@
   border-color: #17763a;
 }
 
-.color-white, .btn-primary, .btn-outline-fill-primary:hover, .btn-outline-fill-primary:focus, .btn-outline-fill-primary:active {
+.color-white, .btn-primary {
   color: #fff;
 }
 
@@ -584,9 +584,9 @@ img {
 
 .ship-icon-field {
   background-image: url("../../images/ship-gray.png") !important;
-  background-position: 90%;
-  background-size: 20px;
-  background-repeat: no-repeat;
+  background-position: 90% !important;
+  background-size: 20px !important;
+  background-repeat: no-repeat !important;
   cursor: pointer;
   -webkit-transition: 0.3s ease-in-out;
   transition: 0.3s ease-in-out;
@@ -621,12 +621,22 @@ img {
   filter: brightness(0) invert(1);
 }
 
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus, .btn-primary.hover, .btn-primary.active, .btn-primary.focus {
   color: #fff !important;
+  background-color: #111 !important;
+  border-color: #767676 !important;
 }
 
-.btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active {
+.btn-outline-fill-primary:hover, .btn-outline-fill-primary:active, .btn-outline-fill-primary:focus, .btn-outline-fill-primary.hover, .btn-outline-fill-primary.active, .btn-outline-fill-primary.focus {
   color: #fff !important;
+  background-color: #222 !important;
+  border-color: #222 !important;
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:active, .btn-outline-primary:focus, .btn-outline-primary.hover, .btn-outline-primary.active, .btn-outline-primary.focus {
+  color: #fff !important;
+  background-color: #222 !important;
+  border-color: #222 !important;
 }
 
 .dropdown-item.active,
@@ -665,7 +675,9 @@ img {
   color: #fff !important;
 }
 
-.btn-accent:hover, .btn-accent:focus, .btn-accent:active {
+.btn-accent:hover, .btn-accent:active, .btn-accent:focus, .btn-accent.hover, .btn-accent.active, .btn-accent.focus {
   color: #000 !important;
+  background-color: #cbefd9 !important;
+  border-color: #cbefd9 !important;
 }
 /*# sourceMappingURL=easy-reservations-twentyseventeen-variable.css.map */

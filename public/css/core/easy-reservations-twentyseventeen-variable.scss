@@ -170,9 +170,9 @@ img {
 
 .ship-icon-field {
     background-image: url("../../images/ship-gray.png") !important;
-    background-position: 90%;
-    background-size: 20px;
-    background-repeat: no-repeat;
+    background-position: 90% !important;
+    background-size: 20px !important;
+    background-repeat: no-repeat !important;
     cursor: pointer;
     transition: 0.3s ease-in-out;
     &:focus,
@@ -216,29 +216,33 @@ img {
     @extend .color-white;
     @extend .bgcolor-primary;
     @extend .border-color-primary;
-    &:hover, &:focus, &:active {
+    &:hover,&:active,&:focus,
+    &.hover,&.active,&.focus{
         color: $white !important;
-        @extend .bgcolor-secondary;
-        @extend .border-color-primary-300;
+        background-color: $secondary !important;
+        border-color: $primary-300 !important;
     }
 }
 .btn-outline-fill-primary{
     @extend .color-primary;
     @extend .bgcolor-primary-300;
     @extend .border-color-primary;
-    &:hover, &:focus, &:active {
-        @extend .color-white;
-        @extend .bgcolor-primary;
+    &:hover,&:active,&:focus,
+    &.hover,&.active,&.focus{
+        color: $white !important;
+        background-color: $primary !important;
+        border-color: $primary !important;
     }
 }
 .btn-outline-primary{
     @extend .color-primary;
     @extend .border-color-primary;
     @extend .bgcolor-transparent;
-    &:hover, &:focus, &:active {
+    &:hover,&:active,&:focus,
+    &.hover,&.active,&.focus{
         color: $white !important;
-        @extend .bgcolor-primary;
-        @extend .border-color-primary;
+        background-color: $primary !important;
+        border-color: $primary !important;
     }
 }
 .dropdown-item.active,
@@ -271,8 +275,10 @@ img {
     color: $white !important;
     @extend .bgcolor-accent;
     @extend .border-color-accent;
-    &:hover, &:focus, &:active {
+    &:hover,&:active,&:focus,
+    &.hover,&.active,&.focus{
         color: $black !important;
-        @extend .bgcolor-accent-300;
+        background-color: $accent-300 !important;
+        border-color: $accent-300 !important;
     }
 }
