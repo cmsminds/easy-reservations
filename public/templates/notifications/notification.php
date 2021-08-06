@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 		Error  : <span class="fa fa-skull-crossbones mr-2"></span>
 		success: <span class="fa fa-check-circle mr-2"></span>
 	-->
-	<div class="ersrv-notification toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+	<div class="ersrv-notification toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="6000">
 		<div class="toast-header bg-transparent">
 			<span class="ersrv-notification-icon fa mr-2"></span>
 			<strong class="ersrv-notification-heading mr-auto"></strong>

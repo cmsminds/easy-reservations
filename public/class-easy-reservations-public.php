@@ -317,6 +317,9 @@ class Easy_Reservations_Public {
 				'reservation_blocked_dates_err_msg'            => __( 'The dates you have selected for reservation contain the dates that are already reserved. Kindly check the availability on the left hand side and then proceed with the reservation.', 'easy-reservations' ),
 				'search_reservations_page_url'                 => get_permalink( $search_reservations_page ),
 				'date_format'                                  => ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' ),
+				'toast_success_heading'                        => __( 'Ohhoooo! Success..', 'easy-reservations' ),
+				'toast_error_heading'                          => __( 'Ooops! Error..', 'easy-reservations' ),
+				'toast_notice_heading'                         => __( 'Notice.', 'easy-reservations' ),
 			)
 		);
 	}
@@ -1006,6 +1009,9 @@ class Easy_Reservations_Public {
 		if ( $is_reservation_page ) {
 			// Include the quick view modal.
 			require_once ERSRV_PLUGIN_PATH . 'public/templates/modals/contact-owner.php';
+
+			// Include the notification html.
+			require_once ERSRV_PLUGIN_PATH . 'public/templates/notifications/notification.php';
 		}
 	}
 
@@ -1206,8 +1212,8 @@ class Easy_Reservations_Public {
 
 		// Prepare the response.
 		$response = array(
-			'code'    => 'reservation-added-to-cart',
-			'message' => __( 'Reservation has been added to the cart.', 'easy-reservations' ),
+			'code'          => 'reservation-added-to-cart',
+			'toast_message' => __( 'Reservation has been added to the cart.', 'easy-reservations' ),
 		);
 		wp_send_json_success( $response );
 		wp_die();

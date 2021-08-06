@@ -20,6 +20,9 @@ jQuery(document).ready(function ($) {
 	var reservation_blocked_dates_err_msg            = ERSRV_Public_Script_Vars.reservation_blocked_dates_err_msg;
 	var search_reservations_page_url                 = ERSRV_Public_Script_Vars.search_reservations_page_url;
 	var date_format                                  = ERSRV_Public_Script_Vars.date_format;
+	var toast_success_heading                        = ERSRV_Public_Script_Vars.toast_success_heading;
+	var toast_error_heading                          = ERSRV_Public_Script_Vars.toast_error_heading;
+	var toast_notice_heading                         = ERSRV_Public_Script_Vars.toast_notice_heading;
 
 	// If sidebar is to be removed on reservation single page.
 	if ('yes' === remove_sidebar) {
@@ -417,7 +420,7 @@ jQuery(document).ready(function ($) {
 					}
 
 					// Show the toast now.
-					ersrv_show_toast( 'bg-success', 'fa-check-circle', 'Success', response.data.toast_message );
+					ersrv_show_toast( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
 				}
 			},
 		} );
@@ -553,6 +556,7 @@ jQuery(document).ready(function ($) {
 
 		// Exit, if we cannot process the reservation.
 		if ( false === process_reservation ) {
+			ersrv_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, 'There are a few errors that need to be addressed.' );
 			return false;
 		}
 
@@ -593,7 +597,7 @@ jQuery(document).ready(function ($) {
 					unblock_element( this_button );
 
 					// Show toast.
-					ersrv_show_toast( 'bg-success', 'fa-check-circle', 'Success', 'This is the sample text.' );
+					ersrv_show_toast( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
 				}
 			},
 		} );
@@ -953,7 +957,7 @@ jQuery(document).ready(function ($) {
 	}
 
 	// Show toast.
-	// ersrv_show_toast( 'bg-success', 'fa-check-circle', 'Success', 'Success text.' );
-	// ersrv_show_toast( 'bg-warning', 'fa-exclamation-circle', 'Notice', 'Notice text.' );
-	// ersrv_show_toast( 'bg-danger', 'fa-skull-crossbones', 'Error', 'Error text.' );
+	// ersrv_show_toast( 'bg-success', 'fa-check-circle', toast_success_heading, 'Success text.' );
+	// ersrv_show_toast( 'bg-warning', 'fa-exclamation-circle', toast_notice_heading, 'Notice text.' );
+	// ersrv_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, 'Error text.' );
 } );
