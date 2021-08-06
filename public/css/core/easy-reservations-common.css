@@ -128,7 +128,7 @@ h1:not(.site-title):before, h2:before,
 }
 .ui-datepicker-calendar .ui-state-disabled *,
 .ui-datepicker-calendar .ersrv-date-disabled *{
-    color: #b4b5b7;
+    color: #fff;
     background-color: #e0e0e0;
     border-radius: 100%;
 }
