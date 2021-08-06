@@ -1033,6 +1033,7 @@ class Easy_Reservations_Public {
 		if ( 'mark_fav' === $do_what ) {
 			// Push in the item now.
 			$favourite_items[] = $item_id;
+			$toast_message     = __( 'Item has been marked favourite.', 'easy-reservations' );
 		} elseif ( 'unmark_fav' === $do_what ) {
 			// Remove the item from favourite list.
 			$item_index = array_search( $item_id, $favourite_items, true );
@@ -1040,6 +1041,8 @@ class Easy_Reservations_Public {
 			if ( false !== $item_index ) {
 				unset( $favourite_items[ $item_index ] );
 			}
+
+			$toast_message = __( 'Item has been unmarked favourite.', 'easy-reservations' );
 		}
 
 		// Update the database.
@@ -1048,7 +1051,8 @@ class Easy_Reservations_Public {
 		// Send the response.
 		wp_send_json_success(
 			array(
-				'code' => 'item-favourite-done',
+				'code'          => 'item-favourite-done',
+				'toast_message' => $toast_message,
 			)
 		);
 		wp_die();

@@ -415,6 +415,9 @@ jQuery(document).ready(function ($) {
 					} else if ( 'mark_fav' === action ) {
 						this_button.addClass( 'selected' );
 					}
+
+					// Show the toast now.
+					ersrv_show_toast( 'bg-success', 'fa-check-circle', 'Success', response.data.toast_message );
 				}
 			},
 		} );
@@ -441,10 +444,6 @@ jQuery(document).ready(function ($) {
 		if ( 'ersrv-item-quick-view-modal' === evt.target.id ) {
 			$( '.ersrv-modal' ).fadeOut( 'slow' );
 		}
-	} );
-
-	$( document ).on( 'click', '#liveToastBtn', function() {
-		$( '#liveToast' ).toast( 'show' );
 	} );
 
 	/**
@@ -593,7 +592,8 @@ jQuery(document).ready(function ($) {
 					// Unblock the element.
 					unblock_element( this_button );
 
-					alert( 'reservation has been added to the cart' );
+					// Show toast.
+					ersrv_show_toast( 'bg-success', 'fa-check-circle', 'Success', 'This is the sample text.' );
 				}
 			},
 		} );
@@ -936,4 +936,24 @@ jQuery(document).ready(function ($) {
 
 		return 1;
 	}
-});
+
+	/**
+	 * Show the notification text.
+	 *
+	 * @param {string} bg_color Holds the toast background color.
+	 * @param {string} icon Holds the toast icon.
+	 * @param {string} heading Holds the toast heading.
+	 * @param {string} message Holds the toast body message.
+	 */
+	function ersrv_show_toast( bg_color, icon, heading, message ) {
+		$( '.ersrv-notification' ).addClass( bg_color ).toast( 'show' );
+		$( '.ersrv-notification .ersrv-notification-icon' ).addClass( icon );
+		$( '.ersrv-notification .ersrv-notification-heading' ).text( heading );
+		$( '.ersrv-notification .ersrv-notification-message' ).html( message );
+	}
+
+	// Show toast.
+	// ersrv_show_toast( 'bg-success', 'fa-check-circle', 'Success', 'Success text.' );
+	// ersrv_show_toast( 'bg-warning', 'fa-exclamation-circle', 'Notice', 'Notice text.' );
+	// ersrv_show_toast( 'bg-danger', 'fa-skull-crossbones', 'Error', 'Error text.' );
+} );
