@@ -654,13 +654,27 @@ class Easy_Reservations_Public {
 		$page      = ( ! empty( $page ) ) ? $page : 1;
 
 		// If the post type is available.
-		if ( ! empty( $post_type ) && 'product' === $post_type ) {
-			// Set the taxonomy args.
-			$args['tax_query'][] = array(
-				'taxonomy' => 'product_type',
-				'field'    => 'slug',
-				'terms'    => $this->custom_product_type,
-			);
+		if ( ! empty( $post_type ) ) {
+			// Set the taxonomy args for woocommerce products.
+			if ( 'product' === $post_type ) {
+				$args['tax_query'][] = array(
+					'taxonomy' => 'product_type',
+					'field'    => 'slug',
+					'terms'    => $this->custom_product_type,
+				);
+			} elseif ( 'shop_order' === $post_type ) {
+				$args['meta_query'][] = array(
+					'key'     => 'ersrv_reservation_order',
+					'value'   => '1',
+					'compare' => '=',
+				);
+
+				// Update the post status.
+				$args['post_status'] = array(
+					'wc-processing',
+					'wc-pending',
+				);
+			}
 		}
 
 		// If the page is available.
@@ -1550,7 +1564,36 @@ class Easy_Reservations_Public {
 	 */
 	public function ersrv_send_reminder_emails() {
 		// Get the woocommerce orders.
-		// if (  )
+		$wc_orders_query = ersrv_get_posts( 'shop_order', 1, -1 );
+		$wc_order_ids    = $wc_orders_query->posts;
+
+		// Return back, if there are no orders available.
+		if ( empty( $wc_order_ids ) || ! is_array( $wc_order_ids ) ) {
+			return;
+		}
+
+		/**
+		 * This filter is fired by the cron.
+		 *
+		 * This filter helps in managing the array of order ids that are considered for sending reservation reminders.
+		 *
+		 * @param array $wc_order_ids Array of WooCommerce order IDs.
+		 * @return array
+		 * @since 1.0.0
+		 */
+		$wc_order_ids = apply_filters( 'ersrv_reservation_reminder_email_order_ids', $wc_order_ids );
+
+		// Iterate through the orders to send the customers the remonder about their reservation.
+		foreach ( $wc_order_ids as $order_id ) {
+			/**
+			 * This action is fired by the cron.
+			 *
+			 * This action helps in sending the reminder emails to the customers about their reservation.
+			 *
+			 * @param int $order_id WooCommerce order ID.
+			 */
+			do_action( 'ersrv_send_reservation_reminder_email', $order_id );
+		}
 	}
 
 	/**
