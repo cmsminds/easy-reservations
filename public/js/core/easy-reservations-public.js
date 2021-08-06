@@ -510,9 +510,7 @@ jQuery(document).ready(function ($) {
 				// Iterate through the reservation dates to collect the readable dates.
 				var readable_reservation_dates = [];
 				for ( var i in reservation_dates ) {
-					var reservation_date           = ( ( '0' + ( reservation_dates[i].getDate() ) ).slice( -2 ) );
-					var reservation_month          = ( ( '0' + ( reservation_dates[i].getMonth() + 1 ) ).slice( -2 ) );
-					var reservation_date_formatted = reservation_dates[i].getFullYear() + '-' + reservation_month + '-' + reservation_date;
+					var reservation_date_formatted = ersrv_get_formatted_date( reservation_dates[i] );
 					readable_reservation_dates.push( reservation_date_formatted );
 				}
 
