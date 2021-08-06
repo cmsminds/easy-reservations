@@ -23,6 +23,7 @@ jQuery(document).ready(function ($) {
 	var toast_success_heading                        = ERSRV_Public_Script_Vars.toast_success_heading;
 	var toast_error_heading                          = ERSRV_Public_Script_Vars.toast_error_heading;
 	var toast_notice_heading                         = ERSRV_Public_Script_Vars.toast_notice_heading;
+	var invalid_reservation_item_is_error_text       = ERSRV_Public_Script_Vars.invalid_reservation_item_is_error_text;
 
 	// If sidebar is to be removed on reservation single page.
 	if ('yes' === remove_sidebar) {
@@ -430,7 +431,56 @@ jQuery(document).ready(function ($) {
 	 * Open the item quick view.
 	 */
 	$( document ).on( 'click', '.ersrv-quick-view-item', function() {
-		$( '#ersrv-item-quick-view-modal' ).fadeIn( 'slow' );
+		var this_button      = $( this );
+		var this_button_text = this_button.text();
+		var item_id          = parseInt( this_button.parents( '.ersrv-reservation-item-block' ).data( 'item' ) );
+
+		// Check if the item ID is valid.
+		if ( -1 === is_valid_number( item_id ) ) {
+			ersrv_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, invalid_reservation_item_is_error_text );
+		}
+
+		// Change the button text. 
+		this_button.text( '...' );
+
+		// Block the element now.
+		block_element( this_button );
+
+		// Proceed with fetching the modal content.
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'quick_view_item_data',
+				item_id: item_id,
+			},
+			success: function ( response ) {
+				// Check for invalid ajax request.
+				if ( 0 === response ) {
+					console.log( 'easy reservations: invalid ajax request' );
+					return false;
+				} else if ( 'quick-view-modal-fetched' === response.data.code ) { // If items are found.
+					// Unblock the element.
+					unblock_element( this_button );
+
+					// Undo the button text.
+					this_button.text( this_button_text );
+
+					$( '#ersrv-item-quick-view-modal .modal-body .quickbuymodal' ).html( response.data.html );
+					$( '#ersrv-item-quick-view-modal' ).fadeIn( 'slow' );
+				}
+			},
+		} );
+	} );
+
+	/**
+	 * Change the quick view modal main image.
+	 */
+	$( document ).on( 'click', '.product-preview-thumb', function() {
+		var this_thumbnail = $( this );
+		var thumbnail_img  = this_thumbnail.find( 'img' ).attr( 'src' );
+		$( '.product-preview-main img' ).attr( 'src', thumbnail_img );
 	} );
 
 	/**

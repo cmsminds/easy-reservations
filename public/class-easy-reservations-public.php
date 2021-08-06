@@ -114,9 +114,18 @@ class Easy_Reservations_Public {
 		$is_search_page      = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
 		$is_reservation_page = ersrv_product_is_reservation( get_the_ID() );
 
-		// var_dump( is_wc_endpoint_url( $this->favourite_reservation_items_endpoint_slug ) );
-		// die;
 		/* ---------------------------------------STYLES--------------------------------------- */
+
+		// If it's only the search page.
+		if ( $is_search_page ) {
+			// Enqueue the slick slider style.
+			wp_enqueue_style(
+				$this->plugin_name . '-slick-slider-style',
+				ERSRV_PLUGIN_URL . 'public/css/slick/slick.min.css',
+				array(),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/css/slick/slick.min.css' )
+			);
+		}
 
 		// If it's the single reservation page or the search page.
 		if ( $is_reservation_page || $is_search_page ) {
@@ -208,6 +217,18 @@ class Easy_Reservations_Public {
 		}
 
 		/* ---------------------------------------SCRIPTS--------------------------------------- */
+
+		// If it's only the search page.
+		if ( $is_search_page ) {
+			// Enqueue the slick slider script.
+			wp_enqueue_script(
+				$this->plugin_name . '-slick-slider-script',
+				ERSRV_PLUGIN_URL . 'public/js/slick/slick.min.js',
+				array(),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/js/slick/slick.min.js' ),
+				true
+			);
+		}
 
 		// If it's the single reservation page or the search page.
 		if ( $is_reservation_page || $is_search_page ) {
@@ -320,6 +341,7 @@ class Easy_Reservations_Public {
 				'toast_success_heading'                        => __( 'Ohhoooo! Success..', 'easy-reservations' ),
 				'toast_error_heading'                          => __( 'Ooops! Error..', 'easy-reservations' ),
 				'toast_notice_heading'                         => __( 'Notice.', 'easy-reservations' ),
+				'invalid_reservation_item_is_error_text'       => __( 'Invalid item ID.', 'easy-reservations' ),
 			)
 		);
 	}
@@ -1528,5 +1550,162 @@ class Easy_Reservations_Public {
 	public function ersrv_send_reminder_emails() {
 		// Get the woocommerce orders.
 		// if (  )
+	}
+
+	/**
+	 * AJAX request to fetch the quick view modal content.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_quick_view_item_data_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+		// Exit, if the action mismatches.
+		if ( empty( $action ) || 'quick_view_item_data' !== $action ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Posted data.
+		$item_id                = filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
+		$item                   = wc_get_product( $item_id );
+		$featured_image_id      = $item->get_image_id();
+		$featured_image_src     = ersrv_get_attachment_url_from_attachment_id( $featured_image_id );
+		$gallery_image_ids      = $item->get_gallery_image_ids();
+		$gallery_image_ids      = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $featured_image_id ), $gallery_image_ids ) : array( $featured_image_id );
+		$item_permalink         = get_permalink( $item_id );
+		$item_details           = ersrv_get_item_details( $item_id );
+		$adult_charge           = ( ! empty( $item_details['adult_charge'] ) ) ? $item_details['adult_charge'] : 0;
+		$kid_charge             = ( ! empty( $item_details['kid_charge'] ) ) ? $item_details['kid_charge'] : 0;
+		$amenities              = ( ! empty( $item_details['amenities'] ) ) ? $item_details['amenities'] : array();
+		$security_amount        = ( ! empty( $item_details['security_amount'] ) ) ? $item_details['security_amount'] : 0;
+		$accomodation_limit     = ( ! empty( $item_details['accomodation_limit'] ) ) ? $item_details['accomodation_limit'] : '';
+		$min_reservation_period = ( ! empty( $item_details['min_reservation_period'] ) ) ? $item_details['min_reservation_period'] : '';
+		$max_reservation_period = ( ! empty( $item_details['max_reservation_period'] ) ) ? $item_details['max_reservation_period'] : '';
+
+		// Prepare the HTML.
+		?>
+		<div class="quick-row align-items-center">
+			<div class="col-12 col-md-6  col-preview">
+				<div class="product-preview">
+					<div class="product-preview-main">
+						<img src="<?php echo esc_url( $featured_image_src ); ?>" alt="featured-image" class="product-preview-image">
+					</div>
+					<!-- GALLERY IMAGES -->
+					<div id="preview-list" class="product-preview-menu">
+						<?php if ( ! empty( $gallery_image_ids ) && is_array( $gallery_image_ids ) ) { ?>
+							<?php foreach ( $gallery_image_ids as $image_id ) {
+								$image_src = ersrv_get_attachment_url_from_attachment_id( $image_id );
+								?>
+								<div class="product-preview-thumb">
+									<img src="<?php echo esc_url( $image_src ); ?>" alt="gallery-image" class="product-preview-thumb-image">
+								</div>
+							<?php } ?>
+						<?php } ?>
+					</div>
+				</div>
+			</div>
+			<div class="col-12 col-md-6  col-product">
+				<div class="product-details">
+					<form action="" method="post" class="form-inner">
+						<h2 class="product-title font-weight-semibold font-size-30"><?php echo wp_kses_post( $item->get_title() ); ?></h2>
+						<div class="product-price-meta mb-5">
+							<h4 class="font-size-30 price">
+								<?php
+								echo wp_kses(
+									wc_price( $adult_charge ),
+									array(
+										'span' => array(
+											'class' => array(),
+										),
+									)
+								);
+								?>
+								<span class="font-size-20 price-text"><?php esc_html_e( 'Per Night', 'easy-reservations' ); ?></span>
+							</h4>
+						</div>
+						<div class="product-details-values mb-5">
+							<div class="check-in-out-values d-flex flex-column mb-3">
+								<h4 class="font-size-20 font-weight-semibold"><?php esc_html_e( 'Checkin/checkout Date', 'easy-reservations' ); ?></h4>
+								<div class="values">
+									<div class="row form-row input-daterange">
+										<div class="col-6">
+											<div><label class="font-size-16"><?php esc_html_e( 'Check In', 'easy-reservations' ); ?></label></div>
+											<div><input type="text" class="form-control date-control text-left rounded-lg" value="2012-04-05"></div>
+										</div>
+										<div class="col-6">
+											<div><label class="font-size-16"><?php esc_html_e( 'Check Out', 'easy-reservations' ); ?></label></div>
+											<div><input type="text" class="form-control date-control text-left rounded-lg" value="2012-04-19"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="accomodation-values d-flex flex-column mb-3">
+								<h4 class="font-size-20 font-weight-semibold"><?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?></h4>
+								<div class="values">
+									<div class="row form-row">
+										<div class="col-6">
+											<label class="font-size-16"><?php esc_html_e( 'No. of Adults', 'easy-reservations' ); ?></label>
+											<input type="number" name="" id="" class="form-contol" placeholder="2" />
+										</div>
+										<div class="col-6">
+											<label class="font-size-16"><?php esc_html_e( 'No. of Kids', 'easy-reservations' ); ?></label>
+											<input type="number" name="" id="" class="form-contol" placeholder="2" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="amenities-values d-flex flex-column">
+								<h4 class="font-size-20 font-weight-semibold"><?php esc_html_e( 'Amenities', 'easy-reservations' ); ?></h4>
+								<div class="values">
+									<div class="row form-row">
+										<?php if ( ! empty( $amenities ) && is_array( $amenities ) ) { ?>
+											<div class="ersrv-item-amenities-wrapper non-clickable checkbox-wrapper mb-4 pb-3">
+												<label for="amenities" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Amenities', 'easy-reservations' ); ?></label>
+												<?php foreach ( $amenities as $amenity_data ) {
+													$amenity_title     = $amenity_data['title'];
+													$amenity_slug      = sanitize_title( $amenity_title );
+													$amenity_cost      = $amenity_data['cost'];
+													$amenity_cost_type = $amenity_data['cost_type'];
+													?>
+													<div class="col-6">
+														<div class="custom-control custom-switch ersrv-single-amenity-block" data-cost_type="<?php echo esc_attr( $amenity_cost_type ); ?>" data-cost="<?php echo esc_attr( $amenity_cost ); ?>" data-amenity="<?php echo esc_attr( $amenity_title ); ?>">
+															<input type="checkbox" class="custom-control-input" id="amenity-<?php echo esc_html( $amenity_slug ); ?>">
+															<label class="custom-control-label" for="amenity-<?php echo esc_html( $amenity_slug ); ?>"><?php echo esc_html( $amenity_title ); ?> - <span class="font-lato font-weight-bold color-accent"><?php echo wc_price( $amenity_cost ); ?></span></label>
+														</div>
+													</div>
+												<?php } ?>
+											</div>
+										<?php } ?>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="product-action-link">
+							<button type="button" class="product-button add-to-cart btn-block"><?php esc_html_e( 'Procced to checkout', 'easy-reservations' ); ?></button>
+							<a href="<?php echo esc_url( $item_permalink ); ?>" class="readmore-link btn btn-link"><?php esc_html_e( 'View full details', 'easy-reservations' ); ?></a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<?php
+		$html = ob_get_clean();
+
+		/**
+		 * This hook fires after the contact owner request is saved.
+		 *
+		 * This hook helps in adding actions after any contact owner request is saved.
+		 */
+		do_action( 'ersrv_save_contact_owner_request_after' );
+
+		// Prepare the response.
+		$response = array(
+			'code'    => 'quick-view-modal-fetched',
+			'html'    => $html,
+			'message' => __( 'Contact request is saved successfully. One of our teammates will get back to you soon.', 'easy-reservations' ),
+		);
+		wp_send_json_success( $response );
+		wp_die();
 	}
 }
