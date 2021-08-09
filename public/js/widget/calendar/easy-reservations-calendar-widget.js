@@ -4,6 +4,7 @@ jQuery( document ).ready( function( $ ) {
 	// Localized variables.
 	var ajaxurl       = ERSRV_Calendar_Widget_Script_Vars.ajaxurl;
 	var start_of_week = parseInt( ERSRV_Calendar_Widget_Script_Vars.start_of_week );
+	var date_format   = ERSRV_Calendar_Widget_Script_Vars.date_format;
 
 	/**
 	 * Display the calendar widget when the reservable item is selected.
@@ -51,50 +52,50 @@ jQuery( document ).ready( function( $ ) {
 				$( '.ersrv-book-item-from-widget a' ).attr( 'href', response.data.item_link );
 
 				// Dates to disable. These are actually unavailability dates.
-				var blocked_dates          = response.data.dates;
-				var datepicker_date_format = 'yyyy-mm-dd';
-				var current_date           = new Date();
-				var current_month          = ( ( '0' + ( current_date.getMonth() + 1 ) ).slice( -2 ) );
-				var today_formatted        = current_date.getFullYear() + '-' + current_month + '-' + current_date.getDate();
+				var blocked_dates   = response.data.dates;
+				var today_formatted = ersrv_get_formatted_date( new Date() );
+				var reserved_dates  = [];
+
+				// Prepare the blocked out dates in a separate array.
+				if ( 0 < blocked_dates.length ) {
+					for ( var i in blocked_dates ) {
+						reserved_dates.push( blocked_dates[i].date );
+					}
+				}
 
 				// Display the calendar.
-				$( '.ersrv-widget-calendar' ).show().datepicker( {
+				$( '.ersrv-widget-calendar' ).datepicker( {
 					beforeShowDay: function( date ) {
-						var loop_month          = ( ( '0' + ( date.getMonth() + 1 ) ).slice( -2 ) );
-						var loop_date_formatted = date.getFullYear() + '-' + loop_month + '-' + date.getDate();
-						var date_enabled        = false;
-						var date_classes        = '';
-						var date_tooltip        = '';
-
+						var loop_date_formatted = ersrv_get_formatted_date( date );
+						var date_enabled        = true;
+						var date_class          = '';
+		
 						// If not the past date.
 						if ( today_formatted <= loop_date_formatted ) {
 							// Add custom class to the active dates of the current month.
-							var key = $.map( blocked_dates, function( val, i ) {
-								if ( val.date === loop_date_formatted ) {
+							var key = $.map( reserved_dates, function( val, i ) {
+								if ( val === loop_date_formatted ) {
 									return i;
 								}
 							} );
-			
+		
 							// If the loop date is a blocked date.
 							if ( 0 < key.length ) {
-								key = key[0];
-								date_tooltip = blocked_dates[key].message;
-							} else if ( 0 === key.length ) {
-								date_enabled = true;
-								date_classes = 'ersrv-date-active';
+								date_class = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+							} else {
+								date_class = 'ersrv-date-active';
 							}
+						} else {
+							date_class = 'ersrv-date-disabled';
 						}
-
+		
 						// Return the datepicker day object.
-						return {
-							'enabled': date_enabled,
-							'classes': date_classes,
-							'tooltip': date_tooltip,
-						};
+						return [ date_enabled, date_class ];
 					},
-					format: datepicker_date_format,
-					startDate: current_date,
+					minDate: 0,
 					weekStart: start_of_week,
+					changeMonth: true,
+					dateFormat: date_format,
 				} );
 			},
 		} );
@@ -103,6 +104,22 @@ jQuery( document ).ready( function( $ ) {
 	// Select the first reservable item on load.
 	$( '#ersrv-widget-reservable-items option:eq(1)' ).prop( 'selected', true );
 	$( '#ersrv-widget-reservable-items' ).trigger( 'change' );
+
+	/**
+	 * Return the formatted date based on the global date format.
+	 */
+	 function ersrv_get_formatted_date( date_obj ) {
+		var month = ( ( '0' + ( date_obj.getMonth() + 1 ) ).slice( -2 ) );
+		var date  = ( ( '0' + ( date_obj.getDate() ) ).slice( -2 ) );
+		var year  = date_obj.getFullYear();
+
+		// Replace the variables now.
+		var formatted_date = date_format.replace( 'dd', date );
+		formatted_date     = formatted_date.replace( 'mm', month );
+		formatted_date     = formatted_date.replace( 'yy', year );
+
+		return formatted_date;
+	}
 
 	/**
 	 * Block element.

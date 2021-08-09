@@ -595,6 +595,7 @@ jQuery( document ).ready( function( $ ) {
 						minDate: 0,
 						weekStart: start_of_week,
 						changeMonth: true,
+						dateFormat: date_format,
 					} );
 
 					// Min and max reservation periods.
