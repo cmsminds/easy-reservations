@@ -1649,4 +1649,8 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
 .ersrv-unavailable-dates-notifier::before {
   background-color: #e0e0e0;
 }
+
+.search-page .bootstrap-select .btn {
+  border: var(--form--border-width) solid var(--form--border-color) !important;
+}
 /*# sourceMappingURL=easy-reservations-twentytwentyone.css.map */

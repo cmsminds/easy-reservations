@@ -168,17 +168,19 @@ a.btn:hover,
 .search-page .slider-wrapper > h4:nth-child(2){
     margin-bottom: 10px !important;
 }
-
+.wrapper.search-page .banner .form-wrapper .form-inner input.date-control:not(.ship-icon-field) {
+    background-position: 95% ;
+}
 /* Experimental */
-body::after {
+/* body::after {
     position: fixed;
     z-index: 99999;
     height: 100%;
     width: 100%;
-    background: rgba(0,0,0,.5);
+    background: rgba(0,0,0,.125);
     content: "";
     display: inline-block;
     pointer-events: none;
     top: 0px;
     left: 0px;
-}
+} */

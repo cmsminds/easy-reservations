@@ -910,3 +910,6 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
         background-color: #e0e0e0;
     }
 }
+.search-page .bootstrap-select .btn {
+    border: var(--form--border-width) solid var(--form--border-color) !important;
+}

@@ -49,12 +49,23 @@ $woo_currency = get_woocommerce_currency_symbol();
 				<div class="form-wrapper">
 					<form action="#" class="form-inner">
 						<div class="form-row">
-							<div class="col-12 col-md-5 col-lg-6">
+							<div class="col-12 col-md-3 col-lg-3">
 								<div class="form-group">
 									<input type="text" value="<?php echo esc_html( $search_location ); ?>" class="ersrv-item-search-location form-control date-control ship-icon-field text-left rounded-lg" placeholder="<?php esc_html_e( 'Desired location', 'easy-reservations' ); ?>">
 								</div>
 							</div>
-							<div class="col-12 col-md-7 col-lg-6">
+							<div class="col-12 col-md-3 col-lg-3">
+								<select class="selectpicker form-control Boat-Types mb-3" id="boat-types" data-size="5" data-style="btn-outline-light focus-none" title="Boat Type">
+									<?php if ( ! empty( $reservation_item_types ) && is_array( $reservation_item_types ) ) { ?>
+										<?php foreach ( $reservation_item_types as $item_type ) {
+											$is_selected = ( 0 !== $search_boat_type && $search_boat_type === $item_type->term_id );
+											?>
+											<option <?php echo ( $is_selected ) ? 'selected' : ''; ?> value="<?php echo esc_attr( $item_type->term_id ); ?>"><?php echo esc_html( $item_type->name ); ?></option>
+										<?php } ?>
+									<?php } ?>
+								</select>
+							</div>
+							<div class="col-12 col-md-6 col-lg-6">
 								<div class="input-daterange">
 									<div class="form-row">
 										<div class="col-12 col-md-6">
@@ -70,8 +81,10 @@ $woo_currency = get_woocommerce_currency_symbol();
 						<div class="form-row">
 							<div class="col-12 col-md-5 col-lg-6">
 								<div class="slider-wrapper">
-									<h4 class="font-lato font-size-14 font-weight-normal color-black text-center mb-2"><?php esc_html_e( 'Price Range', 'easy-reservations' ); ?></h4>
-									<h4 class="font-lato font-size-20 font-weight-bolder color-black text-center mb-0 price-value"><?php echo esc_html( $woo_currency );?>0 to <?php echo esc_html( $woo_currency );?>10,000</h4>
+									<div class="d-flex flex-wrap align-items-center justify-content-center mb-3">
+										<h4 class="font-lato font-size-14 font-weight-bolder color-black text-center mb-0 mr-2"><?php esc_html_e( 'Price Per Night:', 'easy-reservations' ); ?></h4>
+										<h4 class="font-lato font-size-20 font-weight-bolder color-black text-center mb-0 price-value"><?php echo esc_html( $woo_currency );?>0 to <?php echo esc_html( $woo_currency );?>10,000</h4>
+									</div>
 									<div class="search-price-range-slider ersrv-search-item-price-range"></div>
 								</div>
 							</div>
