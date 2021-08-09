@@ -389,7 +389,6 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 	background-color: #e0e0e0;
 	border-radius: 100%;
 }
-
 @media only screen and (max-width: 767px) {
 	.ersrv-item-availability-calendar .ui-datepicker-inline {
 		display: flex !important;
@@ -403,10 +402,6 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 	.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td span,
 	.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a {
 		padding: 14px;
-	}
-	.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tr th,
-	.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tr td{
-		display: table-cell !important;
 	}
 	/* .ersrv-item-availability-calendar .ui-datepicker .ui-datepicker-header{
 		padding-top: 40px;
@@ -430,7 +425,7 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 /* on hover */
 /* on hover */
 #ui-datepicker-div {
-	width: 40% !important;
+	width: 27% !important;
 	padding: 0px;
 }
 
@@ -584,10 +579,6 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 	#ui-datepicker-div .ui-datepicker-calendar tbody tr td a {
 		padding: 14px;
 	}
-	#ui-datepicker-div .ui-datepicker-calendar tr th,
-	#ui-datepicker-div .ui-datepicker-calendar tr td{
-		display: table-cell !important;
-	}
 	/* #ui-datepicker-div .ui-datepicker .ui-datepicker-header{
 		padding-top: 40px;
 	} */
@@ -601,5 +592,14 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 	#ui-datepicker-div.ui-datepicker select.ui-datepicker-month,
 	#ui-datepicker-div.ui-datepicker select.ui-datepicker-year{
 		width: 25%;
+	}
+}
+/*  */
+@media(max-width:782px){
+	#ui-datepicker-div .ui-datepicker-calendar tr th,
+	#ui-datepicker-div .ui-datepicker-calendar tr td,
+	.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tr th,
+	.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tr td{
+		display: table-cell !important;
 	}
 }
