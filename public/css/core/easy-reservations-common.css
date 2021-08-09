@@ -89,7 +89,7 @@ h1:not(.site-title):before, h2:before,
     font-size: 16px;
 }
 .ersrv-notification-wrapper{
-    bottom: 40px;
+    bottom: 180px !important;
     left: 0px;
     right: 0px;
     display: inline-flex;
@@ -102,6 +102,7 @@ h1:not(.site-title):before, h2:before,
     transition: 0.3s ease-in-out;
     transform-origin: bottom;
     pointer-events: auto;
+    z-index: 9999;
 }
 .ersrv-notification.toast.hide{
     display: block;
