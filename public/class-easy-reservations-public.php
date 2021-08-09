@@ -277,17 +277,6 @@ class Easy_Reservations_Public {
 
 		// Add the datepicker and custom script only when the widget is active.
 		if ( false !== $this->is_calendar_widget_active ) {
-			// Enqueue the ui datepicker script if not already enqueued.
-			if ( ! wp_script_is( $this->plugin_name . '-jquery-ui-script', 'enqueued' ) ) {
-				wp_enqueue_script(
-					$this->plugin_name . '-jquery-ui-script',
-					ERSRV_PLUGIN_URL . 'public/js/ui/jquery-ui.min.js',
-					array( 'jquery' ),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/js/ui/jquery-ui.min.js' ),
-					true
-				);
-			}
-
 			// Enqueue the bootstrap select script if not already enqueued.
 			if ( ! wp_script_is( $this->plugin_name . '-bootstrap-select-script', 'enqueued' ) ) {
 				wp_enqueue_script(
@@ -295,6 +284,17 @@ class Easy_Reservations_Public {
 					ERSRV_PLUGIN_URL . 'public/js/bootstrap/bootstrap-select.min.js',
 					array(),
 					filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap/bootstrap-select.min.js' ),
+					true
+				);
+			}
+
+			// Enqueue the ui datepicker script if not already enqueued.
+			if ( ! wp_script_is( $this->plugin_name . '-jquery-ui-script', 'enqueued' ) ) {
+				wp_enqueue_script(
+					$this->plugin_name . '-jquery-ui-script',
+					ERSRV_PLUGIN_URL . 'public/js/ui/jquery-ui.min.js',
+					array( 'jquery' ),
+					filemtime( ERSRV_PLUGIN_PATH . 'public/js/ui/jquery-ui.min.js' ),
 					true
 				);
 			}
@@ -339,36 +339,45 @@ class Easy_Reservations_Public {
 			true
 		);
 
-		// Localize script.
-		wp_localize_script(
-			$plugin_name,
-			'ERSRV_Public_Script_Vars',
-			array(
-				'ajaxurl'                                      => admin_url( 'admin-ajax.php' ),
-				'remove_sidebar'                               => ersrv_get_plugin_settings( 'ersrv_remove_reservation_pages_sidebar' ),
-				'is_product'                                   => ( is_product() ) ? 'yes' : 'no',
-				'is_checkout'                                  => ( is_checkout() ) ? 'yes' : 'no',
-				'is_search_page'                               => ( $is_search_page ) ? 'yes' : 'no',
-				'reservation_item_details'                     => $reservation_item_details,
-				'woo_currency'                                 => get_woocommerce_currency_symbol(),
-				'reservation_guests_err_msg'                   => __( 'Please provide the count of guests for the reservation.', 'easy-reservations' ),
-				'reservation_only_kids_guests_err_msg'         => __( 'We cannot proceed with only the kids in the reservation.', 'easy-reservations' ),
-				'reservation_guests_count_exceeded_err_msg'    => __( 'The guests count is more than the accomodation limit.', 'easy-reservations' ),
-				'reservation_checkin_checkout_missing_err_msg' => __( 'Please provide checkin and checkout dates.', 'easy-reservations' ),
-				'reservation_checkin_missing_err_msg'          => __( 'Please provide checkin dates.', 'easy-reservations' ),
-				'reservation_checkout_missing_err_msg'         => __( 'Please provide checkout dates.', 'easy-reservations' ),
-				'reservation_lesser_reservation_days_err_msg'  => __( 'The item can be reserved for a min. of XX days.', 'easy-reservations' ),
-				'reservation_greater_reservation_days_err_msg' => __( 'The item can be reserved for a max. of XX days.', 'easy-reservations' ),
-				'reservation_blocked_dates_err_msg'            => __( 'The dates you have selected for reservation contain the dates that are already reserved. Kindly check the availability on the left hand side and then proceed with the reservation.', 'easy-reservations' ),
-				'search_reservations_page_url'                 => get_permalink( $search_reservations_page ),
-				'date_format'                                  => ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' ),
-				'toast_success_heading'                        => __( 'Ohhoooo! Success..', 'easy-reservations' ),
-				'toast_error_heading'                          => __( 'Ooops! Error..', 'easy-reservations' ),
-				'toast_notice_heading'                         => __( 'Notice.', 'easy-reservations' ),
-				'invalid_reservation_item_is_error_text'       => __( 'Invalid item ID.', 'easy-reservations' ),
-				'reservation_add_to_cart_error_message'        => __( 'There are a few errors that need to be addressed.', 'easy-reservations' ),
-			)
+		$localized_vars = array(
+			'ajaxurl'                                      => admin_url( 'admin-ajax.php' ),
+			'remove_sidebar'                               => ersrv_get_plugin_settings( 'ersrv_remove_reservation_pages_sidebar' ),
+			'is_product'                                   => ( is_product() ) ? 'yes' : 'no',
+			'is_checkout'                                  => ( is_checkout() ) ? 'yes' : 'no',
+			'is_search_page'                               => ( $is_search_page ) ? 'yes' : 'no',
+			'reservation_item_details'                     => $reservation_item_details,
+			'woo_currency'                                 => get_woocommerce_currency_symbol(),
+			'reservation_guests_err_msg'                   => __( 'Please provide the count of guests for the reservation.', 'easy-reservations' ),
+			'reservation_only_kids_guests_err_msg'         => __( 'We cannot proceed with only the kids in the reservation.', 'easy-reservations' ),
+			'reservation_guests_count_exceeded_err_msg'    => __( 'The guests count is more than the accomodation limit.', 'easy-reservations' ),
+			'reservation_checkin_checkout_missing_err_msg' => __( 'Please provide checkin and checkout dates.', 'easy-reservations' ),
+			'reservation_checkin_missing_err_msg'          => __( 'Please provide checkin dates.', 'easy-reservations' ),
+			'reservation_checkout_missing_err_msg'         => __( 'Please provide checkout dates.', 'easy-reservations' ),
+			'reservation_lesser_reservation_days_err_msg'  => __( 'The item can be reserved for a min. of XX days.', 'easy-reservations' ),
+			'reservation_greater_reservation_days_err_msg' => __( 'The item can be reserved for a max. of XX days.', 'easy-reservations' ),
+			'reservation_blocked_dates_err_msg'            => __( 'The dates you have selected for reservation contain the dates that are already reserved. Kindly check the availability on the left hand side and then proceed with the reservation.', 'easy-reservations' ),
+			'search_reservations_page_url'                 => get_permalink( $search_reservations_page ),
+			'date_format'                                  => ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' ),
+			'toast_success_heading'                        => __( 'Ohhoooo! Success..', 'easy-reservations' ),
+			'toast_error_heading'                          => __( 'Ooops! Error..', 'easy-reservations' ),
+			'toast_notice_heading'                         => __( 'Notice.', 'easy-reservations' ),
+			'invalid_reservation_item_is_error_text'       => __( 'Invalid item ID.', 'easy-reservations' ),
+			'reservation_add_to_cart_error_message'        => __( 'There are a few errors that need to be addressed.', 'easy-reservations' ),
+			'reservation_item_contact_owner_error_message' => __( 'There is some issue contacting the owner. Please see the errors above and try again.', 'easy-reservations' ),
 		);
+		/**
+		 * This hook fires in public panel.
+		 *
+		 * This filter helps in modifying the script variables in public.
+		 *
+		 * @param array $localized_vars Script variables.
+		 * @return array
+		 * @since 1.0.0
+		 */
+		$localized_vars = apply_filters( 'ersrv_public_script_vars', $localized_vars );
+
+		// Localize script.
+		wp_localize_script( $plugin_name, 'ERSRV_Public_Script_Vars', $localized_vars );
 	}
 
 	/**

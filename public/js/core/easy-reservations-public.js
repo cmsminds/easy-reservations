@@ -25,6 +25,7 @@ jQuery(document).ready(function ($) {
 	var toast_notice_heading                         = ERSRV_Public_Script_Vars.toast_notice_heading;
 	var invalid_reservation_item_is_error_text       = ERSRV_Public_Script_Vars.invalid_reservation_item_is_error_text;
 	var reservation_add_to_cart_error_message        = ERSRV_Public_Script_Vars.reservation_add_to_cart_error_message;
+	var reservation_item_contact_owner_error_message = ERSRV_Public_Script_Vars.reservation_item_contact_owner_error_message;
 
 	// Custom vars.
 	var quick_view_reserved_dates = [];
@@ -1029,6 +1030,7 @@ jQuery(document).ready(function ($) {
 
 		// Exit, if user registration is set to false.
 		if ( false === submit_contact_req ) {
+			ersrv_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, reservation_item_contact_owner_error_message );
 			return false;
 		}
 

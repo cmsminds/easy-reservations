@@ -64,8 +64,28 @@ $reservation_item_types = get_terms(
 $woo_currency = get_woocommerce_currency_symbol();
 
 // Social share URLs.
-$facebook = 'https://www.facebook.com/sharer.php?u=http%3A%2F%2Flocalhost%3A10003%2Fblog%2Fsample-test%2F';
-$twitter  = 'https://twitter.com/intent/tweet?text=Sample%20Test&amp;url=http://localhost:10003/blog/sample-test/';
+$social_share_urls = array(
+	'facebook' => array(
+		'icon'  => 'fab fa-facebook-f',
+		'link'  => 'https://facebook.com/sharer.php?u=' . get_permalink( $item_post->ID ),
+		'class' => 'icon facebook',
+	),
+	'twitter'  => array(
+		'icon'  => 'fab fa-twitter',
+		'link'  => 'https://twitter.com/intent/tweet?text=' . $item_post->post_title . '&url=' . get_permalink( $item_post->ID ),
+		'class' => 'icon twitter',
+	),
+);
+/**
+ * This hook is fired on the reservation item single page.
+ *
+ * This filter help in managing the social platforms for sharing the reservation item.
+ *
+ * @param array $social_share_urls Array of social media platforms.
+ * @return array
+ * @since 1.0.0
+ */
+$social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platforms', $social_share_urls );
 ?>
 <section class="wrapper single-reserve-page" id="wrapper" data-item="<?php echo esc_attr( $item_post->ID ); ?>">
 	<div class="banner text-center">
@@ -304,34 +324,17 @@ $twitter  = 'https://twitter.com/intent/tweet?text=Sample%20Test&amp;url=http://
 									</div>
 									<div class="social">
 										<div class="d-flex align-items-center justify-content-center">
-											<a href="#" class="icon facebook">
-												<span>
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-														<path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
-													</svg>
-												</span>
-											</a>
-											<a href="#" class="icon twitter">
-												<span>
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-														<path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
-													</svg>
-												</span>
-											</a>
-											<a href="#" class="icon email">
-												<span>
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-														<path d="M0 3v18h24v-18h-24zm21.518 2l-9.518 7.713-9.518-7.713h19.036zm-19.518 14v-11.817l10 8.104 10-8.104v11.817h-20z" />
-													</svg>
-												</span>
-											</a>
-											<a href="#" class="icon pinterest">
-												<span>
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-														<path d="M 16.09375 4 C 11.01675 4 6 7.3833281 6 12.861328 C 6 16.344328 7.9584844 18.324219 9.1464844 18.324219 C 9.6364844 18.324219 9.9199219 16.958266 9.9199219 16.572266 C 9.9199219 16.112266 8.7460938 15.131797 8.7460938 13.216797 C 8.7460938 9.2387969 11.774359 6.4199219 15.693359 6.4199219 C 19.063359 6.4199219 21.556641 8.3335625 21.556641 11.851562 C 21.556641 14.478563 20.501891 19.40625 17.087891 19.40625 C 15.855891 19.40625 14.802734 18.516234 14.802734 17.240234 C 14.802734 15.370234 16 13.558906 16 11.628906 C 16 8.3529063 11.462891 8.94725 11.462891 12.90625 C 11.462891 13.73725 11.5665 14.657063 11.9375 15.414062 C 11.2555 18.353063 10 23.037406 10 26.066406 C 10 27.001406 10.133656 27.921422 10.222656 28.857422 C 10.390656 29.045422 10.307453 29.025641 10.564453 28.931641 C 13.058453 25.517641 12.827078 24.544172 13.955078 20.076172 C 14.564078 21.234172 16.137766 21.857422 17.384766 21.857422 C 22.639766 21.857422 25 16.736141 25 12.119141 C 25 7.2061406 20.75475 4 16.09375 4 z" />
-													</svg>
-												</span>
-											</a>
+											<?php
+											if ( ! empty( $social_share_urls ) && is_array( $social_share_urls ) ) {
+												foreach ( $social_share_urls as $social_share_url ) {
+													?>
+													<a href="<?php echo esc_url( $social_share_url['link'] ); ?>" class="<?php echo esc_attr( $social_share_url['class'] ); ?>">
+														<span><i class="<?php echo esc_attr( $social_share_url['icon'] ); ?>"></i></span>
+													</a>
+													<?php
+												}
+											}
+											?>
 										</div>
 									</div>
 								</form>
