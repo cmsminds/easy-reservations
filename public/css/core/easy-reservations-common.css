@@ -143,10 +143,25 @@ a.btn:hover,
 .slider-wrapper .search-price-range-slider {
     margin: 0px 1.5rem;
 }
-
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .media a{
+    width: 100%;
+    height: 278.047px;
+    overflow: hidden;
+}
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .media a img{
+    height: 100%;
+    width: 100%;
+    -o-object-fit: cover;
+       object-fit: cover;
+    -o-object-position: center center;
+       object-position: center center;
+}
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .price-info{
+    max-width:none;
+}
 
 /* Experimental */
-/* body::after {
+body::after {
     position: fixed;
     z-index: 99999;
     height: 100%;
@@ -157,4 +172,4 @@ a.btn:hover,
     pointer-events: none;
     top: 0px;
     left: 0px;
-} */
+}
