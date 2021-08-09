@@ -89,12 +89,13 @@ h1:not(.site-title):before, h2:before,
     font-size: 16px;
 }
 .ersrv-notification-wrapper{
-    bottom: 180px !important;
+    bottom: calc(40px - 1rem) !important;
     left: 0px;
     right: 0px;
     display: inline-flex;
     justify-content: center;
     pointer-events: none;
+    z-index: 99999 !important;
 }
 .ersrv-notification{
     border: 1px solid transparent;
@@ -102,7 +103,7 @@ h1:not(.site-title):before, h2:before,
     transition: 0.3s ease-in-out;
     transform-origin: bottom;
     pointer-events: auto;
-    z-index: 9999;
+    z-index: 99999;
 }
 .ersrv-notification.toast.hide{
     display: block;
