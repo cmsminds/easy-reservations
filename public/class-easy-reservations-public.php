@@ -255,7 +255,8 @@ class Easy_Reservations_Public {
 				$this->plugin_name . '-jquery-ui-script',
 				ERSRV_PLUGIN_URL . 'public/js/ui/jquery-ui.min.js',
 				array( 'jquery' ),
-				filemtime( ERSRV_PLUGIN_PATH . 'public/js/ui/jquery-ui.min.js' )
+				filemtime( ERSRV_PLUGIN_PATH . 'public/js/ui/jquery-ui.min.js' ),
+				true
 			);
 
 			// Custom public script.
@@ -268,11 +269,12 @@ class Easy_Reservations_Public {
 		if ( false !== $this->is_calendar_widget_active ) {
 			// Enqueue the ui datepicker script if not already enqueued.
 			if ( ! wp_script_is( $this->plugin_name . '-jquery-ui-script', 'enqueued' ) ) {
-				wp_enqueue_style(
+				wp_enqueue_script(
 					$this->plugin_name . '-jquery-ui-script',
 					ERSRV_PLUGIN_URL . 'public/js/ui/jquery-ui.min.js',
-					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/js/ui/jquery-ui.min.js' )
+					array( 'jquery' ),
+					filemtime( ERSRV_PLUGIN_PATH . 'public/js/ui/jquery-ui.min.js' ),
+					true
 				);
 			}
 
