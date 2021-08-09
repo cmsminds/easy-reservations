@@ -292,6 +292,7 @@ class Easy_Reservations_Public {
 				array(
 					'ajaxurl'       => admin_url( 'admin-ajax.php' ),
 					'start_of_week' => get_option( 'start_of_week' ),
+					'date_format'   => ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' ),
 				)
 			);
 		}
@@ -688,41 +689,32 @@ class Easy_Reservations_Public {
 	/**
 	 * Get the unavailability dates of particular item.
 	 *
-	 * @param int $item_id Holds the reservable item ID.
-	 * @return array
 	 * @since 1.0.0
 	 */
-	public function ersrv_get_item_unavailable_dates_callback( $item_id ) {
-		// If doing AJAX.
-		if ( DOING_AJAX ) {
-			$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+	public function ersrv_get_item_unavailable_dates_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
 
-			// Check if action mismatches.
-			if ( empty( $action ) || 'get_item_unavailable_dates' !== $action ) {
-				echo 0;
-				wp_die();
-			}
-
-			// Posted data.
-			$item_id = (int) filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
-		}
-
-		// Now that we have item ID, get the unavailability dates.
-		$blockedout_dates = get_post_meta( $item_id, '_ersrv_reservation_blockout_dates', true );
-
-		// If doing AJAX.
-		if ( DOING_AJAX ) {
-			$response = array(
-				'code'      => 'unavailability-dates-fetched',
-				'dates'     => $blocked_dates,
-				'item_link' => get_permalink( $item_id ),
-			);
-			wp_send_json_success( $response );
+		// Check if action mismatches.
+		if ( empty( $action ) || 'get_item_unavailable_dates' !== $action ) {
+			echo 0;
 			wp_die();
 		}
 
-		// Return the dates, otherewise.
-		return $blocked_dates;
+		// Posted data.
+		$item_id = (int) filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
+
+		// Now that we have item ID, get the unavailability dates.
+		$reserved_dates = get_post_meta( $item_id, '_ersrv_reservation_blockout_dates', true );
+		$reserved_dates = ( ! empty( $reserved_dates ) && is_array( $reserved_dates ) ) ? $reserved_dates : array();
+
+		// Return the AJAX response.
+		$response = array(
+			'code'      => 'unavailability-dates-fetched',
+			'dates'     => $reserved_dates,
+			'item_link' => get_permalink( $item_id ),
+		);
+		wp_send_json_success( $response );
+		wp_die();
 	}
 
 	/**
