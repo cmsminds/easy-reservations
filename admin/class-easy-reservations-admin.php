@@ -1211,4 +1211,60 @@ class Easy_Reservations_Admin {
 
 		return $post_states;
 	}
+
+	/**
+	 * Update the blocked dates format for all the reservation items when the option is updated.
+	 *
+	 * @param array $option Holds the WooCommerce setting data.
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_update_option_callback( $option ) {
+		// Check for the datepicker date format option ID.
+		if ( ! empty( $option['id'] ) && 'ersrv_datepicker_date_format' === $option['id'] ) {
+			// Change the date format of the reserved dates of all the reservation items.
+			$reservation_items_query = ersrv_get_posts( 'product', 1, -1 );
+			$reservation_items       = $reservation_items_query->posts;
+
+			// Return, if there are no reservation items.
+			if ( empty( $reservation_items ) || ! is_array( $reservation_items ) ) {
+				return;
+			}
+
+			// New date format.
+			$new_date_format = filter_input( INPUT_POST, 'ersrv_datepicker_date_format', FILTER_SANITIZE_STRING );
+			$old_date_format = ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' );
+
+			// If there is no change with the format, return.
+			if ( $new_date_format === $old_date_format ) {
+				return;
+			}
+
+			// Get the PHP date format.
+			$php_date_format = ersrv_get_php_date_format( $new_date_format );
+			
+			// New reserved dates.
+			$new_reserved_dates = array();
+
+			// Iterate through the reservation items to update their reservation dates.
+			foreach ( $reservation_items as $reservation_item_id ) {
+				$reserved_dates = get_post_meta( $reservation_item_id, '_ersrv_reservation_blockout_dates', true );
+
+				// Skip, if there are no reserved dates.
+				if ( empty( $reserved_dates ) || ! is_array( $reserved_dates ) ) {
+					continue;
+				}
+
+				// Iterate through the reserved dates.
+				foreach ( $reserved_dates as $reserved_date ) {
+					$new_reserved_dates[] = array(
+						'date'    => gmdate( $php_date_format, strtotime( $reserved_date['date'] ) ),
+						'message' => ( ! empty( $reserved_date['message'] ) ) ? $reserved_date['message'] : '',
+					);
+				}
+
+				// Update the new data.
+				update_post_meta( $reservation_item_id, '_ersrv_reservation_blockout_dates', $new_reserved_dates );
+			}
+		}
+	}
 }

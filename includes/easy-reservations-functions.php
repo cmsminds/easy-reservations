@@ -1762,12 +1762,12 @@ if ( ! function_exists( 'ersrv_get_php_date_format' ) ) {
 	/**
 	 * Return the date format.
 	 *
-	 * @param string $format Date format.
+	 * @param string $js_date_format Date format.
 	 * @return string
 	 * @since 1.0.0
 	 */
-	function ersrv_get_php_date_format() {
-		$datepicker_format = ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' );
+	function ersrv_get_php_date_format( $js_date_format ) {
+		$datepicker_format = ( ! empty( $js_date_format ) ) ? $js_date_format : ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' );
 		$datepicker_format = str_replace( 'mm', 'm', $datepicker_format );
 		$datepicker_format = str_replace( 'dd', 'd', $datepicker_format );
 		$datepicker_format = str_replace( 'yy', 'Y', $datepicker_format );
