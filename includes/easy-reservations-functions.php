@@ -83,6 +83,11 @@ function ersrv_get_plugin_settings( $setting ) {
 			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : 'mm-dd-yyyy';
 			break;
 
+		case 'ersrv_driving_license_validation':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : 'no';
+			break;
+
 		default:
 			$data = -1;
 	}
@@ -1766,7 +1771,7 @@ if ( ! function_exists( 'ersrv_get_php_date_format' ) ) {
 	 * @return string
 	 * @since 1.0.0
 	 */
-	function ersrv_get_php_date_format( $js_date_format ) {
+	function ersrv_get_php_date_format( $js_date_format = '' ) {
 		$datepicker_format = ( ! empty( $js_date_format ) ) ? $js_date_format : ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' );
 		$datepicker_format = str_replace( 'mm', 'm', $datepicker_format );
 		$datepicker_format = str_replace( 'dd', 'd', $datepicker_format );
