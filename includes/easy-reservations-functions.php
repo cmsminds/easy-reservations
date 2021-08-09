@@ -488,13 +488,20 @@ if ( ! function_exists( 'ersrv_get_admin_script_vars' ) ) {
 	 * @since 1.0.0
 	 */
 	function ersrv_get_admin_script_vars() {
-		$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
-		$post = (int) filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
-		$vars = array(
+		$page      = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
+		$post_type = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
+		$post      = (int) filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
+		$vars      = array(
 			'ajaxurl'             => admin_url( 'admin-ajax.php' ),
 			'same_as_adult'       => __( 'Same as Adult!', 'easy-reservations' ),
 			'export_reservations' => __( 'Export Reservations', 'easy-reservations' ),
 		);
+
+		// If it's the order's listing page.
+		if ( ! is_null( $post_type ) && 'shop_order' === $post_type ) {
+			$vars['new_reservation_button_text'] = __( 'New Reservation', 'easy-reservations' );
+			$vars['new_reservation_url']         = admin_url( 'admin.php?page=new-reservation' );
+		}
 
 		// Add some script variables on product edit page.
 		if ( ! is_null( $post ) && 'product' === get_post_type( $post ) ) {
@@ -1858,3 +1865,72 @@ if ( ! function_exists( 'ersrv_block_dates_after_reservation_thankyou' ) ) {
 		update_post_meta( $wc_order->get_id(), 'ersrv_blocked_dates_of_reservation_items', 1 );
 	}
 }
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_export_reservation_orders_data' ) ) {
+	/**
+	 * Return the reservation orders data.
+	 *
+	 * @param array $wc_order_ids WooCommerce orders array.
+	 * @return array
+	 * @since 1.0.0
+	 */
+	function ersrv_get_export_reservation_orders_data( $wc_order_ids ) {
+		$export_data = array();
+
+		// Return, if the order IDs array is blank.
+		if ( empty( $wc_order_ids ) || ! is_array( $wc_order_ids ) ) {
+			return $export_data;
+		}
+
+		// Iterate through the order ids.
+		foreach ( $wc_order_ids as $wc_order_id ) {
+			// Get the WooCommerce order.
+			$wc_order = wc_get_order( $wc_order_id );
+			// Get the items in the reservation.
+			$order_items = $wc_order->get_items();
+
+			// Skip, if there is no item.
+			if ( 0 === count( $order_items ) ) {
+				continue;
+			}
+
+			// Iterate through the order items.
+			foreach ( $order_items as $order_item ) {
+				$item_id    = $order_item->get_id();
+				$product_id = $order_item->get_product_id();
+
+				// Gather the data in array.
+				$export_data[] = array(
+					'id'                 => $wc_order_id,
+					'customer_id'        => get_post_meta( $wc_order_id, '_customer_user', true ),
+					'item_id'            => $product_id,
+					'item_name'          => get_the_title( $product_id ),
+					'checkin_date'       => wc_get_order_item_meta( $item_id, 'Checkin Date', true ),
+					'checkout_date'      => wc_get_order_item_meta( $item_id, 'Checkout Date', true ),
+					'adult_count'        => wc_get_order_item_meta( $item_id, 'Adult Count', true ),
+					'adult_subtotal'     => wc_get_order_item_meta( $item_id, 'Adult Subtotal', true ),
+					'kids_count'         => wc_get_order_item_meta( $item_id, 'Kids Count', true ),
+					'kids_subtotal'      => wc_get_order_item_meta( $item_id, 'Kids Subtotal', true ),
+					'security'           => wc_get_order_item_meta( $item_id, 'Security Amount', true ),
+					'amenities_subtotal' => wc_get_order_item_meta( $item_id, 'Amenities Subtotal', true ),
+				);
+			}
+		}
+
+		/**
+		 * This hook fires on the AJAX call when the reservation orders are exported.
+		 *
+		 * This hook helps in managing the data that is being exported in the data.
+		 *
+		 * @param array $export_data Reservation export data.
+		 * @param array $wc_order_ids Reservation order IDs.
+		 * @return array
+		 * @since 1.0.0
+		 */
+		return apply_filters( 'ersrv_reservations_export_data', $export_data, $wc_order_ids );
+	}
+}
+

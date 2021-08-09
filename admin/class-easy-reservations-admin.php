@@ -427,12 +427,64 @@ class Easy_Reservations_Admin {
 			wp_die();
 		}
 
-		// Get the reservations.
-		$reservations_query = ersrv_get_posts( 'shop_order' );
-		$reservations       = ( ! empty( $reservations_query->posts ) ) ? $reservations_query->posts : array();
+		// Posted data.
+		$from_date = filter_input( INPUT_POST, 'from_date', FILTER_SANITIZE_STRING );
+		$to_date   = filter_input( INPUT_POST, 'to_date', FILTER_SANITIZE_STRING );
+		$format    = filter_input( INPUT_POST, 'format', FILTER_SANITIZE_STRING );
 
-		debug( $reservations );
-		die;
+		$wc_orders_query = ersrv_get_posts( 'shop_order', 1, -1 );
+		$wc_order_ids    = $wc_orders_query->posts;
+
+		// Return back, if there are no orders available.
+		if ( empty( $wc_order_ids ) || ! is_array( $wc_order_ids ) ) {
+			return;
+		}
+
+		/**
+		 * This filter is fired by the AJAX call to export the reservation orders.
+		 *
+		 * This filter helps in managing the array of order ids that are considered for exporting them into various firmats.
+		 *
+		 * @param array $wc_order_ids Array of WooCommerce order IDs.
+		 * @return array
+		 * @since 1.0.0
+		 */
+		$wc_order_ids = apply_filters( 'ersrv_reservation_reminder_email_order_ids', $wc_order_ids );
+
+		// Prepare the data now.
+		$wc_orders_data = ersrv_get_export_reservation_orders_data( $wc_order_ids );
+
+		// Switch case the requested format.
+		switch( $format ) {
+			case 'csv':
+				$this->ersrv_download_csv( $wc_orders_data );
+				break;
+		}
+	}
+
+	/**
+	 * Download the reservation orders data.
+	 *
+	 * @param array $wc_orders_data Reservation orders export data.
+	 * @since 1.0.0
+	 */
+	public function ersrv_download_csv( $wc_orders_data ) {
+		// Exit, if the clubs data is empty.
+		if ( empty( $wc_orders_data ) || ! is_array( $wc_orders_data ) ) {
+			exit();
+		}
+
+		// Create the CSV now.
+		$fp = fopen( 'php://output', 'w' );
+		fputcsv( $fp, array_keys( reset( $wc_orders_data ) ) );
+
+		// Iterate through the clubs to download them.
+		foreach ( $wc_orders_data as $wc_order_data ) {
+			fputcsv( $fp, $wc_order_data );
+		}
+
+		fclose( $fp );
+		exit();
 	}
 
 	/**

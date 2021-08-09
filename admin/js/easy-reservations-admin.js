@@ -31,6 +31,8 @@ jQuery( document ).ready( function( $ ) {
 	var ersrv_product_type                           = ERSRV_Admin_Script_Vars.ersrv_product_type;
 	var date_format                                  = ERSRV_Admin_Script_Vars.date_format;
 	var blocked_dates                                = ERSRV_Admin_Script_Vars.blocked_dates;
+	var new_reservation_button_text                  = ERSRV_Admin_Script_Vars.new_reservation_button_text;
+	var new_reservation_url                          = ERSRV_Admin_Script_Vars.new_reservation_url;
 
 	// Custom vars.
 	var new_reservation_item_reserved_dates = [];
@@ -41,6 +43,10 @@ jQuery( document ).ready( function( $ ) {
 	// Add the dropdown on the order's page.
 	var export_reservations_button = '<a class="page-title-action ersrv-export-reservations" href="javascript:void(0);">' + export_reservations + '</a>';
 	$( export_reservations_button ).insertAfter( 'body.woocommerce-page.post-type-shop_order .wrap h1.wp-heading-inline' );
+
+	// Add the new reservation button html on the orders listing page.
+	var new_reservation_button = '<a class="page-title-action" href="' + new_reservation_url + '">' + new_reservation_button_text + '</a>';
+	$( new_reservation_button ).insertAfter( 'body.woocommerce-page.post-type-shop_order .wrap h1.wp-heading-inline' );
 
 	if ( $( '.ersrv-has-datepicker' ).length ) {
 		$( '.ersrv-has-datepicker' ).datepicker( {
@@ -158,16 +164,35 @@ jQuery( document ).ready( function( $ ) {
 				format: format,
 			},
 			success: function ( response ) {
-				// Return, if the response is not proper.
-				if ( 'mods-fetched' !== response.data.code ) {
-					return false;
-				}
-
 				// Unblock the element.
-				unblock_element( $( '#cf-export-rooms-by-mods-modal .select-mods' ) );
+				unblock_element( this_button );
 
-				// Change the button text.
-				$( '#cf-export-rooms-by-mods-modal .select-mods #cf-mods-select' ).html( response.data.html );
+				// If the CSV format is requested.
+				if ( 'csv' === format ) {
+					// Make the CSV downloadable.
+					var download_link = document.createElement( 'a' );
+					var csv_data      = [ '\ufeff' + response ];
+					var blob_object   = new Blob( csv_data, {
+						type: 'text/csv;charset=utf-8;'
+					} );
+
+					var url            = URL.createObjectURL( blob_object );
+					download_link.href = url;
+
+					// Get the datetime now to set the csv file name.
+					var today                = new Date( $.now() );
+					var today_date_formatted = ersrv_get_formatted_date( today );
+					var export_time          = today_date_formatted + '-' + today.getHours() + '-' + today.getMinutes() + '-' + today.getSeconds();
+					export_time              = export_time.replaceAll( '/', '-' );
+					download_link.download   = 'ersrv-reservation-orders-' + export_time + '.csv';
+
+					// Force the system to download the CSV now.
+					document.body.appendChild( download_link );
+					download_link.click();
+					document.body.removeChild( download_link );
+				} else if ( 'xlsx' === format ) {
+					
+				}
 			},
 		} );
 	} );
@@ -971,8 +996,8 @@ jQuery( document ).ready( function( $ ) {
 
 		// Replace the variables now.
 		var formatted_date = date_format.replace( 'dd', date );
-		formatted_date = formatted_date.replace( 'mm', month );
-		formatted_date = formatted_date.replace( 'yy', year );
+		formatted_date     = formatted_date.replace( 'mm', month );
+		formatted_date     = formatted_date.replace( 'yy', year );
 
 		return formatted_date;
 	}
