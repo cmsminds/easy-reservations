@@ -535,11 +535,8 @@ jQuery( document ).ready( function( $ ) {
 					$( '#accomodation-limit' ).val( accomodation_limit );
 					$( '.ersrv-new-reservation-limit-text' ).text( accomodation_limit_text.replace( '--', accomodation_limit ) );
 
-					var blocked_dates     = item_details.reserved_dates;
-					var current_date      = new Date();
-					var current_month     = ( ( '0' + ( current_date.getMonth() + 1 ) ).slice( -2 ) );
-					var current_date_date = ( ( '0' + current_date.getDate() ).slice( -2 ) );
-					var today_formatted   = current_date.getFullYear() + '-' + current_month + '-' + current_date_date;
+					var blocked_dates   = item_details.reserved_dates;
+					var today_formatted = ersrv_get_formatted_date( new Date() );
 
 					// Prepare the blocked out dates in a separate array.
 					if ( 0 < blocked_dates.length ) {
@@ -569,11 +566,10 @@ jQuery( document ).ready( function( $ ) {
 							}
 						},
 						beforeShowDay: function( date ) {
-							var loop_date           = ( ( '0' + date.getDate() ).slice( -2 ) );
-							var loop_month          = ( ( '0' + ( date.getMonth() + 1 ) ).slice( -2 ) );
-							var loop_date_formatted = date.getFullYear() + '-' + loop_month + '-' + loop_date;
+							var loop_date_formatted = ersrv_get_formatted_date( date );
 							var date_enabled        = true;
-
+							var date_class          = '';
+			
 							// If not the past date.
 							if ( today_formatted <= loop_date_formatted ) {
 								// Add custom class to the active dates of the current month.
@@ -582,17 +578,19 @@ jQuery( document ).ready( function( $ ) {
 										return i;
 									}
 								} );
-
+			
 								// If the loop date is a blocked date.
 								if ( 0 < key.length ) {
-									date_enabled = false;
+									date_class = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+								} else {
+									date_class = 'ersrv-date-active';
 								}
 							} else {
-								date_enabled = false;
+								date_class = 'ersrv-date-disabled';
 							}
-
+			
 							// Return the datepicker day object.
-							return [ date_enabled ];
+							return [ date_enabled, date_class ];
 						},
 						minDate: 0,
 						weekStart: start_of_week,
@@ -960,6 +958,22 @@ jQuery( document ).ready( function( $ ) {
 		}
 
 		return dates;
+	}
+
+	/**
+	 * Return the formatted date based on the global date format.
+	 */
+	function ersrv_get_formatted_date( date_obj ) {
+		var month = ( ( '0' + ( date_obj.getMonth() + 1 ) ).slice( -2 ) );
+		var date  = ( ( '0' + ( date_obj.getDate() ) ).slice( -2 ) );
+		var year  = date_obj.getFullYear();
+
+		// Replace the variables now.
+		var formatted_date = date_format.replace( 'dd', date );
+		formatted_date = formatted_date.replace( 'mm', month );
+		formatted_date = formatted_date.replace( 'yy', year );
+
+		return formatted_date;
 	}
 
 	/**
