@@ -159,6 +159,15 @@ a.btn:hover,
 .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .price-info{
     max-width:none;
 }
+.search-page .slider-wrapper *{
+    color: white;
+}
+.search-page .slider-wrapper > h4:nth-child(1){
+    margin-bottom: 0px !important;
+}
+.search-page .slider-wrapper > h4:nth-child(2){
+    margin-bottom: 10px !important;
+}
 
 /* Experimental */
 body::after {
