@@ -16,6 +16,9 @@ jQuery( document ).ready( function( $ ) {
 		// Hide the calendar.
 		$( '.ersrv-widget-calendar, .ersrv-book-item-from-widget' ).hide();
 
+		// Destroy the datepickers.
+		$( '.ersrv-widget-calendar' ).datepicker( 'destroy' );
+
 		// If no item id is selected.
 		if ( -1 === item_id ) {
 			return false;
@@ -64,12 +67,13 @@ jQuery( document ).ready( function( $ ) {
 				}
 
 				// Display the calendar.
+				$( '.ersrv-widget-calendar' ).show();
 				$( '.ersrv-widget-calendar' ).datepicker( {
 					beforeShowDay: function( date ) {
 						var loop_date_formatted = ersrv_get_formatted_date( date );
 						var date_enabled        = true;
 						var date_class          = '';
-		
+
 						// If not the past date.
 						if ( today_formatted <= loop_date_formatted ) {
 							// Add custom class to the active dates of the current month.

@@ -213,10 +213,10 @@ $woo_currency = get_woocommerce_currency_symbol();
 										<div class="ersrv-item-amenities-wrapper non-clickable checkbox-wrapper mb-4 pb-3">
 											<label for="amenities" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Amenities', 'easy-reservations' ); ?></label>
 											<?php foreach ( $amenities as $amenity_data ) {
-												$amenity_title     = $amenity_data['title'];
-												$amenity_slug      = sanitize_title( $amenity_title );
-												$amenity_cost      = $amenity_data['cost'];
-												$amenity_cost_type = $amenity_data['cost_type'];
+												$amenity_title     = ( ! empty( $amenity_data['title'] ) ) ? $amenity_data['title'] : '';
+												$amenity_cost      = ( ! empty( $amenity_data['cost'] ) ) ? $amenity_data['cost'] : 0.00;
+												$amenity_slug      = ( ! empty( $amenity_title ) ) ? sanitize_title( $amenity_title ) : '';
+												$amenity_cost_type = ( ! empty( $amenity_data['cost_type'] ) ) ? $amenity_data['cost_type'] : 'one_time';
 												?>
 												<div class="custom-control custom-switch ersrv-single-amenity-block" data-cost_type="<?php echo esc_attr( $amenity_cost_type ); ?>" data-cost="<?php echo esc_attr( $amenity_cost ); ?>" data-amenity="<?php echo esc_attr( $amenity_title ); ?>">
 													<input type="checkbox" class="custom-control-input ersrv-new-reservation-single-amenity" id="amenity-<?php echo esc_html( $amenity_slug ); ?>">
