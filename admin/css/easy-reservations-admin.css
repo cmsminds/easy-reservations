@@ -59,16 +59,17 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 	font-weight: 600;
 }
 
-.navbar a:hover, .dropdown.rothco:hover .dropbtn {
+.navbar a:hover,
+.dropdown.rothco:hover .dropbtn {
 	background-color: #f3f5f6;
 }
-	
+
 .dropdown-content {
 	display: none;
 	position: absolute;
 	background-color: #f9f9f9;
 	min-width: 160px;
-	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 	z-index: 1;
 	top: 100%;
 	left: 0;
@@ -94,25 +95,25 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 
 .woocommerce_options_panel .form-field.amenities-row,
 .woocommerce_options_panel .form-field.blockout-dates-row {
-    padding-left: 16px !important;
-    display:flex;
+	padding-left: 16px !important;
+	display: flex;
 }
 
 .amenities-row .short,
 .blockout-dates-row .short {
-	width:calc( 100%/ 2 - 16px ) !important;
-	margin-right:16px;
+	width: calc(100%/ 2 - 16px) !important;
+	margin-right: 16px;
 }
 
 .reservations-amenities-header,
 .reservations-blockout-dates-header {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 .reservations-amenities-header .reservation-tab-setting-heading,
 .reservations-blockout-dates-header .reservation-tab-setting-heading {
-    margin-right: 1.33em;
+	margin-right: 1.33em;
 }
 
 .ersrv-blockout-dates-message {
@@ -138,10 +139,10 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 
 /* The switch - the box around the slider */
 .ersrv-switch {
-position: relative;
-display: inline-block;
-width: 60px;
-height: 34px;
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 34px;
 }
 
 /* Hide default HTML checkbox */
@@ -174,15 +175,15 @@ height: 34px;
 	transition: .4s;
 }
 
-.ersrv-switch-input:checked + .ersrv-switch-slider {
+.ersrv-switch-input:checked+.ersrv-switch-slider {
 	background-color: #2196F3;
 }
 
-.ersrv-switch-input:focus + .ersrv-switch-slider {
+.ersrv-switch-input:focus+.ersrv-switch-slider {
 	box-shadow: 0 0 1px #2196F3;
 }
 
-.ersrv-switch-input:checked + .ersrv-switch-slider:before {
+.ersrv-switch-input:checked+.ersrv-switch-slider:before {
 	transform: translateX(26px);
 }
 
@@ -203,37 +204,402 @@ height: 34px;
 	font-family: Dashicons;
 	content: "\f316";
 }
+
 .new-reservation-summary .form-table th,
 .new-reservation-summary .form-table td {
-    padding: 8px 20px 8px 0px;
+	padding: 8px 20px 8px 0px;
 }
+
 .button.ersrv-add-new-reservation {
-    margin-top: 20px;
+	margin-top: 20px;
 }
-@media(max-width:1024px){
+
+@media(max-width:1024px) {
+
 	.ersrv-new-reservation-checkin-checkout-row input[type="text"],
-	.ersrv-new-reservation-accomodation-row input[type="number"]{
+	.ersrv-new-reservation-accomodation-row input[type="number"] {
 		max-width: calc(100% / 2 - 8px) !important;
 		width: calc(100% / 2 - 8px) !important;
 		float: left;
 		margin-right: 7px;
 	}
 }
-@media(max-width:991px){
-	.new-reservation-summary .form-table td, 
-	.new-reservation-summary .form-table th, 
+
+@media(max-width:991px) {
+
+	.new-reservation-summary .form-table td,
+	.new-reservation-summary .form-table th,
 	.new-reservation-summary .label-responsive {
 		display: table-cell;
 		vertical-align: middle;
 		width: auto;
 	}
-	.new-reservation-summary .form-table th{
+
+	.new-reservation-summary .form-table th {
 		width: 200px;
 	}
 }
+
 @media(max-width:767px) {
 	.ersrv-new-reservation-single-amenity {
 		width: 50%;
 		float: left;
+	}
+}
+
+/* datepicker design*/
+
+.ersrv-item-availability-calendar .ui-datepicker-inline {
+	width: 40% !important;
+	padding: 0px;
+}
+
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover {
+	text-decoration: none;
+	top: 2px;
+	left: 2px;
+}
+
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev,
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next {
+	width: 70px;
+	height: 34px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 4px;
+	border: 1px solid #0c71c3;
+	cursor: pointer;
+	background-color: #0c71c3;
+	color: #fff;
+}
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover{
+	color: #000;
+    background-color: #d1e6f7;
+    border-color: #0c71c3;
+}
+
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev .ui-icon,
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next .ui-icon {
+	text-indent: 0px;
+	position: relative;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	transform: none;
+	margin: 0px;
+	font-size: 14px;
+	font-weight: 600;
+	width: auto;
+}
+
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover {
+	text-decoration: none;
+	top: 2px;
+}
+
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover {
+	left: 2px;
+}
+
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover {
+	right: 2px;
+}
+
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-title {
+	font-size: 16px;
+	font-weight: 600;
+}
+
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-buttonpane {
+	display: none;
+}
+
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar thead tr th {
+	font-size: 16px;
+	font-weight: 600;
+	color: #000;
+}
+
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td {
+	transform: scale(0.9);
+}
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td span,
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td,
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a {
+	font-size: 16px;
+	font-weight: 600;
+	color: #8a8f9c;
+	text-align: center;
+	border-radius: 100%;
+	border: 0px;
+}
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ersrv-date-active,
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ersrv-date-active {
+    color: #fff;
+    background-color: #3ab166;
+    border-radius: 100%;
+}
+@media only screen and (min-width: 768px) {
+
+	.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td,
+	.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a {
+		font-size: 14px;
+	}
+
+	.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a,
+	.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a {
+		padding: 4px;
+	}
+}
+
+@media only screen and (min-width: 1280px) {
+
+	/* .ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td, */
+	.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td span,
+	.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a {
+		font-size: 16px;
+	}
+
+	/* .ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td, */
+	.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td span,
+	.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a {
+		padding: 15px;
+	}
+}
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ersrv-date-active *{
+	color: #fff;
+	background-color: #3ab166;
+	border-radius: 100%;
+}
+
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ersrv-date-active a,
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ersrv-date-active a {
+	color: #fff;
+}
+
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-disabled,
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-disabled.ersrv-date-disabled,
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ui-state-disabled,
+.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ui-state-disabled.ersrv-date-disabled{
+	color: #d1e6f7;
+	background-color: #e0e0e0;
+	border-radius: 100%;
+}
+@media only screen and (max-width: 767px) {
+	.ersrv-item-availability-calendar .ui-datepicker-inline {
+		display: flex !important;
+		flex-direction: column;
+		width: 100% !important;
+	}
+
+	.ersrv-item-availability-calendar .ui-datepicker-inline>div {
+		width: 100%;
+	}
+	.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td span,
+	.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a {
+		padding: 14px;
+	}
+	/* .ersrv-item-availability-calendar .ui-datepicker .ui-datepicker-header{
+		padding-top: 40px;
+	} */
+	.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-title{
+		display: flex;
+		margin: 0px;
+		flex-flow: row wrap;
+		align-items: center;
+		justify-content: center;
+	}
+	.ersrv-item-availability-calendar .ui-datepicker select.ui-datepicker-month,
+	.ersrv-item-availability-calendar .ui-datepicker select.ui-datepicker-year{
+		width: 25%;
+	}
+}
+.ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-datepicker-other-month{
+	opacity: 0;
+	clip: rect(0,0);
+}
+/* on hover */
+/* on hover */
+#ui-datepicker-div {
+	width: 27% !important;
+	padding: 0px;
+}
+
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover {
+	text-decoration: none;
+	top: 2px;
+	left: 2px;
+}
+
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next {
+	width: 70px;
+	height: 34px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 4px;
+	border: 1px solid #0c71c3;
+	cursor: pointer;
+	background-color: #0c71c3;
+	color: #fff;
+}
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover{
+	color: #000;
+    background-color: #d1e6f7;
+    border-color: #0c71c3;
+}
+
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev .ui-icon,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next .ui-icon {
+	text-indent: 0px;
+	position: relative;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	transform: none;
+	margin: 0px;
+	font-size: 14px;
+	font-weight: 600;
+	width: auto;
+}
+
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover {
+	text-decoration: none;
+	top: 2px;
+}
+
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover {
+	left: 2px;
+}
+
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover {
+	right: 2px;
+}
+
+#ui-datepicker-div .ui-datepicker-header .ui-datepicker-title {
+	font-size: 16px;
+	font-weight: 600;
+}
+
+#ui-datepicker-div .ui-datepicker-buttonpane {
+	display: none;
+}
+
+#ui-datepicker-div .ui-datepicker-calendar thead tr th {
+	font-size: 16px;
+	font-weight: 600;
+	color: #000;
+}
+
+#ui-datepicker-div .ui-datepicker-calendar tbody tr td {
+	transform: scale(0.9);
+}
+#ui-datepicker-div .ui-datepicker-calendar tbody tr td span,
+#ui-datepicker-div .ui-datepicker-calendar tbody tr td,
+#ui-datepicker-div .ui-datepicker-calendar tbody tr td a {
+	font-size: 16px;
+	font-weight: 600;
+	color: #8a8f9c;
+	text-align: center;
+	border-radius: 100%;
+	border: 0px;
+}
+#ui-datepicker-div .ui-datepicker-calendar tbody tr td.ersrv-date-active,
+#ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ersrv-date-active {
+    color: #fff;
+    background-color: #3ab166;
+    border-radius: 100%;
+}
+@media only screen and (min-width: 768px) {
+
+	#ui-datepicker-div .ui-datepicker-calendar tbody tr td,
+	#ui-datepicker-div .ui-datepicker-calendar tbody tr td a {
+		font-size: 14px;
+	}
+
+	#ui-datepicker-div .ui-datepicker-calendar tbody tr td a,
+	#ui-datepicker-div .ui-datepicker-calendar tbody tr td a a {
+		padding: 4px;
+	}
+}
+
+@media only screen and (min-width: 1280px) {
+
+	/* #ui-datepicker-div .ui-datepicker-calendar tbody tr td, */
+	#ui-datepicker-div .ui-datepicker-calendar tbody tr td span,
+	#ui-datepicker-div .ui-datepicker-calendar tbody tr td a {
+		font-size: 16px;
+	}
+
+	/* #ui-datepicker-div .ui-datepicker-calendar tbody tr td, */
+	#ui-datepicker-div .ui-datepicker-calendar tbody tr td span,
+	#ui-datepicker-div .ui-datepicker-calendar tbody tr td a {
+		padding: 15px;
+	}
+}
+#ui-datepicker-div .ui-datepicker-calendar tbody tr td.ersrv-date-active *{
+	color: #fff;
+	background-color: #3ab166;
+	border-radius: 100%;
+}
+
+#ui-datepicker-div .ui-datepicker-calendar tbody tr td.ersrv-date-active a,
+#ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ersrv-date-active a {
+	color: #fff;
+}
+
+#ui-datepicker-div .ui-datepicker-calendar tbody tr td.ui-state-disabled,
+#ui-datepicker-div .ui-datepicker-calendar tbody tr td.ui-state-disabled.ersrv-date-disabled,
+#ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ui-state-disabled,
+#ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ui-state-disabled.ersrv-date-disabled{
+	color: #d1e6f7;
+	background-color: #e0e0e0;
+	border-radius: 100%;
+}
+
+@media only screen and (max-width: 767px) {
+	#ui-datepicker-div {
+		display: flex !important;
+		flex-direction: column;
+		width: 90% !important;
+	}
+
+	#ui-datepicker-div .ui-datepicker-inline>div {
+		width: 100%;
+	}
+	#ui-datepicker-div .ui-datepicker-calendar tbody tr td span,
+	#ui-datepicker-div .ui-datepicker-calendar tbody tr td a {
+		padding: 14px;
+	}
+	/* #ui-datepicker-div .ui-datepicker .ui-datepicker-header{
+		padding-top: 40px;
+	} */
+	#ui-datepicker-div .ui-datepicker-header .ui-datepicker-title{
+		display: flex;
+		margin: 0px;
+		flex-flow: row wrap;
+		align-items: center;
+		justify-content: center;
+	}
+	#ui-datepicker-div.ui-datepicker select.ui-datepicker-month,
+	#ui-datepicker-div.ui-datepicker select.ui-datepicker-year{
+		width: 25%;
+	}
+}
+/*  */
+@media(max-width:782px){
+	#ui-datepicker-div .ui-datepicker-calendar tr th,
+	#ui-datepicker-div .ui-datepicker-calendar tr td,
+	.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tr th,
+	.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tr td{
+		display: table-cell !important;
 	}
 }

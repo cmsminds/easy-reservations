@@ -161,10 +161,13 @@
 	position: relative;
 }
 
-.ersrv-new-customer-details .ersrv-customer-field.password label {
+/* .ersrv-new-customer-details .ersrv-customer-field.password label {
 	max-width: 100%;
 	flex-basis: 100%;
 }
+.ersrv-new-customer-details .ersrv-customer-field.password input#ersrv-customer-password {
+    width: auto;
+} */
 
 /* .ersrv-new-customer-details .ersrv-customer-field.password input,
 .ersrv-new-customer-details .ersrv-customer-field.password input#ersrv-customer-password{
