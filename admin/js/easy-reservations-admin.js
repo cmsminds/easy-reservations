@@ -163,9 +163,31 @@ jQuery( document ).ready( function( $ ) {
 				to_date: to_date,
 				format: format,
 			},
+			// xhr: function() {
+			// 	if ( 'xlsx' === format ) {
+			// 		var xhr                = new XMLHttpRequest();
+			// 		xhr.onreadystatechange = function () {
+			// 			if ( 2 ===  xhr.readyState ) {
+			// 				if ( 200 === xhr.status ) {
+			// 					xhr.responseType = 'blob';
+			// 				} else {
+			// 					xhr.responseType = 'text';
+			// 				}
+			// 			}
+			// 		};
+			// 		return xhr;
+			// 	}
+
+			// 	return '';
+			// },
 			success: function ( response ) {
 				// Unblock the element.
 				unblock_element( this_button );
+
+				var today                = new Date( $.now() );
+				var today_date_formatted = ersrv_get_formatted_date( today );
+				var export_time          = today_date_formatted + '-' + today.getHours() + '-' + today.getMinutes() + '-' + today.getSeconds();
+				export_time              = export_time.replaceAll( '/', '-' );
 
 				// If the CSV format is requested.
 				if ( 'csv' === format ) {
@@ -180,18 +202,22 @@ jQuery( document ).ready( function( $ ) {
 					download_link.href = url;
 
 					// Get the datetime now to set the csv file name.
-					var today                = new Date( $.now() );
-					var today_date_formatted = ersrv_get_formatted_date( today );
-					var export_time          = today_date_formatted + '-' + today.getHours() + '-' + today.getMinutes() + '-' + today.getSeconds();
-					export_time              = export_time.replaceAll( '/', '-' );
-					download_link.download   = 'ersrv-reservation-orders-' + export_time + '.csv';
+					download_link.download = 'ersrv-reservation-orders-' + export_time + '.csv';
 
 					// Force the system to download the CSV now.
 					document.body.appendChild( download_link );
 					download_link.click();
 					document.body.removeChild( download_link );
 				} else if ( 'xlsx' === format ) {
-					
+					var blob = new Blob( [ res ], { type: 'application/octetstream' } );
+					var url  = window.URL || window.webkitURL;
+					link     = url.createObjectURL( blob );
+					var a    = $( '<a />' );
+					a.attr( 'download', 'posts-' + export_time + '.xlsx' );
+					a.attr( 'href', link );
+					$( 'body' ).append( a );
+					a[0].click();
+					$( 'body' ).remove( a );
 				}
 			},
 		} );
