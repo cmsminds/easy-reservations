@@ -752,36 +752,6 @@ if ( ! function_exists( 'ersrv_email_reservation_receipt' ) ) {
 /**
  * Check if the function exists.
  */
-if ( ! function_exists( 'ersrv_get_order_shipping_data' ) ) {
-	/**
-	 * Return the order shipping data.
-	 *
-	 * @param object $wc_order Holds the WooCommerce order object.
-	 * @return array
-	 */
-	function ersrv_get_order_shipping_data( $wc_order ) {
-		$method_id    = '';
-		$method_title = '';
-
-		// Loop into the shipping items to get the shipping data.
-		foreach ( $wc_order->get_items( 'shipping' ) as $item_id => $item_obj ) {
-			$method_title = $item_obj->get_method_title();
-			$method_id    = $item_obj->get_method_id();
-			$amount       = $item_obj->get_total();
-		}
-
-		return array(
-			'id'               => $method_id,
-			'title'            => $method_title,
-			'amount'           => (float) $amount,
-			'formatted_amount' => wc_price( $amount ),
-		);
-	}
-}
-
-/**
- * Check if the function exists.
- */
 if ( ! function_exists( 'ersrv_get_store_formatted_address' ) ) {
 	/**
 	 * Get store formatted address.
@@ -973,18 +943,14 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 		$pdf->AddPage();
 
 		// Order details.
-		$wc_order                = wc_get_order( $order_id );
-		$billing_address         = $wc_order->get_formatted_billing_address();
-		$shipping_address        = $wc_order->get_formatted_shipping_address();
-		$raw_billing_address     = $wc_order->get_address( 'billing' );
-		$raw_shipping_address    = $wc_order->get_address( 'shipping' );
-		$order_status            = $wc_order->get_status();
-		$line_items              = $wc_order->get_items();
-		$shipping_data           = ersrv_get_order_shipping_data( $wc_order );
-		$shipping_method         = ( ! empty( $shipping_data['title'] ) ) ? $shipping_data['title'] : '';
-		$shipping_cost           = ( ! empty( $shipping_data['amount'] ) ) ? $shipping_data['amount'] : '';
-		$shipping_cost_formatted = ( ! empty( $shipping_data['formatted_amount'] ) ) ? $shipping_data['formatted_amount'] : '';
-		$store_thanks_note       = ersrv_get_plugin_settings( 'ersrv_easy_reservations_reservation_thanks_note' );
+		$wc_order             = wc_get_order( $order_id );
+		$billing_address      = $wc_order->get_formatted_billing_address();
+		$shipping_address     = $wc_order->get_formatted_shipping_address();
+		$raw_billing_address  = $wc_order->get_address( 'billing' );
+		$raw_shipping_address = $wc_order->get_address( 'shipping' );
+		$order_status         = $wc_order->get_status();
+		$line_items           = $wc_order->get_items();
+		$store_thanks_note    = ersrv_get_plugin_settings( 'ersrv_easy_reservations_reservation_thanks_note' );
 
 		// Store info.
 		$store_address          = ersrv_get_store_formatted_address();
@@ -1154,6 +1120,7 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 						<?php
 						if ( ! empty( $line_items ) && is_array( $line_items ) ) {
 							foreach ( $line_items as $item ) {
+								$item_id           = $item->get_id();
 								$quantity          = $item->get_quantity();
 								$prod_id           = ersrv_product_id( $item->get_product_id(), $item->get_variation_id() );
 								$wc_product        = $item->get_product();
@@ -1175,16 +1142,35 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 									$item_total = wc_price( $item_total ) . sprintf( __( '%1$s%2$s discount', 'easy-reservations' ), '<br />', $item_discount_formatted );
 								}
 
+								// Get the item meta details.
+								$checkin_date    = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
+								$checkout_date   = wc_get_order_item_meta( $item_id, 'Checkout Date', true );
+								$adult_count   = wc_get_order_item_meta( $item_id, 'Adult Count', true );
+								$adult_subtotal   = wc_get_order_item_meta( $item_id, 'Adult Subtotal', true );
+								$kids_count   = wc_get_order_item_meta( $item_id, 'Kids Count', true );
+								$kids_subtotal   = wc_get_order_item_meta( $item_id, 'Kids Subtotal', true );
+								$security_amount   = wc_get_order_item_meta( $item_id, 'Security Amount', true );
+								$amenities_subtotal   = wc_get_order_item_meta( $item_id, 'Amenities Subtotal', true );
 								?>
 								<tr valign="middle">
 									<td style="padding:5px" width="10%">
 										<img src="<?php echo esc_url( $product_image_url ); ?>" height="50px" width="50px"/>
 									</td>
 									<td style="line-height:16px;font-size:12px;padding:15px" width="25%"><?php echo esc_html( $sku ); ?></td>
-									<td style="line-height:16px;font-size:12px;padding:15px" width="35%"><?php echo esc_html( $wc_product->get_title() ); ?></td>
+									<td style="line-height:16px;font-size:12px;padding:15px" width="35%">
+										<p style="line-height:10px;"><?php echo esc_html( $wc_product->get_title() ); ?></p>
+										<p style="line-height:2px;"><?php echo sprintf( __( 'Checkin Date: %1$s', 'easy-reservations' ), $checkin_date ); ?></p>
+										<p style="line-height:2px;"><?php echo sprintf( __( 'Checkout Date: %1$s', 'easy-reservations' ), $checkout_date ); ?></p>
+										<p style="line-height:2px;"><?php echo sprintf( __( 'Adult Count: %1$s', 'easy-reservations' ), $adult_count ); ?></p>
+										<p style="line-height:2px;"><?php echo sprintf( __( 'Adult Subtotal: %1$s', 'easy-reservations' ), wc_price( $adult_subtotal ) ); ?></p>
+										<p style="line-height:2px;"><?php echo sprintf( __( 'Kids Count: %1$s', 'easy-reservations' ), $kids_count ); ?></p>
+										<p style="line-height:2px;"><?php echo sprintf( __( 'Kids Subtotal: %1$s', 'easy-reservations' ), wc_price( $kids_subtotal ) ); ?></p>
+										<p style="line-height:2px;"><?php echo sprintf( __( 'Security Amount: %1$s', 'easy-reservations' ), wc_price( $security_amount ) ); ?></p>
+										<p style="line-height:2px;"><?php echo sprintf( __( 'Amenities Subtotal: %1$s', 'easy-reservations' ), wc_price( $amenities_subtotal ) ); ?></p>
+									</td>
 									<td style="line-height:16px;font-size:12px;padding:15px" width="5%"><?php echo esc_html( $quantity ); ?></td>
 									<td style="line-height:16px;font-size:12px;text-align:right;padding:15px" width="10%"><?php echo wp_kses_post( wc_price( $item_cost ) ); ?></td>
-									<td style="line-height:16px;font-size:12px;text-align:right;padding:15px" width="15%"><?php echo wp_kses_post( $item_total ); ?></td>
+									<td style="line-height:16px;font-size:12px;text-align:right;padding:15px" width="15%"><?php echo wp_kses_post( wc_price( $item_total ) ); ?></td>
 								</tr>
 								<?php
 							}
@@ -1219,14 +1205,7 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 								</tr>
 								<?php
 							}
-							// Updating the order totals for shipping costs.
-							$order_totals += $shipping_cost;
 							?>
-							<tr>
-								<?php /* translators: 1: %s: shipping method name */ ?>
-								<td colspan="5" style="line-height:16px;font-size:12px;text-align:right;" width="85%"><span style="text-transform:uppercase;"><?php echo esc_html( sprintf( __( 'Shipping: %1$s', 'easy-reservations' ), $shipping_method ) ); ?></span></td>
-								<td style="line-height:16px;font-size:12px;text-align:right" width="15%"><?php echo wp_kses_post( $shipping_cost_formatted ); ?></td>
-							</tr>
 
 							<!-- TAXES -->
 							<?php
@@ -1407,8 +1386,8 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 			$body        = 'Hello, please find the attached receipt.';
 			wp_mail( $customer_email, $subject, $body, $headers, $attachments );
 		} else {
-			// $pdf->Output( $pdf_file_title, 'I' ); // View PDF.
-			$pdf->Output( $pdf_file_title, 'D' ); // View PDF.
+			$pdf->Output( $pdf_file_title, 'I' ); // View PDF.
+			// $pdf->Output( $pdf_file_title, 'D' ); // View PDF.
 		}
 	}
 }
