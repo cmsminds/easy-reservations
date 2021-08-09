@@ -198,6 +198,16 @@ class Easy_Reservations_Public {
 				);
 			}
 
+			// Enqueue the bootstrap select style, if not already enqueued.
+			if ( ! wp_style_is( $this->plugin_name . '-bootstrap-select-style', 'enqueued' ) ) {
+				wp_enqueue_style(
+					$this->plugin_name . '-bootstrap-select-style',
+					ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap-select.min.css',
+					array(),
+					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap-select.min.css' )
+				);
+			}
+
 			// Enqueue the ui datepicker style if not already enqueued.
 			if ( ! wp_style_is( $this->plugin_name . '-jquery-ui-style', 'enqueued' ) ) {
 				wp_enqueue_style(
@@ -274,6 +284,17 @@ class Easy_Reservations_Public {
 					ERSRV_PLUGIN_URL . 'public/js/ui/jquery-ui.min.js',
 					array( 'jquery' ),
 					filemtime( ERSRV_PLUGIN_PATH . 'public/js/ui/jquery-ui.min.js' ),
+					true
+				);
+			}
+
+			// Enqueue the bootstrap select script if not already enqueued.
+			if ( ! wp_script_is( $this->plugin_name . '-bootstrap-select-script', 'enqueued' ) ) {
+				wp_enqueue_script(
+					$this->plugin_name . '-bootstrap-select-script',
+					ERSRV_PLUGIN_URL . 'public/js/bootstrap/bootstrap-select.min.js',
+					array(),
+					filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap/bootstrap-select.min.js' ),
 					true
 				);
 			}

@@ -62,6 +62,10 @@ $reservation_item_types = get_terms(
 
 // WooCommerce currency.
 $woo_currency = get_woocommerce_currency_symbol();
+
+// Social share URLs.
+$facebook = 'https://www.facebook.com/sharer.php?u=http%3A%2F%2Flocalhost%3A10003%2Fblog%2Fsample-test%2F';
+$twitter  = 'https://twitter.com/intent/tweet?text=Sample%20Test&amp;url=http://localhost:10003/blog/sample-test/';
 ?>
 <section class="wrapper single-reserve-page" id="wrapper" data-item="<?php echo esc_attr( $item_post->ID ); ?>">
 	<div class="banner text-center">
