@@ -339,8 +339,8 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 }
 .ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ersrv-date-active,
 .ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ersrv-date-active {
-    color: #fff;
-    background-color: #3ab166;
+    /* color: #fff;
+    background-color: #3ab166; */
     border-radius: 100%;
 }
 @media only screen and (min-width: 768px) {
@@ -371,15 +371,15 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 	}
 }
 .ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ersrv-date-active *{
-	color: #fff;
-	background-color: #3ab166;
+	/* color: #fff;
+	background-color: #3ab166; */
 	border-radius: 100%;
 }
 
-.ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ersrv-date-active a,
+/* .ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ersrv-date-active a,
 .ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ersrv-date-active a {
 	color: #fff;
-}
+} */
 
 .ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-disabled,
 .ersrv-item-availability-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-disabled.ersrv-date-disabled,
@@ -422,8 +422,7 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 	opacity: 0;
 	clip: rect(0,0);
 }
-/* on hover */
-/* on hover */
+/*------------ on hover dropdown ------------------*/
 #ui-datepicker-div {
 	width: 27% !important;
 	padding: 0px;
@@ -514,8 +513,8 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 }
 #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ersrv-date-active,
 #ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ersrv-date-active {
-    color: #fff;
-    background-color: #3ab166;
+    /* color: #fff;
+    background-color: #3ab166; */
     border-radius: 100%;
 }
 @media only screen and (min-width: 768px) {
@@ -546,15 +545,15 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 	}
 }
 #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ersrv-date-active *{
-	color: #fff;
-	background-color: #3ab166;
+	/* color: #fff;
+	background-color: #3ab166; */
 	border-radius: 100%;
 }
 
-#ui-datepicker-div .ui-datepicker-calendar tbody tr td.ersrv-date-active a,
+/* #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ersrv-date-active a,
 #ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ersrv-date-active a {
 	color: #fff;
-}
+} */
 
 #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ui-state-disabled,
 #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ui-state-disabled.ersrv-date-disabled,
