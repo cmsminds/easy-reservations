@@ -78,7 +78,7 @@ class Easy_Reservations_Calendar_Widget extends WP_Widget {
 			if ( ! empty( $reservable_items ) && is_array( $reservable_items ) ) {
 				?>
 				<div class="selectbox">
-					<select class="calender-select" id="ersrv-widget-reservable-items">
+					<select class="selectpicker form-control calender-select" id="ersrv-widget-reservable-items" data-size="5" data-style="btn-outline-light focus-none">
 						<option value="-1"><?php esc_html_e( 'Select Item', 'easy-reservations' ); ?></option>
 						<?php foreach ( $reservable_items as $reservable_item_id ) { ?>
 							<option value="<?php echo esc_attr( $reservable_item_id ); ?>"><?php echo wp_kses_post( get_the_title( $reservable_item_id ) ); ?></option>
@@ -118,6 +118,7 @@ class Easy_Reservations_Calendar_Widget extends WP_Widget {
 				),
 				'select' => array(
 					'id' => array(),
+					'class' => array(),
 				),
 				'option' => array(
 					'value' => array(),
