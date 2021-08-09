@@ -81,7 +81,7 @@ $woo_currency = get_woocommerce_currency_symbol();
 						<div class="form-row">
 							<div class="col-12 col-md-5 col-lg-6">
 								<div class="slider-wrapper">
-									<div class="d-flex flex-wrap align-items-center justify-content-center mb-3">
+									<div class="d-flex flex-wrap align-items-center justify-content-center mb-2">
 										<h4 class="font-lato font-size-14 font-weight-bolder color-black text-center mb-0 mr-2"><?php esc_html_e( 'Price Per Night:', 'easy-reservations' ); ?></h4>
 										<h4 class="font-lato font-size-20 font-weight-bolder color-black text-center mb-0 price-value"><?php echo esc_html( $woo_currency );?>0 to <?php echo esc_html( $woo_currency );?>10,000</h4>
 									</div>
@@ -92,7 +92,7 @@ $woo_currency = get_woocommerce_currency_symbol();
 								<div class="input-daterange">
 									<div class="form-row">
 										<div class="col-12 col-md-6">
-											<select class="selectpicker form-control Boat-Types mb-3" id="boat-types" data-size="5" data-style="btn-outline-light focus-none" title="Boat Type">
+											<!-- <select class="selectpicker form-control Boat-Types mb-3" id="boat-types" data-size="5" data-style="btn-outline-light focus-none" title="Boat Type">
 												<?php if ( ! empty( $reservation_item_types ) && is_array( $reservation_item_types ) ) { ?>
 													<?php foreach ( $reservation_item_types as $item_type ) {
 														$is_selected = ( 0 !== $search_boat_type && $search_boat_type === $item_type->term_id );
@@ -100,7 +100,10 @@ $woo_currency = get_woocommerce_currency_symbol();
 														<option <?php echo ( $is_selected ) ? 'selected' : ''; ?> value="<?php echo esc_attr( $item_type->term_id ); ?>"><?php echo esc_html( $item_type->name ); ?></option>
 													<?php } ?>
 												<?php } ?>
-											</select>
+											</select> -->
+											<div class="form-group">
+												<input type="text" value="" class="ersrv-item-search-accomodation form-control rounded-lg" placeholder="<?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?>">
+											</div>
 										</div>
 										<div class="col-12 col-md-6">
 											<button type="button" class="ersrv-submit-reservation-search btn btn-primary btn-block font-lato font-size-18 font-weight-bold">
