@@ -427,12 +427,108 @@ class Easy_Reservations_Admin {
 			wp_die();
 		}
 
-		// Get the reservations.
-		$reservations_query = ersrv_get_posts( 'shop_order' );
-		$reservations       = ( ! empty( $reservations_query->posts ) ) ? $reservations_query->posts : array();
+		// Posted data.
+		$from_date = filter_input( INPUT_POST, 'from_date', FILTER_SANITIZE_STRING );
+		$to_date   = filter_input( INPUT_POST, 'to_date', FILTER_SANITIZE_STRING );
+		$format    = filter_input( INPUT_POST, 'format', FILTER_SANITIZE_STRING );
 
-		debug( $reservations );
-		die;
+		$wc_orders_query = ersrv_get_posts( 'shop_order', 1, -1 );
+		$wc_order_ids    = $wc_orders_query->posts;
+
+		// Return back, if there are no orders available.
+		if ( empty( $wc_order_ids ) || ! is_array( $wc_order_ids ) ) {
+			return;
+		}
+
+		/**
+		 * This filter is fired by the AJAX call to export the reservation orders.
+		 *
+		 * This filter helps in managing the array of order ids that are considered for exporting them into various firmats.
+		 *
+		 * @param array $wc_order_ids Array of WooCommerce order IDs.
+		 * @return array
+		 * @since 1.0.0
+		 */
+		$wc_order_ids = apply_filters( 'ersrv_reservation_reminder_email_order_ids', $wc_order_ids );
+
+		// Prepare the data now.
+		$wc_orders_data = ersrv_get_export_reservation_orders_data( $wc_order_ids );
+
+		// Switch case the requested format.
+		switch( $format ) {
+			case 'csv':
+				$this->ersrv_download_reservation_orders_csv( $wc_orders_data );
+				break;
+
+			case 'xlsx':
+				$this->ersrv_download_reservation_orders_xlsx( $wc_orders_data );
+				break;
+		}
+	}
+
+	/**
+	 * Download the reservation orders data.
+	 *
+	 * @param array $wc_orders_data Reservation orders export data.
+	 * @since 1.0.0
+	 */
+	public function ersrv_download_reservation_orders_csv( $wc_orders_data ) {
+		// Exit, if the reservations orders data is empty.
+		if ( empty( $wc_orders_data ) || ! is_array( $wc_orders_data ) ) {
+			exit();
+		}
+
+		// Create the CSV now.
+		$fp = fopen( 'php://output', 'w' );
+		fputcsv( $fp, array_keys( reset( $wc_orders_data ) ) );
+
+		// Iterate through the clubs to download them.
+		foreach ( $wc_orders_data as $wc_order_data ) {
+			fputcsv( $fp, $wc_order_data );
+		}
+
+		fclose( $fp );
+		exit();
+	}
+
+	/**
+	 * Download the reservation orders data.
+	 *
+	 * @param array $wc_orders_data Reservation orders export data.
+	 * @since 1.0.0
+	 */
+	public function ersrv_download_reservation_orders_xlsx( $wc_orders_data ) {
+		// Exit, if the reservations orders data is empty.
+		if ( empty( $wc_orders_data ) || ! is_array( $wc_orders_data ) ) {
+			exit();
+		}
+
+		// Require the spreadsheet library.
+		require_once ERSRV_PLUGIN_PATH . 'includes/lib/spreadsheet/vendor/autoload.php';
+
+		$spreadsheet = new Spreadsheet();
+		$sheet       = $spreadsheet->getActiveSheet();
+		$data_header = array_keys( reset( $wc_orders_data ) );
+
+		for ( $i = 0, $l = sizeof( $data_header ); $i < $l; $i++ ) {
+			$sheet->setCellValueByColumnAndRow( $i + 1, 1, $data_header[ $i ] );
+		}
+
+		for ( $i = 0, $l = sizeof( $wc_orders_data ); $i < $l; $i++ ) { // row $i
+			$j = 0;
+			foreach ( $wc_orders_data[$i] as $k => $v ) { // column $j
+				$sheet->setCellValueByColumnAndRow( $j + 1, ( $i + 1 + 1 ), $v );
+				$j++;
+			}
+		}
+
+		$filename = 'ersrv-reservation-orders-' . gmdate( 'Y-m-d-H-i-s' ) . '.xlsx';
+		$writer   = IOFactory::createWriter( $spreadsheet, 'Xlsx' );
+		header( 'Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' );
+		header( 'Content-Disposition: attachment; filename="'. urlencode( $filename ).'"' );
+		header( 'Cache-Control: max-age=0' );
+		$writer->save( 'php://output' );
+		exit();
 	}
 
 	/**
@@ -1158,5 +1254,61 @@ class Easy_Reservations_Admin {
 		}
 
 		return $post_states;
+	}
+
+	/**
+	 * Update the blocked dates format for all the reservation items when the option is updated.
+	 *
+	 * @param array $option Holds the WooCommerce setting data.
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_update_option_callback( $option ) {
+		// Check for the datepicker date format option ID.
+		if ( ! empty( $option['id'] ) && 'ersrv_datepicker_date_format' === $option['id'] ) {
+			// Change the date format of the reserved dates of all the reservation items.
+			$reservation_items_query = ersrv_get_posts( 'product', 1, -1 );
+			$reservation_items       = $reservation_items_query->posts;
+
+			// Return, if there are no reservation items.
+			if ( empty( $reservation_items ) || ! is_array( $reservation_items ) ) {
+				return;
+			}
+
+			// New date format.
+			$new_date_format = filter_input( INPUT_POST, 'ersrv_datepicker_date_format', FILTER_SANITIZE_STRING );
+			$old_date_format = ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' );
+
+			// If there is no change with the format, return.
+			if ( $new_date_format === $old_date_format ) {
+				return;
+			}
+
+			// Get the PHP date format.
+			$php_date_format = ersrv_get_php_date_format( $new_date_format );
+			
+			// New reserved dates.
+			$new_reserved_dates = array();
+
+			// Iterate through the reservation items to update their reservation dates.
+			foreach ( $reservation_items as $reservation_item_id ) {
+				$reserved_dates = get_post_meta( $reservation_item_id, '_ersrv_reservation_blockout_dates', true );
+
+				// Skip, if there are no reserved dates.
+				if ( empty( $reserved_dates ) || ! is_array( $reserved_dates ) ) {
+					continue;
+				}
+
+				// Iterate through the reserved dates.
+				foreach ( $reserved_dates as $reserved_date ) {
+					$new_reserved_dates[] = array(
+						'date'    => gmdate( $php_date_format, strtotime( $reserved_date['date'] ) ),
+						'message' => ( ! empty( $reserved_date['message'] ) ) ? $reserved_date['message'] : '',
+					);
+				}
+
+				// Update the new data.
+				update_post_meta( $reservation_item_id, '_ersrv_reservation_blockout_dates', $new_reserved_dates );
+			}
+		}
 	}
 }

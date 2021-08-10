@@ -40,7 +40,6 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 			array( '' => __( 'General', 'easy-reservations' ) ),
 			array( 'reservation_calendar' => __( 'Reservation Calendar', 'easy-reservations' ) ),
 			array( 'quickbooks' => __( 'Quickbooks', 'easy-reservations' ) ),
-			array( 'emails' => __( 'Emails', 'easy-reservations' ) ),
 			array( 'invoice_receipts' => __( 'Invoice Receipts', 'easy-reservations' ) ),
 		);
 
@@ -246,47 +245,6 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 		 * @return array
 		 */
 		return apply_filters( 'ersrv_quickbooks_section_plugin_settings', $fields );
-	}
-
-	/**
-	 * Return the fields for Emails settings.
-	 *
-	 * @return array
-	 */
-	public function ersrv_emails_settings_fields() {
-		$fields = array(
-			array(
-				'title' => __( 'Emails Settings', 'easy-reservations' ),
-				'type'  => 'title',
-				'desc'  => '',
-				'id'    => 'ersrv_emails_settings',
-			),
-			array(
-				'title'             => __( 'Multiple Administrators', 'easy-reservations' ),
-				'desc'              => __( 'This holds the list of admin emails who\'ll will receive the reservation email.', 'easy-reservations' ),
-				'desc_tip'          => true,
-				'id'                => 'ersrv_reservation_multiple_admin_recipients',
-				'placeholder'       => __( 'Provide comma separated emails.', 'easy-reservations' ),
-				'type'              => 'textarea',
-				'custom_attributes' => array(
-					'rows' => 4,
-				),
-			),
-			array(
-				'type' => 'sectionend',
-				'id'   => 'ersrv_emails_settings',
-			),
-		);
-
-		/**
-		 * This hook fires on the admin settings page - general section.
-		 *
-		 * This account help in managing general section plugin settings fields.
-		 *
-		 * @param array $fields Holds the fields array.
-		 * @return array
-		 */
-		return apply_filters( 'ersrv_emails_section_plugin_settings', $fields );
 	}
 
 	/**

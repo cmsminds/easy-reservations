@@ -25,6 +25,7 @@ jQuery(document).ready(function ($) {
 	var toast_notice_heading                         = ERSRV_Public_Script_Vars.toast_notice_heading;
 	var invalid_reservation_item_is_error_text       = ERSRV_Public_Script_Vars.invalid_reservation_item_is_error_text;
 	var reservation_add_to_cart_error_message        = ERSRV_Public_Script_Vars.reservation_add_to_cart_error_message;
+	var reservation_item_contact_owner_error_message = ERSRV_Public_Script_Vars.reservation_item_contact_owner_error_message;
 
 	// Custom vars.
 	var quick_view_reserved_dates = [];
@@ -759,28 +760,7 @@ jQuery(document).ready(function ($) {
 			item_total: ersrv_get_item_total(),
 		};
 
-		$.ajax( {
-			dataType: 'JSON',
-			url: ajaxurl,
-			type: 'POST',
-			data: data,
-			success: function ( response ) {
-				// Return, if the response is not proper.
-				if ( 0 === response ) {
-					console.warn( 'easy-reservations: invalid ajax call' );
-					return false;
-				}
-
-				// If the reservation is added.
-				if ( 'reservation-added-to-cart' === response.data.code ) {
-					// Unblock the element.
-					unblock_element( this_button );
-
-					// Show toast.
-					ersrv_show_toast( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
-				}
-			},
-		} );
+		ersrv_add_reservation_to_cart( this_button, data );
 	} );
 
 	/**
@@ -910,28 +890,7 @@ jQuery(document).ready(function ($) {
 			item_total: parseFloat( ersrv_get_quick_view_item_total() ),
 		};
 
-		$.ajax( {
-			dataType: 'JSON',
-			url: ajaxurl,
-			type: 'POST',
-			data: data,
-			success: function ( response ) {
-				// Return, if the response is not proper.
-				if ( 0 === response ) {
-					console.warn( 'easy-reservations: invalid ajax call' );
-					return false;
-				}
-
-				// If the reservation is added.
-				if ( 'reservation-added-to-cart' === response.data.code ) {
-					// Unblock the element.
-					unblock_element( this_button );
-
-					// Show toast.
-					ersrv_show_toast( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
-				}
-			},
-		} );
+		ersrv_add_reservation_to_cart( this_button, data );
 	} );
 
 	/**
@@ -1029,6 +988,7 @@ jQuery(document).ready(function ($) {
 
 		// Exit, if user registration is set to false.
 		if ( false === submit_contact_req ) {
+			ersrv_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, reservation_item_contact_owner_error_message );
 			return false;
 		}
 
@@ -1083,6 +1043,34 @@ jQuery(document).ready(function ($) {
 			}
 		} );
 	} );
+
+	/**
+	 * Add reservation to cart.
+	 */
+	function ersrv_add_reservation_to_cart( add_to_cart_button, cart_data ) {
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: cart_data,
+			success: function ( response ) {
+				// Return, if the response is not proper.
+				if ( 0 === response ) {
+					console.warn( 'easy-reservations: invalid ajax call' );
+					return false;
+				}
+
+				// If the reservation is added.
+				if ( 'reservation-added-to-cart' === response.data.code ) {
+					// Unblock the element.
+					unblock_element( add_to_cart_button );
+
+					// Show toast.
+					ersrv_show_toast( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
+				}
+			},
+		} );
+	}
 
 	/**
 	 * Return the formatted date based on the global date format.
@@ -1318,6 +1306,7 @@ jQuery(document).ready(function ($) {
 	 * @param {string} message Holds the toast body message.
 	 */
 	function ersrv_show_toast( bg_color, icon, heading, message ) {
+		$( '.ersrv-notification' ).removeClass( 'bg-success bg-warning bg-danger' );
 		$( '.ersrv-notification' ).addClass( bg_color ).toast( 'show' );
 		$( '.ersrv-notification .ersrv-notification-icon' ).addClass( icon );
 		$( '.ersrv-notification .ersrv-notification-heading' ).text( heading );
