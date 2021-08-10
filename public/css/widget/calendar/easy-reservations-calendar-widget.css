@@ -53,20 +53,6 @@
 	width: 100% !important;
 }
 
-/* Experimental */
-/*body::after {
-    position: fixed;
-    z-index: 99999;
-    height: 100%;
-    width: 100%;
-    background: rgba(0,0,0,.125);
-    content: "";
-    display: inline-block;
-    pointer-events: none;
-    top: 0px;
-    left: 0px;
-}*/
-
 /* for All Global Themes */
 .ersrv-reservation-widget-container{
 	margin: 10px 0px;
@@ -700,4 +686,9 @@ a{
     line-height: 1.5;
     border-radius: .25rem;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.widget_shopping_cart .product_list_widget li .variation{
+    height: 100px;
+    overflow: scroll;
+    overflow-x: hidden;
 }
