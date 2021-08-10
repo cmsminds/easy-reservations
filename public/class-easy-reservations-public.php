@@ -1283,23 +1283,31 @@ class Easy_Reservations_Public {
 		}
 
 		// Posted data.
-		$name    = filter_input( INPUT_POST, 'name', FILTER_SANITIZE_STRING );
-		$email   = filter_input( INPUT_POST, 'email', FILTER_SANITIZE_STRING );
-		$phone   = filter_input( INPUT_POST, 'phone', FILTER_SANITIZE_STRING );
-		$subject = filter_input( INPUT_POST, 'subject', FILTER_SANITIZE_STRING );
-		$message = filter_input( INPUT_POST, 'message', FILTER_SANITIZE_STRING );
+		$item_id = (int) filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
+
+		// Get the item author.
+		$item_author_id = (int) get_post_field( 'post_author', $item_id );
+
+		// Get the author object.
+		$item_author = get_userdata( $item_author_id );
+
+		// Get the author email.
+		$item_author_email = $item_author->data->user_email;
 
 		/**
 		 * This hook fires for sending email for reservation item contact requests.
 		 *
 		 * This hook helps in adding actions during any contact owner request is saved.
+		 *
+		 * @param string $item_author_email Author email address.
+		 * @since 1.0.0
 		 */
-		do_action( 'ersrv_email_contact_owner_request' );
+		do_action( 'ersrv_email_contact_owner_request', $item_author_email );
 
 		// Prepare the response.
 		$response = array(
-			'code'    => 'contact-owner-request-saved',
-			'message' => __( 'Contact request is saved successfully. One of our teammates will get back to you soon.', 'easy-reservations' ),
+			'code'          => 'contact-owner-request-saved',
+			'toast_message' => __( 'Contact request is saved successfully. One of our teammates will get back to you soon.', 'easy-reservations' ),
 		);
 		wp_send_json_success( $response );
 		wp_die();

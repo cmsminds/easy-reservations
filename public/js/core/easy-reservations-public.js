@@ -949,6 +949,7 @@ jQuery(document).ready(function ($) {
 		var subject            = $( '#contact-owner-customer-query-subject' ).val();
 		var message            = $( '#contact-owner-customer-message' ).val();
 		var submit_contact_req = true;
+		var item_id            = $( '.single-reserve-page' ).data( 'item' );
 
 		// Vacate the errors.
 		$( '.ersrv-reservation-error' ).text( '' );
@@ -1006,6 +1007,7 @@ jQuery(document).ready(function ($) {
 			phone: phone,
 			subject: subject,
 			message: message,
+			item_id: item_id,
 		};
 
 		$.ajax( {
@@ -1027,6 +1029,9 @@ jQuery(document).ready(function ($) {
 
 					// Activate loader.
 					this_button.html( this_button_text );
+
+					// Show the success toast.
+					ersrv_show_toast( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
 
 					// Vacate all the values in the modal.
 					$( '#contact-owner-customer-name' ).val( '' );
@@ -1308,6 +1313,7 @@ jQuery(document).ready(function ($) {
 	function ersrv_show_toast( bg_color, icon, heading, message ) {
 		$( '.ersrv-notification' ).removeClass( 'bg-success bg-warning bg-danger' );
 		$( '.ersrv-notification' ).addClass( bg_color ).toast( 'show' );
+		$( '.ersrv-notification .ersrv-notification-icon' ).removeClass( 'fa-skull-crossbones fa-check-circle fa-exclamation-circle' );
 		$( '.ersrv-notification .ersrv-notification-icon' ).addClass( icon );
 		$( '.ersrv-notification .ersrv-notification-heading' ).text( heading );
 		$( '.ersrv-notification .ersrv-notification-message' ).html( message );

@@ -26,9 +26,9 @@ class Easy_Reservations_Custom_Email_Manager {
 	 */
 	public function __construct() {
 		define( 'ERSRV_CUSTOM_EMAIL_TEMPLATE_PATH', ERSRV_PLUGIN_PATH . 'admin/templates/emails/' );
-		// add_action( 'ersrv_email_contact_owner_request', array( &$this, 'ersrv_ersrv_email_contact_owner_request_callback' ) );
-		// add_action( 'ersrv_send_reservation_reminder_email', array( &$this, 'ersrv_ersrv_send_reservation_reminder_email_callback' ) );
-		// add_filter( 'woocommerce_email_classes', array( &$this, 'ersrv_woocommerce_email_classes_callback' ) );
+		add_action( 'ersrv_email_contact_owner_request', array( &$this, 'ersrv_ersrv_email_contact_owner_request_callback' ) );
+		add_action( 'ersrv_send_reservation_reminder_email', array( &$this, 'ersrv_ersrv_send_reservation_reminder_email_callback' ) );
+		add_filter( 'woocommerce_email_classes', array( &$this, 'ersrv_woocommerce_email_classes_callback' ) );
 	}
 
 	/**
@@ -36,12 +36,15 @@ class Easy_Reservations_Custom_Email_Manager {
 	 *
 	 * @since 1.0.0
 	 */
-	public function ersrv_ersrv_email_contact_owner_request_callback() {
+	public function ersrv_ersrv_email_contact_owner_request_callback( $item_author_email ) {
 		new WC_Emails();
 		/**
 		 * This action fires when someone submits contact request on some reservation item.
+		 *
+		 * @param string $item_author_email Item author email.
+		 * @since 1.0.0
 		 */
-		do_action( 'ersrv_send_reservation_item_contact_request_notification' );
+		do_action( 'ersrv_send_reservation_item_contact_request_notification', $item_author_email );
 	}
 
 	/**
@@ -71,23 +74,15 @@ class Easy_Reservations_Custom_Email_Manager {
 	 * @since 1.0.0
 	 */
 	public function ersrv_woocommerce_email_classes_callback( $email_classes ) {
-		// Register contact owner wc email extension class.
-		if ( ! class_exists( 'Reservation_Contact_Owner_Email' ) ) {
-			// Require the class file.
-			require_once ERSRV_PLUGIN_PATH . 'includes/classes/emails/class-reservation-contact-owner-email.php';
+		// Require the class file.
+		require_once 'class-reservation-contact-owner-email.php';
+		// Put in the classes into existing classes.
+		$email_classes['Reservation_Contact_Owner_Email'] = new Reservation_Contact_Owner_Email();
 
-			// Put in the classes into existing classes.
-			$email_classes['Reservation_Contact_Owner_Email'] = new Reservation_Contact_Owner_Email();
-		}
-
-		// Register reservation orders wc email extension class.
-		if ( ! class_exists( 'Reservation_Reminder_Email' ) ) {
-			// Require the class file.
-			require_once ERSRV_PLUGIN_PATH . 'includes/classes/emails/class-reservation-reminder-email.php';
-
-			// Put in the classes into existing classes.
-			$email_classes['Reservation_Reminder_Email'] = new Reservation_Reminder_Email();
-		}
+		// Require the class file.
+		// require_once 'class-reservation-reminder-email.php';
+		// Put in the classes into existing classes.
+		// $email_classes['Reservation_Reminder_Email'] = new Reservation_Reminder_Email();
 
 		return $email_classes;
 	}
