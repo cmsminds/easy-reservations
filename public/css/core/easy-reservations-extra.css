@@ -1,0 +1,6 @@
+/* cart page */
+.woocommerce-cart table.cart td.product-name .variation {
+    height: 100px;
+    overflow: scroll;
+    overflow-x: hidden;
+}
