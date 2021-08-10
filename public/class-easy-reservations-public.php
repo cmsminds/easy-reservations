@@ -113,6 +113,14 @@ class Easy_Reservations_Public {
 		$active_style_path   = ( ! empty( $active_style['path'] ) ) ? $active_style['path'] : '';
 		$is_search_page      = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
 		$is_reservation_page = ersrv_product_is_reservation( get_the_ID() );
+		$enqueue_extra_css   = false;
+
+		// Conditions to enqueue the extra css file.
+		if ( is_cart() ) {
+			$enqueue_extra_css = true;
+		} elseif ( is_checkout() ) {
+			$enqueue_extra_css = true;
+		}
 
 		/* ---------------------------------------STYLES--------------------------------------- */
 
@@ -203,6 +211,17 @@ class Easy_Reservations_Public {
 				ERSRV_PLUGIN_URL . 'public/css/widget/calendar/easy-reservations-calendar-widget.css',
 				array(),
 				filemtime( ERSRV_PLUGIN_PATH . 'public/css/widget/calendar/easy-reservations-calendar-widget.css' ),
+			);
+		}
+
+		// Check, if the extra css file is to be enqueued.
+		if ( $enqueue_extra_css ) {
+			// Enqueue the common public style.
+			wp_enqueue_style(
+				$this->plugin_name . '-extra',
+				ERSRV_PLUGIN_URL . 'public/css/core/easy-reservations-extra.css',
+				array(),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/css/core/easy-reservations-extra.css' )
 			);
 		}
 
