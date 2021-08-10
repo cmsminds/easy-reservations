@@ -423,19 +423,19 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 	clip: rect(0,0);
 }
 /*------------ on hover dropdown ------------------*/
-#ui-datepicker-div {
+.woocommerce_page_new-reservation #ui-datepicker-div {
 	width: 27% !important;
 	padding: 0px;
 }
 
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover {
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover {
 	text-decoration: none;
 	top: 2px;
 	left: 2px;
 }
 
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next {
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev,
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-header .ui-datepicker-next {
 	width: 70px;
 	height: 34px;
 	display: flex;
@@ -447,15 +447,15 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 	background-color: #0c71c3;
 	color: #fff;
 }
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover{
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover{
 	color: #000;
     background-color: #d1e6f7;
     border-color: #0c71c3;
 }
 
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev .ui-icon,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next .ui-icon {
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev .ui-icon,
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-header .ui-datepicker-next .ui-icon {
 	text-indent: 0px;
 	position: relative;
 	left: 0px;
@@ -469,41 +469,41 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 	width: auto;
 }
 
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover {
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover,
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover {
 	text-decoration: none;
 	top: 2px;
 }
 
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover {
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover {
 	left: 2px;
 }
 
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover {
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-header .ui-datepicker-next:hover {
 	right: 2px;
 }
 
-#ui-datepicker-div .ui-datepicker-header .ui-datepicker-title {
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-header .ui-datepicker-title {
 	font-size: 16px;
 	font-weight: 600;
 }
 
-#ui-datepicker-div .ui-datepicker-buttonpane {
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-buttonpane {
 	display: none;
 }
 
-#ui-datepicker-div .ui-datepicker-calendar thead tr th {
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar thead tr th {
 	font-size: 16px;
 	font-weight: 600;
 	color: #000;
 }
 
-#ui-datepicker-div .ui-datepicker-calendar tbody tr td {
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar tbody tr td {
 	transform: scale(0.9);
 }
-#ui-datepicker-div .ui-datepicker-calendar tbody tr td span,
-#ui-datepicker-div .ui-datepicker-calendar tbody tr td,
-#ui-datepicker-div .ui-datepicker-calendar tbody tr td a {
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar tbody tr td span,
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar tbody tr td,
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar tbody tr td a {
 	font-size: 16px;
 	font-weight: 600;
 	color: #8a8f9c;
@@ -511,21 +511,21 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 	border-radius: 100%;
 	border: 0px;
 }
-#ui-datepicker-div .ui-datepicker-calendar tbody tr td.ersrv-date-active,
-#ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ersrv-date-active {
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ersrv-date-active,
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ersrv-date-active {
     /* color: #fff;
     background-color: #3ab166; */
     border-radius: 100%;
 }
 @media only screen and (min-width: 768px) {
 
-	#ui-datepicker-div .ui-datepicker-calendar tbody tr td,
-	#ui-datepicker-div .ui-datepicker-calendar tbody tr td a {
+	.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar tbody tr td,
+	.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar tbody tr td a {
 		font-size: 14px;
 	}
 
-	#ui-datepicker-div .ui-datepicker-calendar tbody tr td a,
-	#ui-datepicker-div .ui-datepicker-calendar tbody tr td a a {
+	.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar tbody tr td a,
+	.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar tbody tr td a a {
 		padding: 4px;
 	}
 }
@@ -533,18 +533,18 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 @media only screen and (min-width: 1280px) {
 
 	/* #ui-datepicker-div .ui-datepicker-calendar tbody tr td, */
-	#ui-datepicker-div .ui-datepicker-calendar tbody tr td span,
-	#ui-datepicker-div .ui-datepicker-calendar tbody tr td a {
+	.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar tbody tr td span,
+	.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar tbody tr td a {
 		font-size: 16px;
 	}
 
 	/* #ui-datepicker-div .ui-datepicker-calendar tbody tr td, */
-	#ui-datepicker-div .ui-datepicker-calendar tbody tr td span,
-	#ui-datepicker-div .ui-datepicker-calendar tbody tr td a {
+	.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar tbody tr td span,
+	.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar tbody tr td a {
 		padding: 15px;
 	}
 }
-#ui-datepicker-div .ui-datepicker-calendar tbody tr td.ersrv-date-active *{
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ersrv-date-active *{
 	/* color: #fff;
 	background-color: #3ab166; */
 	border-radius: 100%;
@@ -555,41 +555,41 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 	color: #fff;
 } */
 
-#ui-datepicker-div .ui-datepicker-calendar tbody tr td.ui-state-disabled,
-#ui-datepicker-div .ui-datepicker-calendar tbody tr td.ui-state-disabled.ersrv-date-disabled,
-#ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ui-state-disabled,
-#ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ui-state-disabled.ersrv-date-disabled{
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ui-state-disabled,
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ui-state-disabled.ersrv-date-disabled,
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ui-state-disabled,
+.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ui-state-disabled.ersrv-date-disabled{
 	color: #d1e6f7;
 	background-color: #e0e0e0;
 	border-radius: 100%;
 }
 
 @media only screen and (max-width: 767px) {
-	#ui-datepicker-div {
+	.woocommerce_page_new-reservation #ui-datepicker-div {
 		display: flex !important;
 		flex-direction: column;
 		width: 90% !important;
 	}
 
-	#ui-datepicker-div .ui-datepicker-inline>div {
+	.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-inline>div {
 		width: 100%;
 	}
-	#ui-datepicker-div .ui-datepicker-calendar tbody tr td span,
-	#ui-datepicker-div .ui-datepicker-calendar tbody tr td a {
+	.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar tbody tr td span,
+	.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-calendar tbody tr td a {
 		padding: 14px;
 	}
 	/* #ui-datepicker-div .ui-datepicker .ui-datepicker-header{
 		padding-top: 40px;
 	} */
-	#ui-datepicker-div .ui-datepicker-header .ui-datepicker-title{
+	.woocommerce_page_new-reservation #ui-datepicker-div .ui-datepicker-header .ui-datepicker-title{
 		display: flex;
 		margin: 0px;
 		flex-flow: row wrap;
 		align-items: center;
 		justify-content: center;
 	}
-	#ui-datepicker-div.ui-datepicker select.ui-datepicker-month,
-	#ui-datepicker-div.ui-datepicker select.ui-datepicker-year{
+	.woocommerce_page_new-reservation #ui-datepicker-div.ui-datepicker select.ui-datepicker-month,
+	.woocommerce_page_new-reservation #ui-datepicker-div.ui-datepicker select.ui-datepicker-year{
 		width: 25%;
 	}
 }
