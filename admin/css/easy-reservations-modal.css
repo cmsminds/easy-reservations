@@ -72,6 +72,7 @@
 
 .ersrv-date-ranges {
 	overflow: hidden;
+	margin-bottom: 10px;
 }
 
 .ersrv-date-ranges .from label,
@@ -197,6 +198,22 @@ hr {
 @media(max-width:1140px) {
 	.ersrv-modal-content {
 		width: 40%;
+	}
+}
+@media(max-width:991px){
+	.ersrv-date-ranges{
+		padding: 2px 0px;
+	}
+	.ersrv-date-ranges .from, .ersrv-date-ranges .to{
+		width: 100%;
+		margin: 0px;
+	}
+	.ersrv-date-ranges .from{
+		margin-bottom: 10px;
+	}
+	.ersrv-date-ranges .from label,
+	.ersrv-date-ranges .to label{
+		min-width: 36px;
 	}
 }
 
