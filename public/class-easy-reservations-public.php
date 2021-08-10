@@ -188,26 +188,6 @@ class Easy_Reservations_Public {
 
 		// Add the UI style only when the widget is active.
 		if ( false !== $this->is_calendar_widget_active ) {
-			// Enqueue the bootstrap style if not already enqueued.
-			if ( ! wp_style_is( $this->plugin_name . '-bootstrap-style', 'enqueued' ) ) {
-				wp_enqueue_style(
-					$this->plugin_name . '-bootstrap-style',
-					ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap.min.css',
-					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap.min.css' )
-				);
-			}
-
-			// Enqueue the bootstrap select style, if not already enqueued.
-			if ( ! wp_style_is( $this->plugin_name . '-bootstrap-select-style', 'enqueued' ) ) {
-				wp_enqueue_style(
-					$this->plugin_name . '-bootstrap-select-style',
-					ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap-select.min.css',
-					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap-select.min.css' )
-				);
-			}
-
 			// Enqueue the ui datepicker style if not already enqueued.
 			if ( ! wp_style_is( $this->plugin_name . '-jquery-ui-style', 'enqueued' ) ) {
 				wp_enqueue_style(
@@ -277,17 +257,6 @@ class Easy_Reservations_Public {
 
 		// Add the datepicker and custom script only when the widget is active.
 		if ( false !== $this->is_calendar_widget_active ) {
-			// Enqueue the bootstrap select script if not already enqueued.
-			if ( ! wp_script_is( $this->plugin_name . '-bootstrap-select-script', 'enqueued' ) ) {
-				wp_enqueue_script(
-					$this->plugin_name . '-bootstrap-select-script',
-					ERSRV_PLUGIN_URL . 'public/js/bootstrap/bootstrap-select.min.js',
-					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap/bootstrap-select.min.js' ),
-					true
-				);
-			}
-
 			// Enqueue the ui datepicker script if not already enqueued.
 			if ( ! wp_script_is( $this->plugin_name . '-jquery-ui-script', 'enqueued' ) ) {
 				wp_enqueue_script(
