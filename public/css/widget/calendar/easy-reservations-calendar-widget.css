@@ -53,20 +53,6 @@
 	width: 100% !important;
 }
 
-/* Experimental */
-body::after {
-    position: fixed;
-    z-index: 99999;
-    height: 100%;
-    width: 100%;
-    background: rgba(0,0,0,.125);
-    content: "";
-    display: inline-block;
-    pointer-events: none;
-    top: 0px;
-    left: 0px;
-}
-
 /* for All Global Themes */
 .ersrv-reservation-widget-container{
 	margin: 10px 0px;
@@ -78,7 +64,8 @@ body::after {
 	border: 0px;
 }
 .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-title select{
-	padding: 4px 16px 4px 10px;
+	padding: 4px 12px 4px 4px;
+	height: auto;
 }
 .ersrv-widget-calendar .ui-datepicker .ui-datepicker-prev,
 .ersrv-widget-calendar .ui-datepicker .ui-datepicker-next,
@@ -512,6 +499,15 @@ body::after {
 .theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline table tr{
 	border: 0px !important;
 }
+.theme-twentyseventeen .button{
+	background-color: var(--theme-twentyseventeen-accent-700);
+	color: #fff;
+}
+.theme-twentyseventeen .button:hover{
+	color: #000;
+	background-color: var(--theme-twentyseventeen-accent-300);
+	border-color: var(--theme-twentyseventeen-accent-700);
+}
 /*-------------------- end here ----------------------------*/
 /* for twentysixteen Theme */
 .theme-twentysixteen .ersrv-widget-calendar .ui-datepicker .ui-datepicker-prev,
@@ -545,6 +541,15 @@ body::after {
 	color: #fff;
 	background-color: var(--theme-twentysixteen-accent);
 	border-radius: 100%;
+}
+.theme-twentysixteen .button{
+	background-color: var(--theme-twentysixteen-accent-700);
+	color: #fff;
+}
+.theme-twentysixteen .button:hover{
+	color: #000;
+	background-color: var(--theme-twentysixteen-accent-300);
+	border-color: var(--theme-twentysixteen-accent-700);
 }
 /*-------------------- end here ----------------------------*/
 /* for twentytwenty Theme */
@@ -625,4 +630,65 @@ body::after {
 .ersrv-widget-calendar .ui-datepicker .ui-datepicker-prev.ui-state-disabled,
 .ersrv-widget-calendar .ui-datepicker .ui-datepicker-next.ui-state-disabled{
 	opacity: 0.6;
+}
+.ersrv-reservation-widget-container .widget-title {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.ersrv-reservation-widget-container .description {
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+/* .form-control {
+} */
+select.form-control {
+	display: block;
+	width: 100%;
+	height: calc(1.5em + .75rem + 2px);
+	padding: .375rem .75rem;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.5;
+	color: #1a1a1a;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #ced4da;
+	border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+	border-radius: .25rem;
+	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	
+	/* border: var(--form--border-width) solid var(--form--border-color);
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+	background: var(--global--color-white) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%2328303d'><polygon points='0,0 10,0 5,5'/></svg>") no-repeat;
+	background-position: right var(--form--spacing-unit) top 60%; */
+}
+a{
+	text-decoration: none !important;
+}
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    color: #212529;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.widget_shopping_cart .product_list_widget li .variation{
+    height: 100px;
+    overflow: scroll;
+    overflow-x: hidden;
 }

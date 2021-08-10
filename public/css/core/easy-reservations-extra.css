@@ -1,0 +1,6 @@
+
+.woocommerce-page table .product-name .variation{
+    height: 100px;
+    overflow: scroll;
+    overflow-x: hidden;
+}

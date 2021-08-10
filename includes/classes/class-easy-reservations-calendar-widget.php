@@ -42,6 +42,7 @@ class Easy_Reservations_Calendar_Widget extends WP_Widget {
 		$reservable_items_query      = ersrv_get_posts( 'product', 1, -1 );
 		$reservable_items            = $reservable_items_query->posts;
 		$reserve_item_button_text    = __( 'Reserve this item', 'easy-reservations' );
+		$current_theme       		 = get_option( 'stylesheet' );
 		/**
 		 * This hook fires within the calendar widget.
 		 *
@@ -87,9 +88,9 @@ class Easy_Reservations_Calendar_Widget extends WP_Widget {
 				</div>
 				<div class="ersrv-widget-calendar"></div>
 
-				<?php if ( ! empty( $display_reserve_item_button ) && 'yes' === $display_reserve_item_button ) { ?>
+				<?php if ( ! empty( $display_reserve_item_button ) && 'yes' === $display_reserve_item_button ) {?>
 					<div class="ersrv-book-item-from-widget">
-						<a title="<?php echo wp_kses_post( $reserve_item_button_text ); ?>" href="javascript:void(0);"><?php echo wp_kses_post( $reserve_item_button_text ); ?></a>
+						<a title="<?php echo wp_kses_post( $reserve_item_button_text ); ?>" href="javascript:void(0);" class="<?php if($current_theme == 'twentysixteen' || $current_theme == 'twentyseventeen'){echo 'btn';} ?> button mt-2"><?php echo wp_kses_post( $reserve_item_button_text ); ?></a>
 					</div>
 				<?php } ?>
 				<?php
@@ -112,6 +113,7 @@ class Easy_Reservations_Calendar_Widget extends WP_Widget {
 				'a'      => array(
 					'title' => array(),
 					'href'  => array(),
+					'class' => array(),
 				),
 				'div'    => array(
 					'class' => array(),
