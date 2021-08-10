@@ -49,7 +49,7 @@ class Reservation_Contact_Owner_Email extends WC_Email {
 	 * @since 1.0.0
 	 */
 	public function ersrv_ersrv_send_reservation_item_contact_request_notification_callback( $item_author_email ) {
-		// Posted data.
+		// Fire the notification now.
 		$this->send(
 			$this->get_recipient(),
 			$this->get_subject(),
@@ -168,5 +168,3 @@ class Reservation_Contact_Owner_Email extends WC_Email {
 		);
 	}
 } // end \Reservation_Contact_Owner_Email class
-
-return new Reservation_Contact_Owner_Email();

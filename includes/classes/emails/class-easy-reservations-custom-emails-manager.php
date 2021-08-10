@@ -80,9 +80,9 @@ class Easy_Reservations_Custom_Email_Manager {
 		$email_classes['Reservation_Contact_Owner_Email'] = new Reservation_Contact_Owner_Email();
 
 		// Require the class file.
-		// require_once 'class-reservation-reminder-email.php';
+		require_once 'class-reservation-reminder-email.php';
 		// Put in the classes into existing classes.
-		// $email_classes['Reservation_Reminder_Email'] = new Reservation_Reminder_Email();
+		$email_classes['Reservation_Reminder_Email'] = new Reservation_Reminder_Email();
 
 		return $email_classes;
 	}

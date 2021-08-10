@@ -1262,7 +1262,7 @@ class Easy_Reservations_Public {
 		// Prepare the response.
 		$response = array(
 			'code'          => 'reservation-added-to-cart',
-			'toast_message' => __( 'Reservation has been added to the cart.', 'easy-reservations' ),
+			'toast_message' => sprintf( __( 'Reservation has been added to the cart. %1$sView Cart%2$s', 'easy-reservations' ), '<a title="' . __( 'View Cart', 'easy-reservations' ) . '" href="' . wc_get_cart_url() . '">', '</a>' ),
 		);
 		wp_send_json_success( $response );
 		wp_die();
