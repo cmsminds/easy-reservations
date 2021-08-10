@@ -27,6 +27,28 @@ class Reservation_Contact_Owner_Email extends WC_Email {
 		$this->subject = sprintf( _x( '[%s] Contact Owner Request', 'default email subject for contact requests emails sent to the item owner', 'easy-reservations' ), '{blogname}' );
 
 		// Template paths.
-		
+		$this->template_html  = 'emails/reservation-item-contact-owner-html.php';
+		$this->template_plain = 'emails/plain/reservation-item-contact-owner-plain.php';
+
+		add_action( 'ersrv_send_reservation_item_contact_request_notification', array( $this, 'ersrv_ersrv_send_reservation_item_contact_request_notification_callback' ) );
+
+		// Call parent constructor.
+		parent::__construct();
+
+		// Template base path.
+		$this->template_base = ERSRV_CUSTOM_EMAIL_TEMPLATE_PATH;
+
+		// Recipient.
+		$this->recipient = $this->get_option( 'recipient', get_option( 'admin_email' ) );
+	}
+
+	public function ersrv_ersrv_send_reservation_item_contact_request_notification_callback() {
+		$this->send(
+			$this->get_recipient(),
+			$this->get_subject(),
+			$this->get_content(),
+			$this->get_headers(),
+			array()
+		);
 	}
 } // end \Reservation_Contact_Owner_Email class

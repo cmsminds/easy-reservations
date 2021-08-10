@@ -102,7 +102,7 @@ class Easy_Reservations {
 		require_once ERSRV_PLUGIN_PATH . 'includes/easy-reservations-functions.php';
 
 		// The file is responsible for defining custom email notification for contacting owner of the reservation item.
-		require_once ERSRV_PLUGIN_PATH . 'includes/classes/class-easy-reservations-custom-emails-manager.php';
+		require_once ERSRV_PLUGIN_PATH . 'includes/classes/emails/class-easy-reservations-custom-emails-manager.php';
 
 		// The class responsible for defining all actions that occur in the admin area.
 		require_once ERSRV_PLUGIN_PATH . 'admin/class-easy-reservations-admin.php';
