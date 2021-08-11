@@ -89,7 +89,7 @@ class Easy_Reservations_Calendar_Widget extends WP_Widget {
 				<div class="ersrv-widget-calendar"></div>
 
 				<?php if ( ! empty( $display_reserve_item_button ) && 'yes' === $display_reserve_item_button ) {?>
-					<div class="ersrv-book-item-from-widget">
+					<div class="ersrv-book-item-from-widget text-center">
 						<a title="<?php echo wp_kses_post( $reserve_item_button_text ); ?>" href="javascript:void(0);" class="<?php if($current_theme == 'twentysixteen' || $current_theme == 'twentyseventeen'){echo 'btn';} ?> button mt-2"><?php echo wp_kses_post( $reserve_item_button_text ); ?></a>
 					</div>
 				<?php } ?>

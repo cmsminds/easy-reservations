@@ -1234,7 +1234,7 @@ img {
   background-repeat: no-repeat;
 }
 
-.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .favorite a:hover .icon-heart, .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .favorite a:focus .icon-heart, .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .favorite a.selected .icon-heart {
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .favorite a:hover .icon-heart, .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .favorite a.selected .icon-heart {
   background-image: url(../../images/heart_fill.png);
 }
 

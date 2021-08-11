@@ -91,6 +91,7 @@
 	border-radius: 5px;
 	padding: 10px;
 	z-index: 9999 !important;
+	width: 18em;
 }
 
 .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover {
@@ -223,11 +224,7 @@
 }
 
 .theme-storefront .ersrv-widget-calendar .ui-datepicker-inline {
-	background: #fff;
-	/* box-shadow: 0 3.1px 29.1px rgba(0, 0, 0, 0.15), 0 25px 80px rgba(0, 0, 0, 0.25); */
-	border-radius: 5px;
-	padding: 10px;
-	z-index: 9999 !important;
+	width: 14em;
 }
 
 .theme-storefront .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover {
@@ -279,6 +276,7 @@
 .theme-storefront .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-title {
 	font-size: 14px;
 	font-weight: 600;
+	margin: 0px 1rem;
 }
 
 .theme-storefront .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-buttonpane {
@@ -303,7 +301,7 @@
 .theme-storefront .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td span,
 .theme-storefront .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a,
 .theme-storefront .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a {
-	padding: 6px 7px;
+	padding: 3px 7px;
 	text-align: center;
 }
 
@@ -329,22 +327,7 @@
 /*-------------------- end here ----------------------------*/
 /* for twentynineteen Theme */
 .theme-twentynineteen .ersrv-reservation-widget-container{
-	margin: 10px 0px;
-}
-.theme-twentynineteen .ersrv-reservation-widget-container .selectbox {
-    margin-bottom: 12px;
-}
-.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline table{
-	border: 0px;
-}
-.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-title select{
-	padding: 4px 16px 4px 10px;
-}
-.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker .ui-datepicker-prev,
-.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker .ui-datepicker-next,
-.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker .ui-datepicker-prev.ui-state-hover,
-.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker .ui-datepicker-next.ui-state-hover{
-	top: 8px !important;
+	padding-right: 1rem;
 }
 .theme-twentynineteen .ersrv-widget-calendar .ui-datepicker .ui-datepicker-prev,
 .theme-twentynineteen .ersrv-widget-calendar .ui-datepicker .ui-datepicker-next{
@@ -356,20 +339,6 @@
 	color: #000;
     background-color: var(--theme-twentynineteen-accent-300);
     border-color: var(--theme-twentynineteen-accent-700);
-}
-
-.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline {
-	background: #fff;
-	/* box-shadow: 0 3.1px 29.1px rgba(0, 0, 0, 0.15), 0 25px 80px rgba(0, 0, 0, 0.25); */
-	border-radius: 5px;
-	padding: 10px;
-	z-index: 9999 !important;
-}
-
-.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover {
-	text-decoration: none;
-	top: 2px;
-	left: 2px;
 }
 
 .theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev,
@@ -384,62 +353,10 @@
 	cursor: pointer;
 }
 
-.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev .ui-icon,
-.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next .ui-icon {
-	text-indent: 0px;
-	position: relative;
-	left: 0px;
-	right: 0px;
-	top: 0px;
-	bottom: 0px;
-	transform: none;
-	margin: 0px;
-	font-size: 12px;
-	font-weight: 600;
-}
-
-.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover,
-.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover {
-	text-decoration: none;
-	top: 2px;
-}
-
-.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover {
-	left: 2px;
-}
-
-.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover {
-	right: 2px;
-}
-
-.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-title {
-	font-size: 14px;
-	font-weight: 600;
-}
-
-.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-buttonpane {
-	display: none;
-}
-
-.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar thead tr th {
-	font-size: 14px;
-	font-weight: 600;
-	color: #000;
-}
-.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td{
-	background-color: transparent;
-}
-.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td,
-.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a {
-	font-size: 14px;
-	font-weight: 600;
-	color: #8a8f9c;
-	text-align: center;
-}
 .theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td span,
 .theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a,
 .theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a {
-	padding: 13px;
+	padding: 11px;
 	text-align: center;
 }
 
@@ -464,6 +381,12 @@
 }
 /*-------------------- end here ----------------------------*/
 /* for twentyseventeen Theme */
+.theme-twentyseventeen .ersrv-widget-calendar .ui-datepicker-inline{
+	width: 23em;
+}
+.theme-twentyseventeen .ersrv-widget-calendar .ui-datepicker-inline table tr{
+	border: 0px;
+}
 .theme-twentyseventeen .ersrv-widget-calendar .ui-datepicker .ui-datepicker-prev,
 .theme-twentyseventeen .ersrv-widget-calendar .ui-datepicker .ui-datepicker-next{
 	color: #fff;
@@ -479,7 +402,7 @@
 .theme-twentyseventeen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td span,
 .theme-twentyseventeen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a,
 .theme-twentyseventeen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a {
-	padding: 4px 7px;
+	padding: 9px;
 	text-align: center;
 }
 
@@ -585,11 +508,18 @@
 	background-color: var(--theme-twentytwenty-accent);
 	border-radius: 100%;
 }
-.theme-twentytwenty .ersrv-widget-calendar .ui-datepicker-inline{
-	width: 27em;
+.theme-twentytwenty .ersrv-widget-calendar .ui-datepicker-inline,
+.theme-twentytwenty .ersrv-reservation-widget-container{
+	width: 15em;
+}
+.theme-twentytwenty .ersrv-reservation-widget-container .selectbox select.selectpicker{
+	font-size: 16px;
 }
 /*-------------------- end here ----------------------------*/
 /* for twentytwenty Theme */
+.theme-twentytwentyone .ersrv-widget-calendar .ui-datepicker-inline{
+	width: 19.5em;
+}
 .theme-twentytwentyone .ersrv-widget-calendar .ui-datepicker .ui-datepicker-prev,
 .theme-twentytwentyone .ersrv-widget-calendar .ui-datepicker .ui-datepicker-next{
 	color: #fff;
@@ -605,7 +535,7 @@
 .theme-twentytwentyone .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td span,
 .theme-twentytwentyone .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a,
 .theme-twentytwentyone .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a {
-	padding: 8px;
+	padding: 10px 8px;
 	text-align: center;
 }
 
@@ -622,6 +552,10 @@
 	background-color: var(--theme-twentytwentyone-accent);
 	border-radius: 100%;
 }
+.theme-twentytwentyone .ersrv-reservation-widget-container .selectbox select.selectpicker{
+	border: var(--form--border-width) solid var(--form--border-color);
+    color: var(--form--color-text);
+}
 /*-------------------- end here ----------------------------*/
 
 .ersrv-reservation-widget-container .selectbox select.selectpicker {
@@ -634,12 +568,16 @@
 .ersrv-reservation-widget-container .widget-title {
     font-size: 26px;
     font-weight: 600;
+	margin-top: 0px;
     margin-bottom: 10px;
+	padding: 0px;
 }
 .ersrv-reservation-widget-container .description {
     font-size: 18px;
     font-weight: 400;
+	margin-top: 0px;
     margin-bottom: 10px;
+	padding: 0px;
 }
 /* .form-control {
 } */
@@ -692,3 +630,420 @@ a{
     overflow: scroll;
     overflow-x: hidden;
 }
+.text-center{
+	text-align: center;
+}
+.ersrv-book-item-from-widget .mt-2{
+	margin-top: .5rem!important;
+}
+
+/*  */
+.woocommerce-MyAccount-content .search-result-inner.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -5px;
+    margin-left: -5px;
+}
+.woocommerce-MyAccount-content .search-result-inner.form-row > [class*=col-] {
+    padding-right: 7px;
+    padding-left: 7px;
+}
+.woocommerce-page .col-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+@media (min-width: 768px){
+	.woocommerce-page .col-md-6 {
+		flex: 0 0 50%;
+		max-width: 50%;
+	}
+}
+@media (min-width: 992px){
+	/* .woocommerce-page .col-lg-4 { */
+	.theme-twentytwentyone .col-lg-4,
+	.theme-astra .col-lg-4{
+		flex: 0 0 33.333333%;
+		max-width: 33.333333%;
+	}
+}
+
+.woocommerce-MyAccount-content .search-result-inner .card{
+	position: relative;
+	border-radius: 6px;
+	overflow: hidden;
+	border: 0px solid transparent;
+	transition: 0.3s ease-in-out;
+	margin-bottom: 21px;
+	
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	word-wrap: break-word;
+	background-color: #fff;
+	background-clip: border-box;
+}
+.woocommerce-MyAccount-content .search-result-inner .card .card-body {
+    padding: 30px;
+    padding-top: 45px;
+	flex: 1 1 auto;
+	min-height: 1px;
+}
+.woocommerce-MyAccount-content .search-result-inner .card .media a {
+    width: 100%;
+    height: 240.047px;
+    overflow: hidden;
+	display: block;
+}
+.woocommerce-MyAccount-content .search-result-inner .card .media a img {
+    height: 100%;
+    width: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    -o-object-position: center center;
+    object-position: center center;
+}
+.woocommerce-MyAccount-content .search-result-inner .card .card-title {
+    font-size: 20px;
+    letter-spacing: 0px;
+    line-height: 22px;
+    color: #000;
+    font-weight: 700;
+    margin-bottom: 10px;
+    margin-top: 0px;
+}
+.woocommerce-MyAccount-content .search-result-inner .card .card-title a{
+	color: inherit;
+}
+.woocommerce-MyAccount-content .mb-3{
+    margin-bottom: 1rem!important;
+}
+.woocommerce-MyAccount-content .search-result-inner .card .amenities {
+    color: #5d6475;
+    font-size: 14px;
+    font-weight: 300;
+    vertical-align: middle;
+    margin-bottom: 21px;
+}
+.woocommerce-MyAccount-content .flex-column {
+    flex-direction: column!important;
+}
+
+.woocommerce-MyAccount-content .d-flex {
+    display: flex!important;
+}
+.woocommerce-MyAccount-content .font-weight-bold {
+    font-weight: 700!important;
+}
+
+.woocommerce-MyAccount-content .mr-2{
+    margin-right: .5rem!important;
+}
+
+.btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 700;
+}
+@media only screen and (min-width: 1280px){
+	.btns-group .btn {
+		padding: 8px 11px;
+		font-size: 16px;
+		line-height: 24px;
+	}
+}
+.btn-accent{
+    color: #fff !important;
+    background-color: #3ab166 !important;
+    border-color: #3ab166 !important;
+}
+
+.btn-accent:hover,
+.btn-accent:focus,
+.btn-accent.focus,
+.btn-accent:active,
+.btn-accent.active {
+    color: #000 !important;
+    background-color: #cbefd9 !important;
+    border-color: #3ab166 !important;
+}
+
+.btn-primary{
+    background-color: #0c71c3 !important;
+    color: #fff !important;
+    border-color: #0c71c3 !important;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary.focus,
+.btn-primary:active,
+.btn-primary.active{
+    background-color: rgba(0, 0, 0, 0) !important;
+    border-color: #0c71c3 !important;
+    color: #d1e6f7 !important;
+}
+.woocommerce-MyAccount-content .search-result-inner .card .price-info {
+    position: absolute;
+    top: 16px;
+    left: 14px;
+}
+.woocommerce-MyAccount-content .search-result-inner .card .price-info .inner-wrapper {
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 5px 14px;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+}
+.woocommerce-MyAccount-content .search-result-inner .card .price-info .inner-wrapper span{
+	margin-right: 4px;
+    font-size: 18px;
+    color: #3ab166;
+}
+.woocommerce-MyAccount-content .search-result-inner .card .favorite {
+    position: absolute;
+    top: 18px;
+    right: 15px;
+}
+.sr-only {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+.woocommerce-MyAccount-content .search-result-inner .card .favorite a .icon-heart {
+    display: inline-block;
+    width: 29px;
+    height: 25px;
+    background-image: url(../../../images/heart_outline.png);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.woocommerce-MyAccount-content .search-result-inner .card .favorite a:hover .icon-heart,
+.woocommerce-MyAccount-content .search-result-inner .card .favorite a.selected .icon-heart {
+    background-image: url(../../../images/heart_fill.png);
+}
+/* colors  */
+/* .theme-storefront  */
+.theme-storefront .btn-accent{
+    color: #fff !important;
+    background-color: #96588a !important;
+    border-color: #96588a !important;
+}
+
+.theme-storefront .btn-accent:hover,
+.theme-storefront .btn-accent:focus,
+.theme-storefront .btn-accent.focus,
+.theme-storefront .btn-accent:active,
+.theme-storefront .btn-accent.active {
+    color: #000 !important;
+    background-color: #c09bb9 !important;
+    border-color: #96588a !important;
+}
+
+.theme-storefront .btn-primary{
+    background-color: #43454b !important;
+    color: #d1e4dd !important;
+    border-color: #43454b !important;
+}
+.theme-storefront .btn-primary:hover,
+.theme-storefront .btn-primary:focus,
+.theme-storefront .btn-primary.focus,
+.theme-storefront .btn-primary:active,
+.theme-storefront .btn-primary.active{
+    background-color: #b4b5b7  !important;
+    border-color: #b4b5b7 !important;
+    color: #43454b !important;
+}
+.theme-storefront  .woocommerce-MyAccount-content .search-result-inner .card .price-info .inner-wrapper span{
+	color: #96588a;
+}
+/* .theme-storefront end here */
+/* .theme-twentynineteen  */
+.theme-twentynineteen .btn-accent{
+    color: #fff !important;
+    background-color: #005177 !important;
+    border-color: #005177 !important;
+}
+
+.theme-twentynineteen .btn-accent:hover,
+.theme-twentynineteen .btn-accent:focus,
+.theme-twentynineteen .btn-accent.focus,
+.theme-twentynineteen .btn-accent:active,
+.theme-twentynineteen .btn-accent.active {
+    color: #000 !important;
+    background-color: #80a8bb !important;
+    border-color: #80a8bb !important;
+}
+
+.theme-twentynineteen .btn-primary{
+    background-color: #0073aa !important;
+    color: #d1e4dd !important;
+    border-color: #0073aa !important;
+}
+.theme-twentynineteen .btn-primary:hover,
+.theme-twentynineteen .btn-primary:focus,
+.theme-twentynineteen .btn-primary.focus,
+.theme-twentynineteen .btn-primary:active,
+.theme-twentynineteen .btn-primary.active{
+    background-color: #111  !important;
+    border-color: #111 !important;
+    color: #fff !important;
+}
+.theme-twentynineteen .woocommerce-MyAccount-content .search-result-inner .card .price-info .inner-wrapper span{
+	color: #005177;
+}
+/* .theme-twentynineteen end here */
+/* .theme-twentyseventeen  */
+.theme-twentyseventeen .btn-accent{
+    color: #fff !important;
+    background-color: #3ab166 !important;
+    border-color: #3ab166 !important;
+}
+
+.theme-twentyseventeen .btn-accent:hover,
+.theme-twentyseventeen .btn-accent:focus,
+.theme-twentyseventeen .btn-accent.focus,
+.theme-twentyseventeen .btn-accent:active,
+.theme-twentyseventeen .btn-accent.active {
+    color: #000 !important;
+    background-color: #cbefd9 !important;
+    border-color: #cbefd9 !important;
+}
+
+.theme-twentyseventeen .btn-primary{
+    background-color: #222 !important;
+    color: #fff !important;
+    border-color: #222 !important;
+}
+.theme-twentyseventeen .btn-primary:hover,
+.theme-twentyseventeen .btn-primary:focus,
+.theme-twentyseventeen .btn-primary.focus,
+.theme-twentyseventeen .btn-primary:active,
+.theme-twentyseventeen .btn-primary.active{
+    background-color: #111  !important;
+    border-color: #111 !important;
+    color: #fff !important;
+}
+.theme-twentyseventeen .woocommerce-MyAccount-content .search-result-inner .card .price-info .inner-wrapper span{
+	color: #3ab166;
+}
+.theme-twentyseventeen .woocommerce-MyAccount-content .search-result-inner.form-row a{
+    text-decoration: none !important;
+	box-shadow: none !important;
+}
+/* .theme-twentyseventeen end here */
+/* .theme-twentysixteen  */
+.theme-twentysixteen .woocommerce-MyAccount-content .search-result-inner.form-row a{
+    text-decoration: none !important;
+	box-shadow: none !important;
+}
+.theme-twentysixteen .btn-accent{
+    color: #fff !important;
+    background-color: #007acc !important;
+    border-color: #007acc !important;
+}
+
+.theme-twentysixteen .btn-accent:hover,
+.theme-twentysixteen .btn-accent:focus,
+.theme-twentysixteen .btn-accent.focus,
+.theme-twentysixteen .btn-accent:active,
+.theme-twentysixteen .btn-accent.active {
+    color: #000 !important;
+    background-color: #66afe0 !important;
+    border-color: #66afe0 !important;
+}
+
+.theme-twentysixteen .btn-primary{
+    background-color: #1a1a1a !important;
+    color: #fff !important;
+    border-color: #1a1a1a !important;
+}
+.theme-twentysixteen .btn-primary:hover,
+.theme-twentysixteen .btn-primary:focus,
+.theme-twentysixteen .btn-primary.focus,
+.theme-twentysixteen .btn-primary:active,
+.theme-twentysixteen .btn-primary.active{
+    background-color: #007acc  !important;
+    border-color: #007acc !important;
+    color: #fff !important;
+}
+.theme-twentysixteen .woocommerce-MyAccount-content .search-result-inner .card .price-info .inner-wrapper span{
+	color: #007acc;
+}
+/* .theme-twentysixteen end here */
+/* .theme-twentytwenty  */
+.theme-twentytwenty .btn-accent{
+    color: #fff !important;
+    background-color: #333 !important;
+    border-color: #000 !important;
+}
+
+.theme-twentytwenty .btn-accent:hover,
+.theme-twentytwenty .btn-accent:focus,
+.theme-twentytwenty .btn-accent.focus,
+.theme-twentytwenty .btn-accent:active,
+.theme-twentytwenty .btn-accent.active {
+    color: #fff !important;
+    background-color: #cd2653 !important;
+    border-color: #000 !important;
+}
+
+.theme-twentytwenty .btn-primary{
+    background-color: #cd2653 !important;
+    color: #fff !important;
+    border-color: #cd2653 !important;
+}
+.theme-twentytwenty .btn-primary:hover,
+.theme-twentytwenty .btn-primary:focus,
+.theme-twentytwenty .btn-primary.focus,
+.theme-twentytwenty .btn-primary:active,
+.theme-twentytwenty .btn-primary.active{
+    background-color: #000  !important;
+    border-color: #000 !important;
+    color: #fff !important;
+}
+.theme-twentytwenty .woocommerce-MyAccount-content .search-result-inner .card .price-info .inner-wrapper span{
+	color: #cd2653;
+}
+/* .theme-twentytwenty end here */
+/* .theme-twentytwentyone  */
+.theme-twentytwentyone .btn-accent{
+    color: #fff !important;
+    background-color: #3ab166 !important;
+    border-color: #3ab166 !important;
+}
+
+.theme-twentytwentyone .btn-accent:hover,
+.theme-twentytwentyone .btn-accent:focus,
+.theme-twentytwentyone .btn-accent.focus,
+.theme-twentytwentyone .btn-accent:active,
+.theme-twentytwentyone .btn-accent.active {
+    color: #000 !important;
+    background-color: #cbefd9  !important;
+    border-color: #3ab166 !important;
+}
+
+.theme-twentytwentyone .btn-primary{
+    background-color: #28303d !important;
+    color: #d1e4dd !important;
+    border-color: #28303d !important;
+}
+.theme-twentytwentyone .btn-primary:hover,
+.theme-twentytwentyone .btn-primary:focus,
+.theme-twentytwentyone .btn-primary.focus,
+.theme-twentytwentyone .btn-primary:active,
+.theme-twentytwentyone .btn-primary.active{
+    background-color: transparent !important;
+    border-color: #28303d !important;
+    color: #28303d !important;
+}
+.theme-twentytwentyone .woocommerce-MyAccount-content .search-result-inner .card .price-info .inner-wrapper span{
+	color: #3ab166;
+}
+/* .theme-twentytwentyone end here */
