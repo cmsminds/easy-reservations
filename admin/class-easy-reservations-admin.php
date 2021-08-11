@@ -70,14 +70,15 @@ class Easy_Reservations_Admin {
 	 */
 	public function ersrv_admin_enqueue_scripts_callback() {
 		$post_type                 = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
-		$product_id                = (int) filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
+		$post_id                   = (int) filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
 		$page                      = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
 		$include_modal_style       = false;
 		$include_datepicker_style  = false;
 		$include_datepicker_script = false;
+		$include_fontawesome_style = false;
 
 		// Include the blocked out reservation dates modal only on orders page.
-		if ( ! is_null( $product_id ) && 'product' === get_post_type( $product_id ) ) {
+		if ( ! is_null( $post_id ) && 'product' === get_post_type( $post_id ) ) {
 			$include_modal_style       = true;
 			$include_datepicker_style  = true;
 			$include_datepicker_script = true;
@@ -87,12 +88,17 @@ class Easy_Reservations_Admin {
 			$include_modal_style       = true;
 			$include_datepicker_style  = true;
 			$include_datepicker_script = true;
+		} elseif ( ! is_null( $post_id ) && 'shop_order' === get_post_type( $post_id ) ) {
+			$include_fontawesome_style = true;
 		}
 
-		wp_enqueue_style(
-			$this->plugin_name . '-font-awesome-style',
-			'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css',
-		);
+		// If font awesome is to be included.
+		if ( $include_fontawesome_style ) {
+			wp_enqueue_style(
+				$this->plugin_name . '-font-awesome-style',
+				'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css',
+			);
+		}
 
 		// Enqueue bootstrap datepicker on new reservation page.
 		if ( $include_datepicker_style ) {
