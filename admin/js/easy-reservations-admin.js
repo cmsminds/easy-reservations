@@ -37,6 +37,8 @@ jQuery( document ).ready( function( $ ) {
 	// Custom vars.
 	var new_reservation_item_reserved_dates = [];
 
+	$( '.ersrv-notification-wrapper' ).show();
+
 	// Add HTML after the kid charge number field.
 	$( '<a class="ersrv-copy-adult-charge" href="javascript:void(0);">' + same_as_adult + '</a>' ).insertAfter( '#accomodation_kid_charge' );
 
@@ -1004,7 +1006,7 @@ jQuery( document ).ready( function( $ ) {
 		block_element( this_button );
 
 		// Send the AJAX now.
-		$.ajax({
+		$.ajax( {
 			dataType: 'JSON',
 			url: ajaxurl,
 			type: 'POST',
@@ -1027,7 +1029,7 @@ jQuery( document ).ready( function( $ ) {
 					console.log( response.data.toast_message );
 				}
 			},
-		});
+		} );
 	} );
 
 	/**
