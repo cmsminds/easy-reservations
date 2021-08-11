@@ -1770,4 +1770,28 @@ class Easy_Reservations_Public {
 		wp_send_json_success( $response );
 		wp_die();
 	}
+
+	/**
+	 * Remove the cart item quantity input for all the reservation products in cart.
+	 *
+	 * @param string $quantity_html Holds the cart item quantity input html.
+	 * @param string $cart_item_key Holds the cart item key.
+	 * @param string $cart_item Holds the cart item.
+	 * @return int
+	 */
+	public function ersrv_woocommerce_cart_item_quantity_callback( $quantity_html, $cart_item_key, $cart_item ) {
+		// Return, if the cart item is unavailable.
+		if ( ! $cart_item ) {
+			return $quantity_html;
+		}
+
+		$is_reservation = ( false !== $cart_item && ! empty( $cart_item['reservation_data'] ) ) ? true : false;
+
+		if ( $is_reservation ) {
+			// Remove the link to remove cart item for free product.
+			$quantity_html = $cart_item['quantity'];
+		}
+
+		return $quantity_html;
+	}
 }

@@ -223,6 +223,7 @@ class Easy_Reservations {
 		$this->loader->add_action( 'woocommerce_checkout_create_order_line_item', $plugin_public, 'ersrv_woocommerce_checkout_create_order_line_item_callback', 20, 4 );
 		$this->loader->add_action( 'wp_ajax_quick_view_item_data', $plugin_public, 'ersrv_quick_view_item_data_callback' );
 		$this->loader->add_action( 'wp_ajax_nopriv_quick_view_item_data', $plugin_public, 'ersrv_quick_view_item_data_callback' );
+		$this->loader->add_filter( 'woocommerce_cart_item_quantity', $plugin_public, 'ersrv_woocommerce_cart_item_quantity_callback', 20, 3 );
 	}
 
 	/**
