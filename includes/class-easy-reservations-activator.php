@@ -38,6 +38,15 @@ class Easy_Reservations_Activator {
 			wp_schedule_event( time(), 'daily', 'ersrv_delete_reservation_pdf_receipts' );
 		}
 
+		/**
+		 * Setup the cron to send reservation reminder emails.
+		 *
+		 * Setup the daily cron.
+		 */
+		if ( ! wp_next_scheduled( 'ersrv_reservation_reminder_email_notifications' ) ) {
+			wp_schedule_event( time(), 'daily', 'ersrv_reservation_reminder_email_notifications' );
+		}
+
 		// Create pages useful for ths is plugin.
 		$pages = array(
 			array(

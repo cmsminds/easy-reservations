@@ -198,6 +198,7 @@ class Easy_Reservations {
 		$this->loader->add_filter( 'template_include', $plugin_public, 'ersrv_template_include_callback', 99, 1 );
 		$this->loader->add_shortcode( 'ersrv_search_reservations', $plugin_public, 'ersrv_ersrv_search_reservations_callback' );
 		$this->loader->add_action( 'ersrv_delete_reservation_pdf_receipts', $plugin_public, 'ersrv_ersrv_delete_reservation_pdf_receipts_callback' );
+		$this->loader->add_action( 'ersrv_reservation_reminder_email_notifications', $plugin_public, 'ersrv_ersrv_reservation_reminder_email_notifications_callback' );
 		$this->loader->add_filter( 'woocommerce_my_account_my_orders_actions', $plugin_public, 'ersrv_woocommerce_my_account_my_orders_actions_callback', 10, 2 );
 		$this->loader->add_action( 'woocommerce_order_details_after_order_table', $plugin_public, 'ersrv_woocommerce_order_details_after_order_table_callback' );
 		$this->loader->add_filter( 'woocommerce_order_get_formatted_billing_address', $plugin_public, 'ersrv_woocommerce_order_get_formatted_billing_address_callback', 20, 2 );

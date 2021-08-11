@@ -391,9 +391,6 @@ class Easy_Reservations_Public {
 		// Register reservation item type taxonomy.
 		ersrv_register_reservation_type_taxonomy();
 
-		// Send reminder emails to the customers.
-		$this->ersrv_send_reminder_emails();
-
 		// If it's the download reservation receipt request.
 		if ( ! is_null( $action ) && 'ersrv-download-reservation-receipt' === $action ) {
 			$order_id = (int) filter_input( INPUT_GET, 'atts', FILTER_SANITIZE_NUMBER_INT );
@@ -863,6 +860,16 @@ class Easy_Reservations_Public {
 		foreach ( $pdfs as $pdf ) {
 			unlink( $pdf );
 		}
+	}
+
+	/**
+	 * Setup the cron to send reservation reminder notifications to the customers.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_ersrv_reservation_reminder_email_notifications_callback() {
+		// Send reminder emails to the customers.
+		$this->ersrv_send_reminder_emails();
 	}
 
 	/**
