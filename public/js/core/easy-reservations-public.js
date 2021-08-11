@@ -333,25 +333,19 @@ jQuery(document).ready(function ($) {
 				action: 'add_reservation_to_gcal',
 				order_id: order_id,
 			},
-			success: function (response) {
+			success: function ( response ) {
 				// Check for invalid ajax request.
-				if (0 === response) {
-					console.log('easy reservations: invalid ajax request');
+				if ( 0 === response ) {
+					console.log( 'easy reservations: invalid ajax request' );
 					return false;
 				}
 
-				// Check for invalid order ID.
-				if (-1 === response) {
-					console.log('easy reservations: invalid order ID');
-					return false;
-				}
+				if ( 'reservation_added-to-gcal' !== response.data.code ) {
+					// Unblock the element.
+					unblock_element( $( '.ersrv-reservation-calendars-container' ) );
 
-				if ('reservation_added-to-gcal' !== response.data.code) {
-					return false;
+					alert( response.data.toast_message );
 				}
-
-				// Unblock the element.
-				unblock_element( $( '.ersrv-reservation-calendars-container' ) );
 			},
 		});
 	} );

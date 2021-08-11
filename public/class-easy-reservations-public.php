@@ -577,33 +577,16 @@ class Easy_Reservations_Public {
 		// Posted data.
 		$order_id = (int) filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT );
 
-		// Exit, if this order ID is invalid.
-		$wc_order_post = get_post( $order_id );
+		// Email the google candar invitation to customer's email address.
+		ersrv_email_reservation_data_to_google_calendar( $order_id );
 
-		if ( is_null( $wc_order_post ) ) {
-			echo -1;
-			wp_die();
-		}
-
-		/**
-		 * This hook fires before adding reservation to the calendar.
-		 *
-		 * This hook helps in executing anything before the reservation is added to google calendar.
-		 *
-		 * @param int $order_id Holds the WooCommerce order ID.
-		 */
-		do_action( 'ersrv_add_reservation_to_gcal_before', $order_id );
-
-		// Add the reservation to the calendar now.
-
-		/**
-		 * This hook fires after adding reservation to the calendar.
-		 *
-		 * This hook helps in executing anything after the reservation is added to google calendar.
-		 *
-		 * @param int $order_id Holds the WooCommerce order ID.
-		 */
-		do_action( 'ersrv_add_reservation_to_gcal_after', $order_id );
+		// Send the response.
+		$response = array(
+			'code'          => 'google-calendar-email-sent',
+			'toast_message' => __( 'Google calendar details have been emailed to the respective customer.', 'easy-reservations' ),
+		);
+		wp_send_json_success( $response );
+		wp_die();
 	}
 
 	/**
@@ -614,18 +597,12 @@ class Easy_Reservations_Public {
 	 * @since 1.0.0
 	 */
 	public function ersrv_woocommerce_thankyou_callback( $order_id ) {
-		$recipients = array(
-			'adarshvermaofficial3@gmail.com',
-			'jyoti.adarsh.verma@gmail.com',
-		);
-		wp_mail( $recipients, 'Test Subject', 'Test Content' );
-
 		/**
 		 * Generate the download reservation receipt button.
 		 * Check if the order has reservation items.
 		 */
-		$wc_order              = wc_get_order( $order_id );
-		$is_reservation_order  = ersrv_order_is_reservation( $wc_order );
+		$wc_order             = wc_get_order( $order_id );
+		$is_reservation_order = ersrv_order_is_reservation( $wc_order );
 
 		// Return the actions if the order is not reservation order.
 		if ( ! $is_reservation_order ) {

@@ -1923,3 +1923,43 @@ if ( ! function_exists( 'ersrv_get_export_reservation_orders_data' ) ) {
 	}
 }
 
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_email_reservation_data_to_google_calendar' ) ) {
+	/**
+	 * Email the google calendar data to customer's email address.
+	 *
+	 * @param int $order_id WooCommerce order ID.
+	 * @since 1.0.0
+	 */
+	function ersrv_email_reservation_data_to_google_calendar( $order_id ) {
+		// Exit, if this order ID is invalid.
+		$wc_order = get_post( $order_id );
+
+		// Return, if the order doesn't exist anymore.
+		if ( false === $wc_order ) {
+			return;
+		}
+
+		/**
+		 * This hook fires before adding reservation to the calendar.
+		 *
+		 * This hook helps in executing anything before the reservation is added to google calendar.
+		 *
+		 * @param int $order_id Holds the WooCommerce order ID.
+		 */
+		do_action( 'ersrv_add_reservation_to_gcal_before', $order_id );
+
+		// Add the reservation to the calendar now.
+
+		/**
+		 * This hook fires after adding reservation to the calendar.
+		 *
+		 * This hook helps in executing anything after the reservation is added to google calendar.
+		 *
+		 * @param int $order_id Holds the WooCommerce order ID.
+		 */
+		do_action( 'ersrv_add_reservation_to_gcal_after', $order_id );
+	}
+}

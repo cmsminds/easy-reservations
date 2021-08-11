@@ -411,6 +411,9 @@ class Easy_Reservations_Admin {
 		if ( ! is_null( $page ) && 'new-reservation' === $page ) {
 			require_once ERSRV_PLUGIN_PATH . 'admin/templates/modals/new-customer.php';
 		}
+
+		// Include the notification html.
+		require_once ERSRV_PLUGIN_PATH . 'public/templates/notifications/notification.php';
 	}
 
 	/**
@@ -1042,8 +1045,8 @@ class Easy_Reservations_Admin {
 		?>
 		<div class="ersrv-calendar-invites-container">
 			<p><?php esc_html_e( 'Click on the buttons below to email the calendar invites to the customer\'s billing email address.', 'easy-reservations' ); ?></p>
-			<p><button type="button" class="button"><?php esc_html_e( 'Email iCalendar Invite', 'easy-reservations' ); ?></button></p>
-			<p><button type="button" class="button"><?php esc_html_e( 'Email Google Calendar Invite', 'easy-reservations' ); ?></button></p>
+			<p><button type="button" class="button add-to-ical"><?php esc_html_e( 'Email iCalendar Invite', 'easy-reservations' ); ?></button></p>
+			<p><button type="button" class="button add-to-gcal"><?php esc_html_e( 'Email Google Calendar Invite', 'easy-reservations' ); ?></button></p>
 		</div>
 		<?php
 		echo ob_get_clean();
@@ -1310,5 +1313,34 @@ class Easy_Reservations_Admin {
 				update_post_meta( $reservation_item_id, '_ersrv_reservation_blockout_dates', $new_reserved_dates );
 			}
 		}
+	}
+
+	/**
+	 * AJAX to add reservation to customer's google calendar.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_add_reservation_to_gcal_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+		// Exit, if the action mismatches.
+		if ( empty( $action ) || 'add_reservation_to_gcal' !== $action ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Posted data.
+		$order_id = (int) filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT );
+		
+		// Email the google candar invitation to customer's email address.
+		ersrv_email_reservation_data_to_google_calendar( $order_id );
+
+		// Send the response.
+		$response = array(
+			'code'          => 'google-calendar-email-sent',
+			'toast_message' => __( 'Google calendar details have been emailed to the respective customer.', 'easy-reservations' ),
+		);
+		wp_send_json_success( $response );
+		wp_die();
 	}
 }

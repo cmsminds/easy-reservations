@@ -989,6 +989,48 @@ jQuery( document ).ready( function( $ ) {
 	} );
 
 	/**
+	 * Add the reservation to google calendar.
+	 */
+	 $(document).on('click', '.add-to-gcal', function () {
+		var this_button = $(this);
+		var order_id = $( '#post_ID' ).val();
+
+		// Return false, if the order id is invalid.
+		if ( -1 === is_valid_number( order_id ) ) {
+			return false;
+		}
+
+		// Send the AJAX now.
+		block_element( this_button );
+
+		// Send the AJAX now.
+		$.ajax({
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'add_reservation_to_gcal',
+				order_id: order_id,
+			},
+			success: function ( response ) {
+				// Check for invalid ajax request.
+				if ( 0 === response ) {
+					console.log( 'easy reservations: invalid ajax request' );
+					return false;
+				}
+
+				if ( 'google-calendar-email-sent' === response.data.code ) {
+					// Unblock the element.
+					unblock_element( this_button );
+
+					$( '.ersrv-notification-wrapper' ).show();
+					console.log( response.data.toast_message );
+				}
+			},
+		});
+	} );
+
+	/**
 	 * Get the dates that faal between 2 dates.
 	 */
 	function ersrv_get_dates_between_2_dates( from, to ) {
