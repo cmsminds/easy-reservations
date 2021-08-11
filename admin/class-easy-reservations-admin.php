@@ -89,6 +89,11 @@ class Easy_Reservations_Admin {
 			$include_datepicker_script = true;
 		}
 
+		wp_enqueue_style(
+			$this->plugin_name . '-font-awesome-style',
+			'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css',
+		);
+
 		// Enqueue bootstrap datepicker on new reservation page.
 		if ( $include_datepicker_style ) {
 			wp_enqueue_style(

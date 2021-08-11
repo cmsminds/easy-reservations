@@ -38,7 +38,30 @@ jQuery( document ).ready( function( $ ) {
 	var new_reservation_item_reserved_dates = [];
 	var post_type                           = ersrv_get_query_string_parameter_value( 'post_type' );
 
-	$( '.ersrv-notification-wrapper' ).show();
+	ersrv_show_notification( 'bg-success', 'fa-check-circle', 'Success', 'Test message' );
+
+
+	/**
+	 * Show the notification text.
+	 *
+	 * @param {string} bg_color Holds the toast background color.
+	 * @param {string} icon Holds the toast icon.
+	 * @param {string} heading Holds the toast heading.
+	 * @param {string} message Holds the toast body message.
+	 */
+	function ersrv_show_notification( bg_color, icon, heading, message ) {
+		$( '.ersrv-notification-wrapper .toast' ).removeClass( 'bg-success bg-warning bg-danger' );
+		$( '.ersrv-notification-wrapper .toast' ).addClass( bg_color );
+		$( '.ersrv-notification-wrapper .toast .ersrv-notification-icon' ).removeClass( 'fa-skull-crossbones fa-check-circle fa-exclamation-circle' );
+		$( '.ersrv-notification-wrapper .toast .ersrv-notification-icon' ).addClass( icon );
+		$( '.ersrv-notification-wrapper .toast .ersrv-notification-heading' ).text( heading );
+		$( '.ersrv-notification-wrapper .toast .ersrv-notification-message' ).html( message );
+		$( '.ersrv-notification-wrapper .toast' ).removeClass( 'hide' ).addClass( 'show' );
+
+		setTimeout( function() {
+			// $( '.ersrv-notification-wrapper .toast' ).removeClass( 'show' ).addClass( 'hide' );
+		}, 3000 );
+	}
 
 	// Add HTML after the kid charge number field.
 	$( '<a class="ersrv-copy-adult-charge" href="javascript:void(0);">' + same_as_adult + '</a>' ).insertAfter( '#accomodation_kid_charge' );
