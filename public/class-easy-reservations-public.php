@@ -397,62 +397,6 @@ class Easy_Reservations_Public {
 			if ( ! is_null( $order_id ) || 0 !== $order_id ) {
 				ersrv_download_reservation_receipt_callback( $order_id );
 			}
-		} elseif ( ! is_null( $action ) && 'download_ical_invite' === $action ) {
-			$order_id = filter_input( INPUT_GET, 'order_id', FILTER_SANITIZE_NUMBER_INT );
-			// Include the ical library file.
-			require_once ERSRV_PLUGIN_PATH . 'includes/lib/ICS.php';
-
-			$nvite_file_name = "ersrv-reservation-#{$order_id}.ics";
-			/**
-			 * This hook fires when the request to download ical file is processed.
-			 *
-			 * This filter helps to modify the ical file name.
-			 *
-			 * @param string $nvite_file_name iCal file name.
-			 * @param string $order_id WooCommerce Order ID.
-			 * @return string
-			 * @since 1.0.0
-			 */
-			$nvite_file_name = apply_filters( 'ersrv_icalendar_invitation_filename', $nvite_file_name, $order_id );
-
-			header( 'Content-Type: text/calendar; charset=utf-8' );
-			header( 'Content-Disposition: attachment; filename=' . $nvite_file_name );
-
-			$invitation_details = array(
-				'location'    => '123 Fake St, New York, NY', // reservation item location.
-				'description' => 'This is my description', // reservation description.
-				'dtstart'     => '2017-1-16 9:00AM', // reservation start date time.
-				'dtend'       => '2017-1-16 10:00AM', // reservation end date time.
-				'summary'     => 'This is my summary', // invitation summary.
-				'url'         => 'https://example.com' // view order url.
-			);
-			/**
-			 * This hook fires when the request to download ical file is processed.
-			 *
-			 * This filter helps to modify the ical invitation details.
-			 *
-			 * @param array  $invitation_details iCal details.
-			 * @param string $order_id WooCommerce Order ID.
-			 * @return array
-			 * @since 1.0.0
-			 */
-			$invitation_details = apply_filters( 'ersrv_icalendar_invitation_details', $invitation_details, $order_id );
-
-			// Generate the invitation now.
-			$ics = new ICS( $invitation_details );
-			
-			/**
-			 * This hook fires before icalendar invitation is downloaded.
-			 *
-			 * This hook helps in executing anything before the reservation icalendar invite is downloaded.
-			 *
-			 * @param int $order_id Holds the WooCommerce order ID.
-			 */
-			do_action( 'ersrv_add_reservation_to_ical_before', $order_id );
-
-			// Download the invitation.
-			echo $ics->to_string();
-			exit;
 		}
 	}
 
