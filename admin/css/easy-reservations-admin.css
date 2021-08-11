@@ -665,6 +665,9 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 .ersrv-notification-wrapper .toast{
 	margin: 0px auto;
 }
+.ersrv-notification-wrapper .toast .mr-2{
+	margin-right: 0.5rem;
+}
 .toast {
 	max-width: 350px;
 	overflow: hidden;
@@ -693,6 +696,10 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 	border: 1px solid transparent;
 	pointer-events: auto;
 	cursor: pointer;
+}
+.toast .close:not(:disabled):not(.disabled):focus,
+.toast .close:not(:disabled):not(.disabled):hover{
+	opacity: 0.75;
 }
 .toast.showing {
 	opacity: 1;
