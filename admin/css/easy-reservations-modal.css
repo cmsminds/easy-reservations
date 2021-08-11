@@ -53,17 +53,9 @@
 	margin-top: 0px;
 }
 
-
-/* .ersrv-date-ranges .from {
-	width: 48%;
-	margin-right: 2%
+div#ersrv-export-reservations-modal .ersrv-modal-content {
+    width: 20%;
 }
-
-.ersrv-date-ranges .to {
-	width: 48%;
-	margin-left: 2%
-} */
-
 .ersrv-date-ranges {
 	overflow: hidden;
 	margin-bottom: 10px;
