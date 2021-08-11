@@ -1513,8 +1513,14 @@ class Easy_Reservations_Public {
 	 */
 	public function ersrv_send_reminder_emails() {
 		// Get the woocommerce orders.
-		$wc_orders_query = ersrv_get_posts( 'shop_order', 1, -1 );
-		$wc_order_ids    = $wc_orders_query->posts;
+		$wc_orders_query                 = ersrv_get_posts( 'shop_order', 1, -1 );
+		$wc_order_ids                    = $wc_orders_query->posts;
+		$reminder_to_be_sent_before_days = ersrv_get_plugin_settings( 'ersrv_reminder_email_send_before_days' );
+
+		// Return, if the setting is not saved.
+		if ( 0 === $reminder_to_be_sent_before_days ) {
+			return;
+		}
 
 		// Return back, if there are no orders available.
 		if ( empty( $wc_order_ids ) || ! is_array( $wc_order_ids ) ) {
@@ -1534,14 +1540,56 @@ class Easy_Reservations_Public {
 
 		// Iterate through the orders to send the customers the remonder about their reservation.
 		foreach ( $wc_order_ids as $order_id ) {
-			/**
-			 * This action is fired by the cron.
-			 *
-			 * This action helps in sending the reminder emails to the customers about their reservation.
-			 *
-			 * @param int $order_id WooCommerce order ID.
-			 */
-			do_action( 'ersrv_send_reservation_reminder_email', $order_id );
+			$wc_order   = wc_get_order( $order_id );
+			$line_items = $wc_order->get_items();
+
+			// Skip, if there are no items.
+			if ( empty( $line_items ) || ! is_array( $line_items ) ) {
+				continue;
+			}
+
+			// Iterate through the items to check if the reminder email can be sent to the customers.
+			foreach ( $line_items as $line_item ) {
+				$product_id = $line_item->get_product_id();
+				$item_id    = $line_item->get_id();
+
+				// Skip, if this is not a reservation item.
+				if ( ! ersrv_product_is_reservation( $product_id ) ) {
+					continue;
+				}
+
+				// Get the checkin date.
+				$checkin_date = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
+				$date_today   = gmdate( ersrv_get_php_date_format() );
+
+				// Get the days yet to the reservation.
+				$dates_range = ersrv_get_dates_within_2_dates( $date_today, $checkin_date );
+				$dates       = array();
+
+				// Iterate through the dates.
+				if ( ! empty( $dates_range ) ) {
+					foreach ( $dates_range as $date ) {
+						$dates[] = $date->format( ersrv_get_php_date_format() );
+					}
+				}
+				$days_difference_count = count( $dates );
+
+				// Skip, if this doesn't match with the admin settings.
+				if ( $reminder_to_be_sent_before_days !== $days_difference_count ) {
+					continue;
+				}
+
+				/**
+				 * Send the email now.
+				 * This action is fired by the cron.
+				 *
+				 * This action helps in sending the reminder emails to the customers about their reservation.
+				 *
+				 * @param object $line_item WooCommerce line item object.
+				 * @param int    $order_id WooCommerce order ID.
+				 */
+				do_action( 'ersrv_send_reservation_reminder_email', $line_item, $order_id );
+			}
 		}
 	}
 

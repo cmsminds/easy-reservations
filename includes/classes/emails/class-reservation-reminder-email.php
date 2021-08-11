@@ -30,7 +30,7 @@ class Reservation_Reminder_Email extends WC_Email {
 		$this->template_html  = 'reservation-reminder-html.php';
 		$this->template_plain = 'plain/reservation-reminder-plain.php';
 
-		add_action( 'ersrv_send_reservation_reminder_notification', array( $this, 'ersrv_ersrv_send_reservation_reminder_notification_callback' ) );
+		add_action( 'ersrv_send_reservation_reminder_notification', array( $this, 'ersrv_ersrv_send_reservation_reminder_notification_callback' ), 10, 2 );
 
 		// Call parent constructor.
 		parent::__construct();
@@ -45,23 +45,16 @@ class Reservation_Reminder_Email extends WC_Email {
 	/**
 	 * This callback helps fire the email notification.
 	 *
-	 * @param string $item_author_email Author email address.
+	 * @param object $line_item WooCommerce line item object.
+	 * @param int    $order_id WooCommerce order ID.
 	 * @since 1.0.0
 	 */
-	public function ersrv_ersrv_send_reservation_reminder_notification_callback( $order_id ) {
+	public function ersrv_ersrv_send_reservation_reminder_notification_callback( $line_item, $order_id ) {
 		// Get the order.
 		$wc_order = wc_get_order( $order_id );
 
-		// Get the order items.
-		$line_items = $wc_order->get_items();
-
-		// If there are no line items. Do not send email.
-		if ( empty( $line_items ) || ! is_array( $line_items ) ) {
-			return;
-		}
-
 		// Email data object.
-		$this->object = $this->create_object( $order_id );
+		$this->object = $this->create_object( $line_item, $order_id );
 
 		// Fire the notification now.
 		$this->send(
@@ -73,8 +66,15 @@ class Reservation_Reminder_Email extends WC_Email {
 		);
 	}
 
-
-	public static function create_object( $order_id ) {    
+	/**
+	 * Create the data object that will be used in the template.
+	 *
+	 * @param object $line_item WooCommerce line item object.
+	 * @param int    $order_id WooCommerce order ID.
+	 * @return stdClass
+	 * @since 1.0.0
+	 */
+	public static function create_object( $line_item, $order_id ) {
 		global $wpdb;
 		$item_object = new stdClass();
 
@@ -100,46 +100,35 @@ class Reservation_Reminder_Email extends WC_Email {
 		// Order view URL.
 		$item_object->order_view_url = $wc_order->get_view_order_url();
 
-		// Line items.
-		$line_items  = $wc_order->get_items();
-		$order_items = array();
+		// Line item.
+		$product_id   = $line_item->get_product_id();
+		$variation_id = $line_item->get_variation_id();
+		$item_id      = $line_item->get_id();
+		$prod_id      = ersrv_product_id( $product_id, $variation_id );
 
-		// If there are line items.
-		if ( ! empty( $line_items ) && is_array( $line_items ) ) {
-			foreach ( $line_items as $line_item ) {
-				$product_id   = $line_item->get_product_id();
-				$variation_id = $line_item->get_variation_id();
-				$item_id      = $line_item->get_id();
-				$prod_id      = ersrv_product_id( $product_id, $variation_id );
+		// Prepare the item object.
+		$item_object->item = array(
+			'item'               => get_the_title( $prod_id ),
+			'subtotal'           => $line_item->get_total(),
+			'checkin_date'       => wc_get_order_item_meta( $item_id, 'Checkin Date', true ),
+			'checkout_date'      => wc_get_order_item_meta( $item_id, 'Checkout Date', true ),
+			'adult_count'        => wc_get_order_item_meta( $item_id, 'Adult Count', true ),
+			'adult_subtotal'     => wc_get_order_item_meta( $item_id, 'Adult Subtotal', true ),
+			'kids_count'         => wc_get_order_item_meta( $item_id, 'Kids Count', true ),
+			'kids_subtotal'      => wc_get_order_item_meta( $item_id, 'Kids Subtotal', true ),
+			'security'           => wc_get_order_item_meta( $item_id, 'Security Amount', true ),
+			'amenities_subtotal' => wc_get_order_item_meta( $item_id, 'Amenities Subtotal', true ),
+		);
 
-				// Prepare the item object.
-				$item_data = array(
-					'item_id'      => $item_id,
-					'item'         => get_the_title( $prod_id ),
-					'product_id'   => $product_id,
-					'variation_id' => $variation_id,
-					'quantity'     => $line_item->get_quantity(),
-					'subtotal'     => $line_item->get_total(),
-				);
-
-				// Add other relevant data for reservation items.
-				if ( ersrv_product_is_reservation( $product_id ) ) {
-					$item_data['checkin_date']       = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
-					$item_data['checkout_date']      = wc_get_order_item_meta( $item_id, 'Checkout Date', true );
-					$item_data['adult_count']        = wc_get_order_item_meta( $item_id, 'Adult Count', true );
-					$item_data['adult_subtotal']     = wc_get_order_item_meta( $item_id, 'Adult Subtotal', true );
-					$item_data['kids_count']         = wc_get_order_item_meta( $item_id, 'Kids Count', true );
-					$item_data['kids_subtotal']      = wc_get_order_item_meta( $item_id, 'Kids Subtotal', true );
-					$item_data['security']           = wc_get_order_item_meta( $item_id, 'Security Amount', true );
-					$item_data['amenities_subtotal'] = wc_get_order_item_meta( $item_id, 'Amenities Subtotal', true );
-				}
-
-				// Push in the array finally.
-				$order_items[] = $item_data;
-			}
-		}
-		$item_object->items = $order_items;
-
+		/**
+		 * This filter is fired when sending reminder emails by the cron.
+		 *
+		 * This filter helps managing the item data in the reminder email template.
+		 *
+		 * @param stdClass $item_object Data object.
+		 * @return stdClass
+		 * @since 1.0.0
+		 */
 		return apply_filters( 'ersrv_reminder_email_order_object', $item_object );
 	}
 

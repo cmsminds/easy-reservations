@@ -27,7 +27,7 @@ class Easy_Reservations_Custom_Email_Manager {
 	public function __construct() {
 		define( 'ERSRV_CUSTOM_EMAIL_TEMPLATE_PATH', ERSRV_PLUGIN_PATH . 'admin/templates/emails/' );
 		add_action( 'ersrv_email_contact_owner_request', array( &$this, 'ersrv_ersrv_email_contact_owner_request_callback' ) );
-		add_action( 'ersrv_send_reservation_reminder_email', array( &$this, 'ersrv_ersrv_send_reservation_reminder_email_callback' ) );
+		add_action( 'ersrv_send_reservation_reminder_email', array( &$this, 'ersrv_ersrv_send_reservation_reminder_email_callback' ), 10, 2 );
 		add_filter( 'woocommerce_email_classes', array( &$this, 'ersrv_woocommerce_email_classes_callback' ) );
 	}
 
@@ -50,20 +50,22 @@ class Easy_Reservations_Custom_Email_Manager {
 	/**
 	 * Send notification for the reservation reminder to the customers.
 	 *
+	 * @param object $line_item WooCommerce line item object.
 	 * @param int $order_id WooCommerce order ID.
 	 * @since 1.0.0
 	 */
-	public function ersrv_ersrv_send_reservation_reminder_email_callback( $order_id ) {
+	public function ersrv_ersrv_send_reservation_reminder_email_callback( $line_item, $order_id ) {
 		new WC_Emails();
 		/**
 		 * This hook fires on the reminder emails cron.
 		 *
 		 * This hook is helpful in managing actions while sending emails.
 		 *
+		 * @param object $line_item WooCommerce line item object.
 		 * @param int $order_id WooCommerce order ID.
 		 * @since 1.0.0 
 		 */
-		do_action( 'ersrv_send_reservation_reminder_notification', $order_id );
+		do_action( 'ersrv_send_reservation_reminder_notification', $line_item, $order_id );
 	}
 
 	/**
