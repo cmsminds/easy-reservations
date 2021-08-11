@@ -120,6 +120,9 @@ h1:not(.site-title):before, h2:before,
 .ersrv-notification.bg-warning *{
     color: #000;
 }
+.ersrv-notification .close{
+    background-color: transparent !important;
+}
 .ersrv-notification a{
     text-decoration: underline;
 }
@@ -172,6 +175,9 @@ a.btn:hover,
 }
 .wrapper.search-page .banner .form-wrapper .form-inner input.date-control:not(.ship-icon-field) {
     background-position: 95% ;
+}
+.site a:focus:not(.wp-block-button__link):not(.wp-block-file__button){
+    background: transparent !important;
 }
 /* Experimental */
 /* body::after {
