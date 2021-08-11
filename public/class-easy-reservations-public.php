@@ -1262,7 +1262,7 @@ class Easy_Reservations_Public {
 		// Prepare the response.
 		$response = array(
 			'code'          => 'reservation-added-to-cart',
-			'toast_message' => __( 'Reservation has been added to the cart.', 'easy-reservations' ),
+			'toast_message' => sprintf( __( 'Reservation has been added to the cart. %1$sView Cart%2$s', 'easy-reservations' ), '<a title="' . __( 'View Cart', 'easy-reservations' ) . '" href="' . wc_get_cart_url() . '">', '</a>' ),
 		);
 		wp_send_json_success( $response );
 		wp_die();
@@ -1283,94 +1283,31 @@ class Easy_Reservations_Public {
 		}
 
 		// Posted data.
-		$name    = filter_input( INPUT_POST, 'name', FILTER_SANITIZE_STRING );
-		$email   = filter_input( INPUT_POST, 'email', FILTER_SANITIZE_STRING );
-		$phone   = filter_input( INPUT_POST, 'phone', FILTER_SANITIZE_STRING );
-		$subject = filter_input( INPUT_POST, 'subject', FILTER_SANITIZE_STRING );
-		$message = filter_input( INPUT_POST, 'message', FILTER_SANITIZE_STRING );
+		$item_id = (int) filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
+
+		// Get the item author.
+		$item_author_id = (int) get_post_field( 'post_author', $item_id );
+
+		// Get the author object.
+		$item_author = get_userdata( $item_author_id );
+
+		// Get the author email.
+		$item_author_email = $item_author->data->user_email;
 
 		/**
-		 * This hook fires before the contact owner request is saved.
+		 * This hook fires for sending email for reservation item contact requests.
 		 *
-		 * This hook helps in adding actions before any contact owner request is saved.
-		 */
-		do_action( 'ersrv_save_contact_owner_request_before' );
-
-		// Send the email now.
-		$mail_body  = '';
-		$mail_body .= '<p>Hello Admin,</p>';
-		$mail_body .= '<p>There is a request from a customer on the item: </p>';
-		$mail_body .= '<p>Following are the customer details:</p>';
-		$mail_body .= '<p>Name: ' . $name . '</p>';
-		$mail_body .= '<p>Email: ' . $email . '</p>';
-		$mail_body .= '<p>Phone: ' . $phone . '</p>';
-		$mail_body .= '<p>Subject: ' . $subject . '</p>';
-		$mail_body .= '<p>Message: ' . $message . '</p>';
-
-		/**
-		 * This filter fires when the contact owner request is in process.
+		 * This hook helps in adding actions during any contact owner request is saved.
 		 *
-		 * This filter helps modify the mail content that is being sent to the admin.
-		 *
-		 * @param string $mail_body Holds the email body.
-		 * @return string
+		 * @param string $item_author_email Author email address.
 		 * @since 1.0.0
 		 */
-		$mail_body = apply_filters( 'ersrv_contact_owner_request_email_body', $mail_body );
-
-		// Email recipients.
-		$mail_recipients = array( get_option( 'admin_email' ) );
-		/**
-		 * This filter fires when the contact owner request is in process.
-		 *
-		 * This filter helps modify the mail recipients.
-		 *
-		 * @param array $mail_recipients Email recipients.
-		 * @return array
-		 * @since 1.0.0
-		 */
-		$mail_recipients = apply_filters( 'ersrv_contact_owner_request_email_recipients', $mail_recipients );
-
-		// Email subject.
-		$mail_subject = __( 'Contact Request', 'easy-reservations' );
-		/**
-		 * This filter fires when the contact owner request is in process.
-		 *
-		 * This filter helps modify the mail subject.
-		 *
-		 * @param string $mail_subject Email subject.
-		 * @return string
-		 * @since 1.0.0
-		 */
-		$mail_subject = apply_filters( 'ersrv_contact_owner_request_email_subject', $mail_subject );
-
-		// Email additonal headers.
-		$mail_headers = array();
-		/**
-		 * This filter fires when the contact owner request is in process.
-		 *
-		 * This filter helps modify the mail additional headers.
-		 *
-		 * @param array $mail_headers Email additional headers.
-		 * @return array
-		 * @since 1.0.0
-		 */
-		$mail_headers = apply_filters( 'ersrv_contact_owner_request_email_additional_headers', $mail_headers );
-
-		// Send the email now.
-		wp_mail( $mail_recipients, $mail_subject, $mail_body, $mail_headers );
-
-		/**
-		 * This hook fires after the contact owner request is saved.
-		 *
-		 * This hook helps in adding actions after any contact owner request is saved.
-		 */
-		do_action( 'ersrv_save_contact_owner_request_after' );
+		do_action( 'ersrv_email_contact_owner_request', $item_author_email );
 
 		// Prepare the response.
 		$response = array(
-			'code'    => 'contact-owner-request-saved',
-			'message' => __( 'Contact request is saved successfully. One of our teammates will get back to you soon.', 'easy-reservations' ),
+			'code'          => 'contact-owner-request-saved',
+			'toast_message' => __( 'Contact request is saved successfully. One of our teammates will get back to you soon.', 'easy-reservations' ),
 		);
 		wp_send_json_success( $response );
 		wp_die();
@@ -1576,8 +1513,14 @@ class Easy_Reservations_Public {
 	 */
 	public function ersrv_send_reminder_emails() {
 		// Get the woocommerce orders.
-		$wc_orders_query = ersrv_get_posts( 'shop_order', 1, -1 );
-		$wc_order_ids    = $wc_orders_query->posts;
+		$wc_orders_query                 = ersrv_get_posts( 'shop_order', 1, -1 );
+		$wc_order_ids                    = $wc_orders_query->posts;
+		$reminder_to_be_sent_before_days = ersrv_get_plugin_settings( 'ersrv_reminder_email_send_before_days' );
+
+		// Return, if the setting is not saved.
+		if ( 0 === $reminder_to_be_sent_before_days ) {
+			return;
+		}
 
 		// Return back, if there are no orders available.
 		if ( empty( $wc_order_ids ) || ! is_array( $wc_order_ids ) ) {
@@ -1597,14 +1540,56 @@ class Easy_Reservations_Public {
 
 		// Iterate through the orders to send the customers the remonder about their reservation.
 		foreach ( $wc_order_ids as $order_id ) {
-			/**
-			 * This action is fired by the cron.
-			 *
-			 * This action helps in sending the reminder emails to the customers about their reservation.
-			 *
-			 * @param int $order_id WooCommerce order ID.
-			 */
-			do_action( 'ersrv_send_reservation_reminder_email', $order_id );
+			$wc_order   = wc_get_order( $order_id );
+			$line_items = $wc_order->get_items();
+
+			// Skip, if there are no items.
+			if ( empty( $line_items ) || ! is_array( $line_items ) ) {
+				continue;
+			}
+
+			// Iterate through the items to check if the reminder email can be sent to the customers.
+			foreach ( $line_items as $line_item ) {
+				$product_id = $line_item->get_product_id();
+				$item_id    = $line_item->get_id();
+
+				// Skip, if this is not a reservation item.
+				if ( ! ersrv_product_is_reservation( $product_id ) ) {
+					continue;
+				}
+
+				// Get the checkin date.
+				$checkin_date = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
+				$date_today   = gmdate( ersrv_get_php_date_format() );
+
+				// Get the days yet to the reservation.
+				$dates_range = ersrv_get_dates_within_2_dates( $date_today, $checkin_date );
+				$dates       = array();
+
+				// Iterate through the dates.
+				if ( ! empty( $dates_range ) ) {
+					foreach ( $dates_range as $date ) {
+						$dates[] = $date->format( ersrv_get_php_date_format() );
+					}
+				}
+				$days_difference_count = count( $dates );
+
+				// Skip, if this doesn't match with the admin settings.
+				if ( $reminder_to_be_sent_before_days !== $days_difference_count ) {
+					continue;
+				}
+
+				/**
+				 * Send the email now.
+				 * This action is fired by the cron.
+				 *
+				 * This action helps in sending the reminder emails to the customers about their reservation.
+				 *
+				 * @param object $line_item WooCommerce line item object.
+				 * @param int    $order_id WooCommerce order ID.
+				 */
+				do_action( 'ersrv_send_reservation_reminder_email', $line_item, $order_id );
+			}
 		}
 	}
 

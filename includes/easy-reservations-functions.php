@@ -88,6 +88,11 @@ function ersrv_get_plugin_settings( $setting ) {
 			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : 'no';
 			break;
 
+		case 'ersrv_reminder_email_send_before_days':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? (int) $data : 0;
+			break;
+
 		default:
 			$data = -1;
 	}
