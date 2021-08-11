@@ -36,19 +36,23 @@ jQuery( document ).ready( function( $ ) {
 
 	// Custom vars.
 	var new_reservation_item_reserved_dates = [];
+	var post_type                           = ersrv_get_query_string_parameter_value( 'post_type' );
 
 	$( '.ersrv-notification-wrapper' ).show();
 
 	// Add HTML after the kid charge number field.
 	$( '<a class="ersrv-copy-adult-charge" href="javascript:void(0);">' + same_as_adult + '</a>' ).insertAfter( '#accomodation_kid_charge' );
 
-	// Add the dropdown on the order's page.
-	var export_reservations_button = '<a class="page-title-action ersrv-export-reservations" href="javascript:void(0);">' + export_reservations + '</a>';
-	$( export_reservations_button ).insertAfter( 'body.woocommerce-page.post-type-shop_order .wrap h1.wp-heading-inline' );
+	// To add the buttons only on order listing page.
+	if ( -1 !== is_valid_string( post_type ) && 'shop_order' === post_type ) {
+		// Add the dropdown on the order's page.
+		var export_reservations_button = '<a class="page-title-action ersrv-export-reservations" href="javascript:void(0);">' + export_reservations + '</a>';
+		$( export_reservations_button ).insertAfter( 'body.woocommerce-page.post-type-shop_order .wrap h1.wp-heading-inline' );
 
-	// Add the new reservation button html on the orders listing page.
-	var new_reservation_button = '<a class="page-title-action" href="' + new_reservation_url + '">' + new_reservation_button_text + '</a>';
-	$( new_reservation_button ).insertAfter( 'body.woocommerce-page.post-type-shop_order .wrap h1.wp-heading-inline' );
+		// Add the new reservation button html on the orders listing page.
+		var new_reservation_button = '<a class="page-title-action" href="' + new_reservation_url + '">' + new_reservation_button_text + '</a>';
+		$( new_reservation_button ).insertAfter( 'body.woocommerce-page.post-type-shop_order .wrap h1.wp-heading-inline' );
+	}
 
 	if ( $( '.ersrv-has-datepicker' ).length ) {
 		$( '.ersrv-has-datepicker' ).datepicker( {
@@ -993,8 +997,8 @@ jQuery( document ).ready( function( $ ) {
 	/**
 	 * Add the reservation to google calendar.
 	 */
-	 $(document).on('click', '.add-to-gcal', function () {
-		var this_button = $(this);
+	$( document ).on( 'click', '.add-to-gcal', function () {
+		var this_button = $( this );
 		var order_id = $( '#post_ID' ).val();
 
 		// Return false, if the order id is invalid.
@@ -1022,6 +1026,48 @@ jQuery( document ).ready( function( $ ) {
 				}
 
 				if ( 'google-calendar-email-sent' === response.data.code ) {
+					// Unblock the element.
+					unblock_element( this_button );
+
+					$( '.ersrv-notification-wrapper' ).show();
+					console.log( response.data.toast_message );
+				}
+			},
+		} );
+	} );
+
+	/**
+	 * Add the reservation to icalendar.
+	 */
+	$( document ).on( 'click', '.add-to-ical', function () {
+		var this_button = $( this );
+		var order_id = $( '#post_ID' ).val();
+
+		// Return false, if the order id is invalid.
+		if ( -1 === is_valid_number( order_id ) ) {
+			return false;
+		}
+
+		// Send the AJAX now.
+		block_element( this_button );
+
+		// Send the AJAX now.
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'add_reservation_to_ical',
+				order_id: order_id,
+			},
+			success: function ( response ) {
+				// Check for invalid ajax request.
+				if ( 0 === response ) {
+					console.log( 'easy reservations: invalid ajax request' );
+					return false;
+				}
+
+				if ( 'icalendar-email-sent' === response.data.code ) {
 					// Unblock the element.
 					unblock_element( this_button );
 
@@ -1210,5 +1256,19 @@ jQuery( document ).ready( function( $ ) {
 	 */
 	function unblock_element( element ) {
 		element.removeClass( 'non-clickable' );
+	}
+
+	/**
+	 * Get query string parameter value.
+	 *
+	 * @param {string} string
+	 * @return {string} string
+	 */
+	function ersrv_get_query_string_parameter_value( param_name ) {
+		var url_string = location.href;
+		var url        = new URL( url_string );
+		var val        = url.searchParams.get( param_name );
+
+		return val;
 	}
 } );

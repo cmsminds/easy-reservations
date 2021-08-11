@@ -170,6 +170,7 @@ class Easy_Reservations {
 		$this->loader->add_filter( 'display_post_states', $plugin_admin, 'ersrv_display_post_states_callback', 20, 2 );
 		$this->loader->add_action( 'woocommerce_update_option', $plugin_admin, 'ersrv_woocommerce_update_option_callback' );
 		$this->loader->add_action( 'wp_ajax_add_reservation_to_gcal', $plugin_admin, 'ersrv_add_reservation_to_gcal_callback' );
+		$this->loader->add_action( 'wp_ajax_add_reservation_to_ical', $plugin_admin, 'ersrv_add_reservation_to_ical_callback' );
 	}
 
 	/**

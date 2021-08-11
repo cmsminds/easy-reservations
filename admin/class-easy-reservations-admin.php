@@ -1343,4 +1343,33 @@ class Easy_Reservations_Admin {
 		wp_send_json_success( $response );
 		wp_die();
 	}
+
+	/**
+	 * AJAX to add reservation to customer's icalendar.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_add_reservation_to_ical_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+		// Exit, if the action mismatches.
+		if ( empty( $action ) || 'add_reservation_to_ical' !== $action ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Posted data.
+		$order_id = (int) filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT );
+		
+		// Email the google candar invitation to customer's email address.
+		ersrv_email_reservation_data_to_icalendar( $order_id );
+
+		// Send the response.
+		$response = array(
+			'code'          => 'icalendar-email-sent',
+			'toast_message' => __( 'icalendar details have been emailed to the respective customer.', 'easy-reservations' ),
+		);
+		wp_send_json_success( $response );
+		wp_die();
+	}
 }
