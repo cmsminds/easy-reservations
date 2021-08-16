@@ -30,7 +30,7 @@ jQuery(document).ready(function ($) {
 	// Custom vars.
 	var quick_view_reserved_dates = [];
 
-	ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, 'Success text.' );
+	// ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, 'Success text.' );
 
 	// If sidebar is to be removed on reservation single page.
 	if ('yes' === remove_sidebar) {
@@ -1098,6 +1098,9 @@ jQuery(document).ready(function ($) {
 
 					// Show toast.
 					ersrv_show_toast( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
+
+					// Hide the modal.
+					$( '#ersrv-item-quick-view-modal' ).fadeOut( 'slow' );
 				}
 			},
 		} );

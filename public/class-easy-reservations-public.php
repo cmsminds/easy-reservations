@@ -1292,28 +1292,22 @@ class Easy_Reservations_Public {
 	 * @since 1.0.0
 	 */
 	public function ersrv_woocommerce_before_calculate_totals_callback( $cart_obj ) {
-		$session_reservation_data = WC()->session->get( 'reservation_data' );
-		$session_reservation_item = ( ! empty( $session_reservation_data['item_id'] ) ) ? (int) $session_reservation_data['item_id'] : '';
-
-		// Return, if the session item ID is empty.
-		if ( empty( $session_reservation_item ) ) {
-			return;
-		}
-
-		// Item total cost.
-		$session_reservation_item_total = ( ! empty( $session_reservation_data['item_total'] ) ) ? $session_reservation_data['item_total'] : 0;
-
-		// Return, if the session item total is 0.
-		if ( 0 === $session_reservation_item_total ) {
-			return;
-		}
-
 		// Iterate through the cart items to set the price.
 		foreach ( $cart_obj->get_cart() as $cart_item ) {
-			$product_id = $cart_item['product_id'];
+			$reservation_data = $cart_item['reservation_data'];
 
-			if ( $session_reservation_item === $product_id ) {
-				$cart_item['data']->set_price( $session_reservation_item_total );
+			// Skip, if the cart item has this data.
+			if ( empty( $reservation_data ) ) {
+				continue;
+			}
+
+			// Item total cost.
+			$reservation_item_total = ( ! empty( $reservation_data['item_total'] ) ) ? (float) $reservation_data['item_total'] : 0;
+			$product_id             = $cart_item['product_id'];
+			$reservation_data_item  = ( ! empty( $reservation_data['item_id'] ) ) ? (int) $reservation_data['item_id'] : 0;
+
+			if ( ! empty( $reservation_data_item ) && $reservation_data_item === $product_id ) {
+				$cart_item['data']->set_price( $reservation_data['item_total'] );
 			}
 		}
 	}
