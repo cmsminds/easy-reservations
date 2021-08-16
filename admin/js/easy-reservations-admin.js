@@ -974,7 +974,7 @@ jQuery( document ).ready( function( $ ) {
 		}
 
 		// Send the AJAX now.
-		block_element( this_button );
+		// block_element( this_button );
 
 		// Send the AJAX now.
 		$.ajax( {

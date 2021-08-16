@@ -131,7 +131,7 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 				'type'        => 'text',
 			),
 			array(
-				'title'       => __( 'Reservation Reminder Email "X" Days Before ', 'easy-reservations' ),
+				'title'       => __( 'Reservation Reminder Email "X" Days Before', 'easy-reservations' ),
 				'desc'        => __( 'This will decide that the reminder emails will be sent the number of days before the customer\'s reservation. If left blank, the system won\'t send any reminder email.', 'easy-reservations' ),
 				'desc_tip'    => true,
 				'id'          => 'ersrv_reminder_email_send_before_days',
@@ -155,6 +155,22 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 				'desc_tip' => true,
 				'default'  => '',
 				'id'       => 'ersrv_datepicker_date_format',
+			),
+			array(
+				'title'       => __( 'Reservation Onboarding Time', 'easy-reservations' ),
+				'desc'        => __( 'This will be the normal onboarding time.', 'easy-reservations' ),
+				'desc_tip'    => true,
+				'id'          => 'ersrv_reservation_onboarding_time',
+				'type'        => 'text',
+				'placeholder' => __( 'hours:minutes', 'easy-reservations' ),
+			),
+			array(
+				'title'       => __( 'Reservation Offboarding Time', 'easy-reservations' ),
+				'desc'        => __( 'This will be the normal offboarding time.', 'easy-reservations' ),
+				'desc_tip'    => true,
+				'id'          => 'ersrv_reservation_offboarding_time',
+				'type'        => 'text',
+				'placeholder' => __( 'hours:minutes', 'easy-reservations' ),
 			),
 			array(
 				'type' => 'sectionend',

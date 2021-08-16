@@ -93,6 +93,16 @@ function ersrv_get_plugin_settings( $setting ) {
 			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? (int) $data : 0;
 			break;
 
+		case 'ersrv_reservation_onboarding_time':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? gmdate( 'h:iA', strtotime( $data ) ) : '9:00 AM';
+			break;
+
+		case 'ersrv_reservation_offboarding_time':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? gmdate( 'h:iA', strtotime( $data ) ) : '9:00 AM';
+			break;
+
 		default:
 			$data = -1;
 	}
@@ -1966,13 +1976,20 @@ if ( ! function_exists( 'ersrv_email_reservation_data_to_google_calendar' ) ) {
 		foreach ( $line_items as $line_item ) {
 			$item_id       = $line_item->get_id();
 			$product_id    = $line_item->get_product_id();
-			$checkin_date  = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
-			$checkout_date = wc_get_order_item_meta( $item_id, 'Checkout Date', true );
 
 			// Skip, if this is not a reservation item.
 			if ( ! ersrv_product_is_reservation( $product_id ) ) {
 				continue;
 			}
+
+			// Reservation item data.
+			$checkin_date  = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
+			$checkin       = $checkin_date . ' ' .ersrv_get_plugin_settings( 'ersrv_reservation_onboarding_time' );
+			$checkin       = ersrv_get_icalendar_formatted_date( strtotime( $checkin ), true );
+			$checkout_date = wc_get_order_item_meta( $item_id, 'Checkout Date', true );
+			$checkout      = $checkout_date . ' ' .ersrv_get_plugin_settings( 'ersrv_reservation_offboarding_time' );
+			$checkout      = ersrv_get_icalendar_formatted_date( strtotime( $checkout ), true );
+			$view_order    = $wc_order->get_view_order_url();
 
 			// Google calendar base URL.
 			$gcal_url = 'https://calendar.google.com/calendar/u/0/r/eventedit';
@@ -1980,32 +1997,28 @@ if ( ! function_exists( 'ersrv_email_reservation_data_to_google_calendar' ) ) {
 			// Query parameters.
 			$gcal_params = array(
 				'text' => sprintf( __( 'Reservation with %1$s', 'easy-reservations' ), get_the_title( $product_id ) ),
-				'dates' => '20210703T120000Z/20210703T120000',
+				'dates' => "{$checkin}/{$checkout}",
 				'trp' => false,
-				'sprop' => 'website:https://peters222.sg-host.com/',
-				'ctz' => 'America/Toronto',
+				'sprop' => "website:{$view_order}",
 				'pli' => 1,
 				'sf' => true,
 			);
 
 			$gcal_url = add_query_arg( $gcal_params, $gcal_url );
 
-			echo $gcal_url;
-			die;
-
 			// Email recipient.
-			$recipient     = apply_filters( 'ersrv_icalendar_invite_recipient_email', $wc_order->get_billing_email(), $wc_order );
-			$subject       = apply_filters( 'ersrv_icalendar_invite_email_subject', sprintf( __( 'Easy Reservations: iCalendar Invitation for Reservation #%1$d', 'easy-reservations' ), $order_id ), $wc_order );
+			$recipient     = apply_filters( 'ersrv_gcalendar_invite_recipient_email', $wc_order->get_billing_email(), $wc_order );
+			$subject       = apply_filters( 'ersrv_gcalendar_invite_email_subject', sprintf( __( 'Easy Reservations: Google Invitation for Reservation #%1$d', 'easy-reservations' ), $order_id ), $wc_order );
 			$customer_name = $wc_order->get_billing_first_name() . ' ' . $wc_order->get_billing_last_name();
 
 			// Email body.
 			$blog_name   = get_bloginfo( 'name' );
 			$email_body  = "<p>Hello {$customer_name},</p>";
-			$email_body .= "<p>Please find the attached iClendar invitation file for the reservation: #{$order_id}</p>";
-			$email_body .= '<p>Download the file and import in your device.</p>';
+			$email_body .= "<p>Please click the URL below to add the reservation #{$order_id} to your Google Clendar.</p>";
+			$email_body .= "<p>URL: {$gcal_url}</p>";
 			$email_body .= '<p>Regards,</p>';
 			$email_body .= "<p>Team {$blog_name}</p>";
-			$email_body  = apply_filters( 'ersrv_icalendar_invite_email_body', $email_body, $wc_order );
+			$email_body  = apply_filters( 'ersrv_gcalendar_invite_email_body', $email_body, $wc_order );
 
 			// Email headers.
 			$headers = array( 'Content-Type: text/html; charset=UTF-8' );
