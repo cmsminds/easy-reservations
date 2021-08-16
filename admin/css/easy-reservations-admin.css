@@ -629,6 +629,7 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 	padding: 1rem;
 	left: 0px;
 	bottom: 40px !important;
+	pointer-events: none;
 }
 .ersrv-notification{
     border: 1px solid transparent;
