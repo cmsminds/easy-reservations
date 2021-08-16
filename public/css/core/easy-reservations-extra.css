@@ -413,3 +413,117 @@
 	color: #3ab166;
 }
 /* .theme-twentytwentyone end here */
+/* Toast CSS */
+.ersrv-notification-wrapper{
+	padding: 1rem;
+	left: 0px;
+	bottom: 40px !important;
+	pointer-events: none;
+}
+.ersrv-notification{
+    border: 1px solid transparent;
+    transform: translateY(100px);
+    transition: 0.3s ease-in-out;
+    transform-origin: bottom;
+    pointer-events: auto;
+    z-index: 99999;
+}
+.ersrv-notification.toast.hide{
+    display: block;
+}
+.ersrv-notification.fade:not(.show),
+.ersrv-notification.toast:not(.hide){
+    transform: translateY(0px);
+    transform-origin: top;
+}
+.ersrv-notification.bg-success *,
+.ersrv-notification.bg-danger *{
+    color: #fff;
+}
+.ersrv-notification.bg-warning *{
+    color: #000;
+}
+.ersrv-notification .close{
+    background-color: transparent !important;
+}
+.ersrv-notification a{
+    text-decoration: underline;
+}
+.position-fixed{
+	position: fixed;
+}
+.ersrv-notification-wrapper .toast{
+	margin: 0px auto;
+}
+.ersrv-notification-wrapper .toast .mr-2{
+	margin-right: 0.5rem;
+}
+.toast {
+	max-width: 350px;
+	overflow: hidden;
+	font-size: 0.875rem;
+	background-color: rgba(255, 255, 255, 0.85);
+	background-clip: padding-box;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+	-webkit-backdrop-filter: blur(10px);
+	backdrop-filter: blur(10px);
+	opacity: 0;
+	border-radius: 0.25rem;
+}
+
+.toast:not(:last-child) {
+	margin-bottom: 0.75rem;
+}
+.toast .close {
+    margin-left: auto;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+	border: 1px solid transparent;
+	pointer-events: auto;
+	cursor: pointer;
+}
+.toast .close:not(:disabled):not(.disabled):focus,
+.toast .close:not(:disabled):not(.disabled):hover{
+	opacity: 0.75;
+}
+.toast.showing {
+	opacity: 1;
+}
+
+.toast.show {
+	display: block;
+	opacity: 1;
+}
+
+.toast.hide {
+	display: none;
+}
+
+.toast-header {
+	display: flex;
+	align-items: center;
+	padding: 0.25rem 0.75rem;
+	color: #6c757d;
+	background-color: transparent;
+	background-clip: padding-box;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.toast-body {
+	padding: 0.75rem;
+}
+.bg-success {
+    background-color: #28a745!important
+}
+.bg-warning {
+    background-color: #ffc107!important
+}
+.bg-danger {
+    background-color: #dc3545!important
+}
+/* end here */
