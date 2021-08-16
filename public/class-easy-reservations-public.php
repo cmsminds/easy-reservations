@@ -339,6 +339,10 @@ class Easy_Reservations_Public {
 			true
 		);
 
+		// Driving license file allowed extensions.
+		$driving_license_allowed_extensions = array( 'jpeg', 'jpg', 'pdf', 'png' );
+
+		// Localized variables.
 		$localized_vars = array(
 			'ajaxurl'                                      => admin_url( 'admin-ajax.php' ),
 			'remove_sidebar'                               => ersrv_get_plugin_settings( 'ersrv_remove_reservation_pages_sidebar' ),
@@ -364,6 +368,8 @@ class Easy_Reservations_Public {
 			'invalid_reservation_item_is_error_text'       => __( 'Invalid item ID.', 'easy-reservations' ),
 			'reservation_add_to_cart_error_message'        => __( 'There are a few errors that need to be addressed.', 'easy-reservations' ),
 			'reservation_item_contact_owner_error_message' => __( 'There is some issue contacting the owner. Please see the errors above and try again.', 'easy-reservations' ),
+			'driving_license_allowed_extensions'           => $driving_license_allowed_extensions,
+			'driving_license_invalid_file_error'           => sprintf( __( 'Invalid file selected. Allowed extensions are: %1$s', 'easy-reservations' ), implode( ', ', $driving_license_allowed_extensions ) ),
 		);
 		/**
 		 * This hook fires in public panel.
@@ -1722,7 +1728,10 @@ class Easy_Reservations_Public {
 		<div class="woocommerce-additional-fields__field-wrapper">
 			<p class="form-row ersrv-driving-license" id="ersrv_driving_license_field">
 				<label for="reservation-driving-license" class=""><?php esc_html_e( 'Driving License', 'easy-reservations' ); ?></label>
-				<span class="woocommerce-input-wrapper"><input type="file" name="reservation-driving-license" /></span>
+				<span class="woocommerce-input-wrapper">
+					<input type="file" name="reservation-driving-license" />
+					<label class="ersrv-reservation-error driving-license-invalid-file"></label>
+				</span>
 				<button type="button" class="button"><?php esc_html_e( 'Upload the license', 'easy-reservations' ); ?></button>
 			</p>
 		</div>

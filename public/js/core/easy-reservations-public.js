@@ -26,6 +26,8 @@ jQuery(document).ready(function ($) {
 	var invalid_reservation_item_is_error_text       = ERSRV_Public_Script_Vars.invalid_reservation_item_is_error_text;
 	var reservation_add_to_cart_error_message        = ERSRV_Public_Script_Vars.reservation_add_to_cart_error_message;
 	var reservation_item_contact_owner_error_message = ERSRV_Public_Script_Vars.reservation_item_contact_owner_error_message;
+	var driving_license_allowed_extensions           = ERSRV_Public_Script_Vars.driving_license_allowed_extensions;
+	var driving_license_invalid_file_error           = ERSRV_Public_Script_Vars.driving_license_invalid_file_error;
 
 	// Custom vars.
 	var quick_view_reserved_dates = [];
@@ -1074,6 +1076,29 @@ jQuery(document).ready(function ($) {
 	} );
 
 	/**
+	 * Validate the driving license file.
+	 */
+	$( document ).on( 'change', 'input[name="reservation-driving-license"]', function() {
+		var file = $( this ).val();
+		var ext = file.split( '.' ).pop();
+
+		// Check if this extension is among the extensions allowed.
+		if ( -1 === $.inArray( ext, driving_license_allowed_extensions ) ) {
+			$( '.ersrv-reservation-error.driving-license-invalid-file' ).text( driving_license_invalid_file_error );
+			return false;
+		} else {
+			$( '.ersrv-reservation-error.driving-license-invalid-file' ).text( '' );
+		}
+	} );
+
+	/**
+	 * Upload the driving license copy on the checkout page.
+	 */
+	$( document ).on( 'click', '.ersrv-driving-license button', function() {
+
+	} );
+
+	/**
 	 * Add reservation to cart.
 	 */
 	function ersrv_add_reservation_to_cart( add_to_cart_button, cart_data ) {
@@ -1164,7 +1189,7 @@ jQuery(document).ready(function ($) {
 	 *
 	 * @returns number
 	 */
-	 function ersrv_get_reservation_item_subtotal() {
+	function ersrv_get_reservation_item_subtotal() {
 		var item_subtotal = $( 'tr.item-price-summary td span' ).text();
 		item_subtotal     = parseFloat( item_subtotal.replace( /[^\d.]/g, '' ) );
 		item_subtotal     = ( -1 === is_valid_number( item_subtotal ) ) ? 0 : item_subtotal;
@@ -1276,7 +1301,7 @@ jQuery(document).ready(function ($) {
 	 *
 	 * @returns number
 	 */
-	 function ersrv_get_quick_view_item_total() {
+	function ersrv_get_quick_view_item_total() {
 		var item_total = $( '.ersrv-quick-view-item-subtotal' ).text();
 		item_total     = parseFloat( item_total.replace( /[^\d.]/g, '' ) );
 		item_total     = ( -1 === is_valid_number( item_total ) ) ? 0 : item_total;
