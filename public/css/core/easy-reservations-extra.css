@@ -486,6 +486,7 @@
 	border: 1px solid transparent;
 	pointer-events: auto;
 	cursor: pointer;
+    padding: 0.5rem 1rem;
 }
 .toast .close:not(:disabled):not(.disabled):focus,
 .toast .close:not(:disabled):not(.disabled):hover{
@@ -527,3 +528,13 @@
     background-color: #dc3545!important
 }
 /* end here */
+.ersrv-driving-license .woocommerce-input-wrapper{
+    width: calc(100% - 200px);
+    float: left;
+}
+.ersrv-driving-license .button{
+    padding: 0.5rem;
+}
+.ersrv-reservation-error {
+	color: red;
+}
