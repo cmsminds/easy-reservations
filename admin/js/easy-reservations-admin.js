@@ -33,35 +33,11 @@ jQuery( document ).ready( function( $ ) {
 	var blocked_dates                                = ERSRV_Admin_Script_Vars.blocked_dates;
 	var new_reservation_button_text                  = ERSRV_Admin_Script_Vars.new_reservation_button_text;
 	var new_reservation_url                          = ERSRV_Admin_Script_Vars.new_reservation_url;
-
-	// Custom vars.
-	var new_reservation_item_reserved_dates = [];
-	var post_type                           = ersrv_get_query_string_parameter_value( 'post_type' );
-
-	ersrv_show_notification( 'bg-success', 'fa-check-circle', 'Success', 'Test message' );
-
-
-	/**
-	 * Show the notification text.
-	 *
-	 * @param {string} bg_color Holds the toast background color.
-	 * @param {string} icon Holds the toast icon.
-	 * @param {string} heading Holds the toast heading.
-	 * @param {string} message Holds the toast body message.
-	 */
-	function ersrv_show_notification( bg_color, icon, heading, message ) {
-		$( '.ersrv-notification-wrapper .toast' ).removeClass( 'bg-success bg-warning bg-danger' );
-		$( '.ersrv-notification-wrapper .toast' ).addClass( bg_color );
-		$( '.ersrv-notification-wrapper .toast .ersrv-notification-icon' ).removeClass( 'fa-skull-crossbones fa-check-circle fa-exclamation-circle' );
-		$( '.ersrv-notification-wrapper .toast .ersrv-notification-icon' ).addClass( icon );
-		$( '.ersrv-notification-wrapper .toast .ersrv-notification-heading' ).text( heading );
-		$( '.ersrv-notification-wrapper .toast .ersrv-notification-message' ).html( message );
-		$( '.ersrv-notification-wrapper .toast' ).removeClass( 'hide' ).addClass( 'show' );
-
-		setTimeout( function() {
-			// $( '.ersrv-notification-wrapper .toast' ).removeClass( 'show' ).addClass( 'hide' );
-		}, 3000 );
-	}
+	var toast_success_heading                        = ERSRV_Admin_Script_Vars.toast_success_heading;
+	var toast_error_heading                          = ERSRV_Admin_Script_Vars.toast_error_heading;
+	var toast_notice_heading                         = ERSRV_Admin_Script_Vars.toast_notice_heading;
+	var new_reservation_item_reserved_dates          = [];
+	var post_type                                    = ersrv_get_query_string_parameter_value( 'post_type' );
 
 	// Add HTML after the kid charge number field.
 	$( '<a class="ersrv-copy-adult-charge" href="javascript:void(0);">' + same_as_adult + '</a>' ).insertAfter( '#accomodation_kid_charge' );
@@ -177,7 +153,6 @@ jQuery( document ).ready( function( $ ) {
 		var this_button = $( this );
 		var from_date   = $( '#ersrv-date-from' ).val();
 		var to_date     = $( '#ersrv-date-to' ).val();
-		var format      = $( '#ersrv-export-format' ).val();
 
 		// Block the element.
 		block_element( this_button );
@@ -190,25 +165,7 @@ jQuery( document ).ready( function( $ ) {
 				action: 'export_reservations',
 				from_date: from_date,
 				to_date: to_date,
-				format: format,
 			},
-			// xhr: function() {
-			// 	if ( 'xlsx' === format ) {
-			// 		var xhr                = new XMLHttpRequest();
-			// 		xhr.onreadystatechange = function () {
-			// 			if ( 2 ===  xhr.readyState ) {
-			// 				if ( 200 === xhr.status ) {
-			// 					xhr.responseType = 'blob';
-			// 				} else {
-			// 					xhr.responseType = 'text';
-			// 				}
-			// 			}
-			// 		};
-			// 		return xhr;
-			// 	}
-
-			// 	return '';
-			// },
 			success: function ( response ) {
 				// Unblock the element.
 				unblock_element( this_button );
@@ -218,36 +175,23 @@ jQuery( document ).ready( function( $ ) {
 				var export_time          = today_date_formatted + '-' + today.getHours() + '-' + today.getMinutes() + '-' + today.getSeconds();
 				export_time              = export_time.replaceAll( '/', '-' );
 
-				// If the CSV format is requested.
-				if ( 'csv' === format ) {
-					// Make the CSV downloadable.
-					var download_link = document.createElement( 'a' );
-					var csv_data      = [ '\ufeff' + response ];
-					var blob_object   = new Blob( csv_data, {
-						type: 'text/csv;charset=utf-8;'
-					} );
+				// Make the CSV downloadable.
+				var download_link = document.createElement( 'a' );
+				var csv_data      = [ '\ufeff' + response ];
+				var blob_object   = new Blob( csv_data, {
+					type: 'text/csv;charset=utf-8;'
+				} );
 
-					var url            = URL.createObjectURL( blob_object );
-					download_link.href = url;
+				var url            = URL.createObjectURL( blob_object );
+				download_link.href = url;
 
-					// Get the datetime now to set the csv file name.
-					download_link.download = 'ersrv-reservation-orders-' + export_time + '.csv';
+				// Get the datetime now to set the csv file name.
+				download_link.download = 'ersrv-reservation-orders-' + export_time + '.csv';
 
-					// Force the system to download the CSV now.
-					document.body.appendChild( download_link );
-					download_link.click();
-					document.body.removeChild( download_link );
-				} else if ( 'xlsx' === format ) {
-					var blob = new Blob( [ res ], { type: 'application/octetstream' } );
-					var url  = window.URL || window.webkitURL;
-					link     = url.createObjectURL( blob );
-					var a    = $( '<a />' );
-					a.attr( 'download', 'posts-' + export_time + '.xlsx' );
-					a.attr( 'href', link );
-					$( 'body' ).append( a );
-					a[0].click();
-					$( 'body' ).remove( a );
-				}
+				// Force the system to download the CSV now.
+				document.body.appendChild( download_link );
+				download_link.click();
+				document.body.removeChild( download_link );
 			},
 		} );
 	} );
@@ -1052,8 +996,8 @@ jQuery( document ).ready( function( $ ) {
 					// Unblock the element.
 					unblock_element( this_button );
 
-					$( '.ersrv-notification-wrapper' ).show();
-					console.log( response.data.toast_message );
+					// Show the notification.
+					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
 				}
 			},
 		} );
@@ -1094,8 +1038,8 @@ jQuery( document ).ready( function( $ ) {
 					// Unblock the element.
 					unblock_element( this_button );
 
-					$( '.ersrv-notification-wrapper' ).show();
-					console.log( response.data.toast_message );
+					// Show the notification.
+					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
 				}
 			},
 		} );
@@ -1294,4 +1238,31 @@ jQuery( document ).ready( function( $ ) {
 
 		return val;
 	}
+
+	/**
+	 * Show the notification text.
+	 *
+	 * @param {string} bg_color Holds the toast background color.
+	 * @param {string} icon Holds the toast icon.
+	 * @param {string} heading Holds the toast heading.
+	 * @param {string} message Holds the toast body message.
+	 */
+	function ersrv_show_notification( bg_color, icon, heading, message ) {
+		$( '.ersrv-notification-wrapper .toast' ).removeClass( 'bg-success bg-warning bg-danger' );
+		$( '.ersrv-notification-wrapper .toast' ).addClass( bg_color );
+		$( '.ersrv-notification-wrapper .toast .ersrv-notification-icon' ).removeClass( 'fa-skull-crossbones fa-check-circle fa-exclamation-circle' );
+		$( '.ersrv-notification-wrapper .toast .ersrv-notification-icon' ).addClass( icon );
+		$( '.ersrv-notification-wrapper .toast .ersrv-notification-heading' ).text( heading );
+		$( '.ersrv-notification-wrapper .toast .ersrv-notification-message' ).html( message );
+		$( '.ersrv-notification-wrapper .toast' ).removeClass( 'hide' ).addClass( 'show' );
+
+		setTimeout( function() {
+			$( '.ersrv-notification-wrapper .toast' ).removeClass( 'show' ).addClass( 'hide' );
+		}, 5000 );
+	}
+
+	// Show notification.
+	// ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, 'Success text.' );
+	// ersrv_show_notification( 'bg-warning', 'fa-exclamation-circle', toast_notice_heading, 'Notice text.' );
+	// ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, 'Error text.' );
 } );

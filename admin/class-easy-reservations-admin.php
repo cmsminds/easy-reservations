@@ -444,7 +444,6 @@ class Easy_Reservations_Admin {
 		// Posted data.
 		$from_date = filter_input( INPUT_POST, 'from_date', FILTER_SANITIZE_STRING );
 		$to_date   = filter_input( INPUT_POST, 'to_date', FILTER_SANITIZE_STRING );
-		$format    = filter_input( INPUT_POST, 'format', FILTER_SANITIZE_STRING );
 
 		$wc_orders_query = ersrv_get_posts( 'shop_order', 1, -1 );
 		$wc_order_ids    = $wc_orders_query->posts;
@@ -468,16 +467,7 @@ class Easy_Reservations_Admin {
 		// Prepare the data now.
 		$wc_orders_data = ersrv_get_export_reservation_orders_data( $wc_order_ids );
 
-		// Switch case the requested format.
-		switch( $format ) {
-			case 'csv':
-				$this->ersrv_download_reservation_orders_csv( $wc_orders_data );
-				break;
-
-			case 'xlsx':
-				$this->ersrv_download_reservation_orders_xlsx( $wc_orders_data );
-				break;
-		}
+		$this->ersrv_download_reservation_orders_csv( $wc_orders_data );
 	}
 
 	/**
@@ -502,46 +492,6 @@ class Easy_Reservations_Admin {
 		}
 
 		fclose( $fp );
-		exit();
-	}
-
-	/**
-	 * Download the reservation orders data.
-	 *
-	 * @param array $wc_orders_data Reservation orders export data.
-	 * @since 1.0.0
-	 */
-	public function ersrv_download_reservation_orders_xlsx( $wc_orders_data ) {
-		// Exit, if the reservations orders data is empty.
-		if ( empty( $wc_orders_data ) || ! is_array( $wc_orders_data ) ) {
-			exit();
-		}
-
-		// Require the spreadsheet library.
-		require_once ERSRV_PLUGIN_PATH . 'includes/lib/spreadsheet/vendor/autoload.php';
-
-		$spreadsheet = new Spreadsheet();
-		$sheet       = $spreadsheet->getActiveSheet();
-		$data_header = array_keys( reset( $wc_orders_data ) );
-
-		for ( $i = 0, $l = sizeof( $data_header ); $i < $l; $i++ ) {
-			$sheet->setCellValueByColumnAndRow( $i + 1, 1, $data_header[ $i ] );
-		}
-
-		for ( $i = 0, $l = sizeof( $wc_orders_data ); $i < $l; $i++ ) { // row $i
-			$j = 0;
-			foreach ( $wc_orders_data[$i] as $k => $v ) { // column $j
-				$sheet->setCellValueByColumnAndRow( $j + 1, ( $i + 1 + 1 ), $v );
-				$j++;
-			}
-		}
-
-		$filename = 'ersrv-reservation-orders-' . gmdate( 'Y-m-d-H-i-s' ) . '.xlsx';
-		$writer   = IOFactory::createWriter( $spreadsheet, 'Xlsx' );
-		header( 'Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' );
-		header( 'Content-Disposition: attachment; filename="'. urlencode( $filename ).'"' );
-		header( 'Cache-Control: max-age=0' );
-		$writer->save( 'php://output' );
 		exit();
 	}
 
@@ -1378,7 +1328,7 @@ class Easy_Reservations_Admin {
 		// Send the response.
 		$response = array(
 			'code'          => 'icalendar-email-sent',
-			'toast_message' => __( 'icalendar details have been emailed to the respective customer.', 'easy-reservations' ),
+			'toast_message' => __( 'iCalendar details have been emailed to the respective customer.', 'easy-reservations' ),
 		);
 		wp_send_json_success( $response );
 		wp_die();

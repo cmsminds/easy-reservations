@@ -105,20 +105,23 @@ class Easy_Reservations_Public {
 	 * @since    1.0.0
 	 */
 	public function ersrv_wp_enqueue_scripts_callback() {
-		global $wp_registered_widgets, $post;
+		global $wp_registered_widgets, $post, $wp_query;
 		// Active style file based on the active theme.
-		$current_theme       = get_option( 'stylesheet' );
-		$active_style        = ersrv_get_active_stylesheet( $current_theme );
-		$active_style_url    = ( ! empty( $active_style['url'] ) ) ? $active_style['url'] : '';
-		$active_style_path   = ( ! empty( $active_style['path'] ) ) ? $active_style['path'] : '';
-		$is_search_page      = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
-		$is_reservation_page = ersrv_product_is_reservation( get_the_ID() );
-		$enqueue_extra_css   = false;
+		$current_theme         = get_option( 'stylesheet' );
+		$active_style          = ersrv_get_active_stylesheet( $current_theme );
+		$active_style_url      = ( ! empty( $active_style['url'] ) ) ? $active_style['url'] : '';
+		$active_style_path     = ( ! empty( $active_style['path'] ) ) ? $active_style['path'] : '';
+		$is_search_page        = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
+		$is_reservation_page   = ersrv_product_is_reservation( get_the_ID() );
+		$enqueue_extra_css     = false;
+		$is_fav_items_endpoint = isset( $wp_query->query_vars[ $this->favourite_reservation_items_endpoint_slug ] );
 
 		// Conditions to enqueue the extra css file.
 		if ( is_cart() ) {
 			$enqueue_extra_css = true;
 		} elseif ( is_checkout() ) {
+			$enqueue_extra_css = true;
+		} elseif ( $is_fav_items_endpoint ) {
 			$enqueue_extra_css = true;
 		}
 
@@ -1074,6 +1077,17 @@ class Easy_Reservations_Public {
 		$vars[] = $this->favourite_reservation_items_endpoint_slug;
 
 		return $vars;
+	}
+
+	public function ersrv_the_title_callback( $title ) {
+		global $wp_query;
+		$is_endpoint = isset( $wp_query->query_vars[ $this->favourite_reservation_items_endpoint_slug ] );
+
+		if ( $is_endpoint && ! is_admin() && is_main_query() && in_the_loop() && is_account_page() ) {
+			$title = __( 'My Stuff', 'easy-reservations' );
+		}
+
+		return $title;
 	}
 
 	/**

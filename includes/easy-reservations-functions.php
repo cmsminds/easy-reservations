@@ -502,9 +502,12 @@ if ( ! function_exists( 'ersrv_get_admin_script_vars' ) ) {
 		$post_type = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
 		$post      = (int) filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
 		$vars      = array(
-			'ajaxurl'             => admin_url( 'admin-ajax.php' ),
-			'same_as_adult'       => __( 'Same as Adult!', 'easy-reservations' ),
-			'export_reservations' => __( 'Export Reservations', 'easy-reservations' ),
+			'ajaxurl'               => admin_url( 'admin-ajax.php' ),
+			'same_as_adult'         => __( 'Same as Adult!', 'easy-reservations' ),
+			'export_reservations'   => __( 'Export Reservations', 'easy-reservations' ),
+			'toast_success_heading' => __( 'Ohhoooo! Success..', 'easy-reservations' ),
+			'toast_error_heading'   => __( 'Ooops! Error..', 'easy-reservations' ),
+			'toast_notice_heading'  => __( 'Notice.', 'easy-reservations' ),
 		);
 
 		// If it's the order's listing page.
@@ -1935,28 +1938,86 @@ if ( ! function_exists( 'ersrv_email_reservation_data_to_google_calendar' ) ) {
 	 */
 	function ersrv_email_reservation_data_to_google_calendar( $order_id ) {
 		// Exit, if this order ID is invalid.
-		$wc_order = get_post( $order_id );
+		$wc_order  = wc_get_order( $order_id );
 
 		// Return, if the order doesn't exist anymore.
 		if ( false === $wc_order ) {
 			return;
 		}
 
+		// Get the line items.
+		$line_items = $wc_order->get_items();
+
+		// Check if there are reservation items.
+		if ( empty( $line_items ) || ! is_array( $line_items ) ) {
+			return;
+		}
+
 		/**
-		 * This hook fires before adding reservation to the calendar.
+		 * This hook fires before google calendar invitation is downloaded.
 		 *
-		 * This hook helps in executing anything before the reservation is added to google calendar.
+		 * This hook helps in executing anything before the reservation google calendar invite is downloaded.
 		 *
 		 * @param int $order_id Holds the WooCommerce order ID.
 		 */
 		do_action( 'ersrv_add_reservation_to_gcal_before', $order_id );
 
-		// Add the reservation to the calendar now.
+		// Iterate through the line items to prepare the google cal link.
+		foreach ( $line_items as $line_item ) {
+			$item_id       = $line_item->get_id();
+			$product_id    = $line_item->get_product_id();
+			$checkin_date  = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
+			$checkout_date = wc_get_order_item_meta( $item_id, 'Checkout Date', true );
+
+			// Skip, if this is not a reservation item.
+			if ( ! ersrv_product_is_reservation( $product_id ) ) {
+				continue;
+			}
+
+			// Google calendar base URL.
+			$gcal_url = 'https://calendar.google.com/calendar/u/0/r/eventedit';
+
+			// Query parameters.
+			$gcal_params = array(
+				'text' => sprintf( __( 'Reservation with %1$s', 'easy-reservations' ), get_the_title( $product_id ) ),
+				'dates' => '20210703T120000Z/20210703T120000',
+				'trp' => false,
+				'sprop' => 'website:https://peters222.sg-host.com/',
+				'ctz' => 'America/Toronto',
+				'pli' => 1,
+				'sf' => true,
+			);
+
+			$gcal_url = add_query_arg( $gcal_params, $gcal_url );
+
+			echo $gcal_url;
+			die;
+
+			// Email recipient.
+			$recipient     = apply_filters( 'ersrv_icalendar_invite_recipient_email', $wc_order->get_billing_email(), $wc_order );
+			$subject       = apply_filters( 'ersrv_icalendar_invite_email_subject', sprintf( __( 'Easy Reservations: iCalendar Invitation for Reservation #%1$d', 'easy-reservations' ), $order_id ), $wc_order );
+			$customer_name = $wc_order->get_billing_first_name() . ' ' . $wc_order->get_billing_last_name();
+
+			// Email body.
+			$blog_name   = get_bloginfo( 'name' );
+			$email_body  = "<p>Hello {$customer_name},</p>";
+			$email_body .= "<p>Please find the attached iClendar invitation file for the reservation: #{$order_id}</p>";
+			$email_body .= '<p>Download the file and import in your device.</p>';
+			$email_body .= '<p>Regards,</p>';
+			$email_body .= "<p>Team {$blog_name}</p>";
+			$email_body  = apply_filters( 'ersrv_icalendar_invite_email_body', $email_body, $wc_order );
+
+			// Email headers.
+			$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+
+			// Shoot the email now.
+			wp_mail( $recipient, $subject, $email_body, $headers );
+		}
 
 		/**
-		 * This hook fires after adding reservation to the calendar.
+		 * This hook fires after google calendar invitation is downloaded.
 		 *
-		 * This hook helps in executing anything after the reservation is added to google calendar.
+		 * This hook helps in executing anything after the reservation google calendar invite is downloaded.
 		 *
 		 * @param int $order_id Holds the WooCommerce order ID.
 		 */
@@ -1976,29 +2037,24 @@ if ( ! function_exists( 'ersrv_email_reservation_data_to_icalendar' ) ) {
 	 */
 	function ersrv_email_reservation_data_to_icalendar( $order_id ) {
 		// Exit, if this order ID is invalid.
-		$wc_order = wc_get_order( $order_id );
+		$wc_order  = wc_get_order( $order_id );
+		$this_time = time();
 
 		// Return, if the order doesn't exist anymore.
 		if ( false === $wc_order ) {
 			return;
 		}
 
-		// Include the ical library file.
-		require_once ERSRV_PLUGIN_PATH . 'includes/lib/ICS.php';
+		// Get the line items.
+		$line_items = $wc_order->get_items();
 
-		$this_time       = time();
-		$nvite_file_name = "ersrv-reservation-#{$order_id}-{$this_time}.ics";
-		/**
-		 * This hook fires when the request to download ical file is processed.
-		 *
-		 * This filter helps to modify the ical file name.
-		 *
-		 * @param string $nvite_file_name iCal file name.
-		 * @param string $order_id WooCommerce Order ID.
-		 * @return string
-		 * @since 1.0.0
-		 */
-		$nvite_file_name = apply_filters( 'ersrv_icalendar_invitation_filename', $nvite_file_name, $order_id );
+		// Check if there are reservation items.
+		if ( empty( $line_items ) || ! is_array( $line_items ) ) {
+			return;
+		}
+
+		// Include the ical library file.
+		require_once ERSRV_PLUGIN_PATH . 'includes/lib/WP_ICS.php';
 
 		/**
 		 * This hook fires before icalendar invitation is downloaded.
@@ -2009,63 +2065,90 @@ if ( ! function_exists( 'ersrv_email_reservation_data_to_icalendar' ) ) {
 		 */
 		do_action( 'ersrv_add_reservation_to_ical_before', $order_id );
 
-		// Generate the ics file now.
-		$invitation_details = array(
-			'location'    => '123 Fake St, New York, NY', // reservation item location.
-			'description' => 'This is my description', // reservation description.
-			'dtstart'     => '2017-1-16 9:00AM', // reservation start date time.
-			'dtend'       => '2017-1-16 10:00AM', // reservation end date time.
-			'summary'     => 'This is my summary', // invitation summary.
-			'url'         => 'https://example.com' // view order url.
-		);
-		/**
-		 * This hook fires when the request to download ical file is processed.
-		 *
-		 * This filter helps to modify the ical invitation details.
-		 *
-		 * @param array  $invitation_details iCal details.
-		 * @param string $order_id WooCommerce Order ID.
-		 * @return array
-		 * @since 1.0.0
-		 */
-		$invitation_details = apply_filters( 'ersrv_icalendar_invitation_details', $invitation_details, $order_id );
+		// Iterate through the line items to prepare the ical file.
+		foreach ( $line_items as $line_item ) {
+			$item_id       = $line_item->get_id();
+			$product_id    = $line_item->get_product_id();
+			$checkin_date  = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
+			$checkout_date = wc_get_order_item_meta( $item_id, 'Checkout Date', true );
 
-		// Generate the invitation now.
-		$ics = new ICS( $invitation_details );
+			// Skip, if this is not a reservation item.
+			if ( ! ersrv_product_is_reservation( $product_id ) ) {
+				continue;
+			}
 
-		// Define the uploads path.
-		$uploads_dir = wp_upload_dir();
-		$upload_path = $uploads_dir['path'];
-		$ics_file    = $upload_path . "/{$nvite_file_name}";
+			$nvite_file_name = "ersrv-reservation-#{$order_id}-{$item_id}-{$this_time}.ics";
+			/**
+			 * This hook fires when the request to download ical file is processed.
+			 *
+			 * This filter helps to modify the ical file name.
+			 *
+			 * @param string $nvite_file_name iCal file name.
+			 * @param string $order_id WooCommerce Order ID.
+			 * @return string
+			 * @since 1.0.0
+			 */
+			$nvite_file_name = apply_filters( 'ersrv_icalendar_invitation_filename', $nvite_file_name, $order_id );
 
-		// Download the invitation file in the path.
-		file_put_contents( $ics_file, $ics->to_string() );
+			// Generate the ics file now.
+			$invitation_details = array(
+				'location'    => get_post_meta( $product_id, '_ersrv_item_location', true ),
+				'description' => sprintf( __( 'Reservation for item, %1$s.', 'easy-reservations' ), get_the_title( $product_id ) ),
+				'dtstart'     => ersrv_get_icalendar_formatted_date( strtotime( $checkin_date . ' 9:00AM' ), true ),
+				'dtend'       => ersrv_get_icalendar_formatted_date( strtotime( $checkout_date . ' 10:00AM' ), true ),
+				'summary'     => sprintf( __( 'Reservation for item, %1$s.', 'easy-reservations' ), get_the_title( $product_id ) ),
+				'url'         => $wc_order->get_view_order_url(),
+			);
 
-		// Email recipient.
-		$recipient     = apply_filters( 'ersrv_icalendar_invite_recipient_email', $wc_order->get_billing_email(), $wc_order );
-		$subject       = apply_filters( 'ersrv_icalendar_invite_email_subject', sprintf( __( 'Easy Reservations: iCalendar Invitation for Reservation #%1$d', 'easy-reservations' ), $order_id ), $wc_order );
-		$customer_name = $wc_order->get_billing_first_name() . ' ' . $wc_order->get_billing_last_name();
+			/**
+			 * This hook fires when the request to download ical file is processed.
+			 *
+			 * This filter helps to modify the ical invitation details.
+			 *
+			 * @param array  $invitation_details iCal details.
+			 * @param string $order_id WooCommerce Order ID.
+			 * @return array
+			 * @since 1.0.0
+			 */
+			$invitation_details = apply_filters( 'ersrv_icalendar_invitation_details', $invitation_details, $order_id );
 
-		// Email body.
-		$blog_name   = get_bloginfo( 'name' );
-		$email_body  = "<p>Hello {$customer_name},</p>";
-		$email_body .= "<p>Please find the attached iClendar invitation file for the reservation: #{$order_id}</p>";
-		$email_body .= '<p>Download the file and import in your device.</p>';
-		$email_body .= '<p>Regards,</p>';
-		$email_body .= "<p>Team {$blog_name}</p>";
-		$email_body  = apply_filters( 'ersrv_icalendar_invite_email_body', $email_body, $wc_order );
+			// Generate the invitation now.
+			$ics = new WP_ICS( $invitation_details );
 
-		// Email headers.
-		$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+			// Define the uploads path.
+			$uploads_dir = wp_upload_dir();
+			$upload_path = $uploads_dir['path'];
+			$ics_file    = $upload_path . "/{$nvite_file_name}";
 
-		// Email attachments.
-		$attachments = array( $ics_file );
+			// Download the invitation file in the path.
+			file_put_contents( $ics_file, $ics->to_string() );
 
-		// Shoot the email now.
-		wp_mail( $recipient, $subject, $email_body, $headers, $attachments );
+			// Email recipient.
+			$recipient     = apply_filters( 'ersrv_icalendar_invite_recipient_email', $wc_order->get_billing_email(), $wc_order );
+			$subject       = apply_filters( 'ersrv_icalendar_invite_email_subject', sprintf( __( 'Easy Reservations: iCalendar Invitation for Reservation #%1$d', 'easy-reservations' ), $order_id ), $wc_order );
+			$customer_name = $wc_order->get_billing_first_name() . ' ' . $wc_order->get_billing_last_name();
 
-		// Unlink the attachment now.
-		unlink( $ics_file );
+			// Email body.
+			$blog_name   = get_bloginfo( 'name' );
+			$email_body  = "<p>Hello {$customer_name},</p>";
+			$email_body .= "<p>Please find the attached iClendar invitation file for the reservation: #{$order_id}</p>";
+			$email_body .= '<p>Download the file and import in your device.</p>';
+			$email_body .= '<p>Regards,</p>';
+			$email_body .= "<p>Team {$blog_name}</p>";
+			$email_body  = apply_filters( 'ersrv_icalendar_invite_email_body', $email_body, $wc_order );
+
+			// Email headers.
+			$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+
+			// Email attachments.
+			$attachments = array( $ics_file );
+
+			// Shoot the email now.
+			wp_mail( $recipient, $subject, $email_body, $headers, $attachments );
+
+			// Unlink the attachment now.
+			unlink( $ics_file );
+		}
 
 		/**
 		 * This hook fires after icalendar invitation is downloaded.
