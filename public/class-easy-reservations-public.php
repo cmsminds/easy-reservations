@@ -967,22 +967,21 @@ class Easy_Reservations_Public {
 		if ( $is_search_page ) {
 			// Include the quick view modal.
 			require_once ERSRV_PLUGIN_PATH . 'public/templates/modals/item-quick-view.php';
-
-			// Include the notification html.
-			require_once ERSRV_PLUGIN_PATH . 'public/templates/notifications/notification.php';
 		}
 
 		// If it's the reservation page.
 		if ( $is_reservation_page ) {
 			// Include the quick view modal.
 			require_once ERSRV_PLUGIN_PATH . 'public/templates/modals/contact-owner.php';
-
-			// Include the notification html.
-			require_once ERSRV_PLUGIN_PATH . 'public/templates/notifications/notification.php';
 		}
 
 		// If it's the view order page.
-		if ( $is_view_order_endpoint ) {
+		if (
+			$is_search_page ||
+			$is_view_order_endpoint ||
+			$is_reservation_page ||
+			is_checkout()
+		) {
 			// Include the notification html.
 			require_once ERSRV_PLUGIN_PATH . 'public/templates/notifications/notification.php';
 		}
@@ -1723,14 +1722,23 @@ class Easy_Reservations_Public {
 	 * @since 1.0.0
 	 */
 	public function ersrv_woocommerce_after_order_notes_callback() {
+		// Get the plugin setting.
+		$allowed_to_upload_license = ersrv_get_plugin_settings( 'ersrv_driving_license_validation' );
+
+		// Return, if it's not allowed to upload driving license.
+		if ( ! empty( $allowed_to_upload_license ) && 'no' === $allowed_to_upload_license ) {
+			return;
+		}
+
+		// Check if there are reservation items in the cart.
+
 		ob_start();
 		?>
 		<div class="woocommerce-additional-fields__field-wrapper">
 			<p class="form-row ersrv-driving-license" id="ersrv_driving_license_field">
 				<label for="reservation-driving-license" class=""><?php esc_html_e( 'Driving License', 'easy-reservations' ); ?></label>
 				<span class="woocommerce-input-wrapper">
-					<input type="file" name="reservation-driving-license" />
-					<label class="ersrv-reservation-error driving-license-invalid-file"></label>
+					<input type="file" name="reservation-driving-license" id="reservation-driving-license" />
 				</span>
 				<button type="button" class="button"><?php esc_html_e( 'Upload the license', 'easy-reservations' ); ?></button>
 			</p>
@@ -1738,5 +1746,28 @@ class Easy_Reservations_Public {
 		<?php
 
 		echo ob_get_clean();
+	}
+
+	/**
+	 * AJAX to upload the driving license file on checkout.
+	 */
+	public function ersrv_upload_driving_license_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+		// Exit, if the action mismatches.
+		if ( empty( $action ) || 'upload_driving_license' !== $action ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Posted data.
+
+		// Prepare the response.
+		$response = array(
+			'code'          => 'driving-license-uploaded',
+			'toast_message' => __( 'Driving license is uploaded successfully. Place order to get this attached with your order.', 'easy-reservations' ),
+		);
+		wp_send_json_success( $response );
+		wp_die();
 	}
 }
