@@ -230,6 +230,8 @@ class Easy_Reservations {
 		$this->loader->add_action( 'wp_ajax_add_reservation_to_ical', $plugin_public, 'ersrv_add_reservation_to_ical_callback' );
 		$this->loader->add_action( 'wp_ajax_nopriv_add_reservation_to_ical', $plugin_public, 'ersrv_add_reservation_to_ical_callback' );
 		$this->loader->add_action( 'woocommerce_after_order_notes', $plugin_public, 'ersrv_woocommerce_after_order_notes_callback' );
+		$this->loader->add_action( 'wp_ajax_upload_driving_license', $plugin_public, 'ersrv_upload_driving_license_callback' );
+		$this->loader->add_action( 'wp_ajax_nopriv_upload_driving_license', $plugin_public, 'ersrv_upload_driving_license_callback' );
 	}
 
 	/**

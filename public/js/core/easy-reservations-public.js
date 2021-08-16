@@ -1082,12 +1082,19 @@ jQuery(document).ready(function ($) {
 		var file = $( this ).val();
 		var ext = file.split( '.' ).pop();
 
+		// Vacate the error message.
+		$( '.ersrv-reservation-error.driving-license-invalid-file' ).text( '' );
+
 		// Check if this extension is among the extensions allowed.
 		if ( -1 === $.inArray( ext, driving_license_allowed_extensions ) ) {
-			$( '.ersrv-reservation-error.driving-license-invalid-file' ).text( driving_license_invalid_file_error );
+			ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, driving_license_invalid_file_error );
+
+			// Reset the file input type.
+			var driving_license = $( 'input[name="reservation-driving-license"]' );
+			driving_license.wrap( '<form>' ).closest( 'form' ).get(0).reset();
+			driving_license.unwrap();
+
 			return false;
-		} else {
-			$( '.ersrv-reservation-error.driving-license-invalid-file' ).text( '' );
 		}
 	} );
 
@@ -1095,7 +1102,45 @@ jQuery(document).ready(function ($) {
 	 * Upload the driving license copy on the checkout page.
 	 */
 	$( document ).on( 'click', '.ersrv-driving-license button', function() {
+		var oFReader        = new FileReader();
+		var driving_license = document.getElementById( 'reservation-driving-license' );
+		oFReader.readAsDataURL( driving_license.files[0] );
 
+		// Prepare the form data.
+		var fd = new FormData();
+		fd.append( 'driving_license_file', driving_license.files[0] );
+
+		// AJAX action.
+		fd.append( 'action', 'upload_driving_license' );
+
+		// Block the element.
+		block_element( $( '.ersrv-driving-license' ) );
+
+		// Shoot the AJAX now.
+		$.ajax( {
+			type: 'POST',
+			url: ajaxurl,
+			data: fd,
+			contentType: false,
+			processData: false,
+			dataType: 'JSON',
+			success: function ( response ) {
+				// Return, if the response is not proper.
+				if ( 0 === response ) {
+					console.warn( 'easy-reservations: invalid ajax call' );
+					return false;
+				}
+
+				// If the driving license is uploaded.
+				if ( 'driving-license-uploaded' === response.data.code ) {
+					// Unblock the element.
+					unblock_element( $( '.ersrv-driving-license' ) );
+
+					// Show toast.
+					ersrv_show_toast( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
+				}
+			},
+		} );
 	} );
 
 	/**
