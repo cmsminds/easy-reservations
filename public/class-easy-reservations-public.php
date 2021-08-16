@@ -1710,4 +1710,23 @@ class Easy_Reservations_Public {
 
 		return $quantity_html;
 	}
+
+	/**
+	 * Add the driving license upload code on the checkout page.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_after_order_notes_callback() {
+		ob_start();
+		?>
+		<div class="woocommerce-additional-fields__field-wrapper">
+			<p class="form-row ersrv-driving-license" id="ersrv_driving_license_field">
+				<label for="reservation-driving-license" class=""><?php esc_html_e( 'Driving License', 'easy-reservations' ); ?></label>
+				<span class="woocommerce-input-wrapper"><input type="file" name="reservation-driving-license" /></span>
+			</p>
+		</div>
+		<?php
+
+		echo ob_get_clean();
+	}
 }
