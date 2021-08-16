@@ -1006,11 +1006,8 @@ class Easy_Reservations_Admin {
 		?>
 		<div class="ersrv-calendar-invites-container">
 			<p><?php esc_html_e( 'Click on the buttons below to email the calendar invites to the customer\'s billing email address.', 'easy-reservations' ); ?></p>
-			<!-- <p><button type="button" class="button add-to-ical"><?php // esc_html_e( 'Email iCalendar Invite', 'easy-reservations' ); ?></button></p>
-			<p><button type="button" class="button add-to-gcal"><?php // esc_html_e( 'Email Google Calendar Invite', 'easy-reservations' ); ?></button></p> -->
-
-			<p><a href="javascript:void(0);" class="button add-to-ical"><?php esc_html_e( 'Email iCalendar Invite', 'easy-reservations' ); ?></a></p>
-			<p><a href="javascript:void(0);" class="button add-to-gcal"><?php esc_html_e( 'Email Google Calendar Invite', 'easy-reservations' ); ?></a></p>
+			<p><button type="button" class="button add-to-ical"><?php esc_html_e( 'Email iCalendar Invite', 'easy-reservations' ); ?></button></p>
+			<p><button type="button" class="button add-to-gcal"><?php esc_html_e( 'Email Google Calendar Invite', 'easy-reservations' ); ?></button></p>
 		</div>
 		<?php
 		echo ob_get_clean();

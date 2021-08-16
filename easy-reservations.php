@@ -144,3 +144,10 @@ function ersrv_plugin_actions_callback( $links ) {
 
 	return array_merge( $this_plugin_links, $links );
 }
+
+// add_action( 'wp', function() {
+// 	$data = DateTimeZone::listIdentifiers( DateTimeZone::PER_COUNTRY, 'US' );
+
+// 	$data = geoip_time_zone_by_country_and_region( 'CA', 'CA' );
+// 	debug( $data ); die;
+// } );

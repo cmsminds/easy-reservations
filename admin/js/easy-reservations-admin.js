@@ -966,7 +966,7 @@ jQuery( document ).ready( function( $ ) {
 	 */
 	$( document ).on( 'click', '.add-to-gcal', function () {
 		var this_button = $( this );
-		var order_id = $( '#post_ID' ).val();
+		var order_id    = $( '#post_ID' ).val();
 
 		// Return false, if the order id is invalid.
 		if ( -1 === is_valid_number( order_id ) ) {
@@ -974,7 +974,7 @@ jQuery( document ).ready( function( $ ) {
 		}
 
 		// Send the AJAX now.
-		// block_element( this_button );
+		block_element( this_button );
 
 		// Send the AJAX now.
 		$.ajax( {
@@ -1008,7 +1008,7 @@ jQuery( document ).ready( function( $ ) {
 	 */
 	$( document ).on( 'click', '.add-to-ical', function () {
 		var this_button = $( this );
-		var order_id = $( '#post_ID' ).val();
+		var order_id    = $( '#post_ID' ).val();
 
 		// Return false, if the order id is invalid.
 		if ( -1 === is_valid_number( order_id ) ) {

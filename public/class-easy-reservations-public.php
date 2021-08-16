@@ -107,21 +107,23 @@ class Easy_Reservations_Public {
 	public function ersrv_wp_enqueue_scripts_callback() {
 		global $wp_registered_widgets, $post, $wp_query;
 		// Active style file based on the active theme.
-		$current_theme         = get_option( 'stylesheet' );
-		$active_style          = ersrv_get_active_stylesheet( $current_theme );
-		$active_style_url      = ( ! empty( $active_style['url'] ) ) ? $active_style['url'] : '';
-		$active_style_path     = ( ! empty( $active_style['path'] ) ) ? $active_style['path'] : '';
-		$is_search_page        = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
-		$is_reservation_page   = ersrv_product_is_reservation( get_the_ID() );
-		$enqueue_extra_css     = false;
-		$is_fav_items_endpoint = isset( $wp_query->query_vars[ $this->favourite_reservation_items_endpoint_slug ] );
+		$current_theme          = get_option( 'stylesheet' );
+		$active_style           = ersrv_get_active_stylesheet( $current_theme );
+		$active_style_url       = ( ! empty( $active_style['url'] ) ) ? $active_style['url'] : '';
+		$active_style_path      = ( ! empty( $active_style['path'] ) ) ? $active_style['path'] : '';
+		$is_search_page         = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
+		$is_reservation_page    = ersrv_product_is_reservation( get_the_ID() );
+		$enqueue_extra_css      = false;
+		$is_fav_items_endpoint  = isset( $wp_query->query_vars[ $this->favourite_reservation_items_endpoint_slug ] );
+		$is_view_order_endpoint = isset( $wp_query->query_vars[ 'view-order' ] );
 
 		// Conditions to enqueue the extra css file.
-		if ( is_cart() ) {
-			$enqueue_extra_css = true;
-		} elseif ( is_checkout() ) {
-			$enqueue_extra_css = true;
-		} elseif ( $is_fav_items_endpoint ) {
+		if (
+			is_cart() ||
+			is_checkout() ||
+			$is_fav_items_endpoint ||
+			$is_view_order_endpoint
+		) {
 			$enqueue_extra_css = true;
 		}
 
@@ -272,9 +274,11 @@ class Easy_Reservations_Public {
 			);
 
 			// Custom public script.
-			self::ersrv_enqueue_plugin_core_js( $this->plugin_name, $is_search_page );
+			self::ersrv_enqueue_plugin_core_js( $this->plugin_name );
 		} elseif ( is_checkout() ) {
-			self::ersrv_enqueue_plugin_core_js( $this->plugin_name, $is_search_page );
+			self::ersrv_enqueue_plugin_core_js( $this->plugin_name );
+		} elseif ( $is_view_order_endpoint ) {
+			self::ersrv_enqueue_plugin_core_js( $this->plugin_name );
 		}
 
 		// Add the datepicker and custom script only when the widget is active.
@@ -318,7 +322,12 @@ class Easy_Reservations_Public {
 	 * @param string $plugin_name Plugin folder name.
 	 * @since 1.0.0
 	 */
-	public static function ersrv_enqueue_plugin_core_js( $plugin_name, $is_search_page ) {
+	public static function ersrv_enqueue_plugin_core_js( $plugin_name ) {
+		global $wp_registered_widgets, $post, $wp_query;
+		$is_search_page         = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
+		$is_reservation_page    = ersrv_product_is_reservation( get_the_ID() );
+		$is_view_order_endpoint = isset( $wp_query->query_vars[ 'view-order' ] );
+
 		$reservation_item_details = ( ersrv_product_is_reservation( get_the_ID() ) ) ? ersrv_get_item_details( get_the_ID() ) : array();
 		$search_reservations_page = ersrv_get_page_id( 'search-reservations' );
 		// Custom public script.
@@ -505,35 +514,6 @@ class Easy_Reservations_Public {
 				),
 			)
 		);
-	}
-
-	/**
-	 * AJAX to add reservation to customer's google calendar.
-	 *
-	 * @since 1.0.0
-	 */
-	public function ersrv_add_reservation_to_gcal_callback() {
-		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
-
-		// Exit, if the action mismatches.
-		if ( empty( $action ) || 'add_reservation_to_gcal' !== $action ) {
-			echo 0;
-			wp_die();
-		}
-
-		// Posted data.
-		$order_id = (int) filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT );
-
-		// Email the google candar invitation to customer's email address.
-		ersrv_email_reservation_data_to_google_calendar( $order_id );
-
-		// Send the response.
-		$response = array(
-			'code'          => 'google-calendar-email-sent',
-			'toast_message' => __( 'Google calendar details have been emailed to the respective customer.', 'easy-reservations' ),
-		);
-		wp_send_json_success( $response );
-		wp_die();
 	}
 
 	/**
@@ -972,9 +952,10 @@ class Easy_Reservations_Public {
 	 * @since 1.0.0
 	 */
 	public function ersrv_wp_footer_callback() {
-		global $post;
-		$is_search_page      = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
-		$is_reservation_page = ersrv_product_is_reservation( $post->ID );
+		global $post, $wp_query;
+		$is_search_page         = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
+		$is_reservation_page    = ersrv_product_is_reservation( $post->ID );
+		$is_view_order_endpoint = isset( $wp_query->query_vars[ 'view-order' ] );
 
 		// If it's the single reservation page or the search page.
 		if ( $is_search_page ) {
@@ -990,6 +971,12 @@ class Easy_Reservations_Public {
 			// Include the quick view modal.
 			require_once ERSRV_PLUGIN_PATH . 'public/templates/modals/contact-owner.php';
 
+			// Include the notification html.
+			require_once ERSRV_PLUGIN_PATH . 'public/templates/notifications/notification.php';
+		}
+
+		// If it's the view order page.
+		if ( $is_view_order_endpoint ) {
 			// Include the notification html.
 			require_once ERSRV_PLUGIN_PATH . 'public/templates/notifications/notification.php';
 		}

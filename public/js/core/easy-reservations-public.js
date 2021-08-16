@@ -30,6 +30,8 @@ jQuery(document).ready(function ($) {
 	// Custom vars.
 	var quick_view_reserved_dates = [];
 
+	ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, 'Success text.' );
+
 	// If sidebar is to be removed on reservation single page.
 	if ('yes' === remove_sidebar) {
 		$( '#secondary' ).remove();
@@ -312,20 +314,20 @@ jQuery(document).ready(function ($) {
 	/**
 	 * Add the reservation to google calendar.
 	 */
-	$(document).on('click', '.add-to-gcal', function () {
-		var this_button = $(this);
-		var order_id = this_button.parent('.ersrv-reservation-calendars-container').data('oid');
+	 $( document ).on( 'click', '.add-to-gcal', function () {
+		var this_button = $( this );
+		var order_id    = this_button.parents( '.ersrv-reservation-calendars-container' ).data( 'oid' );
 
 		// Return false, if the order id is invalid.
-		if (-1 === is_valid_number(order_id)) {
+		if ( -1 === is_valid_number( order_id ) ) {
 			return false;
 		}
 
 		// Send the AJAX now.
-		block_element($('.ersrv-reservation-calendars-container'));
+		block_element( this_button );
 
 		// Send the AJAX now.
-		$.ajax({
+		$.ajax( {
 			dataType: 'JSON',
 			url: ajaxurl,
 			type: 'POST',
@@ -340,28 +342,58 @@ jQuery(document).ready(function ($) {
 					return false;
 				}
 
-				if ( 'reservation_added-to-gcal' !== response.data.code ) {
+				if ( 'google-calendar-email-sent' === response.data.code ) {
 					// Unblock the element.
-					unblock_element( $( '.ersrv-reservation-calendars-container' ) );
+					unblock_element( this_button );
 
-					alert( response.data.toast_message );
+					// Show the notification.
+					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
 				}
 			},
-		});
+		} );
 	} );
 
 	/**
-	 * Add the reservation to google calendar.
+	 * Add the reservation to icalendar.
 	 */
-	if ( 'yes' === is_checkout ) {
-		$( document ).on( 'click', '.add-to-ical', function () {
-			var goto = $( this ).data( 'goto' );
-			
-			if ( -1 !== is_valid_string( goto ) ) {
-				window.location.href = goto;
-			}
+	$( document ).on( 'click', '.add-to-ical', function () {
+		var this_button = $( this );
+		var order_id    = this_button.parents( '.ersrv-reservation-calendars-container' ).data( 'oid' );
+
+		// Return false, if the order id is invalid.
+		if ( -1 === is_valid_number( order_id ) ) {
+			return false;
+		}
+
+		// Send the AJAX now.
+		block_element( this_button );
+
+		// Send the AJAX now.
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'add_reservation_to_ical',
+				order_id: order_id,
+			},
+			success: function ( response ) {
+				// Check for invalid ajax request.
+				if ( 0 === response ) {
+					console.log( 'easy reservations: invalid ajax request' );
+					return false;
+				}
+
+				if ( 'icalendar-email-sent' === response.data.code ) {
+					// Unblock the element.
+					unblock_element( this_button );
+
+					// Show the notification.
+					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
+				}
+			},
 		} );
-	}
+	} );
 
 	/**
 	 * Fire the AJAX to load the reservation items on search page.
@@ -1311,6 +1343,28 @@ jQuery(document).ready(function ($) {
 		$( '.ersrv-notification .ersrv-notification-icon' ).addClass( icon );
 		$( '.ersrv-notification .ersrv-notification-heading' ).text( heading );
 		$( '.ersrv-notification .ersrv-notification-message' ).html( message );
+	}
+
+	/**
+	 * Show the notification text.
+	 *
+	 * @param {string} bg_color Holds the toast background color.
+	 * @param {string} icon Holds the toast icon.
+	 * @param {string} heading Holds the toast heading.
+	 * @param {string} message Holds the toast body message.
+	 */
+	function ersrv_show_notification( bg_color, icon, heading, message ) {
+		$( '.ersrv-notification-wrapper .toast' ).removeClass( 'bg-success bg-warning bg-danger' );
+		$( '.ersrv-notification-wrapper .toast' ).addClass( bg_color );
+		$( '.ersrv-notification-wrapper .toast .ersrv-notification-icon' ).removeClass( 'fa-skull-crossbones fa-check-circle fa-exclamation-circle' );
+		$( '.ersrv-notification-wrapper .toast .ersrv-notification-icon' ).addClass( icon );
+		$( '.ersrv-notification-wrapper .toast .ersrv-notification-heading' ).text( heading );
+		$( '.ersrv-notification-wrapper .toast .ersrv-notification-message' ).html( message );
+		$( '.ersrv-notification-wrapper .toast' ).removeClass( 'hide' ).addClass( 'show' );
+
+		setTimeout( function() {
+			$( '.ersrv-notification-wrapper .toast' ).removeClass( 'show' ).addClass( 'hide' );
+		}, 5000 );
 	}
 
 	// Show toast.

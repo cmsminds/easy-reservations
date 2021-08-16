@@ -262,7 +262,7 @@ if ( ! function_exists( 'ersrv_get_icalendar_formatted_date' ) ) {
 	 */
 	function ersrv_get_icalendar_formatted_date( $timestamp = '', $include_time = true ) {
 
-		return gmdate( 'Ymd' . ( $include_time ? '\THis' : '' ), $timestamp ) . 'Z';
+		return gmdate( 'Ymd' . ( $include_time ? '\THis' : '' ), $timestamp );
 	}
 }
 
@@ -1983,27 +1983,45 @@ if ( ! function_exists( 'ersrv_email_reservation_data_to_google_calendar' ) ) {
 			}
 
 			// Reservation item data.
-			$checkin_date  = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
-			$checkin       = $checkin_date . ' ' .ersrv_get_plugin_settings( 'ersrv_reservation_onboarding_time' );
-			$checkin       = ersrv_get_icalendar_formatted_date( strtotime( $checkin ), true );
-			$checkout_date = wc_get_order_item_meta( $item_id, 'Checkout Date', true );
-			$checkout      = $checkout_date . ' ' .ersrv_get_plugin_settings( 'ersrv_reservation_offboarding_time' );
-			$checkout      = ersrv_get_icalendar_formatted_date( strtotime( $checkout ), true );
-			$view_order    = $wc_order->get_view_order_url();
+			$checkin_date    = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
+			$checkin         = $checkin_date . ' ' .ersrv_get_plugin_settings( 'ersrv_reservation_onboarding_time' );
+			$checkin         = ersrv_get_icalendar_formatted_date( strtotime( $checkin ), true );
+			$checkout_date   = wc_get_order_item_meta( $item_id, 'Checkout Date', true );
+			$checkout        = $checkout_date . ' ' .ersrv_get_plugin_settings( 'ersrv_reservation_offboarding_time' );
+			$checkout        = ersrv_get_icalendar_formatted_date( strtotime( $checkout ), true );
+			$view_order      = $wc_order->get_view_order_url();
+			$billing_country = $wc_order->get_billing_country();
+			$billing_state   = $wc_order->get_billing_state();
 
 			// Google calendar base URL.
 			$gcal_url = 'https://calendar.google.com/calendar/u/0/r/eventedit';
 
 			// Query parameters.
 			$gcal_params = array(
-				'text' => sprintf( __( 'Reservation with %1$s', 'easy-reservations' ), get_the_title( $product_id ) ),
-				'dates' => "{$checkin}/{$checkout}",
-				'trp' => false,
-				'sprop' => "website:{$view_order}",
-				'pli' => 1,
-				'sf' => true,
+				'text'     => sprintf( __( 'Reservation with %1$s', 'easy-reservations' ), get_the_title( $product_id ) ),
+				'dates'    => "{$checkin}/{$checkout}",
+				'trp'      => false,
+				'sprop'    => "website:{$view_order}",
+				'pli'      => 1,
+				'sf'       => true,
+				'location' => get_post_meta( $product_id, '_ersrv_item_location', true ),
+				'details'  => sprintf( __( 'This refers to the reservation order #%1$d. You can check more details here: %1$s', 'easy-reservations' ), $order_id, $view_order ),
+				'ctz'      => 'Asia/Kolkata',
 			);
 
+			/**
+			 * This hook fires when the request to save gcal file is processed.
+			 *
+			 * This filter helps to modify the gcal invitation details.
+			 *
+			 * @param array  $gcal_params Google Cal details.
+			 * @param string $order_id WooCommerce Order ID.
+			 * @return array
+			 * @since 1.0.0
+			 */
+			$gcal_params = apply_filters( 'ersrv_google_calendar_invitation_details', $gcal_params, $order_id );
+
+			// Add the details to compose a URL.
 			$gcal_url = add_query_arg( $gcal_params, $gcal_url );
 
 			// Email recipient.
@@ -2014,8 +2032,8 @@ if ( ! function_exists( 'ersrv_email_reservation_data_to_google_calendar' ) ) {
 			// Email body.
 			$blog_name   = get_bloginfo( 'name' );
 			$email_body  = "<p>Hello {$customer_name},</p>";
-			$email_body .= "<p>Please click the URL below to add the reservation #{$order_id} to your Google Clendar.</p>";
-			$email_body .= "<p>URL: {$gcal_url}</p>";
+			$email_body .= "<p>Please click the link below to add the reservation #{$order_id} to your Google Clendar.</p>";
+			$email_body .= "<p><a href='{$gcal_url}'>Click here!</a></p>";
 			$email_body .= '<p>Regards,</p>';
 			$email_body .= "<p>Team {$blog_name}</p>";
 			$email_body  = apply_filters( 'ersrv_gcalendar_invite_email_body', $email_body, $wc_order );
@@ -2024,7 +2042,7 @@ if ( ! function_exists( 'ersrv_email_reservation_data_to_google_calendar' ) ) {
 			$headers = array( 'Content-Type: text/html; charset=UTF-8' );
 
 			// Shoot the email now.
-			wp_mail( $recipient, $subject, $email_body, $headers );
+			// wp_mail( $recipient, $subject, $email_body, $headers );
 		}
 
 		/**
@@ -2157,7 +2175,7 @@ if ( ! function_exists( 'ersrv_email_reservation_data_to_icalendar' ) ) {
 			$attachments = array( $ics_file );
 
 			// Shoot the email now.
-			wp_mail( $recipient, $subject, $email_body, $headers, $attachments );
+			// wp_mail( $recipient, $subject, $email_body, $headers, $attachments );
 
 			// Unlink the attachment now.
 			unlink( $ics_file );
