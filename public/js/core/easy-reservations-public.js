@@ -28,6 +28,7 @@ jQuery(document).ready(function ($) {
 	var reservation_item_contact_owner_error_message = ERSRV_Public_Script_Vars.reservation_item_contact_owner_error_message;
 	var driving_license_allowed_extensions           = ERSRV_Public_Script_Vars.driving_license_allowed_extensions;
 	var driving_license_invalid_file_error           = ERSRV_Public_Script_Vars.driving_license_invalid_file_error;
+	var driving_license_empty_file_error             = ERSRV_Public_Script_Vars.driving_license_empty_file_error;
 
 	// Custom vars.
 	var quick_view_reserved_dates = [];
@@ -1102,6 +1103,12 @@ jQuery(document).ready(function ($) {
 	 * Upload the driving license copy on the checkout page.
 	 */
 	$( document ).on( 'click', '.ersrv-driving-license button', function() {
+		// Check if the license is provided to upload.
+		if ( -1 === is_valid_string( $( 'input[name="reservation-driving-license"]' ).val() ) ) {
+			ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, driving_license_empty_file_error );
+			return false;
+		}
+
 		var oFReader        = new FileReader();
 		var driving_license = document.getElementById( 'reservation-driving-license' );
 		oFReader.readAsDataURL( driving_license.files[0] );
@@ -1109,6 +1116,9 @@ jQuery(document).ready(function ($) {
 		// Prepare the form data.
 		var fd = new FormData();
 		fd.append( 'driving_license_file', driving_license.files[0] );
+
+		console.log( 'driving_license.files[0]', driving_license.files[0] );
+		return false;
 
 		// AJAX action.
 		fd.append( 'action', 'upload_driving_license' );
@@ -1137,7 +1147,7 @@ jQuery(document).ready(function ($) {
 					unblock_element( $( '.ersrv-driving-license' ) );
 
 					// Show toast.
-					ersrv_show_toast( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
+					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
 				}
 			},
 		} );

@@ -370,7 +370,9 @@ class Easy_Reservations_Public {
 			'reservation_item_contact_owner_error_message' => __( 'There is some issue contacting the owner. Please see the errors above and try again.', 'easy-reservations' ),
 			'driving_license_allowed_extensions'           => $driving_license_allowed_extensions,
 			'driving_license_invalid_file_error'           => sprintf( __( 'Invalid file selected. Allowed extensions are: %1$s', 'easy-reservations' ), implode( ', ', $driving_license_allowed_extensions ) ),
+			'driving_license_empty_file_error'             => __( 'Please provide a driving license to upload.', 'easy-reservations' ),
 		);
+
 		/**
 		 * This hook fires in public panel.
 		 *
