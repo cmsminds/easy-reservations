@@ -479,14 +479,14 @@
     margin-left: auto;
     font-size: 1.5rem;
     font-weight: 700;
-    line-height: 1;
+    line-height: normal;
     color: #000;
     text-shadow: 0 1px 0 #fff;
     opacity: .5;
 	border: 1px solid transparent;
 	pointer-events: auto;
 	cursor: pointer;
-    padding: 0.5rem 1rem;
+    padding:0rem 0.5rem;
 }
 .toast .close:not(:disabled):not(.disabled):focus,
 .toast .close:not(:disabled):not(.disabled):hover{
