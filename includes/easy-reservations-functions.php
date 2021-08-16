@@ -2042,7 +2042,7 @@ if ( ! function_exists( 'ersrv_email_reservation_data_to_google_calendar' ) ) {
 			$headers = array( 'Content-Type: text/html; charset=UTF-8' );
 
 			// Shoot the email now.
-			// wp_mail( $recipient, $subject, $email_body, $headers );
+			wp_mail( $recipient, $subject, $email_body, $headers );
 		}
 
 		/**
@@ -2175,7 +2175,7 @@ if ( ! function_exists( 'ersrv_email_reservation_data_to_icalendar' ) ) {
 			$attachments = array( $ics_file );
 
 			// Shoot the email now.
-			// wp_mail( $recipient, $subject, $email_body, $headers, $attachments );
+			wp_mail( $recipient, $subject, $email_body, $headers, $attachments );
 
 			// Unlink the attachment now.
 			unlink( $ics_file );

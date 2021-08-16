@@ -30,8 +30,6 @@ jQuery(document).ready(function ($) {
 	// Custom vars.
 	var quick_view_reserved_dates = [];
 
-	ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, 'Success text.' );
-
 	// If sidebar is to be removed on reservation single page.
 	if ('yes' === remove_sidebar) {
 		$( '#secondary' ).remove();

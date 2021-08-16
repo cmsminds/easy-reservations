@@ -1723,6 +1723,7 @@ class Easy_Reservations_Public {
 			<p class="form-row ersrv-driving-license" id="ersrv_driving_license_field">
 				<label for="reservation-driving-license" class=""><?php esc_html_e( 'Driving License', 'easy-reservations' ); ?></label>
 				<span class="woocommerce-input-wrapper"><input type="file" name="reservation-driving-license" /></span>
+				<button type="button" class="button"><?php esc_html_e( 'Upload the license', 'easy-reservations' ); ?></button>
 			</p>
 		</div>
 		<?php
