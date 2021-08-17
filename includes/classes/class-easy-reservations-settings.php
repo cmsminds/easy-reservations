@@ -41,6 +41,7 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 			array( 'reservation_calendar' => __( 'Reservation Calendar', 'easy-reservations' ) ),
 			array( 'quickbooks' => __( 'Quickbooks', 'easy-reservations' ) ),
 			array( 'invoice_receipts' => __( 'Invoice Receipts', 'easy-reservations' ) ),
+			array( 'cancel_reservations' => __( 'Cancel Reservations', 'easy-reservations' ) ),
 		);
 
 		return apply_filters( 'woocommerce_get_sections_' . $this->id, $sections );
@@ -81,15 +82,23 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 			case 'reservation_calendar':
 				$settings = $this->ersrv_reservation_calendar_settings_fields();
 				break;
+
 			case 'quickbooks':
 				$settings = $this->ersrv_quickbooks_settings_fields();
 				break;
+
 			case 'emails':
 				$settings = $this->ersrv_emails_settings_fields();
 				break;
+
 			case 'invoice_receipts':
 				$settings = $this->ersrv_invoice_receipts_settings_fields();
 				break;
+
+			case 'cancel_reservations':
+				$settings = $this->ersrv_cancel_reservations_settings_fields();
+				break;
+
 			default:
 				$settings = $this->ersrv_general_settings_fields(); // Fields for the general section.
 		}
@@ -135,14 +144,6 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 				'desc'        => __( 'This will decide that the reminder emails will be sent the number of days before the customer\'s reservation. If left blank, the system won\'t send any reminder email.', 'easy-reservations' ),
 				'desc_tip'    => true,
 				'id'          => 'ersrv_reminder_email_send_before_days',
-				'placeholder' => __( 'E.g.: 2', 'easy-reservations' ),
-				'type'        => 'number',
-			),
-			array(
-				'title'       => __( 'Reservation Cancellation Request "X" Days Before', 'easy-reservations' ),
-				'desc'        => __( 'This will hold the number of days until when the customer\'s are allowed to raise a cancel request for their reservation.', 'easy-reservations' ),
-				'desc_tip'    => true,
-				'id'          => 'ersrv_cancel_reservation_request_before_days',
 				'placeholder' => __( 'E.g.: 2', 'easy-reservations' ),
 				'type'        => 'number',
 			),
@@ -310,7 +311,7 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 	}
 
 	/**
-	 * Return the fields for Emails settings.
+	 * Return the fields for reservations receipts settings.
 	 *
 	 * @return array
 	 */
@@ -413,6 +414,58 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 		 * @return array
 		 */
 		return apply_filters( 'ersrv_invoice_receipts_section_plugin_settings', $fields );
+	}
+
+	/**
+	 * Return the fields for cancel reservations settings.
+	 *
+	 * @return array
+	 */
+	public function ersrv_cancel_reservations_settings_fields() {
+		$fields = array(
+			array(
+				'title' => __( 'Cancel Reservations Settings', 'easy-reservations' ),
+				'type'  => 'title',
+				'desc'  => '',
+				'id'    => 'ersrv_cancel_reservations_settings',
+			),
+			array(
+				'name' => __( 'Enable', 'easy-reservations' ),
+				'type' => 'checkbox',
+				'desc' => __( 'This will decide whether the customers can apply for cancelling their reservations. Default is no.', 'easy-reservations' ),
+				'id'   => 'ersrv_enable_reservation_cancellation',
+			),
+			array(
+				'name'        => __( 'Button Text', 'easy-reservations' ),
+				'type'        => 'text',
+				'desc'        => __( 'This holds the request cancellation button text. Default: Request Cancellation', 'easy-reservations' ),
+				'desc_tip'    => true,
+				'id'          => 'ersrv_cancel_reservations_button_text',
+				'placeholder' => __( 'E.g.: Request Cancellation', 'easy-reservations' ),
+			),
+			array(
+				'title'       => __( 'Reservations Eligibility for Cancellation Until "X" Days', 'easy-reservations' ),
+				'desc'        => __( 'The number of days until which the customers can raise cancel request towwards their reservations. Leaving it blank would mean that customers would be allowed to cancel their reservation anytime.', 'easy-reservations' ),
+				'desc_tip'    => true,
+				'id'          => 'ersrv_cancel_reservation_request_before_days',
+				'placeholder' => __( 'E.g.: 2', 'easy-reservations' ),
+				'type'        => 'number',
+			),
+			array(
+				'type' => 'sectionend',
+				'id'   => 'ersrv_cancel_reservations_settings',
+			),
+		);
+
+		/**
+		 * This hook fires on the admin settings page - cancel reservations section.
+		 *
+		 * This account help in managing cancel reservations section plugin settings fields.
+		 *
+		 * @param array $fields Holds the fields array.
+		 * @return array
+		 */
+		return apply_filters( 'ersrv_calcen_reservations_section_plugin_settings', $fields );
 	}
 }
 

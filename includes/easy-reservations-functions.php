@@ -103,9 +103,19 @@ function ersrv_get_plugin_settings( $setting ) {
 			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? gmdate( 'h:iA', strtotime( $data ) ) : '9:00 AM';
 			break;
 
+		case 'ersrv_enable_reservation_cancellation':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : 'no';
+			break;
+
+		case 'ersrv_cancel_reservations_button_text':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : __( 'Request Cancellation', 'easy-reservations' );
+			break;
+
 		case 'ersrv_cancel_reservation_request_before_days':
 			$data = get_option( $setting );
-			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? (int) $data : 0;
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? (int) $data : -1;
 			break;
 
 		default:
@@ -457,7 +467,7 @@ if ( ! function_exists( 'ersrv_get_dates_within_2_dates' ) ) {
 	 * @return boolean|DatePeriod
 	 * @since 1.0.0
 	 */
-	function ersrv_get_dates_within_2_dates( $from, $to ) {
+	function ersrv_get_dates_within_2_dates( $from, $to, $exclude_from_date = false ) {
 		// Return if either of the date is not provided.
 		if ( empty( $from ) || empty( $to ) ) {
 			return false;
@@ -465,6 +475,7 @@ if ( ! function_exists( 'ersrv_get_dates_within_2_dates' ) ) {
 
 		// Get the dates array.
 		$from     = new DateTime( $from );
+		$from     = ( true === $exclude_from_date ) ? $from->modify( '+1 day' ) : $from; // Add 1 day to the from date.
 		$to       = new DateTime( $to );
 		$to       = $to->modify( '+1 day' );
 		$interval = new DateInterval( 'P1D' );
@@ -2355,27 +2366,63 @@ if ( ! function_exists( 'ersrv_print_reservation_cancel_button' ) ) {
 	/**
 	 * Print the receipt button for the woocommerce order.
 	 *
-	 * @param int      $order_id WooCommerce order ID.
-	 * @param WC_Order $wc_order WooCommerce order object.
+	 * @param int $item_id WooCommerce order item ID.
+	 * @param int $order_id WooCommerce order ID.
 	 * @since 1.0.0
 	 */
-	function ersrv_print_reservation_cancel_button( $order_id, $wc_order ) {
-		// Check if the order status is allowed for receipts.
-		// $display_order_receipt = ersrv_should_display_receipt_button( $order_id );
-
-		// Return the actions if the receipt button should not be displayed.
-		// if ( false === $display_order_receipt ) {
-		// 	return;
-		// }
-
-		$button_text  = ersrv_get_plugin_settings( 'ersrv_easy_reservations_receipt_button_text' );
-		$button_text  = 'Request Cancellation';
-		$button_url   = ersrv_download_reservation_receipt_url( $order_id );
-		$button_title = ersrv_download_reservation_receipt_button_title( $order_id );
+	function ersrv_print_reservation_cancel_button( $item_id, $order_id ) {
+		// Check if the request is already raised.
+		$already_requested = wc_get_order_item_meta( $item_id, 'ersrv_cancellation_request' ); 
+		$button_text       = ersrv_get_plugin_settings( 'ersrv_cancel_reservations_button_text' );
 		?>
-		<div class="ersrv-reservation-cancellation-container">
-			<a href="<?php echo esc_url( $button_url ); ?>" class="button" title="<?php echo esc_html( $button_title ); ?>"><?php echo esc_html( $button_text ); ?></a>
+		<div class="ersrv-reservation-cancellation-container" data-order="<?php echo esc_attr( $order_id ); ?>" data-item="<?php echo esc_attr( $item_id ); ?>">
+			<button type="button" class="button <?php echo ( ! empty( $already_requested ) ) ? 'non-clickable' : ''; ?>" title="<?php echo esc_html( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></a>
 		</div>
 		<?php
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_reservation_eligible_for_cancellation' ) ) {
+	/**
+	 * Check if the particular reservation item is eligible for cancellation.
+	 *
+	 * @param int $item_id WooCommerce order item ID.
+	 * @return bool
+	 * @since 1.0.0
+	 */
+	function ersrv_reservation_eligible_for_cancellation( $item_id ) {
+		$eligibility_days = ersrv_get_plugin_settings( 'ersrv_cancel_reservation_request_before_days' );
+
+		// Return true, if this is -1.
+		if ( -1 === $eligibility_days ) {
+			return true;
+		}
+
+		// Get the checkin date.
+		$checkin_date = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
+		$date_today   = gmdate( ersrv_get_php_date_format() );
+
+		// Get the days yet to the reservation.
+		$dates_range = ersrv_get_dates_within_2_dates( $date_today, $checkin_date, true );
+		$dates       = array();
+
+		// Iterate through the dates.
+		if ( ! empty( $dates_range ) ) {
+			foreach ( $dates_range as $date ) {
+				$dates[] = $date->format( ersrv_get_php_date_format() );
+			}
+		}
+		
+		// Dates count.
+		$days_difference_count = count( $dates );
+
+		if ( $days_difference_count <= $eligibility_days ) {
+			return false;
+		}
+
+		return true;
 	}
 }

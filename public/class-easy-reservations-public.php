@@ -371,6 +371,7 @@ class Easy_Reservations_Public {
 			'driving_license_allowed_extensions'           => $driving_license_allowed_extensions,
 			'driving_license_invalid_file_error'           => sprintf( __( 'Invalid file selected. Allowed extensions are: %1$s', 'easy-reservations' ), implode( ', ', $driving_license_allowed_extensions ) ),
 			'driving_license_empty_file_error'             => __( 'Please provide a driving license to upload.', 'easy-reservations' ),
+			'cancel_reservation_confirmation_message'      => __( 'Click OK to confirm your cancellation. This action won\'t be undone.', 'easy-reservations' ),
 		);
 
 		/**
@@ -746,7 +747,6 @@ class Easy_Reservations_Public {
 				<?php
 				ersrv_print_calendar_buttons( $order_id, $wc_order ); // Print the calendar button.
 				ersrv_print_receipt_button( $order_id, $wc_order ); // Print the receipt button.
-				ersrv_print_reservation_cancel_button( $order_id, $wc_order ); // Print the reservation order cancellation button.
 				?>
 			</div>
 		</div>
@@ -1659,6 +1659,8 @@ class Easy_Reservations_Public {
 
 	/**
 	 * AJAX to upload the driving license file on checkout.
+	 *
+	 * @since 1.0.0
 	 */
 	public function ersrv_upload_driving_license_callback() {
 		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
@@ -1753,5 +1755,86 @@ class Easy_Reservations_Public {
 			// Unset the session.
 			WC()->session->__unset( 'reservation_driving_license_attachment_id' );
 		}
+	}
+
+	/**
+	 * Add a cancellation button after every reservation item in order.
+	 *
+	 * @param int      $item_id WooCommerce order item ID.
+	 * @param object   $item WooCommerce order item.
+	 * @param WC_Order $wc_order WooCommerce order.
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_order_item_meta_end_callback( $item_id, $item, $wc_order ) {
+		$cancellation_enabled = ersrv_get_plugin_settings( 'ersrv_enable_reservation_cancellation' );
+
+		// Return, if the cancellation is not enabled.
+		if ( ! empty( $cancellation_enabled ) && 'no' === $cancellation_enabled ) {
+			return;
+		}
+
+		// Get the product ID.
+		$product_id = $item->get_product_id();
+
+		// If this product is a reservation product.
+		$is_reservation_product = ersrv_product_is_reservation( $product_id );
+
+		// Return, if the item is not a reservation product.
+		if ( ! $is_reservation_product ) {
+			return;
+		}
+
+		// Check if the reservation can be cancelled.
+		$can_cancel = ersrv_reservation_eligible_for_cancellation( $item_id );
+
+		// Return the actions if the order cannot be cancelled.
+		if ( false === $can_cancel ) {
+			return;
+		}
+
+		// Print the reservation order cancellation button.
+		ersrv_print_reservation_cancel_button( $item_id, $wc_order->get_id() );
+	}
+
+	/**
+	 * AJAX to raise cancellation request for the reservation.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_request_reservation_cancel_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+		// Exit, if the action mismatches.
+		if ( empty( $action ) || 'request_reservation_cancel' !== $action ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Posted data.
+		$item_id  = (int) filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
+		$order_id = (int) filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT );
+
+		// Update item meta data.
+		wc_update_order_item_meta( $item_id, 'ersrv_cancellation_request', 1 );
+		wc_update_order_item_meta( $item_id, 'ersrv_cancellation_request_time', time() );
+
+		/**
+		 * This hook fires on the my account view order page.
+		 *
+		 * This hooks helps in firing the email to the administrator when there is any cancellation request from any customer.
+		 *
+		 * @param int $item_id WooCommerce order item ID.
+		 * @param int $order_id WooCommerce order ID.
+		 * @since 1.0.0
+		 */
+		do_action( 'ersrv_email_after_reservation_cancellation_request', $item_id, $order_id );
+
+		// Prepare the response.
+		$response = array(
+			'code'          => 'cancellation-request-saved',
+			'toast_message' => __( 'Cancellation request for this reservation has been saved successfully. You will receive an email when admin accepts/rejects the cancellation.', 'easy-reservations' ),
+		);
+		wp_send_json_success( $response );
+		wp_die();
 	}
 }

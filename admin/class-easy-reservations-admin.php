@@ -644,6 +644,17 @@ class Easy_Reservations_Admin {
 			array( $this, 'ersrv_new_admin_reservation' ),
 			15
 		);
+
+		// Submenu to list cancellation requests in admin panel.
+		add_submenu_page(
+			'woocommerce',
+			__( 'Reservation Cancellation Requests', 'easy-reservations' ),
+			__( 'Reservation Cancellation Requests', 'easy-reservations' ),
+			'manage_options',
+			'reservation-calcellation-requests',
+			array( $this, 'ersrv_reservation_cancellation_requests' ),
+			15
+		);
 	}
 
 	/**
@@ -653,6 +664,26 @@ class Easy_Reservations_Admin {
 	 */
 	public function ersrv_new_admin_reservation() {
 		require_once ERSRV_PLUGIN_PATH . 'admin/templates/pages/new-reservation.php';
+	}
+
+	/**
+	 * Reservation cancellation requests template from at panel.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_reservation_cancellation_requests() {
+		?>
+		<div class="wrap">
+			<h2><?php esc_html_e( 'Reservation Cancellation Requests', 'easy-reservations' ); ?></h2>
+			<p><?php esc_html_e( 'Following is the list of all the reservation cancellation requests.', 'easy-reservations' ); ?></p>
+			<?php
+			require_once ERSRV_PLUGIN_PATH . 'admin/templates/pages/class-easy-reservations-cancellation-requests.php';
+			$requests_obj = new Easy_Reservations_Cancellation_Requests();
+			$requests_obj->prepare_items();
+			$requests_obj->display();
+			?>
+		</div>
+		<?php
 	}
 
 	/**

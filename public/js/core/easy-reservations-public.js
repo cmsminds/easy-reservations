@@ -29,6 +29,7 @@ jQuery(document).ready(function ($) {
 	var driving_license_allowed_extensions           = ERSRV_Public_Script_Vars.driving_license_allowed_extensions;
 	var driving_license_invalid_file_error           = ERSRV_Public_Script_Vars.driving_license_invalid_file_error;
 	var driving_license_empty_file_error             = ERSRV_Public_Script_Vars.driving_license_empty_file_error;
+	var cancel_reservation_confirmation_message      = ERSRV_Public_Script_Vars.cancel_reservation_confirmation_message;
 
 	// Custom vars.
 	var quick_view_reserved_dates = [];
@@ -1158,6 +1159,61 @@ jQuery(document).ready(function ($) {
 		$( 'html, body' ).animate( {
 			scrollTop: $( '#order_comments_field' ).offset().top
 		}, 2000 );
+	} );
+
+	/**
+	 * Raise cancellation request.
+	 */
+	$( document ).on( 'click', '.ersrv-reservation-cancellation-container button', function() {
+		var this_button = $( this );
+		var parent_div  = this_button.parent( '.ersrv-reservation-cancellation-container' );
+		var item_id     = parseInt( parent_div.data( 'item' ) );
+		var order_id    = parseInt( parent_div.data( 'order' ) );
+		var cancel_cnf  = confirm( cancel_reservation_confirmation_message );
+
+		// Exit, if the item ID or the order ID is invalid.
+		if ( -1 === is_valid_number( item_id ) || -1 === is_valid_number( order_id ) ) {
+			return false;
+		}
+
+		// Exit, if the customer refuses to cancel the idea of cancelling the reservation.
+		if ( false === cancel_cnf ) {
+			return false;
+		}
+
+		// Block the element.
+		block_element( parent_div );
+
+		// Shoot the AJAX to raise cancellation request.
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'request_reservation_cancel',
+				item_id: item_id,
+				order_id: order_id,
+			},
+			success: function ( response ) {
+				// Return, if the response is not proper.
+				if ( 0 === response ) {
+					console.warn( 'easy-reservations: invalid ajax call' );
+					return false;
+				}
+
+				// If the reservation is added.
+				if ( 'cancellation-request-saved' === response.data.code ) {
+					// Unblock the element.
+					unblock_element( parent_div );
+
+					// Block the button.
+					block_element( this_button );
+
+					// Show toast.
+					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
+				}
+			},
+		} );
 	} );
 
 	/**
