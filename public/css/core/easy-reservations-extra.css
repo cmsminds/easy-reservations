@@ -540,7 +540,7 @@
 }
 /*  */
 .ersrv-reservation-actions-container .actions{
-    margin-top: 1rem;
+    margin: 1rem 0rem 1.5rem;
     display: flex;
     flex-flow: row wrap;
 }
