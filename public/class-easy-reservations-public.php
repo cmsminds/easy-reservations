@@ -876,7 +876,7 @@ class Easy_Reservations_Public {
 	 *
 	 * @param WC_Order $wc_order Holds the WooCommerce order object.
 	 */
-	public function wpir_dokan_order_detail_after_order_items_callback( $wc_order ) {
+	public function ersrv_dokan_order_detail_after_order_items_callback( $wc_order ) {
 		$order_id = $wc_order->get_id();
 		
 		// Check if the order has reservation items.
@@ -1728,11 +1728,21 @@ class Easy_Reservations_Public {
 		$allowed_to_upload_license = ersrv_get_plugin_settings( 'ersrv_driving_license_validation' );
 
 		// Return, if it's not allowed to upload driving license.
-		if ( ! empty( $allowed_to_upload_license ) && 'no' === $allowed_to_upload_license ) {
+		if ( empty( $allowed_to_upload_license ) || 'no' === $allowed_to_upload_license ) {
 			return;
 		}
 
 		// Check if there are reservation items in the cart.
+		$is_reservation_in_cart = ersrv_is_reservation_in_cart();
+
+		// Return, if there are no reservation items in cart.
+		if ( ! $is_reservation_in_cart ) {
+			return;
+		}
+
+		// Get the attachment ID, if already uploaded.
+		$attachment_id  = WC()->session->get( 'reservation_driving_license_attachment_id' );
+		$attachment_url = ersrv_get_attachment_url_from_attachment_id( $attachment_id );
 
 		ob_start();
 		?>
@@ -1762,7 +1772,27 @@ class Easy_Reservations_Public {
 			wp_die();
 		}
 
-		// Posted data.
+		// Upload the file now.
+		$driving_license_file_name = $_FILES['driving_license_file']['name'];
+		$driving_license_file_temp = $_FILES['driving_license_file']['tmp_name'];
+		$file_data                 = file_get_contents( $driving_license_file_temp );
+		$filename                  = basename( $driving_license_file_name );
+		$upload_dir                = wp_upload_dir();
+		$file_path                 = ( ! empty( $upload_dir['path'] ) ) ? $upload_dir['path'] . $filename : $upload_dir['basedir'] . $filename;
+		file_put_contents( $file_path, $file_data );
+
+		// Upload it as WP attachment.
+		$wp_filetype = wp_check_filetype( $filename, null );
+		$attachment  = array(
+			'post_mime_type' => $wp_filetype['type'],
+			'post_title'     => sanitize_file_name( $filename ),
+			'post_content'   => '',
+			'post_status'    => 'inherit'
+		);
+		$attach_id   = wp_insert_attachment( $attachment, $file_path );
+
+		// Update the attachment ID in woocommerce session.
+		WC()->session->set( 'reservation_driving_license_attachment_id', $attach_id );
 
 		// Prepare the response.
 		$response = array(
@@ -1771,5 +1801,60 @@ class Easy_Reservations_Public {
 		);
 		wp_send_json_success( $response );
 		wp_die();
+	}
+
+	/**
+	 * Throw checkout error in the case driving license is not uploaded.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_checkout_process_callback() {
+		// Get the plugin setting.
+		$allowed_to_upload_license = ersrv_get_plugin_settings( 'ersrv_driving_license_validation' );
+
+		// Check if there are reservation items in the cart.
+		$is_reservation_in_cart = ersrv_is_reservation_in_cart();
+
+		// Return error if driving license is not uploaded.
+		if ( empty( $allowed_to_upload_license ) && 'yes' === $allowed_to_upload_license && true === $is_reservation_in_cart ) {
+			// Get the attachment ID, if already uploaded.
+			$attachment_id = WC()->session->get( 'reservation_driving_license_attachment_id' );
+
+			if ( ! empty( $attachment_id ) ) {
+				$error_message = sprintf( __( 'Since you\'re doing a reservation, we require you to upload a valid driving license. Click %1$shere%2$s to upload.', 'easy-reservations' ), '<a class="scroll-to-driving-license" href="#">', '</a>' );
+				/**
+				 * This filter fires on checkout page.
+				 *
+				 * This filter helps in modifying the checkout error that is thrown in case the driving license file is not provided.
+				 *
+				 * @param string $error_message Error message.
+				 * @return string
+				 * @since 1.0.0
+				 */
+				$error_message = apply_filters( 'ersrv_driving_license_validation_checkout_error', $error_message );
+
+				// Shoot the error now.
+				wc_add_notice( $error_message, 'error' );
+			}
+		}
+	}
+
+	/**
+	 * Update the driving license attachment ID to order meta.
+	 *
+	 * @param int $order_id WooCommerce order ID.
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_checkout_update_order_meta_callback( $order_id ) {
+		// Get the attachment ID.
+		$attachment_id = WC()->session->get( 'reservation_driving_license_attachment_id' );
+
+		// Update the order meta if the attachment ID is available.
+		if ( ! empty( $attachment_id ) ) {
+			update_post_meta( $order_id, 'reservation_driving_license_attachment_id', sanitize_text_field( $attachment_id ) );
+
+			// Unset the session.
+			WC()->session->__unset( 'reservation_driving_license_attachment_id' );
+		}
 	}
 }

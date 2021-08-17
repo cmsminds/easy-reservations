@@ -2191,3 +2191,40 @@ if ( ! function_exists( 'ersrv_email_reservation_data_to_icalendar' ) ) {
 		do_action( 'ersrv_add_reservation_to_ical_after', $order_id );
 	}
 }
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_is_reservation_in_cart' ) ) {
+	/**
+	 * Check if there is any reservation item in the cart.
+	 *
+	 * @return bool
+	 * @since 1.0.0
+	 */
+	function ersrv_is_reservation_in_cart() {
+		// Get cart.
+		$cart            = WC()->cart->get_cart();
+		$has_reservation = false;
+
+		// Iterate through the cart items to set the price.
+		foreach ( $cart as $cart_item ) {
+			// Return.
+			if ( ! empty( $cart_item['reservation_data'] ) ) {
+				$has_reservation = true;
+				break;
+			}
+		}
+
+		/**
+		 * This filter runs on the checkout page.
+		 *
+		 * This filter helps in detecting whether the cart has any reservation item or not.
+		 *
+		 * @param bool $has_reservation Cart has reservation item or not.
+		 * @return bool
+		 * @since 1.0.0
+		 */
+		return apply_filters( 'ersrv_cart_has_reservation', $has_reservation ); // Return the decision now.
+	}
+}

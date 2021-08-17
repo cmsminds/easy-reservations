@@ -973,23 +973,37 @@ class Easy_Reservations_Admin {
 		// Get the post ID.
 		$post_id = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
 
-		if ( ! is_null( $post_id ) ) {
-			$wc_order = wc_get_order( $post_id );
+		// Add the metabox on only the post edit page.
+		if ( is_null( $post_id ) ) {
+			return;
+		}
 
-			// If this is a valid order.
-			if ( false !== $wc_order ) {
-				$is_reservation = ersrv_order_is_reservation( $wc_order );
-				// Add meta box for reservations order.
-				if ( $is_reservation ) {
-					add_meta_box(
-						'ersrv-reservation-order-email-calendar-invites',
-						__( 'Easy Reservations: Calendar Invites', 'easy-reservations' ),
-						array( $this, 'ersrv_calendar_invites_reservation_order' ),
-						'shop_order',
-						'side',
-						'high'
-					);
-				}
+		$wc_order = wc_get_order( $post_id );
+
+		// If this is a valid order.
+		if ( false !== $wc_order ) {
+			$is_reservation = ersrv_order_is_reservation( $wc_order );
+			// Add meta box for reservations order.
+			if ( $is_reservation ) {
+				// Metabox for calendar invitations.
+				add_meta_box(
+					'ersrv-reservation-order-email-calendar-invites',
+					__( 'Easy Reservations: Calendar Invites', 'easy-reservations' ),
+					array( $this, 'ersrv_calendar_invites_reservation_order' ),
+					'shop_order',
+					'side',
+					'high'
+				);
+
+				// Metabox for driving license.
+				add_meta_box(
+					'ersrv-reservation-order-driving-license-file',
+					__( 'Easy Reservations: Driving License', 'easy-reservations' ),
+					array( $this, 'ersrv_reservation_order_dricing_license_file' ),
+					'shop_order',
+					'side',
+					'high'
+				);
 			}
 		}
 	}
@@ -1008,6 +1022,30 @@ class Easy_Reservations_Admin {
 			<p><?php esc_html_e( 'Click on the buttons below to email the calendar invites to the customer\'s billing email address.', 'easy-reservations' ); ?></p>
 			<p><button type="button" class="button add-to-ical"><?php esc_html_e( 'Email iCalendar Invite', 'easy-reservations' ); ?></button></p>
 			<p><button type="button" class="button add-to-gcal"><?php esc_html_e( 'Email Google Calendar Invite', 'easy-reservations' ); ?></button></p>
+		</div>
+		<?php
+		echo ob_get_clean();
+	}
+
+	/**
+	 * Add the download driving license button for the reservation orders.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_reservation_order_dricing_license_file() {
+		$post = (int) filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
+
+		// Get the license attachment ID.
+		$license_id = get_post_meta( $post, 'reservation_driving_license_attachment_id', true );
+
+		// Get the license URL.
+		$license_url = ersrv_get_attachment_url_from_attachment_id( $license_id );
+
+		ob_start();
+		?>
+		<div class="ersrv-driving-license-download-container">
+			<p><?php esc_html_e( 'Click on the button below to download customer\'s driving license.', 'easy-reservations' ); ?></p>
+			<p><a href="<?php echo esc_url( $license_url ); ?>" class="button" download><?php esc_html_e( 'Download Driving License', 'easy-reservations' ); ?></a></p>
 		</div>
 		<?php
 		echo ob_get_clean();

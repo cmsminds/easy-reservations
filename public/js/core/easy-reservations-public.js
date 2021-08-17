@@ -1117,9 +1117,6 @@ jQuery(document).ready(function ($) {
 		var fd = new FormData();
 		fd.append( 'driving_license_file', driving_license.files[0] );
 
-		console.log( 'driving_license.files[0]', driving_license.files[0] );
-		return false;
-
 		// AJAX action.
 		fd.append( 'action', 'upload_driving_license' );
 
@@ -1151,6 +1148,16 @@ jQuery(document).ready(function ($) {
 				}
 			},
 		} );
+	} );
+
+	/**
+	 * Scroll the user to driving license, in case of error.
+	 */
+	$( document ).on( 'click', '.scroll-to-driving-license', function( evt ) {
+		evt.preventDefault();
+		$( 'html, body' ).animate( {
+			scrollTop: $( '#order_comments_field' ).offset().top
+		}, 2000 );
 	} );
 
 	/**
