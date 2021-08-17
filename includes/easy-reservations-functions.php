@@ -2369,6 +2369,7 @@ if ( ! function_exists( 'ersrv_print_reservation_cancel_button' ) ) {
 		// }
 
 		$button_text  = ersrv_get_plugin_settings( 'ersrv_easy_reservations_receipt_button_text' );
+		$button_text  = 'Request Cancellation';
 		$button_url   = ersrv_download_reservation_receipt_url( $order_id );
 		$button_title = ersrv_download_reservation_receipt_button_title( $order_id );
 		?>
