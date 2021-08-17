@@ -2347,3 +2347,34 @@ if ( ! function_exists( 'ersrv_print_receipt_button' ) ) {
 		<?php
 	}
 }
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_print_reservation_cancel_button' ) ) {
+	/**
+	 * Print the receipt button for the woocommerce order.
+	 *
+	 * @param int      $order_id WooCommerce order ID.
+	 * @param WC_Order $wc_order WooCommerce order object.
+	 * @since 1.0.0
+	 */
+	function ersrv_print_reservation_cancel_button( $order_id, $wc_order ) {
+		// Check if the order status is allowed for receipts.
+		// $display_order_receipt = ersrv_should_display_receipt_button( $order_id );
+
+		// Return the actions if the receipt button should not be displayed.
+		// if ( false === $display_order_receipt ) {
+		// 	return;
+		// }
+
+		$button_text  = ersrv_get_plugin_settings( 'ersrv_easy_reservations_receipt_button_text' );
+		$button_url   = ersrv_download_reservation_receipt_url( $order_id );
+		$button_title = ersrv_download_reservation_receipt_button_title( $order_id );
+		?>
+		<div class="ersrv-reservation-cancellation-container">
+			<a href="<?php echo esc_url( $button_url ); ?>" class="button" title="<?php echo esc_html( $button_title ); ?>"><?php echo esc_html( $button_text ); ?></a>
+		</div>
+		<?php
+	}
+}

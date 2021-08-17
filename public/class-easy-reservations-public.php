@@ -740,11 +740,12 @@ class Easy_Reservations_Public {
 
 		// Print the reservation custom actions now.
 		?>
-		<div clas="ersrv-reservation-actions-container">
+		<div class="ersrv-reservation-actions-container">
 			<h2 class="woocommerce-column__title"><?php esc_html_e( 'Easy Reservations: Actions', 'easy-reservations' ); ?></h2>
 			<?php
 			ersrv_print_calendar_buttons( $order_id, $wc_order ); // Print the calendar button.
 			ersrv_print_receipt_button( $order_id, $wc_order ); // Print the receipt button.
+			ersrv_print_reservation_cancel_button( $order_id, $wc_order ); // Print the reservation order cancellation button.
 			?>
 		</div>
 		<?php
