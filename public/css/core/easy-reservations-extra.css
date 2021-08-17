@@ -538,3 +538,20 @@
 .ersrv-reservation-error {
 	color: red;
 }
+/*  */
+.ersrv-reservation-actions-container .actions{
+    margin-top: 1rem;
+    display: flex;
+    flex-flow: row wrap;
+}
+.ersrv-reservation-actions-container .actions button,
+.ersrv-reservation-actions-container .actions .button{
+    padding: 0.30rem 0.75rem;
+    font-size: 1rem;
+}
+.ersrv-reservation-actions-container .actions div:not(:last-child){
+    margin-right: 5px;
+}
+.ersrv-reservation-actions-container .actions .button:hover{
+    text-decoration: none !important;
+}
