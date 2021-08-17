@@ -438,93 +438,6 @@ class Easy_Reservations_Public {
 	}
 
 	/**
-	 * Add buttons to save reservations to google calendar and icalendar on the thank you page.
-	 *
-	 * @param WC_Order $wc_order WooCommerce Order data.
-	 * @since 1.0.0
-	 */
-	public function ersrv_woocommerce_after_order_details_callback( $wc_order ) {
-		$add_calendar_buttons = ersrv_order_is_reservation( $wc_order );
-		$add_calendar_buttons = true;
-		$order_id             = $wc_order->get_id();
-
-		// Return, if there is no need to add calendar buttons.
-		if ( ! $add_calendar_buttons ) {
-			return;
-		}
-
-		$google_calendar_button_text = __( 'Add to my Google Calendar', 'easy-reservations' );
-		/**
-		 * This hook fires on checkout page to add reservation to calendar.
-		 *
-		 * This filter helps to modify the google calendar button text, which adds the reservation to google calendar.
-		 *
-		 * @param string   $google_calendar_button_text Google calendar button text.
-		 * @param WC_Order $wc_order WooCommerce Order data.
-		 * @return string
-		 * @since 1.0.0
-		 */
-		$google_calendar_button_text = apply_filters( 'ersrv_add_reservation_to_google_calendar_button_text', $google_calendar_button_text, $wc_order );
-
-		$icalendar_button_text = __( 'Add to my iCalendar', 'easy-reservations' );
-		/**
-		 * This hook fires on checkout page to add reservation to calendar.
-		 *
-		 * This filter helps to modify the icalendar button text, which adds the reservation to icalendar.
-		 *
-		 * @param string   $icalendar_button_text Google calendar button text.
-		 * @param WC_Order $wc_order WooCommerce Order data.
-		 * @return string
-		 * @since 1.0.0
-		 */
-		$icalendar_button_text = apply_filters( 'ersrv_add_reservation_to_icalendar_button_text', $icalendar_button_text, $wc_order );
-
-		// Download ical invite link.
-		$download_ical_invite_link = home_url( "/?action=download_ical_invite&order_id={$order_id}" );
-		ob_start();
-		?>
-		<div class="ersrv-reservation-calendars-container" data-oid="<?php echo esc_attr( $order_id ); ?>">
-			<button type="button" class="add-to-gcal"><?php echo wp_kses_post( $google_calendar_button_text ); ?></button>
-			<button type="button" class="add-to-ical" data-goto="<?php echo $download_ical_invite_link; ?>"><?php echo wp_kses_post( $icalendar_button_text ); ?></button>
-		</div>
-		<?php
-		$reservations_calendar_container = ob_get_clean();
-
-		/**
-		 * This hook fires on checkout page.
-		 *
-		 * This hook helps to modify the reservations calendar html container.
-		 *
-		 * @param string   $reservations_calendar_container Holds the reservations calendar html.
-		 * @param string   $google_calendar_button_text Holds the google calendar button text.
-		 * @param string   $icalendar_button_text Holds the icalendar button text.
-		 * @param WC_Order $wc_order WooCommerce Order data.
-		 * @return string
-		 * @since 1.0.0
-		 */
-		echo wp_kses(
-			apply_filters(
-				'ersrv_reservations_calendar_container_html',
-				$reservations_calendar_container,
-				$google_calendar_button_text,
-				$icalendar_button_text,
-				$wc_order
-			),
-			array(
-				'div'    => array(
-					'class'    => array(),
-					'data-oid' => array(),
-				),
-				'button' => array(
-					'type'      => array(),
-					'class'     => array(),
-					'data-goto' => array(),
-				),
-			)
-		);
-	}
-
-	/**
 	 * Customizations on thank you page.
 	 * Send the email to multiple administrators set in plugin settings.
 	 *
@@ -549,25 +462,6 @@ class Easy_Reservations_Public {
 
 		// Block the dates after reservation is successfully filed by the customer.
 		ersrv_block_dates_after_reservation_thankyou( $wc_order );
-
-		// Check if the order status is allowed for receipts.
-		$display_order_receipt = ersrv_should_display_receipt_button( $order_id );
-
-		// Return the actions if the receipt button should not be displayed.
-		if ( false === $display_order_receipt ) {
-			return;
-		}
-
-		$button_text  = ersrv_get_plugin_settings( 'ersrv_easy_reservations_receipt_button_text' );
-		$button_url   = ersrv_download_reservation_receipt_url( $order_id );
-		$button_title = ersrv_download_reservation_receipt_button_title( $order_id );
-
-		// Show the button now.
-		ob_start();
-		?>
-		<a href="<?php echo esc_url( $button_url ); ?>" class="button" title="<?php echo esc_html( $button_title ); ?>"><?php echo esc_html( $button_text ); ?></a>
-		<?php
-		echo wp_kses_post( ob_get_clean() );
 	}
 
 	/**
@@ -828,31 +722,31 @@ class Easy_Reservations_Public {
 	 * @since 1.0.0
 	 */
 	public function ersrv_woocommerce_order_details_after_order_table_callback( $wc_order ) {
-		$order_id = $wc_order->get_id();
-		
-		// Check if the order has reservation items.
-		$is_reservation_order  = ersrv_order_is_reservation( $wc_order );
+		// Return, if this is order received endpoint.
+		if ( is_wc_endpoint_url( 'order-received' ) ) {
+			return;
+		}
 
-		// Return the actions if the order is not reservation order.
+		// Get the WooCommerce order ID.
+		$order_id = $wc_order->get_id();
+
+		// Should the calendar buttons be added.
+		$is_reservation_order = ersrv_order_is_reservation( $wc_order );
+
+		// Return, if the order is not reservation.
 		if ( ! $is_reservation_order ) {
 			return;
 		}
 
-		// Check if the order status is allowed for receipts.
-		$display_order_receipt = ersrv_should_display_receipt_button( $order_id );
-
-		// Return the actions if the receipt button should not be displayed.
-		if ( false === $display_order_receipt ) {
-			return;
-		}
-
-		$button_text  = ersrv_get_plugin_settings( 'ersrv_easy_reservations_receipt_button_text' );
-		$button_url   = ersrv_download_reservation_receipt_url( $order_id );
-		$button_title = ersrv_download_reservation_receipt_button_title( $order_id );
+		// Print the reservation custom actions now.
 		?>
-		<p class="ersrv-reservation-receipt-container">
-			<a href="<?php echo esc_url( $button_url ); ?>" class="button" title="<?php echo esc_html( $button_title ); ?>"><?php echo esc_html( $button_text ); ?></a>
-		</p>
+		<div clas="ersrv-reservation-actions-container">
+			<h2 class="woocommerce-column__title"><?php esc_html_e( 'Easy Reservations: Actions', 'easy-reservations' ); ?></h2>
+			<?php
+			ersrv_print_calendar_buttons( $order_id, $wc_order ); // Print the calendar button.
+			ersrv_print_receipt_button( $order_id, $wc_order ); // Print the receipt button.
+			?>
+		</div>
 		<?php
 	}
 

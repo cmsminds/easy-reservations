@@ -139,6 +139,14 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 				'type'        => 'number',
 			),
 			array(
+				'title'       => __( 'Reservation Cancellation Request "X" Days Before', 'easy-reservations' ),
+				'desc'        => __( 'This will hold the number of days until when the customer\'s are allowed to raise a cancel request for their reservation.', 'easy-reservations' ),
+				'desc_tip'    => true,
+				'id'          => 'ersrv_cancel_reservation_request_before_days',
+				'placeholder' => __( 'E.g.: 2', 'easy-reservations' ),
+				'type'        => 'number',
+			),
+			array(
 				'name'     => __( 'Datepicker Date Fomat', 'easy-reservations' ),
 				'type'     => 'select',
 				'options'  => array(
