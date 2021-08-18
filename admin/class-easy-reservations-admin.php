@@ -891,7 +891,7 @@ class Easy_Reservations_Admin {
 		$line_item->update_meta_data( 'Adult Subtotal', $item_subtotal ); // Update the adult subtotal.
 		$line_item->update_meta_data( 'Kids Count', $kid_count ); // Update the kids count.
 		$line_item->update_meta_data( 'Kids Subtotal', $kids_subtotal ); // Update the kids subtotal.
-		$line_item->update_meta_data( 'Security Amount', $security_amt ); // Update the security subtotal.
+		$line_item->update_meta_data( 'Security Amount', $security_subtotal ); // Update the security subtotal.
 
 		// Update the amenities to order item meta.
 		if ( ! empty( $amenities ) && is_array( $amenities ) ) {
