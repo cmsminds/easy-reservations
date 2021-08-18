@@ -1434,7 +1434,7 @@ class Easy_Reservations_Admin {
 		 * @param int $line_item_id WooCommerce order line item id.
 		 * @since 1.0.0
 		 */
-		do_action( 'ersrv_after_reservation_cancellation_request_deteled', $line_item_id );
+		do_action( 'ersrv_after_reservation_cancellation_request_deleted', $line_item_id );
 
 		// Send the response.
 		$response = array(

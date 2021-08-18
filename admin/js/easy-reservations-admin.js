@@ -1089,6 +1089,9 @@ jQuery( document ).ready( function( $ ) {
 					// Unblock the element.
 					unblock_element( this_button.parents( 'tr' ) );
 
+					// Remove the row.
+					this_button.parents( 'tr' ).remove();
+
 					// Show the notification.
 					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
 				}

@@ -29,6 +29,9 @@ class Easy_Reservations_Custom_Email_Manager {
 		add_action( 'ersrv_email_contact_owner_request', array( &$this, 'ersrv_ersrv_email_contact_owner_request_callback' ) );
 		add_action( 'ersrv_send_reservation_reminder_email', array( &$this, 'ersrv_ersrv_send_reservation_reminder_email_callback' ), 10, 2 );
 		add_action( 'ersrv_email_after_reservation_cancellation_request', array( &$this, 'ersrv_ersrv_email_after_reservation_cancellation_request_callback' ), 10, 2 );
+		add_action( 'ersrv_after_reservation_cancellation_request_approved', array( &$this, 'ersrv_ersrv_after_reservation_cancellation_request_approved_callback' ) );
+		add_action( 'ersrv_after_reservation_cancellation_request_declined', array( &$this, 'ersrv_ersrv_after_reservation_cancellation_request_declined_callback' ) );
+		add_action( 'ersrv_after_reservation_cancellation_request_deleted', array( &$this, 'ersrv_ersrv_after_reservation_cancellation_request_deleted_callback' ) );
 		add_filter( 'woocommerce_email_classes', array( &$this, 'ersrv_woocommerce_email_classes_callback' ) );
 	}
 
@@ -83,11 +86,68 @@ class Easy_Reservations_Custom_Email_Manager {
 		 *
 		 * This hook is helpful in managing actions while sending emails.
 		 *
-		 * @param object $line_item_id WooCommerce line item id.
-		 * @param int    $order_id WooCommerce order ID.
+		 * @param int $line_item_id WooCommerce line item id.
+		 * @param int $order_id WooCommerce order ID.
 		 * @since 1.0.0 
 		 */
 		do_action( 'ersrv_send_reservation_cancellation_request_notification', $line_item_id, $order_id );
+	}
+
+	/**
+	 * Send notification for the reservation cancellation request approval to the customer.
+	 *
+	 * @param object $line_item_id WooCommerce line item id.
+	 * @since 1.0.0
+	 */
+	public function ersrv_ersrv_after_reservation_cancellation_request_approved_callback( $line_item_id ) {
+		new WC_Emails();
+		/**
+		 * This hook fires when there is cancellation request approval for any reservation.
+		 *
+		 * This hook is helpful in managing actions while sending emails.
+		 *
+		 * @param int $line_item_id WooCommerce line item id.
+		 * @since 1.0.0 
+		 */
+		do_action( 'ersrv_send_reservation_cancellation_request_approved_notification', $line_item_id );
+	}
+
+	/**
+	 * Send notification for the reservation cancellation request declinal to the customer.
+	 *
+	 * @param object $line_item_id WooCommerce line item id.
+	 * @since 1.0.0
+	 */
+	public function ersrv_ersrv_after_reservation_cancellation_request_declined_callback( $line_item_id ) {
+		new WC_Emails();
+		/**
+		 * This hook fires when there is cancellation request declinal for any reservation.
+		 *
+		 * This hook is helpful in managing actions while sending emails.
+		 *
+		 * @param int $line_item_id WooCommerce line item id.
+		 * @since 1.0.0 
+		 */
+		do_action( 'ersrv_send_reservation_cancellation_request_declined_notification', $line_item_id );
+	}
+
+	/**
+	 * Send notification for the reservation cancellation request deletion to the customer.
+	 *
+	 * @param object $line_item_id WooCommerce line item id.
+	 * @since 1.0.0
+	 */
+	public function ersrv_ersrv_after_reservation_cancellation_request_deleted_callback( $line_item_id ) {
+		new WC_Emails();
+		/**
+		 * This hook fires when there is cancellation request deletion for any reservation.
+		 *
+		 * This hook is helpful in managing actions while sending emails.
+		 *
+		 * @param int $line_item_id WooCommerce line item id.
+		 * @since 1.0.0 
+		 */
+		do_action( 'ersrv_send_reservation_cancellation_request_deleted_notification', $line_item_id );
 	}
 
 	/**
@@ -109,6 +169,18 @@ class Easy_Reservations_Custom_Email_Manager {
 		// Reservation cancellation request email.
 		require_once 'class-reservation-cancellation-request-email.php'; // Require the class file.
 		$email_classes['Reservation_Cancellation_Request_Email'] = new Reservation_Cancellation_Request_Email(); // Put in the classes into existing classes.
+
+		// Reservation cancellation request deleted email.
+		require_once 'class-reservation-cancellation-request-deleted-email.php'; // Require the class file.
+		$email_classes['Reservation_Cancellation_Request_Deleted_Email'] = new Reservation_Cancellation_Request_Deleted_Email(); // Put in the classes into existing classes.
+
+		// Reservation cancellation request declined email.
+		require_once 'class-reservation-cancellation-request-declined-email.php'; // Require the class file.
+		$email_classes['Reservation_Cancellation_Request_Declined_Email'] = new Reservation_Cancellation_Request_Declined_Email(); // Put in the classes into existing classes.
+
+		// Reservation cancellation request approved email.
+		require_once 'class-reservation-cancellation-request-approved-email.php'; // Require the class file.
+		$email_classes['Reservation_Cancellation_Request_Approved_Email'] = new Reservation_Cancellation_Request_Approved_Email(); // Put in the classes into existing classes.
 
 		return $email_classes;
 	}
