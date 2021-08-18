@@ -35,8 +35,12 @@ table{
     margin-bottom: 0px !important;
 }
 .non-clickable {
-	pointer-events: none;
+	pointer-events: none !important;
 	opacity: 0.5;
+}
+.non-clickable *::after, 
+.non-clickable *::before{
+    pointer-events: none !important;
 }
 h1:not(.site-title):before, h2:before,
 .page .entry-header,
