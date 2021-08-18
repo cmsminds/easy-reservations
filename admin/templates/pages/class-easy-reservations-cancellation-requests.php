@@ -141,7 +141,7 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 
 			// Get the cancellation status.
 			$cancellation_status         = wc_get_order_item_meta( $line_item_id, 'ersrv_cancellation_request_status', true );
-			$cancellation_status         = ( ! empty( $cancellation_status ) ) ? wcfirst( $cancellation_status ) : __( 'Pending', 'easy-reservations' );
+			$cancellation_status         = ( ! empty( $cancellation_status ) ) ? ucfirst( $cancellation_status ) : __( 'Pending', 'easy-reservations' );
 			$temp['cancellation_status'] = $cancellation_status;
 
 			// Push all the data into an array.
