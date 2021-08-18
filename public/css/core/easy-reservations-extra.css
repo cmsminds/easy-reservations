@@ -637,7 +637,7 @@
     width: auto;
     height: auto;
     position: absolute;
-    top: 20px;
+    top: calc(100% + 16px);
     left: 20px;
     opacity: 0;
     color: #fff;
@@ -653,8 +653,8 @@
 .tooltip::before {
     content: "";
     position: absolute;
-    top: 15px;
-    left: calc(160px / 2);
+    top: calc(100% + 10px);
+    left: calc(180px / 2);
     right: 0px;
     height: 12px;
     width: 12px;
