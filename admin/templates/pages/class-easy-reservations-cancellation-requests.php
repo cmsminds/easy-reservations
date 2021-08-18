@@ -27,25 +27,24 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	 * @return void
 	 */
 	public function prepare_items() {
-		$columns  = $this->get_columns();
-		$hidden   = $this->get_hidden_columns();
-		$sortable = $this->get_sortable_columns();
-		$data     = $this->table_data();
-
-		$perPage     = 10;
-		$currentPage = $this->get_pagenum();
-		$totalItems  = ( ! empty( $data ) ) ? count( $data ) : 0;
+		$columns      = $this->get_columns();
+		$hidden       = $this->get_hidden_columns();
+		$sortable     = $this->get_sortable_columns();
+		$data         = $this->table_data();
+		$per_page     = 10;
+		$current_page = $this->get_pagenum();
+		$total_items  = ( ! empty( $data ) ) ? count( $data ) : 0;
 
 		$this->set_pagination_args(
 			array(
-				'total_items' => $totalItems,
-				'per_page'    => $perPage
+				'total_items' => $total_items,
+				'per_page'    => $per_page
 			)
 		);
 
 		// Slice the data array for pagination.
 		if ( ! empty( $data ) ) {
-			$data = array_slice( $data, ( ( $currentPage - 1 ) * $perPage ), $perPage );
+			$data = array_slice( $data, ( ( $current_page - 1 ) * $per_page ), $per_page );
 		}
 
 		$this->_column_headers = array( $columns, $hidden, $sortable );

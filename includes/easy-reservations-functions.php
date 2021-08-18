@@ -2383,7 +2383,7 @@ if ( ! function_exists( 'ersrv_print_reservation_cancel_button' ) ) {
 		$button_text       = ersrv_get_plugin_settings( 'ersrv_cancel_reservations_button_text' );
 		?>
 		<div class="ersrv-reservation-cancellation-container" data-order="<?php echo esc_attr( $order_id ); ?>" data-item="<?php echo esc_attr( $item_id ); ?>">
-			<button type="button" class="button <?php echo ( ! empty( $already_requested ) ) ? 'non-clickable' : ''; ?>" title="<?php echo esc_html( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></a>
+			<button type="button" data-tooltip="This is Notification...." class="tooltip button <?php echo ( ! empty( $already_requested ) ) ? 'non-clickable' : ''; ?>" title="<?php echo esc_html( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></a>
 		</div>
 		<?php
 	}
