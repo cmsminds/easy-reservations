@@ -39,7 +39,6 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 		$sections = array_merge(
 			array( '' => __( 'General', 'easy-reservations' ) ),
 			array( 'reservation_calendar' => __( 'Reservation Calendar', 'easy-reservations' ) ),
-			array( 'quickbooks' => __( 'Quickbooks', 'easy-reservations' ) ),
 			array( 'invoice_receipts' => __( 'Invoice Receipts', 'easy-reservations' ) ),
 			array( 'cancel_reservations' => __( 'Cancel Reservations', 'easy-reservations' ) ),
 		);
@@ -81,10 +80,6 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 		switch ( $current_section ) {
 			case 'reservation_calendar':
 				$settings = $this->ersrv_reservation_calendar_settings_fields();
-				break;
-
-			case 'quickbooks':
-				$settings = $this->ersrv_quickbooks_settings_fields();
 				break;
 
 			case 'emails':
@@ -232,44 +227,6 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 		 * @return array
 		 */
 		return apply_filters( 'ersrv_general_section_plugin_settings', $fields );
-	}
-
-	/**
-	 * Return the fields for Quickbooks settings.
-	 *
-	 * @return array
-	 */
-	public function ersrv_quickbooks_settings_fields() {
-		$fields = array(
-			array(
-				'title' => __( 'Quickbooks Settings', 'easy-reservations' ),
-				'type'  => 'title',
-				'desc'  => '',
-				'id'    => 'ersrv_quickbooks_settings',
-			),
-			array(
-				'title'       => __( 'API Key', 'easy-reservations' ),
-				'desc'        => __( 'This holds the quickbooks account API key.', 'easy-reservations' ),
-				'desc_tip'    => true,
-				'id'          => 'ersrv_quickbooks_api_key',
-				'placeholder' => __( 'XXX XXX XXX', 'easy-reservations' ),
-				'type'        => 'text',
-			),
-			array(
-				'type' => 'sectionend',
-				'id'   => 'ersrv_quickbooks_settings',
-			),
-		);
-
-		/**
-		 * This hook fires on the admin settings page - general section.
-		 *
-		 * This account help in managing general section plugin settings fields.
-		 *
-		 * @param array $fields Holds the fields array.
-		 * @return array
-		 */
-		return apply_filters( 'ersrv_quickbooks_section_plugin_settings', $fields );
 	}
 
 	/**

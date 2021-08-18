@@ -131,9 +131,9 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 			ob_start();
 			?>
 			<div class="ersrv-cancellation-request-actions" data-item="<?php echo esc_html( $line_item_id ); ?>">
-				<button type="button" class="button button-secondary approve"><span class="dashicons dashicons-saved"></span></button>
-				<button type="button" class="button button-secondary decline"><span class="dashicons dashicons-no"></span></button>
-				<button type="button" class="button button-secondary delete"><span class="dashicons dashicons-trash"></span></button>
+				<button data-tooltip="<?php esc_html_e( 'Approve this cancellation request.', 'easy-reservations' ); ?>" type="button" class="tooltip button button-secondary approve"><span class="dashicons dashicons-saved"></span></button>
+				<button data-tooltip="<?php esc_html_e( 'Approve this cancellation request.', 'easy-reservations' ); ?>" type="button" class="tooltip button button-secondary decline"><span class="dashicons dashicons-no"></span></button>
+				<button data-tooltip="<?php esc_html_e( 'Approve this cancellation request.', 'easy-reservations' ); ?>" type="button" class="tooltip button button-secondary delete"><span class="dashicons dashicons-trash"></span></button>
 			</div>
 			<?php
 			$temp['actions'] = ob_get_clean();
