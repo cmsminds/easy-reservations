@@ -171,6 +171,9 @@ class Easy_Reservations {
 		$this->loader->add_action( 'woocommerce_update_option', $plugin_admin, 'ersrv_woocommerce_update_option_callback' );
 		$this->loader->add_action( 'wp_ajax_add_reservation_to_gcal', $plugin_admin, 'ersrv_add_reservation_to_gcal_callback' );
 		$this->loader->add_action( 'wp_ajax_add_reservation_to_ical', $plugin_admin, 'ersrv_add_reservation_to_ical_callback' );
+		$this->loader->add_action( 'wp_ajax_delete_reservation_cancellation_request', $plugin_admin, 'ersrv_delete_reservation_cancellation_request_callback' );
+		$this->loader->add_action( 'wp_ajax_decline_reservation_cancellation_request', $plugin_admin, 'ersrv_decline_reservation_cancellation_request_callback' );
+		$this->loader->add_action( 'wp_ajax_approve_reservation_cancellation_request', $plugin_admin, 'ersrv_approve_reservation_cancellation_request_callback' );
 	}
 
 	/**

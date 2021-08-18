@@ -577,6 +577,13 @@ if ( ! function_exists( 'ersrv_get_admin_script_vars' ) ) {
 			$vars['reservation_customer_postcode_err_msg']        = __( 'Postcode is required.', 'easy-reservations' );
 		}
 
+		// Add the custom message to the array on cancellation requests page.
+		if ( ! is_null( $page ) && 'reservation-calcellation-requests' === $page ) {
+			$vars['delete_reservation_cancellation_cnf_message']  = __( 'Click OK to confirm cancellation request deletion. This action won\'t be undone.', 'easy-reservations' );
+			$vars['decline_reservation_cancellation_cnf_message'] = __( 'Click OK to confirm cancellation request declination. This action won\'t be undone.', 'easy-reservations' );
+			$vars['approve_reservation_cancellation_cnf_message'] = __( 'Click OK to confirm cancellation request approval. This action won\'t be undone.', 'easy-reservations' );
+		}
+
 		// Date format.
 		$vars['date_format'] = ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' );
 
@@ -2424,5 +2431,23 @@ if ( ! function_exists( 'ersrv_reservation_eligible_for_cancellation' ) ) {
 		}
 
 		return true;
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_readable_order_status' ) ) {
+	/**
+	 * Get the human readable order status string.
+	 *
+	 * @param string $status WooCommerce order status.
+	 * @return string
+	 * @since 1.0.0
+	 */
+	function ersrv_get_readable_order_status( $status ) {
+		$valid_stuses = wc_get_order_statuses();
+
+		return ( ! empty( $valid_stuses[ "wc-{$status}" ] ) ) ? $valid_stuses[ "wc-{$status}" ] : '';
 	}
 }

@@ -59,10 +59,13 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'date_time' => __( 'Date & Time', 'easy-reservations' ),
-			'item'      => __( 'Item', 'easy-reservations' ),
-			'order_id'  => __( 'Order ID', 'easy-reservations' ),
-			'actions'   => __( 'Actions', 'easy-reservations' ),
+			'date_time'           => __( 'DateTime', 'easy-reservations' ),
+			'item'                => __( 'Item', 'easy-reservations' ),
+			'item_subtotal'       => __( 'Item Subtotal', 'easy-reservations' ),
+			'order_id'            => __( 'Order', 'easy-reservations' ),
+			'order_status'        => __( 'Order Status', 'easy-reservations' ),
+			'actions'             => __( 'Actions', 'easy-reservations' ),
+			'cancellation_status' => __( 'Cancellation Status', 'easy-reservations' ),
 		);
 
 		return $columns;
@@ -84,50 +87,68 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	* @return array
 	*/
 	private function table_data() {
-		$uploaded_resumes = get_option( 'vs-submitted-resumes' );
-		$data             = array();
+		global $wpdb;
+		$wc_order_items_meta_table   = "{$wpdb->prefix}woocommerce_order_itemmeta";
+		$cancellation_requests_query = "SELECT `order_item_id` FROM `{$wc_order_items_meta_table}` WHERE `meta_key` = 'ersrv_cancellation_request'";
+		$cancellation_requests       = $wpdb->get_results( $cancellation_requests_query );
 
-		if ( ! empty( $uploaded_resumes ) && is_array( $uploaded_resumes ) ) {
-			$_upload     = wp_upload_dir();
-			$_upload_dir = $_upload['basedir'];
-			$_upload_dir = "{$_upload_dir}/vns-resumes/";
-			$_upload_dir_url = $_upload['baseurl'] . '/vns-resumes/';
+		// Return blank data, if there is no cancellation request.
+		if ( empty( $cancellation_requests ) || ! is_array( $cancellation_requests ) ) {
+			return array();
+		}
 
-			foreach ( $uploaded_resumes as $key => $resume ) {
-				// Actions.
-				ob_start();
-				?>
-				<div class="vs-resume-actions">
-					<?php var_dump( $_upload_dir_url ); ?>
-					<form action="" method="POST">
-						<input type="submit" class="button button-secondary" name="vs-delete-submitted-resume" value="<?php esc_html_e( 'Delete', 'easy-reservations' ); ?>">
-						<input type="hidden" name="file_key" value="<?php echo $key; ?>" />
-						<input type="hidden" name="file_name" value="<?php echo basename( $resume['file'] ); ?>" />
-					</form>
-					<a style="margin-top: 50px;" href="<?php echo esc_url( $_upload_dir_url . basename( $resume['file'] ) ); ?>" class="button button-secondary test" download><?php esc_html_e( 'Download Resume 123', 'easy-reservations' ); ?></a>
-				</div>
-				<?php
-				$actions = ob_get_clean();
+		// Iterate through the requests to prepare the data array.
+		foreach ( $cancellation_requests as $cancellation_request_item_id ) {
+			$line_item_id = $cancellation_request_item_id->order_item_id;
+			$order_id     = wc_get_order_id_by_order_item_id( $line_item_id );
+			$wc_order     = wc_get_order( $order_id );
 
-				// File preview.
-				ob_start();
-				?>
-				<div style="height: 15rem;" id="<?php echo "vs_preview_file_{$key}" ?>"></div>
-				<script>PDFObject.embed("<?php echo esc_attr( $_upload_dir_url . basename( $resume['file'] ) ); ?>", "#<?php echo "vs_preview_file_{$key}" ?>");</script>
-				<?php
-				$file_preview = ob_get_clean();
+			// Get the date time of cancellation request.
+			$cancellation_request_datetime = wc_get_order_item_meta( $line_item_id, 'ersrv_cancellation_request_time', true );
+			$temp['date_time']             = gmdate( ersrv_get_php_date_format() . ' H:i', $cancellation_request_datetime );
 
-				$data[] = array(
-					'date_time' => date( "F jS, Y, g:i A", strtotime( $resume['date_time'] ) ),
-					'email'     => $resume['email'],
-					'file'      => $file_preview,
-					'actions'   => $actions,
-				);
-			}
+			// Get the item details now.
+			$product_id     = wc_get_order_item_meta( $line_item_id, '_product_id', true );
+			$product_name   = get_the_title( $product_id );
+			$product_string = "#{$product_id} {$product_name}";
+			$temp['item']   = '<a href="' . get_edit_post_link( $product_id ) . '" title="' . $product_string . '">' . $product_string . '</a>';
+
+			// Get the item subtotal.
+			$item_subtotal         = (float) wc_get_order_item_meta( $line_item_id, '_line_subtotal', true );
+			$temp['item_subtotal'] = wc_price( $item_subtotal );
+
+			// Get the order data.
+			$customer_first_name = get_post_meta( $order_id, '_billing_first_name', true );
+			$customer_last_name  = get_post_meta( $order_id, '_billing_last_name', true );
+			$order_string        = "#{$order_id} {$customer_first_name} {$customer_last_name}";
+			$temp['order_id']    = '<a href="' . get_edit_post_link( $order_id ) . '" title="' . $order_string . '">' . $order_string . '</a>';
+
+			// Get the order status.
+			$order_status         = $wc_order->get_status();
+			$status_string        = ersrv_get_readable_order_status( $order_status );
+			$temp['order_status'] = '<mark class="order-status status-' . $order_status . ' tips"><span>' . $status_string . '</span></mark>';
+
+			// Actions.
+			ob_start();
+			?>
+			<div class="ersrv-cancellation-request-actions" data-item="<?php echo esc_html( $line_item_id ); ?>">
+				<button type="button" class="button button-secondary approve"><?php esc_html_e( 'Approve', 'easy-reservations' ); ?></button>
+				<button type="button" class="button button-secondary decline"><?php esc_html_e( 'Decline', 'easy-reservations' ); ?></button>
+				<button type="button" class="button button-secondary delete"><?php esc_html_e( 'Delete', 'easy-reservations' ); ?></button>
+			</div>
+			<?php
+			$temp['actions'] = ob_get_clean();
+
+			// Get the cancellation status.
+			$cancellation_status         = wc_get_order_item_meta( $line_item_id, 'ersrv_cancellation_request_status', true );
+			$cancellation_status         = ( ! empty( $cancellation_status ) ) ? wcfirst( $cancellation_status ) : __( 'Pending', 'easy-reservations' );
+			$temp['cancellation_status'] = $cancellation_status;
+
+			// Push all the data into an array.
+			$data[] = $temp;
 		}
 
 		return $data;
-
 	}
 
 	/**
@@ -136,9 +157,18 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	 * @since 3.1.0
 	 */
 	public function no_items() {
+		$no_items_message = __( 'There are no cancellation requests yet!', 'easy-reservations' );
 
-		esc_html_e( 'No submitted resumes found.', 'easy-reservations' );
-		
+		/**
+		 * This filter runs on the admin listing page of cancellation requests.
+		 *
+		 * This filter helps modifying the message that is displayed when there are no cancellation requests.
+		 *
+		 * @param string $no_items_message No items available message.
+		 * @return string
+		 * @since 1.0.0
+		 */
+		echo apply_filters( 'ersrv_no_cancellation_requests_found_message', $no_items_message );
 	}
 
 	/**
@@ -150,17 +180,18 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	 * @return mixed
 	 */
 	public function column_default( $item, $column_name ) {
-		
 		switch( $column_name ) {
 			case 'date_time':
-			case 'email':
-			case 'file':
+			case 'item':
+			case 'item_subtotal':
+			case 'order_id':
+			case 'order_status':
 			case 'actions':
+			case 'cancellation_status':
 				return $item[ $column_name ];
 
 			default:
-				return print_r( $item, true ) ;
+				return '--';
 		}
-
 	}
 }

@@ -36,6 +36,9 @@ jQuery( document ).ready( function( $ ) {
 	var toast_success_heading                        = ERSRV_Admin_Script_Vars.toast_success_heading;
 	var toast_error_heading                          = ERSRV_Admin_Script_Vars.toast_error_heading;
 	var toast_notice_heading                         = ERSRV_Admin_Script_Vars.toast_notice_heading;
+	var delete_reservation_cancellation_cnf_message  = ERSRV_Admin_Script_Vars.delete_reservation_cancellation_cnf_message;
+	var decline_reservation_cancellation_cnf_message = ERSRV_Admin_Script_Vars.decline_reservation_cancellation_cnf_message;
+	var approve_reservation_cancellation_cnf_message = ERSRV_Admin_Script_Vars.approve_reservation_cancellation_cnf_message;
 	var new_reservation_item_reserved_dates          = [];
 	var post_type                                    = ersrv_get_query_string_parameter_value( 'post_type' );
 
@@ -1037,6 +1040,150 @@ jQuery( document ).ready( function( $ ) {
 				if ( 'icalendar-email-sent' === response.data.code ) {
 					// Unblock the element.
 					unblock_element( this_button );
+
+					// Show the notification.
+					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
+				}
+			},
+		} );
+	} );
+
+	/**
+	 * Delete the reservation cancellation request.
+	 */
+	$( document ).on( 'click', '.ersrv-cancellation-request-actions .delete', function() {
+		var this_button  = $( this );
+		var line_item_id = this_button.parent().data( 'item' );
+		var confirmation = confirm( delete_reservation_cancellation_cnf_message );
+
+		// Return false, if the line item is invalid.
+		if ( -1 === is_valid_number( line_item_id ) ) {
+			return false;
+		}
+
+		// Return false, if the admin declines the action.
+		if ( false === confirmation ) {
+			return false;
+		}
+
+		// Block the row.
+		block_element( this_button.parents( 'tr' ) );
+
+		// Send the AJAX now.
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'delete_reservation_cancellation_request',
+				line_item_id: line_item_id,
+			},
+			success: function ( response ) {
+				// Check for invalid ajax request.
+				if ( 0 === response ) {
+					console.log( 'easy reservations: invalid ajax request' );
+					return false;
+				}
+
+				if ( 'reservation-cancellation-request-deleted' === response.data.code ) {
+					// Unblock the element.
+					unblock_element( this_button.parents( 'tr' ) );
+
+					// Show the notification.
+					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
+				}
+			},
+		} );
+	} );
+
+	/**
+	 * Decline the reservation cancellation request.
+	 */
+	 $( document ).on( 'click', '.ersrv-cancellation-request-actions .decline', function() {
+		var this_button  = $( this );
+		var line_item_id = this_button.parent().data( 'item' );
+		var confirmation = confirm( decline_reservation_cancellation_cnf_message );
+
+		// Return false, if the line item is invalid.
+		if ( -1 === is_valid_number( line_item_id ) ) {
+			return false;
+		}
+
+		// Return false, if the admin declines the action.
+		if ( false === confirmation ) {
+			return false;
+		}
+
+		// Block the row.
+		block_element( this_button.parents( 'tr' ) );
+
+		// Send the AJAX now.
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'decline_reservation_cancellation_request',
+				line_item_id: line_item_id,
+			},
+			success: function ( response ) {
+				// Check for invalid ajax request.
+				if ( 0 === response ) {
+					console.log( 'easy reservations: invalid ajax request' );
+					return false;
+				}
+
+				if ( 'reservation-cancellation-request-declined' === response.data.code ) {
+					// Unblock the element.
+					unblock_element( this_button.parents( 'tr' ) );
+
+					// Show the notification.
+					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
+				}
+			},
+		} );
+	} );
+
+	/**
+	 * Approve the reservation cancellation request.
+	 */
+	 $( document ).on( 'click', '.ersrv-cancellation-request-actions .approve', function() {
+		var this_button  = $( this );
+		var line_item_id = this_button.parent().data( 'item' );
+		var confirmation = confirm( approve_reservation_cancellation_cnf_message );
+
+		// Return false, if the line item is invalid.
+		if ( -1 === is_valid_number( line_item_id ) ) {
+			return false;
+		}
+
+		// Return false, if the admin declines the action.
+		if ( false === confirmation ) {
+			return false;
+		}
+
+		// Block the row.
+		block_element( this_button.parents( 'tr' ) );
+
+		// Send the AJAX now.
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'approve_reservation_cancellation_request',
+				line_item_id: line_item_id,
+			},
+			success: function ( response ) {
+				// Check for invalid ajax request.
+				if ( 0 === response ) {
+					console.log( 'easy reservations: invalid ajax request' );
+					return false;
+				}
+
+				if ( 'reservation-cancellation-request-approved' === response.data.code ) {
+					// Unblock the element.
+					unblock_element( this_button.parents( 'tr' ) );
 
 					// Show the notification.
 					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );

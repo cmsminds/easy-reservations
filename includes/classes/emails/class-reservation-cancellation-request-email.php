@@ -2,12 +2,12 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
- * Reservation item - reminder email class.
+ * Reservation cancellation request email class.
  *
  * @since 1.0.0
  * @extends \WC_Email
  */
-class Reservation_Reminder_Email extends WC_Email {
+class Reservation_Cancellation_Request_Email extends WC_Email {
 	/**
 	 * Set email defaults.
 	 *
@@ -15,22 +15,22 @@ class Reservation_Reminder_Email extends WC_Email {
 	 */
 	public function __construct() {
 		// Email slug we can use to filter other data.
-		$this->id          = 'reservation_reminder_email';
-		$this->title       = __( 'Easy Reservations: Reservation Reminder Email', 'easy-reservations' );
-		$this->description = __( 'An email sent to the item customers about their reservations.', 'easy-reservations' );
+		$this->id          = 'reservation_cancellation_request_email';
+		$this->title       = __( 'Easy Reservations: Reservation Cancellation Request Email', 'easy-reservations' );
+		$this->description = __( 'An email sent to the site administrator when any customer raises cancellation request.', 'easy-reservations' );
 
 		// For admin area to let the user know we are sending this email to customers.
-		$this->customer_email = true;
-		$this->heading        = __( 'Reservation Reminder', 'easy-reservations' );
+		$this->customer_email = false;
+		$this->heading        = __( 'Reservation Cancellation Request', 'easy-reservations' );
 
 		// translators: placeholder is {blogname}, a variable that will be substituted when email is sent out.
-		$this->subject = sprintf( _x( '[%s] Reservation Reminder', 'default email subject for reservation reminder sent to the customers', 'easy-reservations' ), '{blogname}' );
+		$this->subject = sprintf( _x( '[%s] Reservation Cancellation Request', 'default email subject for reservation cancellation requests being sent to the adminstrator', 'easy-reservations' ), '{blogname}' );
 
 		// Template paths.
-		$this->template_html  = 'reservation-reminder-html.php';
-		$this->template_plain = 'plain/reservation-reminder-plain.php';
+		$this->template_html  = 'reservation-cancellation-request-html.php';
+		$this->template_plain = 'plain/reservation-cancellation-request-plain.php';
 
-		add_action( 'ersrv_send_reservation_reminder_notification', array( $this, 'ersrv_ersrv_send_reservation_reminder_notification_callback' ), 10, 2 );
+		add_action( 'ersrv_send_reservation_cancellation_request_notification', array( $this, 'ersrv_ersrv_send_reservation_cancellation_request_notification_callback' ), 10, 2 );
 
 		// Call parent constructor.
 		parent::__construct();
@@ -45,16 +45,16 @@ class Reservation_Reminder_Email extends WC_Email {
 	/**
 	 * This callback helps fire the email notification.
 	 *
-	 * @param object $line_item WooCommerce line item object.
+	 * @param object $line_item_id WooCommerce line item ID.
 	 * @param int    $order_id WooCommerce order ID.
 	 * @since 1.0.0
 	 */
-	public function ersrv_ersrv_send_reservation_reminder_notification_callback( $line_item, $order_id ) {
+	public function ersrv_ersrv_send_reservation_cancellation_request_notification_callback( $line_item_id, $order_id ) {
 		// Get the order.
 		$wc_order = wc_get_order( $order_id );
 
 		// Email data object.
-		$this->object = $this->create_object( $line_item, $order_id );
+		$this->object = $this->create_object( $line_item_id, $order_id );
 
 		// Fire the notification now.
 		$this->send(
@@ -69,12 +69,12 @@ class Reservation_Reminder_Email extends WC_Email {
 	/**
 	 * Create the data object that will be used in the template.
 	 *
-	 * @param object $line_item WooCommerce line item object.
+	 * @param object $line_item_id WooCommerce line item ID.
 	 * @param int    $order_id WooCommerce order ID.
 	 * @return stdClass
 	 * @since 1.0.0
 	 */
-	public static function create_object( $line_item, $order_id ) {
+	public static function create_object( $line_item_id, $order_id ) {
 		global $wpdb;
 		$item_object = new stdClass();
 
@@ -98,38 +98,27 @@ class Reservation_Reminder_Email extends WC_Email {
 		);
 
 		// Order view URL.
-		$item_object->order_view_url = $wc_order->get_view_order_url();
+		$item_object->order_edit_url = get_edit_post_link( $order_id );
 
 		// Line item.
-		$product_id   = $line_item->get_product_id();
-		$variation_id = $line_item->get_variation_id();
-		$item_id      = $line_item->get_id();
-		$prod_id      = ersrv_product_id( $product_id, $variation_id );
+		$product_id = wc_get_order_item_meta( $line_item_id, '_product_id', true );
 
 		// Prepare the item object.
 		$item_object->item = array(
-			'item'               => get_the_title( $prod_id ),
-			'subtotal'           => $line_item->get_total(),
-			'checkin_date'       => wc_get_order_item_meta( $item_id, 'Checkin Date', true ),
-			'checkout_date'      => wc_get_order_item_meta( $item_id, 'Checkout Date', true ),
-			'adult_count'        => wc_get_order_item_meta( $item_id, 'Adult Count', true ),
-			'adult_subtotal'     => wc_get_order_item_meta( $item_id, 'Adult Subtotal', true ),
-			'kids_count'         => wc_get_order_item_meta( $item_id, 'Kids Count', true ),
-			'kids_subtotal'      => wc_get_order_item_meta( $item_id, 'Kids Subtotal', true ),
-			'security'           => wc_get_order_item_meta( $item_id, 'Security Amount', true ),
-			'amenities_subtotal' => wc_get_order_item_meta( $item_id, 'Amenities Subtotal', true ),
+			'item'     => get_the_title( $product_id ),
+			'subtotal' => (float) wc_get_order_item_meta( $line_item_id, '_line_subtotal', true ),
 		);
 
 		/**
-		 * This filter is fired when sending reminder emails by the cron.
+		 * This filter is fired when sending cancellation requests email on customer request.
 		 *
-		 * This filter helps managing the item data in the reminder email template.
+		 * This filter helps managing the item data in the cancellation request email template.
 		 *
 		 * @param stdClass $item_object Data object.
 		 * @return stdClass
 		 * @since 1.0.0
 		 */
-		return apply_filters( 'ersrv_reminder_email_order_object', $item_object );
+		return apply_filters( 'ersrv_reservation_cancellation_request_email_order_object', $item_object );
 	}
 
 	/**

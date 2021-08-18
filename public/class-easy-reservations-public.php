@@ -1817,6 +1817,7 @@ class Easy_Reservations_Public {
 		// Update item meta data.
 		wc_update_order_item_meta( $item_id, 'ersrv_cancellation_request', 1 );
 		wc_update_order_item_meta( $item_id, 'ersrv_cancellation_request_time', time() );
+		wc_update_order_item_meta( $item_id, 'ersrv_cancellation_request_status', 'pending' );
 
 		/**
 		 * This hook fires on the my account view order page.

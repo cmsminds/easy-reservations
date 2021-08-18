@@ -1402,4 +1402,126 @@ class Easy_Reservations_Admin {
 		wp_send_json_success( $response );
 		wp_die();
 	}
+
+	/**
+	 * AJAX to delete reservation cancellation request.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_delete_reservation_cancellation_request_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+		// Exit, if the action mismatches.
+		if ( empty( $action ) || 'delete_reservation_cancellation_request' !== $action ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Posted data.
+		$line_item_id = (int) filter_input( INPUT_POST, 'line_item_id', FILTER_SANITIZE_NUMBER_INT );
+
+		// Delete the request.
+		wc_delete_order_item_meta( $item_id, 'ersrv_cancellation_request' );
+		wc_delete_order_item_meta( $item_id, 'ersrv_cancellation_request_time' );
+		wc_delete_order_item_meta( $item_id, 'ersrv_cancellation_request_status' );
+
+		/**
+		 * This action runs on the admin listing page of reservation cancellation requests.
+		 *
+		 * This hook help adding custom actions after the reservation cancellation request has been deleted.
+		 * An email is sent to the customer at this action.
+		 *
+		 * @param int $line_item_id WooCommerce order line item id.
+		 * @since 1.0.0
+		 */
+		do_action( 'ersrv_after_reservation_cancellation_request_deteled', $line_item_id );
+
+		// Send the response.
+		$response = array(
+			'code'          => 'reservation-cancellation-request-deleted',
+			'toast_message' => sprintf( __( 'Reservation cancellation request deleted. Click %1$shere%2$s to refresh the page.', 'easy-reservations' ), '<a href="' . admin_url( 'admin.php?page=reservation-calcellation-requests' ) . '">', '</a>' ),
+		);
+		wp_send_json_success( $response );
+		wp_die();
+	}
+
+	/**
+	 * AJAX to decline reservation cancellation request.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_decline_reservation_cancellation_request_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+		// Exit, if the action mismatches.
+		if ( empty( $action ) || 'decline_reservation_cancellation_request' !== $action ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Posted data.
+		$line_item_id = (int) filter_input( INPUT_POST, 'line_item_id', FILTER_SANITIZE_NUMBER_INT );
+
+		// Update the request.
+		wc_update_order_item_meta( $item_id, 'ersrv_cancellation_request_status', 'declined' );
+
+		/**
+		 * This action runs on the admin listing page of reservation cancellation requests.
+		 *
+		 * This hook help adding custom actions after the reservation cancellation request has been declined.
+		 * An email is sent to the customer at this action.
+		 *
+		 * @param int $line_item_id WooCommerce order line item id.
+		 * @since 1.0.0
+		 */
+		do_action( 'ersrv_after_reservation_cancellation_request_declined', $line_item_id );
+
+		// Send the response.
+		$response = array(
+			'code'          => 'reservation-cancellation-request-declined',
+			'toast_message' => sprintf( __( 'Reservation cancellation request declined. Click %1$shere%2$s to refresh the page.', 'easy-reservations' ), '<a href="' . admin_url( 'admin.php?page=reservation-calcellation-requests' ) . '">', '</a>' ),
+		);
+		wp_send_json_success( $response );
+		wp_die();
+	}
+
+	/**
+	 * AJAX to approve reservation cancellation request.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_approve_reservation_cancellation_request_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+		// Exit, if the action mismatches.
+		if ( empty( $action ) || 'approve_reservation_cancellation_request' !== $action ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Posted data.
+		$line_item_id = (int) filter_input( INPUT_POST, 'line_item_id', FILTER_SANITIZE_NUMBER_INT );
+
+		// Update the request.
+		wc_update_order_item_meta( $item_id, 'ersrv_cancellation_request_status', 'approved' );
+
+		/**
+		 * This action runs on the admin listing page of reservation cancellation requests.
+		 *
+		 * This hook help adding custom actions after the reservation cancellation request has been approved.
+		 * An email is sent to the customer at this action.
+		 *
+		 * @param int $line_item_id WooCommerce order line item id.
+		 * @since 1.0.0
+		 */
+		do_action( 'ersrv_after_reservation_cancellation_request_approved', $line_item_id );
+
+		// Send the response.
+		$response = array(
+			'code'          => 'reservation-cancellation-request-approved',
+			'toast_message' => sprintf( __( 'Reservation cancellation request approved. Click %1$shere%2$s to refresh the page.', 'easy-reservations' ), '<a href="' . admin_url( 'admin.php?page=reservation-calcellation-requests' ) . '">', '</a>' ),
+		);
+		wp_send_json_success( $response );
+		wp_die();
+	}
 }
