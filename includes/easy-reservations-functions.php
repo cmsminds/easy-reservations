@@ -2379,11 +2379,23 @@ if ( ! function_exists( 'ersrv_print_reservation_cancel_button' ) ) {
 	 */
 	function ersrv_print_reservation_cancel_button( $item_id, $order_id ) {
 		// Check if the request is already raised.
-		$already_requested = wc_get_order_item_meta( $item_id, 'ersrv_cancellation_request' ); 
+		$already_requested = wc_get_order_item_meta( $item_id, 'ersrv_cancellation_request' );
 		$button_text       = ersrv_get_plugin_settings( 'ersrv_cancel_reservations_button_text' );
+		$tooltip_text      = ( ! empty( $already_requested ) ) ? __( 'Cancellation request for this reservation has already been raised.', 'easy-reservations' ) : __( 'Click on this button to raise a cancellation request for this reservation.', 'easy-reservations' );
+		/**
+		 * This hook runs on the view woocommerce order page.
+		 *
+		 * This filter helps in changing the tooltip text for the reservation cancellation request button.
+		 *
+		 * @param string $tooltip_text Tooltip text.
+		 * @param string $already_requested If the request has already been raised.
+		 * @return string
+		 * @since 1.0.0
+		 */
+		$tooltip_text      = apply_filters( 'ersrv_reservation_cancellation_request_button_tooltip_text', $tooltip_text, $already_requested );
 		?>
-		<div class="ersrv-reservation-cancellation-container" data-order="<?php echo esc_attr( $order_id ); ?>" data-item="<?php echo esc_attr( $item_id ); ?>">
-			<button type="button" data-tooltip="This is Notification...." class="tooltip button <?php echo ( ! empty( $already_requested ) ) ? 'non-clickable' : ''; ?>" title="<?php echo esc_html( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></a>
+		<div data-tooltip="<?php echo esc_html( $tooltip_text ); ?>" class="tooltip ersrv-reservation-cancellation-container" data-order="<?php echo esc_attr( $order_id ); ?>" data-item="<?php echo esc_attr( $item_id ); ?>">
+			<button type="button" class="button <?php echo ( ! empty( $already_requested ) ) ? 'non-clickable' : ''; ?>" title="<?php echo esc_html( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></a>
 		</div>
 		<?php
 	}
