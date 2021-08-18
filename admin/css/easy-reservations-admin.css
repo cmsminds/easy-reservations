@@ -748,3 +748,46 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
     border-radius: 5px;
     font-weight: 600;
 }
+/* Tooltip css starts */
+.tooltip {
+    position: relative;
+}
+
+.tooltip::after {
+    content: attr(data-tooltip);
+    display: inline-block;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: calc(100% + 16px);
+    left: 20px;
+    opacity: 0;
+    color: #fff;
+    font-size: 14px;
+    max-width: 150px;
+    background: #333;
+    text-align: center;
+    border-radius: 3px;
+    padding: 0.618em 1em;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.tooltip::before {
+    content: "";
+    position: absolute;
+    top: calc(100% + 10px);
+    left: calc(180px / 2);
+    right: 0px;
+    height: 12px;
+    width: 12px;
+    transform: rotate(45deg);
+    background: #333;
+    opacity: 0;
+}
+
+.tooltip:hover::after,
+.tooltip:hover::before {
+    opacity: 1;
+}
+
+/* tooltip css end */
