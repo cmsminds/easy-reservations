@@ -1,6 +1,6 @@
 <?php
 /**
- * Reservation cancellation request approved email class.
+ * Rental agreement email class.
  *
  * @link       https://www.cmsminds.com/
  * @since      1.0.0
@@ -11,7 +11,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
- * Reservation cancellation request approved email class.
+ * Rental agreement email class.
  *
  * @package    Easy_Reservations
  * @subpackage Easy_Reservations/includes/classes/emails
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @since      1.0.0
  * @extends \WC_Email
  */
-class Reservation_Cancellation_Request_Approved_Email extends WC_Email {
+class Rental_Agreement_Email extends WC_Email {
 	/**
 	 * Set email defaults.
 	 *
@@ -27,22 +27,22 @@ class Reservation_Cancellation_Request_Approved_Email extends WC_Email {
 	 */
 	public function __construct() {
 		// Email slug we can use to filter other data.
-		$this->id          = 'reservation_cancellation_request_approved_email';
-		$this->title       = __( 'Easy Reservations: Reservation Cancellation Request Approved Email', 'easy-reservations' );
-		$this->description = __( 'An email sent to the customer when admin approves reservation cancellation request.', 'easy-reservations' );
+		$this->id          = 'rental_agreement_email';
+		$this->title       = __( 'Easy Reservations: Rental Agreement Email', 'easy-reservations' );
+		$this->description = __( 'An email sent to the customer when they place a reservation order.', 'easy-reservations' );
 
 		// For admin area to let the user know we are sending this email to the customer.
 		$this->customer_email = true;
-		$this->heading        = __( 'Reservation Cancellation Request Approved', 'easy-reservations' );
+		$this->heading        = __( 'Rental Agreement', 'easy-reservations' );
 
 		// translators: placeholder is {blogname}, a variable that will be substituted when email is sent out.
-		$this->subject = sprintf( _x( '[%s] Reservation Cancellation Request Approved', 'default email subject for reservation cancellation request approved being sent to the customer', 'easy-reservations' ), '{blogname}' );
+		$this->subject = sprintf( _x( '[%s] Rental Agreement', 'default email subject for rental ggreement being sent to the customer', 'easy-reservations' ), '{blogname}' );
 
 		// Template paths.
-		$this->template_html  = 'reservation-cancellation-request-approved-html.php';
-		$this->template_plain = 'plain/reservation-cancellation-request-approved-plain.php';
+		$this->template_html  = 'rental-agreement-html.php';
+		$this->template_plain = 'plain/rental-agreement-plain.php';
 
-		add_action( 'ersrv_send_reservation_cancellation_request_approved_notification', array( $this, 'ersrv_ersrv_send_reservation_cancellation_request_approved_notification_callback' ) );
+		add_action( 'ersrv_send_rental_agreement_notification', array( $this, 'ersrv_ersrv_send_rental_agreement_notification_callback' ), 20, 2 );
 
 		// Call parent constructor.
 		parent::__construct();
@@ -57,15 +57,21 @@ class Reservation_Cancellation_Request_Approved_Email extends WC_Email {
 	/**
 	 * This callback helps fire the email notification.
 	 *
-	 * @param object $line_item_id WooCommerce line item ID.
+	 * @param int      $order_id WooCommerce order id.
+	 * @param WC_Order $wc_order WooCommerce order.
 	 * @since 1.0.0
 	 */
-	public function ersrv_ersrv_send_reservation_cancellation_request_approved_notification_callback( $line_item_id ) {
-		$order_id = wc_get_order_id_by_order_item_id( $line_item_id ); // Get the order ID.
-		$wc_order = wc_get_order( $order_id ); // Get the order.
+	public function ersrv_ersrv_send_rental_agreement_notification_callback( $order_id, $wc_order ) {
+		// Check if it is a reservation order.
+		$is_reservation_order = ersrv_order_is_reservation( $wc_order );
+
+		// Return the actions if the order is not reservation order.
+		if ( ! $is_reservation_order ) {
+			return;
+		}
 
 		// Email data object.
-		$this->object = $this->create_object( $line_item_id, $order_id );
+		$this->object = $this->create_object( $order_id, $wc_order );
 
 		// Fire the notification now.
 		$this->send(
@@ -73,19 +79,19 @@ class Reservation_Cancellation_Request_Approved_Email extends WC_Email {
 			$this->get_subject(),
 			$this->get_content(),
 			$this->get_headers(),
-			array()
+			$this->get_attachments()
 		);
 	}
 
 	/**
 	 * Create the data object that will be used in the template.
 	 *
-	 * @param object $line_item_id WooCommerce line item ID.
-	 * @param int    $order_id WooCommerce order ID.
+	 * @param int      $order_id WooCommerce order id.
+	 * @param WC_Order $wc_order WooCommerce order.
 	 * @return stdClass
 	 * @since 1.0.0
 	 */
-	public static function create_object( $line_item_id, $order_id ) {
+	public static function create_object( $order_id, $wc_order ) {
 		global $wpdb;
 		$item_object = new stdClass();
 
@@ -100,25 +106,11 @@ class Reservation_Cancellation_Request_Approved_Email extends WC_Email {
 		$date_created_formatted  = gmdate( 'F j, Y, g:i A', strtotime( $date_created ) );
 		$item_object->order_date = $date_created_formatted;
 
-		// Customer billing data.
-		$item_object->customer = array(
-			'billing_first_name' => $wc_order->get_billing_first_name(),
-			'billing_last_name'  => $wc_order->get_billing_last_name(),
-			'billing_email'      => $wc_order->get_billing_email(),
-			'billing_phone'      => $wc_order->get_billing_phone(),
-		);
-
 		// Order view URL.
 		$item_object->order_view_url = $wc_order->get_view_order_url();
 
-		// Line item.
-		$product_id = wc_get_order_item_meta( $line_item_id, '_product_id', true );
-
-		// Prepare the item object.
-		$item_object->item = array(
-			'item'     => get_the_title( $product_id ),
-			'subtotal' => (float) wc_get_order_item_meta( $line_item_id, '_line_subtotal', true ),
-		);
+		// Admin email.
+		$item_object->admin_email = get_option( 'admin_email' );
 
 		/**
 		 * This filter is fired when sending cancellation requests email on customer request.
@@ -129,7 +121,7 @@ class Reservation_Cancellation_Request_Approved_Email extends WC_Email {
 		 * @return stdClass
 		 * @since 1.0.0
 		 */
-		return apply_filters( 'ersrv_reservation_cancellation_request_email_order_object', $item_object );
+		return apply_filters( 'ersrv_rental_agreement_email_order_object', $item_object );
 	}
 
 	/**
@@ -191,6 +183,26 @@ class Reservation_Cancellation_Request_Approved_Email extends WC_Email {
 	public function get_heading() {
 
 		return apply_filters( 'woocommerce_email_heading_' . $this->id, $this->format_string( $this->heading ), $this->object );
+	}
+	
+	/**
+	 * Get the email attachments.
+	 *
+	 * @return array
+	 */
+	public function get_attachments() {
+		// Get the attachment file.
+		$agreement_file = ersrv_get_plugin_settings( 'ersrv_rental_agreement_file_id' );
+
+		// Return blank, if there is no attachment file.
+		if ( -1 === $agreement_file ) {
+			return array();
+		}
+
+		// Get the file path.
+		$agreement_file_path = get_attached_file( $agreement_file );
+
+		return array( $agreement_file_path );
 	}
 
 	/**

@@ -88,6 +88,7 @@ class Easy_Reservations_Admin {
 			$include_modal_style       = true;
 			$include_datepicker_style  = true;
 			$include_datepicker_script = true;
+			$include_fontawesome_style = true;
 		} elseif ( ! is_null( $post_id ) && 'shop_order' === get_post_type( $post_id ) ) {
 			$include_fontawesome_style = true;
 		}
@@ -879,7 +880,7 @@ class Easy_Reservations_Admin {
 			$wc_product,
 			1,
 			array(
-				'subtotal' => $item_total,
+				'total' => $item_total,
 			)
 		);
 
@@ -924,12 +925,13 @@ class Easy_Reservations_Admin {
 		$order_edit_link = get_edit_post_link( $wc_order->get_id(), '&' );
 
 		// Prepare the response.
-		$response = array(
-			'code'        => 'reservation-created',
-			'button_text' => __( 'Reservation created. Redirecting...', 'easy-reservations' ),
-			'redirect_to' => $order_edit_link,
+		wp_send_json_success(
+			array(
+				'code'          => 'reservation-created',
+				'toast_message' => __( 'Reservation is created. You\'ll be redirected to order edit page in a few seconds.', 'easy-reservations' ),
+				'redirect_to'   => $order_edit_link,
+			)
 		);
-		wp_send_json_success( $response );
 		wp_die();
 	}
 

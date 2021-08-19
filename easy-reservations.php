@@ -144,16 +144,3 @@ function ersrv_plugin_actions_callback( $links ) {
 
 	return array_merge( $this_plugin_links, $links );
 }
-
-add_action( 'woocommerce_new_order', function( $order_id ) {
-	// $data = DateTimeZone::listIdentifiers( DateTimeZone::PER_COUNTRY, 'US' );
-
-	// $data = geoip_time_zone_by_country_and_region( 'CA', 'CA' );
-	// debug( $data ); die;
-
-	wp_mail(
-		'adarsh@cmsminds.com',
-		'Test Mail Order: ' . $order_id,
-		'Test Mail Content'
-	);
-} );
