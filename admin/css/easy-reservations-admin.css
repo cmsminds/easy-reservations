@@ -742,52 +742,134 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	white-space: normal;
 }
 .column-order_status mark.order-status {
     padding: 4px 5px;
     border-radius: 5px;
     font-weight: 600;
 }
+
 /* Tooltip css starts */
+/*tipped element. should be inline-block or block*/
 .tooltip {
-    position: relative;
-}
-
-.tooltip::after {
-    content: attr(data-tooltip);
     display: inline-block;
-    width: auto;
-    height: auto;
-    position: absolute;
-    top: calc(100% + 16px);
-    left: 20px;
-    opacity: 0;
-    color: #fff;
+    position: relative;
+    cursor: pointer;
+    color: #3bb4e5;
+    border-bottom: 0.05em dotted #3bb4e5;
+    box-sizing: border-box;
+    font-style: normal;
+    transition: all .25s ease-in-out
+}
+
+.tooltip:hover {
+    color: #069;
+    border-bottom: 0.05em dotted #069
+}
+
+/*the tip*/
+.tooltip:before {
+    content: attr(data-tooltip);
     font-size: 14px;
-    max-width: 150px;
-    background: #333;
-    text-align: center;
-    border-radius: 3px;
-    padding: 0.618em 1em;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-.tooltip::before {
-    content: "";
     position: absolute;
-    top: calc(100% + 10px);
-    left: calc(180px / 2);
-    right: 0px;
-    height: 12px;
-    width: 12px;
-    transform: rotate(45deg);
     background: #333;
+    color: #fff;
+    line-height: 1.2em;
+    padding: 0.5em;
+    font-style: normal;
+    /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); */
+    min-width: 150px;
+    text-align: center;
     opacity: 0;
+    visibility: hidden;
+    transition: all .3s ease-in-out;
+    letter-spacing: 0;
+    font-weight: 600;
 }
 
-.tooltip:hover::after,
-.tooltip:hover::before {
-    opacity: 1;
+.tooltip:after {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    content: '';
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .3s ease-in-out
 }
 
+.tooltip:hover:before,
+.tooltip:hover:after {
+    visibility: visible;
+    opacity: 1
+}
+
+/*top*/
+.tooltip.tip-top:before {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, calc(-100% - 7px));
+    box-sizing: border-box;
+    border-radius: 3px;
+}
+
+.tooltip.tip-top:after {
+    border-width: 8px 8px 0 8px;
+    border-color: #333 transparent transparent transparent;
+    top: -8px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+/*bottom*/
+.tooltip:before {
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, calc(100% + 7px));
+    box-sizing: border-box;
+    border-radius: 3px;
+}
+
+.tooltip:after {
+    border-width: 0 8px 8px 8px;
+    border-color: transparent transparent #333 transparent;
+    bottom: -8px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+/*left*/
+.tooltip.tip-left:before {
+    left: 0;
+    top: 50%;
+    transform: translate(calc(-100% - 7px), -50%);
+    box-sizing: border-box;
+    border-radius: 3px;
+}
+
+.tooltip.tip-left:after {
+    border-width: 8px 0 8px 8px;
+    border-color: transparent transparent transparent #333;
+    left: -8px;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+
+/*right*/
+.tooltip.tip-right:before {
+    right: 0;
+    top: 50%;
+    transform: translate(calc(100% + 7px), -50%);
+    box-sizing: border-box;
+    border-radius: 3px;
+}
+
+.tooltip.tip-right:after {
+    border-width: 8px 8px 8px 0;
+    border-color: transparent #333 transparent transparent;
+    right: -8px;
+    top: 50%;
+    transform: translate(0, -50%);
+}
 /* tooltip css end */
