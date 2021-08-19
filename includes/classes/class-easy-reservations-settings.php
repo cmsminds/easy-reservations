@@ -38,7 +38,6 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 	public function get_sections() {
 		$sections = array_merge(
 			array( '' => __( 'General', 'easy-reservations' ) ),
-			array( 'reservation_calendar' => __( 'Reservation Calendar', 'easy-reservations' ) ),
 			array( 'invoice_receipts' => __( 'Invoice Receipts', 'easy-reservations' ) ),
 			array( 'cancel_reservations' => __( 'Cancel Reservations', 'easy-reservations' ) ),
 		);
@@ -78,14 +77,6 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 	 */
 	public function get_settings( $current_section = '' ) {
 		switch ( $current_section ) {
-			case 'reservation_calendar':
-				$settings = $this->ersrv_reservation_calendar_settings_fields();
-				break;
-
-			case 'emails':
-				$settings = $this->ersrv_emails_settings_fields();
-				break;
-
 			case 'invoice_receipts':
 				$settings = $this->ersrv_invoice_receipts_settings_fields();
 				break;
@@ -216,6 +207,30 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 				'type' => 'sectionend',
 				'id'   => 'ersrv_wc_product_single_page_settings',
 			),
+			array(
+				'title' => __( 'Rental Agreement', 'easy-reservations' ),
+				'type'  => 'title',
+				'desc'  => __( 'This section includes the settings related to rental agreement of the reservations.', 'easy-reservations' ),
+				'id'    => 'ersrv_rental_agreement_settings',
+			),
+			array(
+				'name' => __( 'Enable', 'easy-reservations' ),
+				'type' => 'checkbox',
+				'desc' => __( 'This will decide whether the rental agreement emails would be sent to the customers when they place their reservation orders. Default is no.', 'easy-reservations' ),
+				'id'   => 'ersrv_enable_reservation_rental_agreement',
+			),
+			array(
+				'title'       => __( 'Agreement File Attachment ID', 'easy-reservations' ),
+				'desc'        => __( 'This holds the media ID of the agreement file uploaded to WordPress media page. This file would be sent along the agreement mail that will be sent to the customers as soon they place a reservation order.', 'easy-reservations' ),
+				'desc_tip'    => true,
+				'id'          => 'ersrv_rental_agreement_file_id',
+				'placeholder' => __( 'E.g.: 99', 'easy-reservations' ),
+				'type'        => 'number',
+			),
+			array(
+				'type' => 'sectionend',
+				'id'   => 'ersrv_rental_agreement_settings',
+			),
 		);
 
 		/**
@@ -227,44 +242,6 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 		 * @return array
 		 */
 		return apply_filters( 'ersrv_general_section_plugin_settings', $fields );
-	}
-
-	/**
-	 * Return the fields for Reservation Calendar settings.
-	 *
-	 * @return array
-	 */
-	public function ersrv_reservation_calendar_settings_fields() {
-		$fields = array(
-			array(
-				'title' => __( 'Calendar Colors', 'easy-reservations' ),
-				'type'  => 'title',
-				'desc'  => __( 'This section includes the settings related to calendar dates color indications.', 'easy-reservations' ),
-				'id'    => 'ersrv_calendar_colors_settings',
-			),
-			array(
-				'title'       => __( 'Item availability background color', 'easy-reservations' ),
-				'desc'        => __( 'This holds the background color of the calendar date, which would reflect the item\'s availability.', 'easy-reservations' ),
-				'desc_tip'    => true,
-				'id'          => 'ersrv_item_availability_calendar_color',
-				'placeholder' => 'E.g.: #b2b2b2',
-				'type'        => 'color',
-			),
-			array(
-				'type' => 'sectionend',
-				'id'   => 'ersrv_calendar_colors_settings',
-			),
-		);
-
-		/**
-		 * This hook fires on the admin settings page - reservation calendar section.
-		 *
-		 * This account help in managing reservation calendar section plugin settings fields.
-		 *
-		 * @param array $fields Holds the fields array.
-		 * @return array
-		 */
-		return apply_filters( 'ersrv_reservaton_calendar_section_plugin_settings', $fields );
 	}
 
 	/**

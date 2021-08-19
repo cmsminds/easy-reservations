@@ -118,6 +118,16 @@ function ersrv_get_plugin_settings( $setting ) {
 			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? (int) $data : -1;
 			break;
 
+		case 'ersrv_enable_reservation_rental_agreement':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : 'no';
+			break;
+
+		case 'ersrv_rental_agreement_file_id':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? (int) $data : -1;
+			break;
+
 		default:
 			$data = -1;
 	}

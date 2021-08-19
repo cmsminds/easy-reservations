@@ -1,6 +1,4 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
-
 /**
  * Custom email templates manager class.
  *
@@ -8,8 +6,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @since      1.0.0
  *
  * @package    Easy_Reservations
- * @subpackage Easy_Reservations/includes/classes
+ * @subpackage Easy_Reservations/includes/classes/emails
  */
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
  * Custom email templates manager class.
@@ -17,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * Defines the custom email templates and notifications.
  *
  * @package    Easy_Reservations
- * @subpackage Easy_Reservations/includes/classes
+ * @subpackage Easy_Reservations/includes/classes/emails
  * @author     cmsMinds <info@cmsminds.com>
  */
 class Easy_Reservations_Custom_Email_Manager {
@@ -32,6 +31,7 @@ class Easy_Reservations_Custom_Email_Manager {
 		add_action( 'ersrv_after_reservation_cancellation_request_approved', array( &$this, 'ersrv_ersrv_after_reservation_cancellation_request_approved_callback' ) );
 		add_action( 'ersrv_after_reservation_cancellation_request_declined', array( &$this, 'ersrv_ersrv_after_reservation_cancellation_request_declined_callback' ) );
 		add_action( 'ersrv_after_reservation_cancellation_request_deleted', array( &$this, 'ersrv_ersrv_after_reservation_cancellation_request_deleted_callback' ) );
+		add_action( 'woocommerce_new_order', array( $this, 'ersrv_woocommerce_new_order_callback' ), 20, 2 );
 		add_filter( 'woocommerce_email_classes', array( &$this, 'ersrv_woocommerce_email_classes_callback' ) );
 	}
 
@@ -151,6 +151,43 @@ class Easy_Reservations_Custom_Email_Manager {
 	}
 
 	/**
+	 * Send notificaiton for the rental agreement signature to the customer.
+	 *
+	 * @param int      $order_id WooCommerce order id.
+	 * @param WC_Order $wc_order WooCommerce order.
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_new_order_callback( $order_id, $wc_order ) {
+		// Check if the rental agreement emails are configured to be sent.
+		$enable_reservation_rental_agreement = ersrv_get_plugin_settings( 'ersrv_enable_reservation_rental_agreement' );
+
+		// Return, if the email is not to be sent.
+		if ( empty( $enable_reservation_rental_agreement ) || 'no' === $enable_reservation_rental_agreement ) {
+			return;
+		}
+
+		// Check if the agreement file is provided.
+		$agreement_file = ersrv_get_plugin_settings( 'ersrv_rental_agreement_file_id' );
+
+		// Return, if there is no agreement file configured.
+		if ( -1 === $agreement_file ) {
+			return;
+		}
+
+		new WC_Emails();
+		/**
+		 * This hook fires when there is a new reservation order placed.
+		 *
+		 * This hook is helpful in managing actions while sending emails.
+		 *
+		 * @param int      $order_id WooCommerce order id.
+		 * @param WC_Order $wc_order WooCommerce order.
+		 * @since 1.0.0 
+		 */
+		do_action( 'ersrv_send_rental_agreement_notification', $order_id, $wc_order );
+	}
+
+	/**
 	 * Add custom class to send reservation emails.
 	 *
 	 * @param array $email_classes Email classes array.
@@ -181,6 +218,10 @@ class Easy_Reservations_Custom_Email_Manager {
 		// Reservation cancellation request approved email.
 		require_once 'class-reservation-cancellation-request-approved-email.php'; // Require the class file.
 		$email_classes['Reservation_Cancellation_Request_Approved_Email'] = new Reservation_Cancellation_Request_Approved_Email(); // Put in the classes into existing classes.
+
+		// Rental agreement email.
+		require_once 'class-rental-agreement-email.php'; // Require the class file.
+		$email_classes['Rental_Agreement_Email'] = new Rental_Agreement_Email(); // Put in the classes into existing classes.
 
 		return $email_classes;
 	}

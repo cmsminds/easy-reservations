@@ -729,6 +729,13 @@ jQuery( document ).ready( function( $ ) {
 	} );
 
 	/**
+	 * Close the notification.
+	 */
+	$( document ).on( 'click', '.ersrv-notification .close', function() {
+		$( '.ersrv-notification-wrapper .toast' ).removeClass( 'show' ).addClass( 'hide' );
+	} );
+
+	/**
 	 * Add reservation from admin panel.
 	 */
 	$( document ).on( 'click', '.ersrv-add-new-reservation', function() {
@@ -875,10 +882,12 @@ jQuery( document ).ready( function( $ ) {
 					unblock_element( this_button );
 
 					// Button text.
-					this_button.text( response.data.button_text );
+					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
 
 					// Redirect to the order edit page.
-					window.location.href = response.data.redirect_to;
+					setTimeout( function() {
+						window.location.href = response.data.redirect_to;
+					}, 5000 );
 				}
 			},
 		} );
@@ -1408,7 +1417,7 @@ jQuery( document ).ready( function( $ ) {
 
 		setTimeout( function() {
 			$( '.ersrv-notification-wrapper .toast' ).removeClass( 'show' ).addClass( 'hide' );
-		}, 5000 );
+		}, 10000 );
 	}
 
 	// Show notification.

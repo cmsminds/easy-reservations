@@ -88,6 +88,7 @@ class Easy_Reservations_Admin {
 			$include_modal_style       = true;
 			$include_datepicker_style  = true;
 			$include_datepicker_script = true;
+			$include_fontawesome_style = true;
 		} elseif ( ! is_null( $post_id ) && 'shop_order' === get_post_type( $post_id ) ) {
 			$include_fontawesome_style = true;
 		}
@@ -879,7 +880,7 @@ class Easy_Reservations_Admin {
 			$wc_product,
 			1,
 			array(
-				'subtotal' => $item_total,
+				'total' => $item_total,
 			)
 		);
 
@@ -891,7 +892,7 @@ class Easy_Reservations_Admin {
 		$line_item->update_meta_data( 'Adult Subtotal', $item_subtotal ); // Update the adult subtotal.
 		$line_item->update_meta_data( 'Kids Count', $kid_count ); // Update the kids count.
 		$line_item->update_meta_data( 'Kids Subtotal', $kids_subtotal ); // Update the kids subtotal.
-		$line_item->update_meta_data( 'Security Amount', $security_amt ); // Update the security subtotal.
+		$line_item->update_meta_data( 'Security Amount', $security_subtotal ); // Update the security subtotal.
 
 		// Update the amenities to order item meta.
 		if ( ! empty( $amenities ) && is_array( $amenities ) ) {
@@ -924,12 +925,13 @@ class Easy_Reservations_Admin {
 		$order_edit_link = get_edit_post_link( $wc_order->get_id(), '&' );
 
 		// Prepare the response.
-		$response = array(
-			'code'        => 'reservation-created',
-			'button_text' => __( 'Reservation created. Redirecting...', 'easy-reservations' ),
-			'redirect_to' => $order_edit_link,
+		wp_send_json_success(
+			array(
+				'code'          => 'reservation-created',
+				'toast_message' => __( 'Reservation is created. You\'ll be redirected to order edit page in a few seconds.', 'easy-reservations' ),
+				'redirect_to'   => $order_edit_link,
+			)
 		);
-		wp_send_json_success( $response );
 		wp_die();
 	}
 

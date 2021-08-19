@@ -1,10 +1,22 @@
 <?php
+/**
+ * Reservation item customer reminder email class.
+ *
+ * @link       https://www.cmsminds.com/
+ * @since      1.0.0
+ *
+ * @package    Easy_Reservations
+ * @subpackage Easy_Reservations/includes/classes/emails
+ */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
- * Reservation item - reminder email class.
+ * Reservation item customer reminder email class.
  *
- * @since 1.0.0
+ * @package    Easy_Reservations
+ * @subpackage Easy_Reservations/includes/classes/emails
+ * @author     cmsMinds <info@cmsminds.com>
+ * @since      1.0.0
  * @extends \WC_Email
  */
 class Reservation_Reminder_Email extends WC_Email {

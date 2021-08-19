@@ -1198,7 +1198,7 @@ class Easy_Reservations_Public {
 	public function ersrv_woocommerce_before_calculate_totals_callback( $cart_obj ) {
 		// Iterate through the cart items to set the price.
 		foreach ( $cart_obj->get_cart() as $cart_item ) {
-			$reservation_data = $cart_item['reservation_data'];
+			$reservation_data = ( ! empty( $cart_item['reservation_data'] ) ) ? $cart_item['reservation_data'] : array();
 
 			// Skip, if the cart item has this data.
 			if ( empty( $reservation_data ) ) {
@@ -1303,7 +1303,7 @@ class Easy_Reservations_Public {
 	public function ersrv_woocommerce_checkout_create_order_line_item_callback( $item, $cart_item_key, $cart_item_data, $wc_order ) {
 		// Return, if the reservation data is not set in the cart.
 		if ( ! isset( $cart_item_data['reservation_data'] ) || empty( $cart_item_data['reservation_data'] ) ) {
-			return $item_data;
+			return;
 		}
 
 		// Iterate through the amenities array to add them to session.
@@ -1321,7 +1321,6 @@ class Easy_Reservations_Public {
 		$item->update_meta_data( 'Kids Subtotal', $cart_item_data['reservation_data']['kid_subtotal'] ); // Update the kids subtotal.
 		$item->update_meta_data( 'Security Amount', $cart_item_data['reservation_data']['security_amount'] ); // Update the security subtotal.
 
-		// Check, if there are amenities.
 		// Check if there are amenities.
 		if ( ! empty( $cart_item_data['reservation_data']['amenities'] ) && is_array( $cart_item_data['reservation_data']['amenities'] ) ) {
 			foreach ( $cart_item_data['reservation_data']['amenities'] as $amenity_data ) {
