@@ -869,17 +869,20 @@ class Easy_Reservations_Public {
 		}
 
 		// If it's the reservation page.
-		if ( $is_reservation_page ) {
+		if ( $is_reservation_page && is_product() ) {
 			// Include the quick view modal.
 			require_once ERSRV_PLUGIN_PATH . 'public/templates/modals/contact-owner.php';
 		}
 
 		// If it's the view order page.
 		if (
-			$is_search_page ||
-			$is_view_order_endpoint ||
-			$is_reservation_page ||
-			is_checkout()
+			( ! is_shop() ) &&
+			(
+				$is_search_page ||
+				$is_view_order_endpoint ||
+				$is_reservation_page ||
+				is_checkout()
+			)
 		) {
 			// Include the notification html.
 			require_once ERSRV_PLUGIN_PATH . 'public/templates/notifications/notification.php';
