@@ -183,8 +183,33 @@ a.btn:hover,
 .site a:focus:not(.wp-block-button__link):not(.wp-block-file__button){
     background: transparent !important;
 }
+#ui-datepicker-div .ersrv-date-active{
+    background-color: transparent !important;
+}
+@media(max-width:1024px){
+    .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a,
+    .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a,
+    .ui-datepicker td span{
+        padding: 4px 6px;
+    }
+} 
+@media(max-width:991px){
+    .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a,
+    .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a,
+    .ui-datepicker td span{
+        padding: 9px;
+    }
+}
+@media(max-width:767px){
+    #ui-datepicker-div .ui-datepicker-calendar tbody tr td a, #ui-datepicker-div .ui-datepicker-calendar tbody tr td a a{
+        padding: 4px;
+    }
+    .ui-datepicker-calendar .ui-state-disabled *, .ui-datepicker-calendar .ersrv-date-disabled *{
+        padding: 6px !important;
+    }
+}
 /* Experimental */
-/* body::after {
+body::after {
     position: fixed;
     z-index: 99999;
     height: 100%;
@@ -195,4 +220,4 @@ a.btn:hover,
     pointer-events: none;
     top: 0px;
     left: 0px;
-} */
+}
