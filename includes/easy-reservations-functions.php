@@ -80,7 +80,7 @@ function ersrv_get_plugin_settings( $setting ) {
 
 		case 'ersrv_datepicker_date_format':
 			$data = get_option( $setting );
-			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : 'mm-dd-yyyy';
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : 'mm/dd/yy';
 			break;
 
 		case 'ersrv_driving_license_validation':
@@ -95,12 +95,12 @@ function ersrv_get_plugin_settings( $setting ) {
 
 		case 'ersrv_reservation_onboarding_time':
 			$data = get_option( $setting );
-			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? gmdate( 'h:iA', strtotime( $data ) ) : '9:00 AM';
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? gmdate( 'h:iA', strtotime( $data ) ) : '09:00AM';
 			break;
 
 		case 'ersrv_reservation_offboarding_time':
 			$data = get_option( $setting );
-			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? gmdate( 'h:iA', strtotime( $data ) ) : '9:00 AM';
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? gmdate( 'h:iA', strtotime( $data ) ) : '10:00AM';
 			break;
 
 		case 'ersrv_enable_reservation_cancellation':
@@ -2104,6 +2104,10 @@ if ( ! function_exists( 'ersrv_email_reservation_data_to_icalendar' ) ) {
 		$wc_order  = wc_get_order( $order_id );
 		$this_time = time();
 
+		// Get the default onboarding anf offboarding time.
+		$default_onboarding_time  = ersrv_get_plugin_settings( 'ersrv_reservation_onboarding_time' );
+		$default_offboarding_time = ersrv_get_plugin_settings( 'ersrv_reservation_offboarding_time' );
+
 		// Return, if the order doesn't exist anymore.
 		if ( false === $wc_order ) {
 			return;
@@ -2133,8 +2137,10 @@ if ( ! function_exists( 'ersrv_email_reservation_data_to_icalendar' ) ) {
 		foreach ( $line_items as $line_item ) {
 			$item_id       = $line_item->get_id();
 			$product_id    = $line_item->get_product_id();
-			$checkin_date  = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
-			$checkout_date = wc_get_order_item_meta( $item_id, 'Checkout Date', true );
+			$checkin_date  = wc_get_order_item_meta( $item_id, 'Checkin Date', true ) . ' ' . $default_onboarding_time;
+			$checkin_date  = strtotime( $checkin_date );
+			$checkout_date = wc_get_order_item_meta( $item_id, 'Checkout Date', true ) . ' ' . $default_offboarding_time;
+			$checkout_date = strtotime( $checkout_date );
 
 			// Skip, if this is not a reservation item.
 			if ( ! ersrv_product_is_reservation( $product_id ) ) {
@@ -2158,8 +2164,8 @@ if ( ! function_exists( 'ersrv_email_reservation_data_to_icalendar' ) ) {
 			$invitation_details = array(
 				'location'    => get_post_meta( $product_id, '_ersrv_item_location', true ),
 				'description' => sprintf( __( 'Reservation for item, %1$s.', 'easy-reservations' ), get_the_title( $product_id ) ),
-				'dtstart'     => ersrv_get_icalendar_formatted_date( strtotime( $checkin_date . ' 9:00AM' ), true ),
-				'dtend'       => ersrv_get_icalendar_formatted_date( strtotime( $checkout_date . ' 10:00AM' ), true ),
+				'dtstart'     => ersrv_get_icalendar_formatted_date( $checkin_date, true ),
+				'dtend'       => ersrv_get_icalendar_formatted_date( $checkout_date, true ),
 				'summary'     => sprintf( __( 'Reservation for item, %1$s.', 'easy-reservations' ), get_the_title( $product_id ) ),
 				'url'         => $wc_order->get_view_order_url(),
 			);

@@ -23,6 +23,9 @@ $kid_charge   = ( ! empty( $item_details['kid_charge'] ) ) ? $item_details['kid_
 $amenities = ( ! empty( $item_details['amenities'] ) ) ? $item_details['amenities'] : array();
 
 // Location.
+$location = ( ! empty( $item_details['location'] ) ) ? $item_details['location'] : '';
+
+// Google maps API key.
 $api_key = ersrv_get_plugin_settings( 'ersrv_google_maps_api_key' );
 
 // Security amount.
@@ -161,7 +164,11 @@ $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platform
 						</a>
 						<div class="collapse" id="ship-location-collapse">
 							<div class="dropdown-divider"></div>
-							<iframe width="100%" height="400px" src="https://www.google.com/maps/embed/v1/place?key=<?php echo $api_key; ?>&q=Space+Needle,Seattle+WA" style="border:0" loading="lazy" allowfullscreen></iframe>
+							<?php if ( ! empty( $api_key ) ) { ?>
+								<iframe width="100%" height="400px" src="https://www.google.com/maps/embed/v1/place?key=<?php echo $api_key; ?>&q=Space+Needle,Seattle+WA" style="border:0" loading="lazy" allowfullscreen></iframe>
+							<?php } else { ?>
+								<p><?php echo wp_kses_post( $location ); ?></p>
+							<?php } ?>
 						</div>
 					</div>
 					<div class="ship-details info-box">

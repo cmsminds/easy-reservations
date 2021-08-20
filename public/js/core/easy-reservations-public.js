@@ -1336,7 +1336,7 @@ jQuery(document).ready(function ($) {
 	 * @returns number
 	 */
 	function ersrv_get_security_subtotal() {
-		var security_subtotal = $( 'tr.security-amount-summary td span' ).text();
+		var security_subtotal = $( 'tr.security-amount-summary td span span' ).text();
 		security_subtotal     = parseFloat( security_subtotal.replace( /[^\d.]/g, '' ) );
 		security_subtotal     = ( -1 === is_valid_number( security_subtotal ) ) ? 0 : security_subtotal;
 		security_subtotal     = security_subtotal.toFixed( 2 );

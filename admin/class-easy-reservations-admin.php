@@ -635,6 +635,8 @@ class Easy_Reservations_Admin {
 	 * @since 1.0.0
 	 */
 	public function ersrv_admin_menu_callback() {
+		global $reservation_cancellation_requests_menu_page_data;
+
 		// Submenu to add reservation from admin panel.
 		add_submenu_page(
 			'woocommerce',
@@ -647,7 +649,7 @@ class Easy_Reservations_Admin {
 		);
 
 		// Submenu to list cancellation requests in admin panel.
-		add_submenu_page(
+		$reservation_cancellation_requests_menu_page_data = add_submenu_page(
 			'woocommerce',
 			__( 'Reservation Cancellation Requests', 'easy-reservations' ),
 			__( 'Reservation Cancellation Requests', 'easy-reservations' ),
@@ -656,6 +658,9 @@ class Easy_Reservations_Admin {
 			array( $this, 'ersrv_reservation_cancellation_requests' ),
 			15
 		);
+
+		// Load the screen options.
+		add_action( "load-{$reservation_cancellation_requests_menu_page_data}", array( $this, 'ersrv_load_reservation_cancellation_requests_menu_page_screen_options_callback' ) );
 	}
 
 	/**
@@ -677,14 +682,45 @@ class Easy_Reservations_Admin {
 		<div class="wrap">
 			<h2><?php esc_html_e( 'Reservation Cancellation Requests', 'easy-reservations' ); ?></h2>
 			<p><?php esc_html_e( 'Following is the list of all the reservation cancellation requests.', 'easy-reservations' ); ?></p>
-			<?php
-			require_once ERSRV_PLUGIN_PATH . 'admin/templates/pages/class-easy-reservations-cancellation-requests.php';
-			$requests_obj = new Easy_Reservations_Cancellation_Requests();
-			$requests_obj->prepare_items();
-			$requests_obj->display();
-			?>
+			<form id="ersrv-reservation-cancellation-requests-form" method="GET">
+				<?php
+				require_once ERSRV_PLUGIN_PATH . 'admin/templates/pages/class-easy-reservations-cancellation-requests.php';
+				$requests_obj = new Easy_Reservations_Cancellation_Requests();
+				$requests_obj->prepare_items();
+				$requests_obj->search_box( __( 'Search Requests', 'easy-reservations' ), 'search' );
+				$requests_obj->display();
+				?>
+			</form>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Screen options template.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_load_reservation_cancellation_requests_menu_page_screen_options_callback() {
+		global $reservation_cancellation_requests_menu_page_data;
+		$per_page_option = 'per_page';
+		$args            = array(
+			'label'   => __( 'Requests Per Page', 'easy-reservations' ),
+			'default' => 10,
+			'option'  => 'ersrv_cancellation_requests_per_page'
+		);
+
+		add_screen_option( $per_page_option, $args );
+
+		// Initiate the class.
+		require_once ERSRV_PLUGIN_PATH . 'admin/templates/pages/class-easy-reservations-cancellation-requests.php';
+		new Easy_Reservations_Cancellation_Requests();
+	}
+
+	/**
+	 * Set the screen options values.
+	 */
+	public function ersrv_set_screen_option_callback( $status, $option, $value ) {
+		return $value;
 	}
 
 	/**

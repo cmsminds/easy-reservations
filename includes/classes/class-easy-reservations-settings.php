@@ -153,7 +153,7 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 			),
 			array(
 				'title'       => __( 'Reservation Onboarding Time', 'easy-reservations' ),
-				'desc'        => __( 'This will be the normal onboarding time.', 'easy-reservations' ),
+				'desc'        => __( 'This will be the normal onboarding time. Default is 09:00AM.', 'easy-reservations' ),
 				'desc_tip'    => true,
 				'id'          => 'ersrv_reservation_onboarding_time',
 				'type'        => 'text',
@@ -161,7 +161,7 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 			),
 			array(
 				'title'       => __( 'Reservation Offboarding Time', 'easy-reservations' ),
-				'desc'        => __( 'This will be the normal offboarding time.', 'easy-reservations' ),
+				'desc'        => __( 'This will be the normal offboarding time. Default is 10:00AM.', 'easy-reservations' ),
 				'desc_tip'    => true,
 				'id'          => 'ersrv_reservation_offboarding_time',
 				'type'        => 'text',

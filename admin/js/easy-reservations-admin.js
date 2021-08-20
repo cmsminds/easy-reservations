@@ -1062,7 +1062,7 @@ jQuery( document ).ready( function( $ ) {
 	 */
 	$( document ).on( 'click', '.ersrv-cancellation-request-actions .delete', function() {
 		var this_button  = $( this );
-		var line_item_id = this_button.parent().data( 'item' );
+		var line_item_id = this_button.parents( '.ersrv-cancellation-request-actions' ).data( 'item' );
 		var confirmation = confirm( delete_reservation_cancellation_cnf_message );
 
 		// Return false, if the line item is invalid.
@@ -1113,7 +1113,7 @@ jQuery( document ).ready( function( $ ) {
 	 */
 	 $( document ).on( 'click', '.ersrv-cancellation-request-actions .decline', function() {
 		var this_button  = $( this );
-		var line_item_id = this_button.parent().data( 'item' );
+		var line_item_id = this_button.parents( '.ersrv-cancellation-request-actions' ).data( 'item' );
 		var confirmation = confirm( decline_reservation_cancellation_cnf_message );
 
 		// Return false, if the line item is invalid.
@@ -1159,9 +1159,9 @@ jQuery( document ).ready( function( $ ) {
 	/**
 	 * Approve the reservation cancellation request.
 	 */
-	 $( document ).on( 'click', '.ersrv-cancellation-request-actions .approve', function() {
+	 $( document ).on( 'click', '.ersrv-cancellation-request-actions .approve-request', function() {
 		var this_button  = $( this );
-		var line_item_id = this_button.parent().data( 'item' );
+		var line_item_id = this_button.parents( '.ersrv-cancellation-request-actions' ).data( 'item' );
 		var confirmation = confirm( approve_reservation_cancellation_cnf_message );
 
 		// Return false, if the line item is invalid.
