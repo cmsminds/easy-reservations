@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is used for templating the export reservations modal.
+ * This file is used for templating the search reservations.
  *
  * @since 1.0.0
  * @package Easy_Reservations

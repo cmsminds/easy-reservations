@@ -107,15 +107,16 @@ class Easy_Reservations_Public {
 	public function ersrv_wp_enqueue_scripts_callback() {
 		global $wp_registered_widgets, $post, $wp_query;
 		// Active style file based on the active theme.
-		$current_theme          = get_option( 'stylesheet' );
-		$active_style           = ersrv_get_active_stylesheet( $current_theme );
-		$active_style_url       = ( ! empty( $active_style['url'] ) ) ? $active_style['url'] : '';
-		$active_style_path      = ( ! empty( $active_style['path'] ) ) ? $active_style['path'] : '';
-		$is_search_page         = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
-		$is_reservation_page    = ersrv_product_is_reservation( get_the_ID() );
-		$enqueue_extra_css      = false;
-		$is_fav_items_endpoint  = isset( $wp_query->query_vars[ $this->favourite_reservation_items_endpoint_slug ] );
-		$is_view_order_endpoint = isset( $wp_query->query_vars[ 'view-order' ] );
+		$current_theme            = get_option( 'stylesheet' );
+		$active_style             = ersrv_get_active_stylesheet( $current_theme );
+		$active_style_url         = ( ! empty( $active_style['url'] ) ) ? $active_style['url'] : '';
+		$active_style_path        = ( ! empty( $active_style['path'] ) ) ? $active_style['path'] : '';
+		$is_search_page           = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
+		$is_edit_reservation_page = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_edit_reservation' ) );
+		$is_reservation_page      = ersrv_product_is_reservation( get_the_ID() );
+		$enqueue_extra_css        = false;
+		$is_fav_items_endpoint    = isset( $wp_query->query_vars[ $this->favourite_reservation_items_endpoint_slug ] );
+		$is_view_order_endpoint   = isset( $wp_query->query_vars[ 'view-order' ] );
 
 		// Conditions to enqueue the extra css file.
 		if (
@@ -141,7 +142,7 @@ class Easy_Reservations_Public {
 		}
 
 		// If it's the single reservation page or the search page.
-		if ( $is_reservation_page || $is_search_page ) {
+		if ( $is_reservation_page || $is_search_page || $is_edit_reservation_page ) {
 			// Enqueue the bootstrap style.
 			wp_enqueue_style(
 				$this->plugin_name . '-bootstrap-style',
@@ -245,7 +246,7 @@ class Easy_Reservations_Public {
 		}
 
 		// If it's the single reservation page or the search page.
-		if ( $is_reservation_page || $is_search_page ) {
+		if ( $is_reservation_page || $is_search_page || $is_edit_reservation_page ) {
 			// Bootstrap bundle script.
 			wp_enqueue_script(
 				$this->plugin_name . '-bootstrap-bundle-script',
@@ -1839,5 +1840,23 @@ class Easy_Reservations_Public {
 		);
 		wp_send_json_success( $response );
 		wp_die();
+	}
+
+	/**
+	 * Edit reservation callback.
+	 *
+	 * @param array $args Holds the shortcode arguments.
+	 * @return string
+	 * @since 1.0.0
+	 */
+	public function ersrv_ersrv_edit_reservation_callback( $args = array() ) {
+		// Return, if it's admin panel.
+		if ( is_admin() ) {
+			return;
+		}
+
+		ob_start();
+		require_once ERSRV_PLUGIN_PATH . 'public/templates/shortcodes/edit-reservation.php';
+		return ob_get_clean();
 	}
 }
