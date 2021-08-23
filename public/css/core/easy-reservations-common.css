@@ -213,8 +213,21 @@ a.btn:hover,
     padding: 8px 10px;
     background-position: 97% !important;
 }
+.edit-order-wrapper .card .card-title,
+.edit-order-wrapper .card .CTA h4{
+    margin-top: 0px !important;
+}
 .edit-order-wrapper .card .card-title a{
     font-weight: 600;
+}
+.theme-twentytwenty .edit-order-wrapper .card .CTA .btn{
+    font-size: 16px;
+}
+.theme-twentytwenty .edit-order-wrapper .card .custom-switch {
+    padding-left: 1rem;
+}
+.theme-twentytwentyone .edit-order-wrapper .card .custom-switch {
+    padding-left: 0.5rem;
 }
 
 /* Experimental */

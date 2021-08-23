@@ -27,7 +27,7 @@ defined('ABSPATH') || exit; // Exit if accessed directly.
                                 <a href="#" class="mr-2"> #12 - </a>
                                 <a href="http://localhost/easy-reservation/product/3-days-and-4-night-at-shimla/">3 Days and 4 Night At Shimla</a>
                             </h3>
-                            <form action="#" method="post">
+                            <form action="#" method="post" class="mb-0">
                                 <div class="form-wrapper">
                                     <div class="bookingDates mb-3">
                                         <div class="row form-row input-daterange">
@@ -79,12 +79,12 @@ defined('ABSPATH') || exit; // Exit if accessed directly.
                                 <div class="form-wrapper">
                                     <div class="CTA">
                                         <div class="row form-row align-items-center justify-content-end">
-                                            <div class="col-12 col-md-6 mb-4 mb-md-0">
-                                            <h4 class="font-Poppins font-size-16 color-black font-weight-bold mb-0">
-                                                Total Price : <span class="price">$800</span>
-                                            </h4>
+                                            <div class="col-12 col-md-5 mb-4 mb-md-0">
+                                                <h4 class="font-Poppins font-size-16 color-black font-weight-bold mb-0">
+                                                    Total Price : <span class="price">$800</span>
+                                                </h4>
                                             </div>
-                                            <div class="col-12 col-md-6 text-md-right">
+                                            <div class="col-12 col-md-7 text-md-right">
                                                 <button class="btn btn-primary mr-3">check Avaibility</button>
                                                 <button class="btn btn-accent">Update Order</button>
                                             </div>
