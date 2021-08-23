@@ -1654,4 +1654,8 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
   color: #96588a;
   text-decoration: none;
 }
+
+.text-theme-primary {
+  color: #43454b;
+}
 /*# sourceMappingURL=easy-reservations-storefront.css.map */

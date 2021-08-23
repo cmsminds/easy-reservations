@@ -208,7 +208,12 @@ a.btn:hover,
         padding: 6px !important;
     }
 }
-
+.edit-order-wrapper .section-title {
+    font-size: 46px;
+    text-align: center;
+    margin-bottom: 44px;
+    font-weight: 600;
+}
 .edit-order-wrapper .card .form-wrapper .form-control {
     padding: 8px 10px;
     background-position: 97% !important;
