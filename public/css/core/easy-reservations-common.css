@@ -225,6 +225,9 @@ a.btn:hover,
 .edit-order-wrapper .card .card-title a{
     font-weight: 600;
 }
+.theme-twentysixteen .edit-order-wrapper .card a{
+    box-shadow: none !important;
+}
 .theme-twentytwenty .edit-order-wrapper .card .CTA .btn{
     font-size: 16px;
 }
