@@ -209,7 +209,7 @@ a.btn:hover,
     }
 }
 
-.edit-order-wrapper .card .form .form-control {
+.edit-order-wrapper .card .form-wrapper .form-control {
     padding: 8px 10px;
     background-position: 97% !important;
 }
