@@ -35,8 +35,9 @@ jQuery(document).ready(function ($) {
 	var quick_view_reserved_dates = [];
 
 	// If sidebar is to be removed on reservation single page.
-	if ('yes' === remove_sidebar) {
+	if ( 'yes' === remove_sidebar ) {
 		$( '#secondary' ).remove();
+		$( '#content-bottom-widgets' ).remove();
 		$( '#primary' ).css( 'width', '100%' );
 	}
 

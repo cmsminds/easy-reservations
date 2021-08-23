@@ -55,6 +55,13 @@ class Easy_Reservations_Activator {
 				'post_status'  => 'publish',
 				'post_author'  => 1,
 				'post_type'    => 'page'
+			),
+			array(
+				'post_title'   => __( 'Edit Reservation', 'easy-reservations' ),
+				'post_content' => '[ersrv_edit_reservation]',
+				'post_status'  => 'publish',
+				'post_author'  => 1,
+				'post_type'    => 'page'
 			)
 		);
 
