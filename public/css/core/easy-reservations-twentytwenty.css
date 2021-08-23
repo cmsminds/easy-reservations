@@ -1695,4 +1695,8 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
   color: #cd2653;
   text-decoration: none;
 }
+
+.text-theme-primary {
+  color: #cd2653;
+}
 /*# sourceMappingURL=easy-reservations-twentytwenty.css.map */

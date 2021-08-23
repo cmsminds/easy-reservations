@@ -36,7 +36,10 @@ defined('ABSPATH') || exit; // Exit if accessed directly.
                                                 <div><input type="text" id="ersrv-quick-view-item-checkin-date" class="form-control date-control text-left rounded-lg hasDatepicker" placeholder="08/23/2021"></div>
                                             </div>
                                             <div class="col-6">
-                                                <label for="" class="font-Poppins font-size-16 color-black">Check Out</label>
+                                                <div class="d-flex justify-content-between">
+                                                    <label for="" class="font-Poppins font-size-16 color-black">Check Out</label>
+                                                    <a href="#" class="btn-link text-theme-primary">Check Avaibility</a>
+                                                </div>
                                                 <div><input type="text" id="ersrv-quick-view-item-checkout-date" class="form-control date-control text-left rounded-lg hasDatepicker" placeholder="08/24/2021"></div>
                                             </div>
                                         </div>
@@ -79,13 +82,12 @@ defined('ABSPATH') || exit; // Exit if accessed directly.
                                 <div class="form-wrapper">
                                     <div class="CTA">
                                         <div class="row form-row align-items-center justify-content-end">
-                                            <div class="col-12 col-md-5 mb-4 mb-md-0">
+                                            <div class="col-12 col-md-6 mb-4 mb-md-0">
                                                 <h4 class="font-Poppins font-size-16 color-black font-weight-bold mb-0">
                                                     Total Price : <span class="price">$800</span>
                                                 </h4>
                                             </div>
-                                            <div class="col-12 col-md-7 text-md-right">
-                                                <button class="btn btn-primary mr-3">check Avaibility</button>
+                                            <div class="col-12 col-md-6 text-md-right">
                                                 <button class="btn btn-accent">Update Order</button>
                                             </div>
                                         </div>
