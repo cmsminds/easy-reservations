@@ -1671,4 +1671,28 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
 .ersrv-unavailable-dates-notifier::before {
   background-color: #e0e0e0;
 }
+
+.edit-order-wrapper .card img {
+  height: 100%;
+  width: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  -o-object-position: center center;
+  object-position: center center;
+}
+
+@media (max-width: 991px) {
+  .edit-order-wrapper .card img {
+    height: 250px;
+    -o-object-fit: cover;
+    object-fit: cover;
+    -o-object-position: center center;
+    object-position: center center;
+  }
+}
+
+.edit-order-wrapper .card .card-title a {
+  color: #cd2653;
+  text-decoration: none;
+}
 /*# sourceMappingURL=easy-reservations-twentytwenty.css.map */

@@ -208,6 +208,15 @@ a.btn:hover,
         padding: 6px !important;
     }
 }
+
+.edit-order-wrapper .card .form .form-control {
+    padding: 8px 10px;
+    background-position: 97% !important;
+}
+.edit-order-wrapper .card .card-title a{
+    font-weight: 600;
+}
+
 /* Experimental */
 body::after {
     position: fixed;
