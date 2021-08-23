@@ -1321,7 +1321,11 @@ class Easy_Reservations_Admin {
 	 */
 	public function ersrv_display_post_states_callback( $post_states, $post ) {
 		if ( ersrv_get_page_id( 'search-reservations' ) === $post->ID ) {
-			$post_states['ersrv_page_for_search'] = __( 'Easy Reservations: Search Page', 'easy-reservations' );
+			$post_states['ersrv_search_page'] = __( 'Easy Reservations: Search Page', 'easy-reservations' );
+		}
+
+		if ( ersrv_get_page_id( 'edit-reservation' ) === $post->ID ) {
+			$post_states['ersrv_edit_reservation_page'] = __( 'Easy Reservations: Edit Reservation Page', 'easy-reservations' );
 		}
 
 		return $post_states;

@@ -40,6 +40,7 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 			array( '' => __( 'General', 'easy-reservations' ) ),
 			array( 'invoice_receipts' => __( 'Invoice Receipts', 'easy-reservations' ) ),
 			array( 'cancel_reservations' => __( 'Cancel Reservations', 'easy-reservations' ) ),
+			array( 'edit_reservation' => __( 'Edit Reservation', 'easy-reservations' ) ),
 		);
 
 		return apply_filters( 'woocommerce_get_sections_' . $this->id, $sections );
@@ -83,6 +84,10 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 
 			case 'cancel_reservations':
 				$settings = $this->ersrv_cancel_reservations_settings_fields();
+				break;
+
+			case 'edit_reservation':
+				$settings = $this->ersrv_edit_reservation_settings_fields();
 				break;
 
 			default:
@@ -399,7 +404,51 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 		 * @param array $fields Holds the fields array.
 		 * @return array
 		 */
-		return apply_filters( 'ersrv_calcen_reservations_section_plugin_settings', $fields );
+		return apply_filters( 'ersrv_cancel_reservations_section_plugin_settings', $fields );
+	}
+
+	/**
+	 * Return the fields for edit reservations settings.
+	 *
+	 * @return array
+	 */
+	public function ersrv_edit_reservation_settings_fields() {
+		$fields = array(
+			array(
+				'title' => __( 'Edit Reservation Settings', 'easy-reservations' ),
+				'type'  => 'title',
+				'desc'  => '',
+				'id'    => 'ersrv_edit_reservation_settings',
+			),
+			array(
+				'name' => __( 'Enable', 'easy-reservations' ),
+				'type' => 'checkbox',
+				'desc' => __( 'This will decide whether the customers can edit their reservations. Default is no.', 'easy-reservations' ),
+				'id'   => 'ersrv_enable_reservation_edit',
+			),
+			array(
+				'name'        => __( 'Button Text', 'easy-reservations' ),
+				'type'        => 'text',
+				'desc'        => __( 'This holds the edit reservation button text. Default: Edit Reservation', 'easy-reservations' ),
+				'desc_tip'    => true,
+				'id'          => 'ersrv_edit_reservation_button_text',
+				'placeholder' => __( 'E.g.: Edit Reservation', 'easy-reservations' ),
+			),
+			array(
+				'type' => 'sectionend',
+				'id'   => 'ersrv_edit_reservation_settings',
+			),
+		);
+
+		/**
+		 * This hook fires on the admin settings page - edit reservation section.
+		 *
+		 * This account help in managing edit reservation section plugin settings fields.
+		 *
+		 * @param array $fields Holds the fields array.
+		 * @return array
+		 */
+		return apply_filters( 'ersrv_edit_reservation_section_plugin_settings', $fields );
 	}
 }
 

@@ -128,6 +128,16 @@ function ersrv_get_plugin_settings( $setting ) {
 			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? (int) $data : -1;
 			break;
 
+		case 'ersrv_enable_reservation_edit':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : 'no';
+			break;
+
+		case 'ersrv_edit_reservation_button_text':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : __( 'Edit Reservation', 'easy-reservations' );
+			break;
+
 		default:
 			$data = -1;
 	}
@@ -2137,15 +2147,21 @@ if ( ! function_exists( 'ersrv_email_reservation_data_to_icalendar' ) ) {
 		foreach ( $line_items as $line_item ) {
 			$item_id       = $line_item->get_id();
 			$product_id    = $line_item->get_product_id();
-			$checkin_date  = wc_get_order_item_meta( $item_id, 'Checkin Date', true ) . ' ' . $default_onboarding_time;
-			$checkin_date  = strtotime( $checkin_date );
-			$checkout_date = wc_get_order_item_meta( $item_id, 'Checkout Date', true ) . ' ' . $default_offboarding_time;
-			$checkout_date = strtotime( $checkout_date );
 
 			// Skip, if this is not a reservation item.
 			if ( ! ersrv_product_is_reservation( $product_id ) ) {
 				continue;
 			}
+
+			// Checkin date & time.
+			$checkin_date      = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
+			$checkin_date      = gmdate( 'Y-m-d', strtotime( $checkin_date ) );
+			$checkin_date_time = "{$checkin_date} {$default_onboarding_time}";
+
+			// Checkout date & time.
+			$checkout_date      = wc_get_order_item_meta( $item_id, 'Checkout Date', true );
+			$checkout_date      = gmdate( 'Y-m-d', strtotime( $checkout_date ) );
+			$checkout_date_time = "{$checkout_date} {$default_offboarding_time}";
 
 			$nvite_file_name = "ersrv-reservation-#{$order_id}-{$item_id}-{$this_time}.ics";
 			/**
@@ -2164,8 +2180,8 @@ if ( ! function_exists( 'ersrv_email_reservation_data_to_icalendar' ) ) {
 			$invitation_details = array(
 				'location'    => get_post_meta( $product_id, '_ersrv_item_location', true ),
 				'description' => sprintf( __( 'Reservation for item, %1$s.', 'easy-reservations' ), get_the_title( $product_id ) ),
-				'dtstart'     => ersrv_get_icalendar_formatted_date( $checkin_date, true ),
-				'dtend'       => ersrv_get_icalendar_formatted_date( $checkout_date, true ),
+				'dtstart'     => ersrv_get_icalendar_formatted_date( strtotime( $checkin_date_time ), true ),
+				'dtend'       => ersrv_get_icalendar_formatted_date( strtotime( $checkout_date_time ), true ),
 				'summary'     => sprintf( __( 'Reservation for item, %1$s.', 'easy-reservations' ), get_the_title( $product_id ) ),
 				'url'         => $wc_order->get_view_order_url(),
 			);
@@ -2412,6 +2428,42 @@ if ( ! function_exists( 'ersrv_print_reservation_cancel_button' ) ) {
 		?>
 		<div data-tooltip="<?php echo esc_html( $tooltip_text ); ?>" class="tooltip ersrv-reservation-cancellation-container" data-order="<?php echo esc_attr( $order_id ); ?>" data-item="<?php echo esc_attr( $item_id ); ?>">
 			<button type="button" class="button <?php echo ( ! empty( $already_requested ) ) ? 'non-clickable' : ''; ?>" title="<?php echo esc_html( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></a>
+		</div>
+		<?php
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_print_edit_reservation_button' ) ) {
+	/**
+	 * Print the edit reservation button for the woocommerce order.
+	 *
+	 * @param int      $order_id WooCommerce order ID.
+	 * @param WC_Order $wc_order WooCommerce order object.
+	 * @since 1.0.0
+	 */
+	function ersrv_print_edit_reservation_button( $order_id, $wc_order ) {
+		// Check if the edit reservation is allowed.
+		$allowed_to_edit_reservation = ersrv_get_plugin_settings( 'ersrv_enable_reservation_edit' );
+
+		// Return if editing reservation is not allowed.
+		if ( empty( $allowed_to_edit_reservation ) || 'no' === $allowed_to_edit_reservation ) {
+			return;
+		}
+
+		$button_text               = ersrv_get_plugin_settings( 'ersrv_edit_reservation_button_text' );
+		$edit_reservation_page_id  = ersrv_get_page_id( 'edit-reservation' );
+		$edit_reservation_page_url = get_permalink( $edit_reservation_page_id );
+		$query_params              = array(
+			'action' => 'edit-reservation',
+			'id'    => $order_id,
+		);
+		$edit_reservation_page_url = add_query_arg( $query_params, $edit_reservation_page_url );
+		?>
+		<div class="ersrv-edit-reservation-container">
+			<a href="<?php echo esc_url( $edit_reservation_page_url ); ?>" class="button" title="<?php echo esc_html( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></a>
 		</div>
 		<?php
 	}
