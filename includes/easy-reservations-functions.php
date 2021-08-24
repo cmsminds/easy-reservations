@@ -1204,14 +1204,14 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 								}
 
 								// Get the item meta details.
-								$checkin_date    = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
-								$checkout_date   = wc_get_order_item_meta( $item_id, 'Checkout Date', true );
-								$adult_count   = wc_get_order_item_meta( $item_id, 'Adult Count', true );
-								$adult_subtotal   = wc_get_order_item_meta( $item_id, 'Adult Subtotal', true );
-								$kids_count   = wc_get_order_item_meta( $item_id, 'Kids Count', true );
-								$kids_subtotal   = wc_get_order_item_meta( $item_id, 'Kids Subtotal', true );
-								$security_amount   = wc_get_order_item_meta( $item_id, 'Security Amount', true );
-								$amenities_subtotal   = wc_get_order_item_meta( $item_id, 'Amenities Subtotal', true );
+								$checkin_date       = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
+								$checkout_date      = wc_get_order_item_meta( $item_id, 'Checkout Date', true );
+								$adult_count        = wc_get_order_item_meta( $item_id, 'Adult Count', true );
+								$adult_subtotal     = wc_get_order_item_meta( $item_id, 'Adult Subtotal', true );
+								$kids_count         = wc_get_order_item_meta( $item_id, 'Kids Count', true );
+								$kids_subtotal      = wc_get_order_item_meta( $item_id, 'Kids Subtotal', true );
+								$security_amount    = wc_get_order_item_meta( $item_id, 'Security Amount', true );
+								$amenities_subtotal = wc_get_order_item_meta( $item_id, 'Amenities Subtotal', true );
 								?>
 								<tr valign="middle">
 									<td style="padding:5px" width="10%">
@@ -2326,8 +2326,8 @@ if ( ! function_exists( 'ersrv_print_calendar_buttons' ) ) {
 		ob_start();
 		?>
 		<div class="ersrv-reservation-calendars-container" data-oid="<?php echo esc_attr( $order_id ); ?>">
-			<button type="button" class="add-to-gcal"><?php echo wp_kses_post( $google_calendar_button_text ); ?></button>
-			<button type="button" class="add-to-ical"><?php echo wp_kses_post( $icalendar_button_text ); ?></button>
+			<a href="javascript:void(0);" class="button add-to-gcal"><?php echo wp_kses_post( $google_calendar_button_text ); ?></a>
+			<a href="javascript:void(0);" class="button add-to-ical"><?php echo wp_kses_post( $icalendar_button_text ); ?></a>
 		</div>
 		<?php
 		$reservations_calendar_container = ob_get_clean();
@@ -2357,10 +2357,9 @@ if ( ! function_exists( 'ersrv_print_calendar_buttons' ) ) {
 					'class'    => array(),
 					'data-oid' => array(),
 				),
-				'button' => array(
-					'type'      => array(),
+				'a' => array(
+					'href'      => array(),
 					'class'     => array(),
-					'data-goto' => array(),
 				),
 			)
 		);

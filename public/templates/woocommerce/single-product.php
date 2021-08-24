@@ -245,7 +245,7 @@ $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platform
 											<label for="amenities" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Amenities', 'easy-reservations' ); ?></label>
 											<?php foreach ( $amenities as $amenity_data ) {
 												$amenity_title     = ( ! empty( $amenity_data['title'] ) ) ? $amenity_data['title'] : '';
-												$amenity_cost      = ( ! empty( $amenity_data['cost'] ) ) ? $amenity_data['cost'] : 0.00;
+												$amenity_cost      = ( ! empty( $amenity_data['cost'] ) ) ? (float) $amenity_data['cost'] : 0.00;
 												$amenity_slug      = ( ! empty( $amenity_title ) ) ? sanitize_title( $amenity_title ) : '';
 												$amenity_cost_type = ( ! empty( $amenity_data['cost_type'] ) ) ? $amenity_data['cost_type'] : 'one_time';
 												?>

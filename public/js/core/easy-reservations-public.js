@@ -1218,6 +1218,14 @@ jQuery(document).ready(function ($) {
 	} );
 
 	/**
+	 * Update reservation.
+	 */
+	$( document ).on( 'click', '.ersrv-update-reservation button', function() {
+		var this_button = $( this );
+		console.log( 'hello' );
+	} );
+
+	/**
 	 * Add reservation to cart.
 	 */
 	function ersrv_add_reservation_to_cart( add_to_cart_button, cart_data ) {
