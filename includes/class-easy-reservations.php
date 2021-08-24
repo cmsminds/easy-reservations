@@ -242,6 +242,7 @@ class Easy_Reservations {
 		$this->loader->add_action( 'wp_ajax_nopriv_request_reservation_cancel', $plugin_public, 'ersrv_request_reservation_cancel_callback' );
 		$this->loader->add_shortcode( 'ersrv_edit_reservation', $plugin_public, 'ersrv_ersrv_edit_reservation_callback' );
 		$this->loader->add_filter( 'woocommerce_billing_fields', $plugin_public, 'ersrv_woocommerce_billing_fields_callback' );
+		$this->loader->add_filter( 'body_class', $plugin_public, 'ersrv_body_class_callback' );
 	}
 
 	/**

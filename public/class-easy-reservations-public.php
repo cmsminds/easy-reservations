@@ -1892,4 +1892,23 @@ class Easy_Reservations_Public {
 
 		return $fields;
 	}
+
+	/**
+	 * Add custom class to body tag on edit reservation page.
+	 *
+	 * @param array $classes Classes array.
+	 * @return array
+	 */
+	public function ersrv_body_class_callback( $classes ) {
+		global $post;
+
+		$is_edit_reservation_page = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_edit_reservation' ) );
+
+		// If it's the edit reservation page.
+		if ( $is_edit_reservation_page ) {
+			return array_merge( $classes, array( 'ersrv-edit-reservation-template' ) );
+		}
+
+		return $classes;
+	}
 }
