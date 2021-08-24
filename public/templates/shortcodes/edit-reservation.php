@@ -135,7 +135,49 @@ if ( ! empty( $order_id ) && ! empty( $action ) && 'edit-reservation' === $actio
 													<div class="col-12 col-md-6 mb-4 mb-md-0">
 														<h4 class="font-Poppins font-size-16 color-black font-weight-bold mb-0">
 															<?php echo sprintf( __( 'Subtotal: %1$s', 'easy-reservations' ), wc_price( $item_total ) ); ?>
+															<a href="">Hello</a>
 														</h4>
+													</div>
+												</div>
+												<div class="ersrv-edit-reservation-item-summary">
+													<div class="wrapper">
+														<table class="table table-borderless">
+															<tbody>
+																<tr class="item-price-summary">
+																	<th><?php esc_html_e( 'Adults:', 'easy-reservations' ); ?></th>
+																	<td><span class="font-lato font-weight-bold color-accent">--</span></td>
+																</tr>
+																<tr class="kids-charge-summary">
+																	<th><?php esc_html_e( 'Kids:', 'easy-reservations' ); ?></th>
+																	<td><span class="font-lato font-weight-bold color-accent">--</span></td>
+																</tr>
+																<tr class="amenities-summary">
+																	<th><?php esc_html_e( 'Amenities:', 'easy-reservations' ); ?></th>
+																	<td><span class="font-lato font-weight-bold color-accent">--</span></td>
+																</tr>
+																<tr class="amenities-summary">
+																	<th><?php esc_html_e( 'Amenities:', 'easy-reservations' ); ?></th>
+																	<td><span class="font-lato font-weight-bold color-accent">--</span></td>
+																</tr>
+																<tr class="new-reservation-total-cost">
+																	<th><?php esc_html_e( 'Total:', 'easy-reservations' ); ?></th>
+																	<td>
+																		<span class="font-lato font-weight-bold color-accent">
+																			<?php
+																			echo wp_kses(
+																				wc_price( 100.10 ),
+																				array(
+																					'span' => array(
+																						'class' => array(),
+																					),
+																				)
+																			);
+																			?>
+																		</span>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
 													</div>
 												</div>
 											</div>
