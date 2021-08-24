@@ -1222,6 +1222,12 @@ jQuery(document).ready(function ($) {
 	 */
 	$( document ).on( 'click', '.ersrv-update-reservation button', function() {
 		var this_button = $( this );
+
+		// Check if the availability is confirmed for all the orders edited.
+		$( '.confirmed-availability-of-items' ).each( function() {
+			var this_input = $( this );
+			
+		} );
 		console.log( 'hello' );
 	} );
 
