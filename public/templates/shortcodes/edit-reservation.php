@@ -64,7 +64,7 @@ if ( ! empty( $order_id ) && ! empty( $action ) && 'edit-reservation' === $actio
 					// Item total.
 					$item_total = $line_item->get_total();
 					?>
-					<div class="card mb-3">
+					<div class="ersrv-edit-reservation-item-card card mb-3" data-itemid="<?php echo esc_attr( $item_id ); ?>">
 						<div class="row no-gutters">
 							<div class="col-12 col-lg-4">
 								<a href="<?php echo esc_url( get_permalink( $product_id ) ); ?>">
@@ -135,11 +135,11 @@ if ( ! empty( $order_id ) && ! empty( $action ) && 'edit-reservation' === $actio
 													<div class="col-12 col-md-6 mb-4 mb-md-0">
 														<h4 class="font-Poppins font-size-16 color-black font-weight-bold mb-0">
 															<?php echo sprintf( __( 'Subtotal: %1$s', 'easy-reservations' ), wc_price( $item_total ) ); ?>
-															<a href="">Hello</a>
+															<a class="ersrv-split-reservation-cost" href="javascript:void(0);"><?php esc_html_e( 'Know More', 'easy-reservations' ); ?></a>
 														</h4>
 													</div>
 												</div>
-												<div class="ersrv-edit-reservation-item-summary">
+												<div class="ersrv-edit-reservation-item-summary" id="ersrv-edit-reservation-item-summary-<?php echo esc_attr( $item_id ); ?>">
 													<div class="ersrv-edit-reservation-item-summary-wrapper">
 														<table class="table table-borderless">
 															<tbody>

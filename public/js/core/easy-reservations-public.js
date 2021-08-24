@@ -1232,6 +1232,14 @@ jQuery(document).ready(function ($) {
 	} );
 
 	/**
+	 * Open the cost splitter box.
+	 */
+	$( document ).on( 'click', '.ersrv-split-reservation-cost', function() {
+		var item_id = $( '.ersrv-edit-reservation-item-card' ).data( 'itemid' );
+		$( '#ersrv-edit-reservation-item-summary-' + item_id ).toggleClass( 'show' );
+	} );
+
+	/**
 	 * Add reservation to cart.
 	 */
 	function ersrv_add_reservation_to_cart( add_to_cart_button, cart_data ) {
