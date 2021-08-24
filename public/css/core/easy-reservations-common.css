@@ -270,6 +270,10 @@ a.btn:hover,
 .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary table th{
     padding: 0.2rem 0.6rem;
 }
+.theme-twentysixteen .edit-order-wrapper .card .CTA h4 a{
+    font-size: 12px;
+    vertical-align: bottom;
+}
 
 @media(max-width:991px){
     .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary .ersrv-edit-reservation-item-summary-wrapper{
@@ -277,6 +281,9 @@ a.btn:hover,
     }
     .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary::after{
         right: 20px;
+    }
+    .ersrv-edit-reservation-template .site-main > article .entry-content{
+        margin: 0px;        
     }
 }
 
@@ -287,6 +294,12 @@ a.btn:hover,
     .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary::after{
         right: 40px;
         top: -70px;
+    }
+    .edit-order-wrapper .section-title{
+        font-size: 28px;
+    }
+    .details .form-wrapper .form-row .col-12:not(:last-child) {
+        margin-bottom: 1rem;
     }
 }
 
@@ -308,7 +321,7 @@ a.btn:hover,
 }
 
 /* Experimental */
-body::after {
+/* body::after {
     position: fixed;
     z-index: 99999;
     height: 100%;
@@ -319,4 +332,4 @@ body::after {
     pointer-events: none;
     top: 0px;
     left: 0px;
-}
+} */
