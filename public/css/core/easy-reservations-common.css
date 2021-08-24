@@ -222,6 +222,74 @@ a.btn:hover,
 .edit-order-wrapper .card .CTA h4{
     margin-top: 0px !important;
 }
+.edit-order-wrapper .card .CTA,
+.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary{
+    position: relative;
+}
+.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary .ersrv-edit-reservation-item-summary-wrapper{
+    position: absolute;
+    bottom: 30px;
+    max-width: 200px;
+    right: 50px;
+    font-size: 14px;
+    line-height: normal;
+    height: auto;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    background: #fff;
+    border: 1px solid #cecece;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 10px 0px;
+    opacity: 0;
+    z-index: 101;
+    visibility: hidden;
+}
+.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary::after{
+    content: "";
+    position: absolute;
+    right: 110px;
+    top: -40px;
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    background: #fff;
+    border: 1px solid #cecece;
+    transform: rotate(45deg);
+    opacity: 0;
+    visibility: hidden;
+}
+.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary.show .ersrv-edit-reservation-item-summary-wrapper,
+.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary.show::after{
+    opacity: 1;
+    visibility: visible;
+}
+.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary table{
+    margin-bottom: 0px;
+}
+.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary table td, 
+.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary table th{
+    padding: 0.2rem 0.6rem;
+}
+
+@media(max-width:991px){
+    .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary .ersrv-edit-reservation-item-summary-wrapper{
+        right: 0px;
+    }
+    .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary::after{
+        right: 20px;
+    }
+}
+
+@media(max-width:767px){
+    .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary .ersrv-edit-reservation-item-summary-wrapper{
+        bottom: 60px;
+    }
+    .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary::after{
+        right: 40px;
+        top: -70px;
+    }
+}
+
 .theme-twentysixteen .edit-order-wrapper .card .CTA h4{
     letter-spacing: normal;
     text-transform: capitalize;

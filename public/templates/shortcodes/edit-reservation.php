@@ -80,11 +80,11 @@ if ( ! empty( $order_id ) && ! empty( $action ) && 'edit-reservation' === $actio
 										<div class="form-wrapper">
 											<div class="bookingDates mb-3">
 												<div class="row form-row input-daterange">
-													<div class="col-6">
+													<div class="col-12 col-md-6">
 														<label for="" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Checkin', 'easy-reservations' ); ?></label>
 														<div><input type="text" value="<?php echo esc_html( $checkin_date ); ?>" class="ersrv-quick-view-item-checkin-date form-control date-control text-left rounded-lg hasDatepicker" placeholder="08/23/2021"></div>
 													</div>
-													<div class="col-6">
+													<div class="col-12 col-md-6">
 														<div class="d-flex justify-content-between">
 															<label for="" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Checkout', 'easy-reservations' ); ?></label>
 															<a href="javascript:void(0);" class="btn-link text-theme-primary"><?php esc_html_e( 'Confirm Availability', 'easy-reservations' ); ?></a>
@@ -98,11 +98,11 @@ if ( ! empty( $order_id ) && ! empty( $action ) && 'edit-reservation' === $actio
 										<div class="form-wrapper">
 											<div class="bookItems mb-3">
 												<div class="row form-row input-daterange">
-													<div class="col-6">
+													<div class="col-12 col-md-6">
 														<label for="" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Adults', 'easy-reservations' ); ?></label>
 														<div><input placeholder="No. of adults" type="number" class="form-control rounded-lg" value="<?php echo esc_html( $adult_count ); ?>" /></div>
 													</div>
-													<div class="col-6">
+													<div class="col-12 col-md-6">
 														<label for="" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Kid(s)', 'easy-reservations' ); ?></label>
 														<div><input placeholder="No. of kids" type="number" class="form-control rounded-lg" value="<?php echo esc_html( $kid_count ); ?>" /></div>
 													</div>
@@ -140,7 +140,7 @@ if ( ! empty( $order_id ) && ! empty( $action ) && 'edit-reservation' === $actio
 													</div>
 												</div>
 												<div class="ersrv-edit-reservation-item-summary">
-													<div class="wrapper">
+													<div class="ersrv-edit-reservation-item-summary-wrapper">
 														<table class="table table-borderless">
 															<tbody>
 																<tr class="item-price-summary">
