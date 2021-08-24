@@ -234,10 +234,11 @@ a.btn:hover,
     font-size: 14px;
     line-height: normal;
     height: auto;
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
     background: #fff;
-    border: 1px solid #cecece;
+    border: 1px solid transparent;
     border-radius: 10px;
+    /* box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; */
+    box-shadow: 0rem 0.2rem 1rem rgba(0,0,0,.45);
     overflow: hidden;
     padding: 10px 0px;
     opacity: 0;
@@ -253,10 +254,12 @@ a.btn:hover,
     height: 16px;
     width: 16px;
     background: #fff;
-    border: 1px solid #cecece;
+    border: 1px solid transparent;
+    /* box-shadow: 0rem 0rem 1.2rem rgba(0,0,0,.35); */
     transform: rotate(45deg);
     opacity: 0;
     visibility: hidden;
+    z-index: 102;
 }
 .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary.show .ersrv-edit-reservation-item-summary-wrapper,
 .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary.show::after{
@@ -270,9 +273,9 @@ a.btn:hover,
 .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary table th{
     padding: 0.2rem 0.6rem;
 }
-.theme-twentysixteen .edit-order-wrapper .card .CTA h4 a{
-    font-size: 12px;
-    vertical-align: bottom;
+.edit-order-wrapper .card .CTA h4 .ersrv-split-reservation-cost{
+    font-size: 14px;
+    /* vertical-align: bottom; */
 }
 
 @media(max-width:991px){
