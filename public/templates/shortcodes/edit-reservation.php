@@ -244,7 +244,7 @@ if ( ! empty( $order_id ) && ! empty( $action ) && 'edit-reservation' === $actio
 														</h4>
 													</div>
 													<div class="col-12 col-md-6 mb-6 text-right">
-														<button class="btn btn-accent non-clickable"><?php esc_html_e( 'Validate Changes', 'easy-reservations' ); ?></a>
+														<button class="btn btn-accent non-clickable"><?php esc_html_e( 'Validate Changes', 'easy-reservations' ); ?></button>
 														<input type="hidden" class="confirmed-validation-of-item" value="1" />
 													</div>
 												</div>
