@@ -123,7 +123,8 @@ class Easy_Reservations_Public {
 			is_cart() ||
 			is_checkout() ||
 			$is_fav_items_endpoint ||
-			$is_view_order_endpoint
+			$is_view_order_endpoint ||
+			$is_edit_reservation_page
 		) {
 			$enqueue_extra_css = true;
 		}
@@ -297,7 +298,12 @@ class Easy_Reservations_Public {
 				$this->plugin_name . '-edit-reservation',
 				'ERSRV_Edit_Reservation_Script_Vars',
 				array(
-					'ajaxurl' => admin_url( 'admin-ajax.php' ),
+					'ajaxurl'               => admin_url( 'admin-ajax.php' ),
+					'date_format'           => ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' ),
+					'woo_currency'          => get_woocommerce_currency_symbol(),
+					'toast_success_heading' => __( 'Ohhoooo! Success..', 'easy-reservations' ),
+					'toast_error_heading'   => __( 'Ooops! Error..', 'easy-reservations' ),
+					'toast_notice_heading'  => __( 'Notice.', 'easy-reservations' ),
 				)
 			);
 		}
@@ -880,9 +886,10 @@ class Easy_Reservations_Public {
 	 */
 	public function ersrv_wp_footer_callback() {
 		global $post, $wp_query;
-		$is_search_page         = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
-		$is_reservation_page    = ersrv_product_is_reservation( $post->ID );
-		$is_view_order_endpoint = isset( $wp_query->query_vars[ 'view-order' ] );
+		$is_search_page           = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
+		$is_reservation_page      = ersrv_product_is_reservation( $post->ID );
+		$is_view_order_endpoint   = isset( $wp_query->query_vars[ 'view-order' ] );
+		$is_edit_reservation_page = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_edit_reservation' ) );
 
 		// If it's the single reservation page or the search page.
 		if ( $is_search_page ) {
@@ -903,7 +910,8 @@ class Easy_Reservations_Public {
 				$is_search_page ||
 				$is_view_order_endpoint ||
 				$is_reservation_page ||
-				is_checkout()
+				is_checkout() ||
+				$is_edit_reservation_page
 			)
 		) {
 			// Include the notification html.
@@ -1930,5 +1938,43 @@ class Easy_Reservations_Public {
 		}
 
 		return $classes;
+	}
+
+	/**
+	 * Validate item changes 
+	 */
+	public function ersrv_edit_reservation_validate_item_changes_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+		// Check if action mismatches.
+		if ( empty( $action ) || 'edit_reservation_validate_item_changes' !== $action ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Posted data.
+		$item_id       = filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
+		$adult_count   = filter_input( INPUT_POST, 'adult_count', FILTER_SANITIZE_NUMBER_INT );
+		$kid_count     = filter_input( INPUT_POST, 'kid_count', FILTER_SANITIZE_NUMBER_INT );
+		$checkin_date  = filter_input( INPUT_POST, 'checkin_date', FILTER_SANITIZE_STRING );
+		$checkout_date = filter_input( INPUT_POST, 'checkout_date', FILTER_SANITIZE_STRING );
+
+		// Let's first verify the accomodation.
+
+		// Generate the error html.
+		$error_html  = 'There are some issues:';
+		$error_html .= '<ol>';
+		$error_html .= '<li>Hello</li>';
+		$error_html .= '<li>World !!</li>';
+		$error_html .= '</ol>';
+
+		// Return the AJAX response.
+		$response = array(
+			'code'          => 'item-changes-validated',
+			'toast_message' => $error_html,
+			'is_success'    => 'no',
+		);
+		wp_send_json_success( $response );
+		wp_die();
 	}
 }
