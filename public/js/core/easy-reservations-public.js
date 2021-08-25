@@ -317,7 +317,8 @@ jQuery(document).ready(function ($) {
 	/**
 	 * Add the reservation to google calendar.
 	 */
-	 $( document ).on( 'click', '.add-to-gcal', function () {
+	 $( document ).on( 'click', '.add-to-gcal', function ( evt ) {
+		evt.preventDefault();
 		var this_button = $( this );
 		var order_id    = this_button.parents( '.ersrv-reservation-calendars-container' ).data( 'oid' );
 
@@ -359,7 +360,8 @@ jQuery(document).ready(function ($) {
 	/**
 	 * Add the reservation to icalendar.
 	 */
-	$( document ).on( 'click', '.add-to-ical', function () {
+	$( document ).on( 'click', '.add-to-ical', function ( evt ) {
+		evt.preventDefault();
 		var this_button = $( this );
 		var order_id    = this_button.parents( '.ersrv-reservation-calendars-container' ).data( 'oid' );
 
@@ -1215,28 +1217,6 @@ jQuery(document).ready(function ($) {
 				}
 			},
 		} );
-	} );
-
-	/**
-	 * Update reservation.
-	 */
-	$( document ).on( 'click', '.ersrv-update-reservation button', function() {
-		var this_button = $( this );
-
-		// Check if the availability is confirmed for all the orders edited.
-		$( '.confirmed-availability-of-items' ).each( function() {
-			var this_input = $( this );
-			
-		} );
-		console.log( 'hello' );
-	} );
-
-	/**
-	 * Open the cost splitter box.
-	 */
-	$( document ).on( 'click', '.ersrv-split-reservation-cost', function() {
-		var item_id = $( '.ersrv-edit-reservation-item-card' ).data( 'itemid' );
-		$( '#ersrv-edit-reservation-item-summary-' + item_id ).toggleClass( 'show' );
 	} );
 
 	/**

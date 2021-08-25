@@ -282,6 +282,26 @@ class Easy_Reservations_Public {
 			self::ersrv_enqueue_plugin_core_js( $this->plugin_name );
 		}
 
+		// Add a custom separate JS for edit reservation page.
+		if ( $is_edit_reservation_page ) {
+			wp_enqueue_script(
+				$this->plugin_name . '-edit-reservation',
+				ERSRV_PLUGIN_URL . 'public/js/core/easy-reservations-edit-reservation.js',
+				array( 'jquery' ),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/js/core/easy-reservations-edit-reservation.js' ),
+				true
+			);
+
+			// Localize script.
+			wp_localize_script(
+				$this->plugin_name . '-edit-reservation',
+				'ERSRV_Edit_Reservation_Script_Vars',
+				array(
+					'ajaxurl' => admin_url( 'admin-ajax.php' ),
+				)
+			);
+		}
+
 		// Add the datepicker and custom script only when the widget is active.
 		if ( false !== $this->is_calendar_widget_active ) {
 			// Enqueue the ui datepicker script if not already enqueued.

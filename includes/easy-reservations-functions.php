@@ -2326,8 +2326,8 @@ if ( ! function_exists( 'ersrv_print_calendar_buttons' ) ) {
 		ob_start();
 		?>
 		<div class="ersrv-reservation-calendars-container" data-oid="<?php echo esc_attr( $order_id ); ?>">
-			<a href="javascript:void(0);" class="button add-to-gcal"><?php echo wp_kses_post( $google_calendar_button_text ); ?></a>
-			<a href="javascript:void(0);" class="button add-to-ical"><?php echo wp_kses_post( $icalendar_button_text ); ?></a>
+			<a href="#" class="button add-to-gcal" title="<?php echo wp_kses_post( $google_calendar_button_text ); ?>"><?php echo wp_kses_post( $google_calendar_button_text ); ?></a>
+			<a href="#" class="button add-to-ical" title="<?php echo wp_kses_post( $icalendar_button_text ); ?>"><?php echo wp_kses_post( $icalendar_button_text ); ?></a>
 		</div>
 		<?php
 		$reservations_calendar_container = ob_get_clean();
@@ -2358,8 +2358,9 @@ if ( ! function_exists( 'ersrv_print_calendar_buttons' ) ) {
 					'data-oid' => array(),
 				),
 				'a' => array(
-					'href'      => array(),
-					'class'     => array(),
+					'href'  => array(),
+					'class' => array(),
+					'title' => array(),
 				),
 			)
 		);
