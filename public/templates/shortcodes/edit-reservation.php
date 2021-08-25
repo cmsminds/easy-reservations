@@ -145,7 +145,7 @@ if ( ! empty( $order_id ) && ! empty( $action ) && 'edit-reservation' === $actio
 											<div class="CTA">
 												<div class="row form-row align-items-center justify-content-end">
 													<div class="col-12 col-md-6 mb-6">
-														<button class="btn btn-accent"><?php esc_html_e( 'Validate Changes', 'easy-reservations' ); ?></a>
+														<button class="btn btn-accent non-clickable"><?php esc_html_e( 'Validate Changes', 'easy-reservations' ); ?></a>
 														<input type="hidden" class="confirmed-validation-of-item" value="1" />
 													</div>
 													<div class="col-12 col-md-6 mb-4 mb-md-0">
@@ -258,7 +258,7 @@ if ( ! empty( $order_id ) && ! empty( $action ) && 'edit-reservation' === $actio
 				<?php } ?>
 				<!-- UPDATE RESERVATION -->
 				<div class="group-update-btn d-flex align-items-center justify-content-center ersrv-update-reservation">
-					<button class="btn btn-accent"><?php esc_html_e( 'Update Reservation', 'easy-reservations' ); ?></button>
+					<button class="btn btn-accent non-clickable"><?php esc_html_e( 'Update Reservation', 'easy-reservations' ); ?></button>
 				</div>
 			<?php } else {
 				$my_account = wc_get_page_permalink( 'myaccount' );

@@ -30,9 +30,10 @@ jQuery(document).ready(function ($) {
 	 * Check if any value is changed, so the user should confirm availability.
 	 */
 	$( document ).on( 'change', '.ersrv-edit-reservation-item-value', function() {
-		var this_input = $( this );
-		var new_val = this_input.val().toString();
-		var old_val = this_input.data( 'oldval' ).toString();
+		var this_input  = $( this );
+		var details_div = this_input.parents( '.details' );
+		var new_val     = this_input.val().toString();
+		var old_val     = this_input.data( 'oldval' ).toString();
 
 		if ( new_val !== old_val ) {
 			
