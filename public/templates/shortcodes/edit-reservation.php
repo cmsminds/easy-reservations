@@ -144,108 +144,108 @@ if ( ! empty( $order_id ) && ! empty( $action ) && 'edit-reservation' === $actio
 										<div class="form-wrapper">
 											<div class="CTA">
 												<div class="row form-row align-items-center justify-content-end">
-													<div class="col-12 col-md-6 mb-6">
-														<button class="btn btn-accent non-clickable"><?php esc_html_e( 'Validate Changes', 'easy-reservations' ); ?></a>
-														<input type="hidden" class="confirmed-validation-of-item" value="1" />
-													</div>
 													<div class="col-12 col-md-6 mb-4 mb-md-0">
 														<h4 class="font-Poppins font-size-16 color-black font-weight-bold mb-0">
 															<?php echo sprintf( __( 'Subtotal: %1$s', 'easy-reservations' ), wc_price( $item_total ) ); ?>
-															<a class="ersrv-split-reservation-cost" href="javascript:void(0);"><?php esc_html_e( 'Know More', 'easy-reservations' ); ?></a>
+															<a class="ersrv-split-reservation-cost text-theme-primary" href="javascript:void(0);"><?php esc_html_e( 'Know More', 'easy-reservations' ); ?></a>
+															<div class="ersrv-edit-reservation-item-summary" id="ersrv-edit-reservation-item-summary-<?php echo esc_attr( $item_id ); ?>">
+																<div class="ersrv-edit-reservation-item-summary-wrapper">
+																	<table class="table table-borderless">
+																		<tbody>
+																			<tr class="item-price-summary">
+																				<th><?php esc_html_e( 'Adults:', 'easy-reservations' ); ?></th>
+																				<td>
+																					<span class="font-lato font-weight-bold color-accent">
+																						<?php
+																						echo wp_kses(
+																							wc_price( $adult_subtotal ),
+																							array(
+																								'span' => array(
+																									'class' => array(),
+																								),
+																							)
+																						);
+																						?>
+																					</span>
+																				</td>
+																			</tr>
+																			<tr class="kids-charge-summary">
+																				<th><?php esc_html_e( 'Kids:', 'easy-reservations' ); ?></th>
+																				<td>
+																					<span class="font-lato font-weight-bold color-accent">
+																						<?php
+																						echo wp_kses(
+																							wc_price( $kid_subtotal ),
+																							array(
+																								'span' => array(
+																									'class' => array(),
+																								),
+																							)
+																						);
+																						?>
+																					</span>
+																				</td>
+																			</tr>
+																			<tr class="amenities-summary">
+																				<th><?php esc_html_e( 'Amenities:', 'easy-reservations' ); ?></th>
+																				<td>
+																					<span class="font-lato font-weight-bold color-accent">
+																						<?php
+																						echo wp_kses(
+																							wc_price( $amenities_subtotal ),
+																							array(
+																								'span' => array(
+																									'class' => array(),
+																								),
+																							)
+																						);
+																						?>
+																					</span>
+																				</td>
+																			</tr>
+																			<tr class="amenities-summary">
+																				<th><?php esc_html_e( 'Amenities:', 'easy-reservations' ); ?></th>
+																				<td>
+																					<span class="font-lato font-weight-bold color-accent">
+																						<?php
+																						echo wp_kses(
+																							wc_price( $security_amount ),
+																							array(
+																								'span' => array(
+																									'class' => array(),
+																								),
+																							)
+																						);
+																						?>
+																					</span>
+																				</td>
+																			</tr>
+																			<tr class="new-reservation-total-cost">
+																				<th><?php esc_html_e( 'Total:', 'easy-reservations' ); ?></th>
+																				<td>
+																					<span class="font-lato font-weight-bold color-accent">
+																						<?php
+																						echo wp_kses(
+																							wc_price( $item_total ),
+																							array(
+																								'span' => array(
+																									'class' => array(),
+																								),
+																							)
+																						);
+																						?>
+																					</span>
+																				</td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</div>
+															</div>
 														</h4>
 													</div>
-												</div>
-												<div class="ersrv-edit-reservation-item-summary" id="ersrv-edit-reservation-item-summary-<?php echo esc_attr( $item_id ); ?>">
-													<div class="ersrv-edit-reservation-item-summary-wrapper">
-														<table class="table table-borderless">
-															<tbody>
-																<tr class="item-price-summary">
-																	<th><?php esc_html_e( 'Adults:', 'easy-reservations' ); ?></th>
-																	<td>
-																		<span class="font-lato font-weight-bold color-accent">
-																			<?php
-																			echo wp_kses(
-																				wc_price( $adult_subtotal ),
-																				array(
-																					'span' => array(
-																						'class' => array(),
-																					),
-																				)
-																			);
-																			?>
-																		</span>
-																	</td>
-																</tr>
-																<tr class="kids-charge-summary">
-																	<th><?php esc_html_e( 'Kids:', 'easy-reservations' ); ?></th>
-																	<td>
-																		<span class="font-lato font-weight-bold color-accent">
-																			<?php
-																			echo wp_kses(
-																				wc_price( $kid_subtotal ),
-																				array(
-																					'span' => array(
-																						'class' => array(),
-																					),
-																				)
-																			);
-																			?>
-																		</span>
-																	</td>
-																</tr>
-																<tr class="amenities-summary">
-																	<th><?php esc_html_e( 'Amenities:', 'easy-reservations' ); ?></th>
-																	<td>
-																		<span class="font-lato font-weight-bold color-accent">
-																			<?php
-																			echo wp_kses(
-																				wc_price( $amenities_subtotal ),
-																				array(
-																					'span' => array(
-																						'class' => array(),
-																					),
-																				)
-																			);
-																			?>
-																		</span>
-																	</td>
-																</tr>
-																<tr class="amenities-summary">
-																	<th><?php esc_html_e( 'Amenities:', 'easy-reservations' ); ?></th>
-																	<td>
-																		<span class="font-lato font-weight-bold color-accent">
-																			<?php
-																			echo wp_kses(
-																				wc_price( $security_amount ),
-																				array(
-																					'span' => array(
-																						'class' => array(),
-																					),
-																				)
-																			);
-																			?>
-																		</span>
-																	</td>
-																</tr>
-																<tr class="new-reservation-total-cost">
-																	<th><?php esc_html_e( 'Total:', 'easy-reservations' ); ?></th>
-																	<td>
-																		<span class="font-lato font-weight-bold color-accent">
-																			<?php
-																			echo wp_kses(
-																				wc_price( $item_total ),
-																				array(
-																					'span' => array(
-																						'class' => array(),
-																					),
-																				)
-																			);
-																			?>
-																		</span>
-																	</td>
-																</tr>
-															</tbody>
-														</table>
+													<div class="col-12 col-md-6 mb-6 text-right">
+														<button class="btn btn-accent non-clickable"><?php esc_html_e( 'Validate Changes', 'easy-reservations' ); ?></a>
+														<input type="hidden" class="confirmed-validation-of-item" value="1" />
 													</div>
 												</div>
 											</div>
