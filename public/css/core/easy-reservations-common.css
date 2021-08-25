@@ -328,7 +328,7 @@ a.btn:hover,
 }
 
 /* Experimental */
-body::after {
+/* body::after {
     position: fixed;
     z-index: 99999;
     height: 100%;
@@ -339,4 +339,4 @@ body::after {
     pointer-events: none;
     top: 0px;
     left: 0px;
-}
+} */
