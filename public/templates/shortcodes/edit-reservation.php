@@ -279,8 +279,8 @@ if ( ! empty( $order_id ) && ! empty( $action ) && 'edit-reservation' === $actio
 				<?php } ?>
 
 				<!-- UPDATE RESERVATION -->
-				<div class="group-update-btn d-flex align-items-center justify-content-center ersrv-update-reservation">
-					<p><?php echo sprintf( __( 'Cost difference: %2$s%1$s%3$s (to be paid by the customer on arrival)', 'easy-reservations' ), wc_price( 0 ), '<span class="ersrv-edit-reservation-cost-difference">', '</span>' ); ?></p>
+				<div class="group-update-btn d-flex align-items-center justify-content-center ersrv-update-reservation flex-column">
+					<h4 class="font-lato font-size-16 text-capitalize font-weight-semibold color-black h4"><?php echo sprintf( __( 'Cost difference: %2$s%1$s%3$s (to be paid by the customer on arrival)', 'easy-reservations' ), wc_price( 0 ), '<span class="ersrv-edit-reservation-cost-difference">', '</span>' ); ?></h4>
 					<button class="btn btn-accent non-clickable"><?php esc_html_e( 'Update Reservation', 'easy-reservations' ); ?></button>
 				</div>
 			<?php } else {

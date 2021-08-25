@@ -326,7 +326,11 @@ a.btn:hover,
 .theme-twentytwentyone .edit-order-wrapper .card .custom-switch {
     padding-left: 0.5rem;
 }
-
+.group-update-btn .btn,
+.group-update-btn h4{
+    font-size: 16px;
+}
+    
 /* Experimental */
 /* body::after {
     position: fixed;
