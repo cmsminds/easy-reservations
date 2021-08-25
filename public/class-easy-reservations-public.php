@@ -1953,13 +1953,23 @@ class Easy_Reservations_Public {
 		}
 
 		// Posted data.
-		$item_id       = filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
-		$adult_count   = filter_input( INPUT_POST, 'adult_count', FILTER_SANITIZE_NUMBER_INT );
-		$kid_count     = filter_input( INPUT_POST, 'kid_count', FILTER_SANITIZE_NUMBER_INT );
-		$checkin_date  = filter_input( INPUT_POST, 'checkin_date', FILTER_SANITIZE_STRING );
-		$checkout_date = filter_input( INPUT_POST, 'checkout_date', FILTER_SANITIZE_STRING );
+		$item_id            = (int) filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
+		$product_id         = (int) filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
+		$adult_count        = (int) filter_input( INPUT_POST, 'adult_count', FILTER_SANITIZE_NUMBER_INT );
+		$kid_count          = (int) filter_input( INPUT_POST, 'kid_count', FILTER_SANITIZE_NUMBER_INT );
+		$accomodation_limit = (int) filter_input( INPUT_POST, 'accomodation_limit', FILTER_SANITIZE_NUMBER_INT );
+		$checkin_date       = filter_input( INPUT_POST, 'checkin_date', FILTER_SANITIZE_STRING );
+		$checkout_date      = filter_input( INPUT_POST, 'checkout_date', FILTER_SANITIZE_STRING );
+
+		// Error message.
+		$error_message = '';
 
 		// Let's first verify the accomodation.
+		if ( ( $adult_count + $kid_count ) > $accomodation_limit ) {
+
+		}
+		var_dump( $adult_count, $kid_count, $accomodation_limit );
+		die;
 
 		// Generate the error html.
 		$error_html  = 'There are some issues:';
@@ -1976,5 +1986,16 @@ class Easy_Reservations_Public {
 		);
 		wp_send_json_success( $response );
 		wp_die();
+	}
+
+	/**
+	 * Add custom text on edit reservation edit page.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_ersrv_edit_reservation_after_main_title_callback() {
+		?>
+		<p class="text-center font-lato font-weight-bold font-size-16 color-black mb-3"><?php esc_html_e( 'Please note that the reserved days and the reserved accomodation cannot be decreased.', 'easy-reservations' ); ?></p>
+		<?php
 	}
 }

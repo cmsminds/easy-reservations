@@ -75,10 +75,17 @@ jQuery(document).ready(function ($) {
 	 * Edit reservation adult accomodation charge.
 	 */
 	$( document ).on( 'keyup click', '.ersrv-edit-reservation-item-adult-count', function() {
-		var this_input             = $( this );
-		var item_id                = this_input.parents( '.ersrv-edit-reservation-item-card' ).data( 'itemid' );
-		var adult_count            = parseInt( this_input.val() );
-		adult_count                = ( -1 === is_valid_number( adult_count ) ) ? 0 : adult_count;
+		var this_input  = $( this );
+		var item_id     = this_input.parents( '.ersrv-edit-reservation-item-card' ).data( 'itemid' );
+		var adult_count = parseInt( this_input.val() );
+		adult_count     = ( -1 === is_valid_number( adult_count ) ) ? 0 : adult_count;
+
+		// The adult count should be minimum what was previously selected.
+		var min_adult_count = parseInt( this_input.attr( 'min' ) );
+		adult_count         = ( adult_count < min_adult_count ) ? min_adult_count : adult_count;
+		this_input.val( adult_count );
+
+		// Manage the adult's cost.
 		var per_adult_charge       = parseFloat( $( '#adult-charge-' + item_id ).val() );
 		var total_charge           = adult_count * per_adult_charge;
 		var formatted_total_charge = ersrv_get_formatted_price( total_charge );
@@ -94,10 +101,17 @@ jQuery(document).ready(function ($) {
 	 * Edit reservation kid accomodation charge.
 	 */
 	$( document ).on( 'keyup click', '.ersrv-edit-reservation-item-kid-count', function() {
-		var this_input             = $( this );
-		var item_id                = this_input.parents( '.ersrv-edit-reservation-item-card' ).data( 'itemid' );
-		var kid_count              = parseInt( this_input.val() );
-		kid_count                  = ( -1 === is_valid_number( kid_count ) ) ? 0 : kid_count;
+		var this_input = $( this );
+		var item_id    = this_input.parents( '.ersrv-edit-reservation-item-card' ).data( 'itemid' );
+		var kid_count  = parseInt( this_input.val() );
+		kid_count      = ( -1 === is_valid_number( kid_count ) ) ? 0 : kid_count;
+
+		// The adult count should be minimum what was previously selected.
+		var min_kid_count = parseInt( this_input.attr( 'min' ) );
+		kid_count         = ( kid_count < min_kid_count ) ? min_kid_count : kid_count;
+		this_input.val( kid_count );
+
+		// Manage the kids cost.
 		var per_kid_charge         = parseFloat( $( '#kid-charge-' + item_id ).val() );
 		var total_charge           = kid_count * per_kid_charge;
 		var formatted_total_charge = ersrv_get_formatted_price( total_charge );
@@ -115,12 +129,14 @@ jQuery(document).ready(function ($) {
 	$( document ).on( 'click', '.ersrv-edit-reservation-validate-item-changes', function() {
 		var this_button = $( this );
 		var item_id     = this_button.parents( '.ersrv-edit-reservation-item-card' ).data( 'itemid' );
+		var product_id  = this_button.parents( '.ersrv-edit-reservation-item-card' ).data( 'productid' );
 
 		// Get the item details.
-		var checkin_date  = $( '#ersrv-edit-reservation-item-checkin-date-' + item_id ).val();
-		var checkout_date = $( '#ersrv-edit-reservation-item-checkout-date-' + item_id ).val();
-		var adult_count   = $( '#ersrv-edit-reservation-item-adult-count-' + item_id ).val();
-		var kid_count     = $( '#ersrv-edit-reservation-item-kid-count-' + item_id ).val();
+		var checkin_date       = $( '#ersrv-edit-reservation-item-checkin-date-' + item_id ).val();
+		var checkout_date      = $( '#ersrv-edit-reservation-item-checkout-date-' + item_id ).val();
+		var adult_count        = $( '#ersrv-edit-reservation-item-adult-count-' + item_id ).val();
+		var kid_count          = $( '#ersrv-edit-reservation-item-kid-count-' + item_id ).val();
+		var accomodation_limit = $( '#accomodation-limit-' + item_id ).val();
 
 		// Block the button.
 		block_element( this_button );
@@ -133,10 +149,12 @@ jQuery(document).ready(function ($) {
 			data: {
 				action: 'edit_reservation_validate_item_changes',
 				item_id: item_id,
+				product_id: product_id,
 				checkin_date: checkin_date,
 				checkout_date: checkout_date,
 				adult_count: adult_count,
 				kid_count: kid_count,
+				accomodation_limit: accomodation_limit,
 			},
 			success: function ( response ) {
 				// Return, if the response is not proper.
@@ -250,6 +268,16 @@ jQuery(document).ready(function ($) {
 			subtotal        = ( -1 === is_valid_number( subtotal ) ) ? 0 : subtotal;
 			item_new_total += subtotal;
 		} );
+
+		// Calculate the cost difference now.
+		var old_order_total = parseFloat( $( '.ersrv-edit-reservation-order-total' ).val() );
+		var cost_difference = item_new_total - old_order_total;
+
+		// Get the formatted cost difference.
+		cost_difference = ersrv_get_formatted_price( cost_difference );
+
+		// Paste the cost difference.
+		$( '.ersrv-edit-reservation-cost-difference' ).html( cost_difference );
 	}
 
 	/**

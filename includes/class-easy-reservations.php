@@ -245,6 +245,7 @@ class Easy_Reservations {
 		$this->loader->add_filter( 'body_class', $plugin_public, 'ersrv_body_class_callback' );
 		$this->loader->add_action( 'wp_ajax_edit_reservation_validate_item_changes', $plugin_public, 'ersrv_edit_reservation_validate_item_changes_callback' );
 		$this->loader->add_action( 'wp_ajax_nopriv_edit_reservation_validate_item_changes', $plugin_public, 'ersrv_edit_reservation_validate_item_changes_callback' );
+		$this->loader->add_action( 'ersrv_edit_reservation_after_main_title', $plugin_public, 'ersrv_ersrv_edit_reservation_after_main_title_callback' );
 	}
 
 	/**
