@@ -31,13 +31,22 @@ jQuery(document).ready(function ($) {
 	 */
 	$( document ).on( 'change', '.ersrv-edit-reservation-item-value', function() {
 		var this_input  = $( this );
-		var details_div = this_input.parents( '.details' );
-		var new_val     = this_input.val().toString();
-		var old_val     = this_input.data( 'oldval' ).toString();
+		var input_boxes = this_input.parents( '.details' ).find( '.ersrv-edit-reservation-item-value' );
 
-		if ( new_val !== old_val ) {
-			
-		}
+		this_input.parents( '.details' ).find( '.confirmed-validation-of-item' ).val( 1 );
+		block_element( this_input.parents( '.details' ).find( '.confirmed-validation-of-item' ).prev( 'button' ) );
+
+		// Loop through the input boxes to check if either value is changed.
+		input_boxes.each( function() {
+			var input_box = $( this );
+			var new_val = input_box.val().toString();
+			var old_val = input_box.data( 'oldval' ).toString();
+
+			if ( new_val !== old_val ) {
+				this_input.parents( '.details' ).find( '.confirmed-validation-of-item' ).val( -1 );
+				unblock_element( this_input.parents( '.details' ).find( '.confirmed-validation-of-item' ).prev( 'button' ) );
+			}
+		} );
 	} );
 
 	/**
