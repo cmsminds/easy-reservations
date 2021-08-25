@@ -143,8 +143,8 @@ if ( ! empty( $order_id ) && ! empty( $action ) && 'edit-reservation' === $actio
 										</div> -->
 										<div class="form-wrapper">
 											<div class="CTA">
-												<div class="row form-row align-items-center justify-content-end">
-													<div class="col-12 col-md-6 mb-4 mb-md-0">
+												<div class="row form-row align-items-center">
+													<div class="col-12 col-md-5 mb-4 mb-md-0">
 														<h4 class="font-Poppins font-size-16 color-black font-weight-bold mb-0">
 															<?php echo sprintf( __( 'Subtotal: %1$s', 'easy-reservations' ), wc_price( $item_total ) ); ?>
 															<a class="ersrv-split-reservation-cost text-theme-primary" href="javascript:void(0);"><?php esc_html_e( 'Know More', 'easy-reservations' ); ?></a>
@@ -243,7 +243,7 @@ if ( ! empty( $order_id ) && ! empty( $action ) && 'edit-reservation' === $actio
 															</div>
 														</h4>
 													</div>
-													<div class="col-12 col-md-6 mb-6 text-right">
+													<div class="col-12 col-md-7 mb-6 text-right">
 														<button class="btn btn-accent non-clickable"><?php esc_html_e( 'Validate Changes', 'easy-reservations' ); ?></button>
 														<input type="hidden" class="confirmed-validation-of-item" value="1" />
 													</div>

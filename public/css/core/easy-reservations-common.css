@@ -222,6 +222,9 @@ a.btn:hover,
 .edit-order-wrapper .card .CTA h4{
     margin-top: 0px !important;
 }
+.edit-order-wrapper .card .CTA h4{
+    font-size: 14px;
+}
 .edit-order-wrapper .card .CTA,
 .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary{
     position: relative;
@@ -282,12 +285,6 @@ a.btn:hover,
 }
 
 @media(max-width:991px){
-    .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary .ersrv-edit-reservation-item-summary-wrapper{
-        right: 0px;
-    }
-    .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary::after{
-        right: 80px;
-    }
     .ersrv-edit-reservation-template .site-main > article .entry-content{
         margin: 0px;        
     }
@@ -298,7 +295,6 @@ a.btn:hover,
         bottom: 40px;
     }
     .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary::after{
-        /* right: 40px; */
         top: -50px;
     }
     .edit-order-wrapper .section-title{
@@ -308,7 +304,12 @@ a.btn:hover,
         margin-bottom: 1rem;
     }
 }
-
+.edit-order-wrapper .card .CTA .btn{
+    font-size: 14px;
+    letter-spacing: normal;
+    text-transform: capitalize;
+    padding: 4px 8px;
+}
 .theme-twentysixteen .edit-order-wrapper .card .CTA h4{
     letter-spacing: normal;
     text-transform: capitalize;
