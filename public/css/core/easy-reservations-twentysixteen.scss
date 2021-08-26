@@ -850,11 +850,6 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
     background-color: $secondary;
     border-radius: 100%;
 }
-.ersrv-edit-reservation-template #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ersrv-date-active a{
-    color: #fff;
-    background-color: $secondary;
-    border-radius: 100%;
-}
 .ersrv-edit-reservation-template .ui-datepicker-calendar .ui-state-disabled *, 
 .ersrv-edit-reservation-template .ui-datepicker-calendar .ersrv-date-disabled * {
     color: #fff;

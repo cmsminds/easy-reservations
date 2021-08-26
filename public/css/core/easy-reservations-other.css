@@ -1542,4 +1542,27 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
 .text-theme-primary {
   color: #0c71c3;
 }
+
+.ersrv-edit-reservation-template #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ersrv-order-reserved-date a {
+  color: #fff;
+  background-color: #cbefd9;
+  border-radius: 100%;
+}
+
+.ersrv-edit-reservation-template #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ersrv-date-active a {
+  color: #fff;
+  background-color: #3ab166;
+  border-radius: 100%;
+}
+
+.ersrv-edit-reservation-template .ui-datepicker-calendar .ui-state-disabled *,
+.ersrv-edit-reservation-template .ui-datepicker-calendar .ersrv-date-disabled * {
+  color: #fff;
+  background-color: #e0e0e0;
+  border-radius: 100%;
+}
+
+.ersrv-order-reserved-dates-notifier::before {
+  background-color: #cbefd9;
+}
 /*# sourceMappingURL=easy-reservations-other.css.map */
