@@ -9,14 +9,58 @@ jQuery(document).ready(function ($) {
 	var toast_error_heading   = ERSRV_Edit_Reservation_Script_Vars.toast_error_heading;
 	var toast_notice_heading  = ERSRV_Edit_Reservation_Script_Vars.toast_notice_heading;
 
-	// Make the datepickers on the checkin and checkout fields.
-	if ( $( '.ersrv-edit-reservation-item-checkin-date' ).length && $( '.ersrv-edit-reservation-item-checkout-date' ).length ) {
-		console.log( 'hello insider' );
-		$( '.ersrv-edit-reservation-item-checkin-date, .ersrv-edit-reservation-item-checkout-date' ).datepicker( {
-			dateFormat: date_format,
-			minDate: 0,
+	/**
+	 * Click on the checkin and checkout date to fetch the dates available while editing the reservation.
+	 */
+	$( document ).on( 'click', '.ersrv-edit-reservation-item-checkin-date, .ersrv-edit-reservation-item-checkout-date', function() {
+		var this_input = $( this );
+		var item_id    = this_input.parents( '.ersrv-edit-reservation-item-card' ).data( 'itemid' );
+		var product_id = this_input.parents( '.ersrv-edit-reservation-item-card' ).data( 'productid' );
+
+		// Check if the datepicker is already initiated.
+		var is_datepicker_initiated = parseInt( $( '#datepicker-initiated-' + item_id ).val() );
+
+		// Exit the initiation, if the datepicker has been initiated once.
+		if ( 1 === is_valid_number( is_datepicker_initiated ) && 1 === is_datepicker_initiated ) {
+			return false;
+		}
+		
+		// Block the element.
+		block_element( this_input.parents( '.input-daterange' ) );
+
+		// Process the AJAX.
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'edit_reservation_initiate_datepicker',
+				product_id: product_id,
+			},
+			success: function ( response ) {
+				// Return, if the response is not proper.
+				if ( 0 === response ) {
+					console.warn( 'easy-reservations: invalid ajax call' );
+					return false;
+				}
+
+				// If the reservation is added.
+				if ( 'datepicker-initiated' === response.data.code ) {
+					// Unblock the button.
+					unblock_element( this_input.parents( '.input-daterange' ) );
+
+					// Initiate the datepicker now.
+					$( '.ersrv-edit-reservation-item-checkin-date, .ersrv-edit-reservation-item-checkout-date' ).datepicker( {
+						dateFormat: date_format,
+						minDate: 0,
+					} );
+
+					// Set the hidden value to be 1.
+					$( '#datepicker-initiated-' + item_id ).val( '1' );
+				}
+			},
 		} );
-	}
+	} );
 
 	/**
 	 * Update reservation.
@@ -37,7 +81,7 @@ jQuery(document).ready(function ($) {
 	/**
 	 * Check if any value is changed, so the user should confirm availability.
 	 */
-	$( document ).on( 'change', '.ersrv-edit-reservation-item-value', function() {
+	$( document ).on( 'keyup click change', '.ersrv-edit-reservation-item-value', function() {
 		var this_input  = $( this );
 		var input_boxes = this_input.parents( '.details' ).find( '.ersrv-edit-reservation-item-value' );
 

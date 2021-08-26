@@ -37,6 +37,11 @@ if ( ! empty( $order_id ) && ! empty( $action ) && 'edit-reservation' === $actio
 
 	// Get the items.
 	$line_items = $wc_order->get_items();
+
+	// Current date.
+	$php_date_format = ersrv_get_php_date_format();
+	$curr_date       = ersrv_get_current_date( $php_date_format );
+	$next_date       = gmdate( $php_date_format, ( strtotime( 'now' ) + 86400 ) );
 }
 ?>
 <div class="wrapper edit-order-wrapper pb-5">
@@ -108,13 +113,14 @@ if ( ! empty( $order_id ) && ! empty( $action ) && 'edit-reservation' === $actio
 												<div class="row form-row input-daterange">
 													<div class="col-12 col-md-6">
 														<label for="ersrv-edit-reservation-item-checkin-date-<?php echo esc_attr( $item_id ); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Checkin', 'easy-reservations' ); ?></label>
-														<div><input type="text" id="ersrv-edit-reservation-item-checkin-date-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $checkin_date ); ?>" data-oldval="<?php echo esc_html( $checkin_date ); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkin-date form-control date-control text-left rounded-lg hasDatepicker" placeholder="08/23/2021"></div>
+														<div>
+															<input type="text" id="ersrv-edit-reservation-item-checkin-date-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $checkin_date ); ?>" data-oldval="<?php echo esc_html( $checkin_date ); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkin-date form-control date-control text-left rounded-lg" placeholder="<?php echo esc_html( $curr_date ); ?>"></div>
 													</div>
 													<div class="col-12 col-md-6">
 														<div class="d-flex justify-content-between">
 															<label for="ersrv-edit-reservation-item-checkout-date-<?php echo esc_attr( $item_id ); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Checkout', 'easy-reservations' ); ?></label>
 														</div>
-														<div><input type="text" id="ersrv-edit-reservation-item-checkout-date-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $checkout_date ); ?>" data-oldval="<?php echo esc_html( $checkout_date ); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkout-date form-control date-control text-left rounded-lg hasDatepicker" placeholder="08/24/2021"></div>
+														<div><input type="text" id="ersrv-edit-reservation-item-checkout-date-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $checkout_date ); ?>" data-oldval="<?php echo esc_html( $checkout_date ); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkout-date form-control date-control text-left rounded-lg" placeholder="<?php echo esc_html( $next_date ); ?>"></div>
 													</div>
 												</div>
 											</div>
@@ -266,6 +272,7 @@ if ( ! empty( $order_id ) && ! empty( $action ) && 'edit-reservation' === $actio
 														<input type="hidden" id="adult-charge-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $adult_charge ); ?>" />
 														<input type="hidden" id="kid-charge-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $kid_charge ); ?>" />
 														<input type="hidden" id="security-amount-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $security_amount ); ?>" />
+														<input type="hidden" id="datepicker-initiated-<?php echo esc_attr( $item_id ); ?>" value="-1" />
 													</div>
 												</div>
 											</div>

@@ -1965,24 +1965,38 @@ class Easy_Reservations_Public {
 		$error_message = '';
 
 		// Let's first verify the accomodation.
-		if ( ( $adult_count + $kid_count ) > $accomodation_limit ) {
-
+		if ( 0 === $adult_count && 0 === $kid_count ) { // If there are no guests.
+			$error_message .= '<li>' . __( 'Please provide the count of guests for the reservation.', 'easy-reservations' ) . '</li>';
+		} elseif ( 0 !== $kid_count && 0 === $adult_count ) { // If there are only kids.
+			$error_message .= '<li>' . __( 'We cannot proceed with only the kids in the reservation.', 'easy-reservations' ) . '</li>';
+		} elseif ( ( $adult_count + $kid_count ) > $accomodation_limit ) { // If the guests are more than the accomodation limit.
+			$error_message .= '<li>' . sprintf( __( 'The guests count is more than the accomodation limit of %1$d people.', 'easy-reservations' ), $accomodation_limit ) . '</li>';
 		}
-		var_dump( $adult_count, $kid_count, $accomodation_limit );
-		die;
 
-		// Generate the error html.
-		$error_html  = 'There are some issues:';
-		$error_html .= '<ol>';
-		$error_html .= '<li>Hello</li>';
-		$error_html .= '<li>World !!</li>';
-		$error_html .= '</ol>';
+		// Let's verify the checkin and checkout dates now.
+		if ( empty( $checkin_date ) && empty( $checkout_date ) ) {
+			$error_message .= '<li>' . __( 'Please provide the checkin and checkout dates.', 'easy-reservations' ) . '</li>';
+		} elseif ( empty( $checkin_date ) ) {
+			$error_message .= '<li>' . __( 'Please provide the checkin date.', 'easy-reservations' ) . '</li>';
+		} elseif ( empty( $checkout_date ) ) {
+			$error_message .= '<li>' . __( 'Please provide the checkout date.', 'easy-reservations' ) . '</li>';
+		}
+
+		// See if there are error messages.
+		if ( ! empty( $error_message ) ) {
+			$is_success    = 'no';
+			$toast_message = __( 'Reservation changes not validated.', 'easy-reservations' ) . '<ol>' . $error_message . '</ol>';
+		} else {
+			$is_success    = 'yes';
+			// Proceed with saving the reservation.
+			die("lkooo");
+		}
 
 		// Return the AJAX response.
 		$response = array(
 			'code'          => 'item-changes-validated',
-			'toast_message' => $error_html,
-			'is_success'    => 'no',
+			'toast_message' => $toast_message,
+			'is_success'    => $is_success,
 		);
 		wp_send_json_success( $response );
 		wp_die();
@@ -1994,8 +2008,61 @@ class Easy_Reservations_Public {
 	 * @since 1.0.0
 	 */
 	public function ersrv_ersrv_edit_reservation_after_main_title_callback() {
+		// Header message.
+		$header_message = __( 'Please note that the reserved days and the reserved accomodation cannot be decreased.', 'easy-reservations' );
+		/**
+		 * This hook executes on the edit reservation page.
+		 *
+		 * This hook helps in modifying the tagline that appears after the main title.
+		 *
+		 * @param string $header_message Header message.
+		 * @return string
+		 * @since 1.0.0
+		 */
+		$header_message = apply_filters( 'ersrv_edit_reservation_tagline_after_main_title', $header_message );
+
+		// Header message class.
+		$header_message_class = 'text-center font-lato font-weight-bold font-size-16 color-black mb-3';
+		/**
+		 * This hook executes on the edit reservation page.
+		 *
+		 * This hook helps in modifying the tagline tag class that appears after the main title.
+		 *
+		 * @param string $header_message_class Header message tag class attribute.
+		 * @return string
+		 * @since 1.0.0
+		 */
+		$header_message_class = apply_filters( 'ersrv_edit_reservation_tagline_class_after_main_title', $header_message_class );
 		?>
-		<p class="text-center font-lato font-weight-bold font-size-16 color-black mb-3"><?php esc_html_e( 'Please note that the reserved days and the reserved accomodation cannot be decreased.', 'easy-reservations' ); ?></p>
+		<p class="<?php echo esc_attr( $header_message_class ); ?>"><?php echo wp_kses_post( $header_message ); ?></p>
 		<?php
+	}
+
+	/**
+	 * Intiate the datepicker on the checkin and checkout fields on edit reservation page.
+	 */
+	public function ersrv_edit_reservation_initiate_datepicker_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+		// Check if action mismatches.
+		if ( empty( $action ) || 'edit_reservation_validate_item_changes' !== $action ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Posted data.
+		$product_id = (int) filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
+
+		// Get the reserved dates.
+		$reserved_dates = get_post_meta( $product_id, '_ersrv_reservation_blockout_dates', true );
+		$reserved_dates = ( ! empty( $reserved_dates ) && is_array( $reserved_dates ) ) ? $reserved_dates : array();
+
+		// Return the AJAX response.
+		$response = array(
+			'code'           => 'datepicker-initiated',
+			'reserved_dates' => $reserved_dates,
+		);
+		wp_send_json_success( $response );
+		wp_die();
 	}
 }

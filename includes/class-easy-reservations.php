@@ -246,6 +246,8 @@ class Easy_Reservations {
 		$this->loader->add_action( 'wp_ajax_edit_reservation_validate_item_changes', $plugin_public, 'ersrv_edit_reservation_validate_item_changes_callback' );
 		$this->loader->add_action( 'wp_ajax_nopriv_edit_reservation_validate_item_changes', $plugin_public, 'ersrv_edit_reservation_validate_item_changes_callback' );
 		$this->loader->add_action( 'ersrv_edit_reservation_after_main_title', $plugin_public, 'ersrv_ersrv_edit_reservation_after_main_title_callback' );
+		$this->loader->add_action( 'wp_ajax_edit_reservation_initiate_datepicker', $plugin_public, 'ersrv_edit_reservation_initiate_datepicker_callback' );
+		$this->loader->add_action( 'wp_ajax_nopriv_edit_reservation_initiate_datepicker', $plugin_public, 'ersrv_edit_reservation_initiate_datepicker_callback' );
 	}
 
 	/**
