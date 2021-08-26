@@ -317,6 +317,9 @@ a.btn:hover,
 .edit-order-wrapper .card .card-title a{
     font-weight: 600;
 }
+.theme-twentytwenty .edit-order-wrapper .card .card-title{
+    font-size: 2.5rem;
+}
 .theme-twentysixteen .edit-order-wrapper .card a{
     box-shadow: none !important;
 }
@@ -332,6 +335,9 @@ a.btn:hover,
 .edit-order-wrapper .group-update-btn .btn,
 .edit-order-wrapper .group-update-btn h4{
     font-size: 16px;
+}
+.edit-order-wrapper.wrapper{
+    background-color: transparent;
 }
 /* Experimental */
 /* body::after {
