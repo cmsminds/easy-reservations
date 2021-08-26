@@ -124,10 +124,10 @@ if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
 														<div><input type="text" id="ersrv-edit-reservation-item-checkout-date-<?php echo esc_attr($item_id); ?>" value="<?php echo esc_html($checkout_date); ?>" data-oldval="<?php echo esc_html($checkout_date); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkout-date form-control date-control text-left rounded-lg" placeholder="<?php echo esc_html($next_date); ?>"></div>
 													</div>
 													<div class="col-12">
-														<div class="d-flex flex-wrap ersrv-edit-reservation-dates-indicators mt-3 pt-2">
+														<div class="d-flex flex-wrap ersrv-edit-reservation-dates-indicators mb-3 pt-2">
 															<div class="ersrv-available-dates-notifier"><span><?php esc_html_e('Available Dates', 'easy-reservations'); ?></span></div>
-															<div class="ersrv-unavailable-dates-notifier ml-3"><span><?php esc_html_e('Unvailable Dates', 'easy-reservations'); ?></span></div>
-															<div class="ersrv-order-reserved-dates-notifier ml-3"><span><?php esc_html_e('Order Reserved Dates', 'easy-reservations'); ?></span></div>
+															<div class="ersrv-order-reserved-dates-notifier ml-md-3"><span><?php esc_html_e('Order Reserved Dates', 'easy-reservations'); ?></span></div>
+															<div class="ersrv-unavailable-dates-notifier ml-md-3"><span><?php esc_html_e('Unvailable Dates', 'easy-reservations'); ?></span></div>
 														</div>
 													</div>
 												</div>
