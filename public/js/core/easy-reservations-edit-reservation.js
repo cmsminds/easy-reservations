@@ -13,9 +13,12 @@ jQuery(document).ready(function ($) {
 	 * Click on the checkin and checkout date to fetch the dates available while editing the reservation.
 	 */
 	$( document ).on( 'click', '.ersrv-edit-reservation-item-checkin-date, .ersrv-edit-reservation-item-checkout-date', function() {
-		var this_input = $( this );
-		var item_id    = this_input.parents( '.ersrv-edit-reservation-item-card' ).data( 'itemid' );
-		var product_id = this_input.parents( '.ersrv-edit-reservation-item-card' ).data( 'productid' );
+		var this_input    = $( this );
+		var this_input_id = this_input.attr( 'id' );
+		var item_id       = this_input.parents( '.ersrv-edit-reservation-item-card' ).data( 'itemid' );
+		var product_id    = this_input.parents( '.ersrv-edit-reservation-item-card' ).data( 'productid' );
+		var checkin_date  = $( '#ersrv-edit-reservation-item-checkin-date-' + item_id ).val();
+		var checkout_date = $( '#ersrv-edit-reservation-item-checkout-date-' + item_id ).val();
 
 		// Check if the datepicker is already initiated.
 		var is_datepicker_initiated = parseInt( $( '#datepicker-initiated-' + item_id ).val() );
@@ -36,6 +39,8 @@ jQuery(document).ready(function ($) {
 			data: {
 				action: 'edit_reservation_initiate_datepicker',
 				product_id: product_id,
+				checkin_date: checkin_date,
+				checkout_date: checkout_date,
 			},
 			success: function ( response ) {
 				// Return, if the response is not proper.
@@ -49,17 +54,78 @@ jQuery(document).ready(function ($) {
 					// Unblock the button.
 					unblock_element( this_input.parents( '.input-daterange' ) );
 
+					// Reserved dates in response.
+					var reserved_dates       = response.data.reserved_dates;
+					var order_reserved_dates = response.data.order_reserved_dates;
+					var today_formatted      = ersrv_get_formatted_date( new Date() );
+					var blocked_dates        = [];
+
+					// Prepare the blocked out dates in a separate array.
+					if ( 0 < reserved_dates.length ) {
+						for ( var i in reserved_dates ) {
+							blocked_dates.push( reserved_dates[i].date );
+						}
+					}
+
 					// Initiate the datepicker now.
-					$( '.ersrv-edit-reservation-item-checkin-date, .ersrv-edit-reservation-item-checkout-date' ).datepicker( {
+					$( '#ersrv-edit-reservation-item-checkin-date-' + item_id + ', #ersrv-edit-reservation-item-checkout-date-' + item_id ).datepicker( {
+						beforeShowDay: function( date ) {
+							var loop_date_formatted = ersrv_get_formatted_date( date );
+							var date_enabled        = true;
+							var date_class          = '';
+			
+							// If not the past date.
+							if ( today_formatted <= loop_date_formatted ) {
+								// Add custom class to the active dates of the current month.
+								var reserved_key = $.map( blocked_dates, function( val, i ) {
+									if ( val === loop_date_formatted ) {
+										return i;
+									}
+								} );
+
+								// Add custom class to order reserved date.
+								var order_reserved_key = $.map( order_reserved_dates, function( val, i ) {
+									if ( val === loop_date_formatted ) {
+										return i;
+									}
+								} );
+			
+								// If the loop date is a blocked date.
+								if ( 0 < reserved_key.length ) {
+									date_class = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+								} else if ( 0 < order_reserved_key.length ) {
+									date_class = 'ersrv-order-reserved-date';
+								} else {
+									date_class = 'ersrv-date-active';
+								}
+							} else {
+								date_class = 'ersrv-date-disabled';
+							}
+			
+							// Return the datepicker day object.
+							return [ date_enabled, date_class ];
+						},
+						// onSelect: function ( selected_date, instance ) {
+						// 	if ( 'ersrv-single-reservation-checkin-datepicker' === instance.id ) {
+						// 		// Min date for checkout should be on/after the checkin date.
+						// 		$( '#ersrv-single-reservation-checkout-datepicker' ).datepicker( 'option', 'minDate', selected_date );
+						// 		setTimeout( function() {
+						// 			$( '#ersrv-single-reservation-checkout-datepicker' ).datepicker( 'show' );
+						// 		}, 16 );
+						// 	}
+						// },
 						dateFormat: date_format,
 						minDate: 0,
 					} );
+
+					// Show the datepicker.
+					$( '#' + this_input_id ).datepicker( 'show' );
 
 					// Set the hidden value to be 1.
 					$( '#datepicker-initiated-' + item_id ).val( '1' );
 
 					this_input.trigger( 'change' );
-					// this_input.trigger( 'click' );
+					this_input.trigger( 'click' );
 				}
 			},
 		} );
@@ -425,5 +491,24 @@ jQuery(document).ready(function ($) {
 		cost_html     += '</span>';
 
 		return cost_html;
+	}
+
+	/**
+	 * Return the formatted date based on the global date format.
+	 *
+	 * @param {*} date_obj 
+	 * @returns 
+	 */
+	function ersrv_get_formatted_date( date_obj ) {
+		var month = ( ( '0' + ( date_obj.getMonth() + 1 ) ).slice( -2 ) );
+		var date  = ( ( '0' + ( date_obj.getDate() ) ).slice( -2 ) );
+		var year  = date_obj.getFullYear();
+
+		// Replace the variables now.
+		var formatted_date = date_format.replace( 'dd', date );
+		formatted_date = formatted_date.replace( 'mm', month );
+		formatted_date = formatted_date.replace( 'yy', year );
+
+		return formatted_date;
 	}
 } );

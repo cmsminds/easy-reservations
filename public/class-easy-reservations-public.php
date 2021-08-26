@@ -2051,16 +2051,47 @@ class Easy_Reservations_Public {
 		}
 
 		// Posted data.
-		$product_id = (int) filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
+		$product_id    = (int) filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
+		$checkin_date  = filter_input( INPUT_POST, 'checkin_date', FILTER_SANITIZE_STRING );
+		$checkout_date = filter_input( INPUT_POST, 'checkout_date', FILTER_SANITIZE_STRING );
 
 		// Get the reserved dates.
 		$reserved_dates = get_post_meta( $product_id, '_ersrv_reservation_blockout_dates', true );
 		$reserved_dates = ( ! empty( $reserved_dates ) && is_array( $reserved_dates ) ) ? $reserved_dates : array();
 
+		// Return back the response with no reserved dates.
+		if ( empty( $reserved_dates ) || ! is_array( $reserved_dates ) ) {
+			$response = array(
+				'code'           => 'datepicker-initiated',
+				'reserved_dates' => array(),
+			);
+			wp_send_json_success( $response );
+			wp_die();
+		}
+
+		// Get the dates between the checkin and checkout dates.
+		$order_reserved_dates_obj = ersrv_get_dates_within_2_dates( $checkin_date, $checkout_date );
+		$order_reserved_dates     = array();
+		if ( ! empty( $order_reserved_dates_obj ) ) {
+			foreach ( $order_reserved_dates_obj as $date ) {
+				$order_reserved_dates[] = $date->format( ersrv_get_php_date_format() );
+			}
+		}
+
+		// Make the reserved dates from associative array to indexed array to remove the order reserved dates.
+		$reserved_dates_col_array = array_column( $reserved_dates, 'date' );
+
+		// Remove this order dates from the total reserved dates.
+		foreach ( $order_reserved_dates as $order_reserved_date ) {
+			$reserved_date_key = array_search( $order_reserved_date, $reserved_dates_col_array, true );
+			unset( $reserved_dates[ $reserved_date_key ] );
+		}
+
 		// Return the AJAX response.
 		$response = array(
-			'code'           => 'datepicker-initiated',
-			'reserved_dates' => $reserved_dates,
+			'code'                 => 'datepicker-initiated',
+			'reserved_dates'       => $reserved_dates,
+			'order_reserved_dates' => $order_reserved_dates,
 		);
 		wp_send_json_success( $response );
 		wp_die();
