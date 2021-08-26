@@ -128,6 +128,7 @@ if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
 															<div class="ersrv-unavailable-dates-notifier ml-md-3"><span><?php esc_html_e('Unvailable Dates', 'easy-reservations'); ?></span></div>
 														</div>
 													</div>
+													<p class="ersrv-reservation-error" id="checkin-checkout-dates-error-<?php echo esc_attr($item_id); ?>"></p>
 												</div>
 											</div>
 										</div>
@@ -142,6 +143,7 @@ if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
 														<label for="ersrv-edit-reservation-item-kid-count-<?php echo esc_attr($item_id); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e('Kid(s)', 'easy-reservations'); ?></label>
 														<div><input id="ersrv-edit-reservation-item-kid-count-<?php echo esc_attr($item_id); ?>" placeholder="<?php esc_html_e('No. of kids', 'easy-reservations'); ?>" type="number" min="<?php echo esc_html($kid_count); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-kid-count form-control rounded-lg" value="<?php echo esc_html($kid_count); ?>" data-oldval="<?php echo esc_html($kid_count); ?>" /></div>
 													</div>
+													<p class="ersrv-reservation-error" id="guests-error-<?php echo esc_attr($item_id); ?>"></p>
 												</div>
 											</div>
 										</div>

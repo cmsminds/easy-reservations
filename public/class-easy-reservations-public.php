@@ -298,12 +298,21 @@ class Easy_Reservations_Public {
 				$this->plugin_name . '-edit-reservation',
 				'ERSRV_Edit_Reservation_Script_Vars',
 				array(
-					'ajaxurl'               => admin_url( 'admin-ajax.php' ),
-					'date_format'           => ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' ),
-					'woo_currency'          => get_woocommerce_currency_symbol(),
-					'toast_success_heading' => __( 'Ohhoooo! Success..', 'easy-reservations' ),
-					'toast_error_heading'   => __( 'Ooops! Error..', 'easy-reservations' ),
-					'toast_notice_heading'  => __( 'Notice.', 'easy-reservations' ),
+					'ajaxurl'                                      => admin_url( 'admin-ajax.php' ),
+					'date_format'                                  => ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' ),
+					'woo_currency'                                 => get_woocommerce_currency_symbol(),
+					'toast_success_heading'                        => __( 'Ohhoooo! Success..', 'easy-reservations' ),
+					'toast_error_heading'                          => __( 'Ooops! Error..', 'easy-reservations' ),
+					'toast_notice_heading'                         => __( 'Notice.', 'easy-reservations' ),
+					'reservation_guests_err_msg'                   => __( 'Please provide the count of guests for the reservation.', 'easy-reservations' ),
+					'reservation_only_kids_guests_err_msg'         => __( 'We cannot proceed with only the kids in the reservation.', 'easy-reservations' ),
+					'reservation_guests_count_exceeded_err_msg'    => __( 'The guests count is more than the accomodation limit.', 'easy-reservations' ),
+					'reservation_checkin_checkout_missing_err_msg' => __( 'Please provide checkin and checkout dates.', 'easy-reservations' ),
+					'reservation_checkin_missing_err_msg'          => __( 'Please provide checkin dates.', 'easy-reservations' ),
+					'reservation_checkout_missing_err_msg'         => __( 'Please provide checkout dates.', 'easy-reservations' ),
+					'reservation_lesser_reservation_days_err_msg'  => __( 'The item can be reserved for a min. of XX days.', 'easy-reservations' ),
+					'reservation_greater_reservation_days_err_msg' => __( 'The item can be reserved for a max. of XX days.', 'easy-reservations' ),
+					'reservation_item_changes_invalidated'         => __( 'Reservation changes cannot be validated.', 'easy-reservations' ),
 				)
 			);
 		}
@@ -1953,67 +1962,54 @@ class Easy_Reservations_Public {
 		}
 
 		// Posted data.
-		$item_id            = (int) filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
-		$product_id         = (int) filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
-		$adult_count        = (int) filter_input( INPUT_POST, 'adult_count', FILTER_SANITIZE_NUMBER_INT );
-		$kid_count          = (int) filter_input( INPUT_POST, 'kid_count', FILTER_SANITIZE_NUMBER_INT );
-		$accomodation_limit = (int) filter_input( INPUT_POST, 'accomodation_limit', FILTER_SANITIZE_NUMBER_INT );
-		$min_reservation    = (int) filter_input( INPUT_POST, 'min_reservation', FILTER_SANITIZE_NUMBER_INT );
-		$max_reservation    = (int) filter_input( INPUT_POST, 'max_reservation', FILTER_SANITIZE_NUMBER_INT );
-		$checkin_date       = filter_input( INPUT_POST, 'checkin_date', FILTER_SANITIZE_STRING );
-		$checkout_date      = filter_input( INPUT_POST, 'checkout_date', FILTER_SANITIZE_STRING );
+		$product_id        = (int) filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
+		$checkin_date      = filter_input( INPUT_POST, 'checkin_date', FILTER_SANITIZE_STRING );
+		$checkout_date     = filter_input( INPUT_POST, 'checkout_date', FILTER_SANITIZE_STRING );
+		$old_checkin_date  = filter_input( INPUT_POST, 'old_checkin_date', FILTER_SANITIZE_STRING );
+		$old_checkout_date = filter_input( INPUT_POST, 'old_checkout_date', FILTER_SANITIZE_STRING );
 
-		// Error message.
-		$error_message = '';
-
-		// Let's first verify the accomodation.
-		if ( 0 === $adult_count && 0 === $kid_count ) { // If there are no guests.
-			$error_message .= '<li>' . __( 'Please provide the count of guests for the reservation.', 'easy-reservations' ) . '</li>';
-		} elseif ( 0 !== $kid_count && 0 === $adult_count ) { // If there are only kids.
-			$error_message .= '<li>' . __( 'We cannot proceed with only the kids in the reservation.', 'easy-reservations' ) . '</li>';
-		} elseif ( ( $adult_count + $kid_count ) > $accomodation_limit ) { // If the guests are more than the accomodation limit.
-			$error_message .= '<li>' . sprintf( __( 'The guests count is more than the accomodation limit of %1$d people.', 'easy-reservations' ), $accomodation_limit ) . '</li>';
+		// Get the newly selected checkin and checkout dates.
+		$newly_selected_dates_obj = ersrv_get_dates_within_2_dates( $checkin_date, $checkout_date );
+		$newly_selected_dates     = array();
+		if ( ! empty( $newly_selected_dates_obj ) ) {
+			foreach ( $newly_selected_dates_obj as $date ) {
+				$newly_selected_dates[] = $date->format( ersrv_get_php_date_format() );
+			}
 		}
 
-		// Let's verify the checkin and checkout dates now.
-		if ( empty( $checkin_date ) && empty( $checkout_date ) ) {
-			$error_message .= '<li>' . __( 'Please provide the checkin and checkout dates.', 'easy-reservations' ) . '</li>';
-		} elseif ( empty( $checkin_date ) ) {
-			$error_message .= '<li>' . __( 'Please provide the checkin date.', 'easy-reservations' ) . '</li>';
-		} elseif ( empty( $checkout_date ) ) {
-			$error_message .= '<li>' . __( 'Please provide the checkout date.', 'easy-reservations' ) . '</li>';
-		} else {
-			// Get the dates between the new checkin and checkout dates.
-			$new_reservation_dates_obj = ersrv_get_dates_within_2_dates( $checkin_date, $checkout_date );
-			$new_reservation_dates     = array();
-			if ( ! empty( $new_reservation_dates_obj ) ) {
-				foreach ( $new_reservation_dates_obj as $date ) {
-					$new_reservation_dates[] = $date->format( ersrv_get_php_date_format() );
-				}
-			}
+		// Get the already reserved dates.
+		$reserved_dates           = get_post_meta( $product_id, '_ersrv_reservation_blockout_dates', true );
+		$reserved_dates           = ( ! empty( $reserved_dates ) && is_array( $reserved_dates ) ) ? $reserved_dates : array();
+		$reserved_dates_col_array = array_column( $reserved_dates, 'date' );
 
-			// Check if the reserved dates count are less that the min reservation period.
-			if ( 0 !== $min_reservation && count( $new_reservation_dates ) < $min_reservation ) {
-				$error_message .= '<li>' . sprintf( __( 'The item can be reserved for a min. of %1$d days.', 'easy-reservations' ), $min_reservation ) . '</li>';
-			} elseif ( 0 !== $max_reservation && count( $new_reservation_dates ) > $max_reservation ) {
-				$error_message .= '<li>' . sprintf( __( 'The item can be reserved for a max. of %1$d days.', 'easy-reservations' ), $max_reservation ) . '</li>';
-			} else {
-				// Get the already reserved dates.
-				$reserved_dates = get_post_meta( $product_id, '_ersrv_reservation_blockout_dates', true );
-				$reserved_dates = ( ! empty( $reserved_dates ) && is_array( $reserved_dates ) ) ? $reserved_dates : array();
+		// Get the dates between the order actual checkin and checkout dates.
+		$order_reserved_dates_obj = ersrv_get_dates_within_2_dates( $old_checkin_date, $old_checkout_date );
+		$order_reserved_dates     = array();
+		if ( ! empty( $order_reserved_dates_obj ) ) {
+			foreach ( $order_reserved_dates_obj as $date ) {
+				$order_reserved_dates[] = $date->format( ersrv_get_php_date_format() );
 			}
-
-			// 'reservation_blocked_dates_err_msg'            => __( 'The dates you have selected for reservation contain the dates that are already reserved. Kindly check the availability on the left hand side and then proceed with the reservation.', 'easy-reservations' ),
 		}
+
+		// Remove this order dates from the total reserved dates.
+		foreach ( $order_reserved_dates as $order_reserved_date ) {
+			$reserved_date_key = array_search( $order_reserved_date, $reserved_dates_col_array, true );
+			unset( $reserved_dates_col_array[ $reserved_date_key ] );
+		}
+
+		/**
+		 * If there are common elements between the newly selected dates and the reserved dates,
+		 * the item cannot be validated, as the customer selected some already reserved dates.
+		 */
+		$common_dates = array_intersect( $newly_selected_dates, $reserved_dates_col_array );
 
 		// See if there are error messages.
-		if ( ! empty( $error_message ) ) {
+		if ( ! empty( $common_dates ) ) {
 			$is_success    = 'no';
-			$toast_message = __( 'Reservation changes not validated.', 'easy-reservations' ) . '<ol>' . $error_message . '</ol>';
+			$toast_message = __( 'The dates you have selected for reservation contain the dates that are already reserved. Kindly check the availability while selecting the dates and try again.', 'easy-reservations' );
 		} else {
 			$is_success    = 'yes';
-			// Proceed with saving the reservation.
-			die("lkooo");
+			$toast_message = __( 'The reservation item is validated.', 'easy-reservations' );
 		}
 
 		// Return the AJAX response.

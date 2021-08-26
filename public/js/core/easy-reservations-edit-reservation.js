@@ -2,12 +2,21 @@ jQuery(document).ready(function ($) {
 	'use strict';
 
 	// Localized variables.
-	var ajaxurl               = ERSRV_Edit_Reservation_Script_Vars.ajaxurl;
-	var woo_currency          = ERSRV_Edit_Reservation_Script_Vars.woo_currency;
-	var date_format           = ERSRV_Edit_Reservation_Script_Vars.date_format;
-	var toast_success_heading = ERSRV_Edit_Reservation_Script_Vars.toast_success_heading;
-	var toast_error_heading   = ERSRV_Edit_Reservation_Script_Vars.toast_error_heading;
-	var toast_notice_heading  = ERSRV_Edit_Reservation_Script_Vars.toast_notice_heading;
+	var ajaxurl                                      = ERSRV_Edit_Reservation_Script_Vars.ajaxurl;
+	var woo_currency                                 = ERSRV_Edit_Reservation_Script_Vars.woo_currency;
+	var date_format                                  = ERSRV_Edit_Reservation_Script_Vars.date_format;
+	var toast_success_heading                        = ERSRV_Edit_Reservation_Script_Vars.toast_success_heading;
+	var toast_error_heading                          = ERSRV_Edit_Reservation_Script_Vars.toast_error_heading;
+	var toast_notice_heading                         = ERSRV_Edit_Reservation_Script_Vars.toast_notice_heading;
+	var reservation_guests_err_msg                   = ERSRV_Edit_Reservation_Script_Vars.reservation_guests_err_msg;
+	var reservation_only_kids_guests_err_msg         = ERSRV_Edit_Reservation_Script_Vars.reservation_only_kids_guests_err_msg;
+	var reservation_guests_count_exceeded_err_msg    = ERSRV_Edit_Reservation_Script_Vars.reservation_guests_count_exceeded_err_msg;
+	var reservation_checkin_checkout_missing_err_msg = ERSRV_Edit_Reservation_Script_Vars.reservation_checkin_checkout_missing_err_msg;
+	var reservation_checkin_missing_err_msg          = ERSRV_Edit_Reservation_Script_Vars.reservation_checkin_missing_err_msg;
+	var reservation_checkout_missing_err_msg         = ERSRV_Edit_Reservation_Script_Vars.reservation_checkout_missing_err_msg;
+	var reservation_lesser_reservation_days_err_msg  = ERSRV_Edit_Reservation_Script_Vars.reservation_lesser_reservation_days_err_msg;
+	var reservation_greater_reservation_days_err_msg = ERSRV_Edit_Reservation_Script_Vars.reservation_greater_reservation_days_err_msg;
+	var reservation_item_changes_invalidated         = ERSRV_Edit_Reservation_Script_Vars.reservation_item_changes_invalidated;
 
 	/**
 	 * Click on the checkin and checkout date to fetch the dates available while editing the reservation.
@@ -244,25 +253,65 @@ jQuery(document).ready(function ($) {
 		// Get the item details.
 		var checkin_date       = $( '#ersrv-edit-reservation-item-checkin-date-' + item_id ).val();
 		var checkout_date      = $( '#ersrv-edit-reservation-item-checkout-date-' + item_id ).val();
-		var adult_count        = $( '#ersrv-edit-reservation-item-adult-count-' + item_id ).val();
-		var kid_count          = $( '#ersrv-edit-reservation-item-kid-count-' + item_id ).val();
-		var accomodation_limit = $( '#accomodation-limit-' + item_id ).val();
+		var old_checkin_date   = $( '#ersrv-edit-reservation-item-checkin-date-' + item_id ).data( 'oldval' );
+		var old_checkout_date  = $( '#ersrv-edit-reservation-item-checkout-date-' + item_id ).data( 'oldval' );
+		var adult_count        = parseInt( $( '#ersrv-edit-reservation-item-adult-count-' + item_id ).val() );
+		adult_count            = ( -1 !== is_valid_number( adult_count ) ) ? adult_count : 0;
+		var kid_count          = parseInt( $( '#ersrv-edit-reservation-item-kid-count-' + item_id ).val() );
+		kid_count              = ( -1 !== is_valid_number( kid_count ) ) ? kid_count : 0;
+		var guests             = adult_count + kid_count;
+		var accomodation_limit = parseInt( $( '#accomodation-limit-' + item_id ).val() );
 		var min_reservation    = $( '#min-reservation-period-' + item_id ).val();
 		var max_reservation    = $( '#max-reservation-period-' + item_id ).val();
 
 		// Item validated.
 		var item_validated = true;
 
+		// Vacate all the errors.
+		$( '.ersrv-reservation-error' ).text();
+
 		// Guests count.
 		if ( -1 === is_valid_number( adult_count ) && -1 === is_valid_number( kid_count ) ) {
 			item_validated = false;
-			$( '.ersrv-reservation-error.accomodation-error' ).text( reservation_guests_err_msg );
+			$( '.ersrv-reservation-error#guests-error-' + item_id ).text( reservation_guests_err_msg );
 		} else if ( -1 === is_valid_number( adult_count ) && -1 !== is_valid_number( kid_count ) ) {
 			item_validated = false;
-			$( '.ersrv-reservation-error.accomodation-error' ).text( reservation_only_kids_guests_err_msg );
+			$( '.ersrv-reservation-error#guests-error-' + item_id ).text( reservation_only_kids_guests_err_msg );
 		} else if ( accomodation_limit < guests ) {
 			item_validated = false;
-			$( '.ersrv-reservation-error.accomodation-error' ).text( reservation_guests_count_exceeded_err_msg );
+			$( '.ersrv-reservation-error#guests-error-' + item_id ).text( reservation_guests_count_exceeded_err_msg );
+		}
+
+		// If the checkin and checkout dates are not available.
+		if ( '' === checkin_date && '' === checkout_date ) {
+			item_validated = false;
+			$( '.ersrv-reservation-error#checkin-checkout-dates-error-' + item_id ).text( reservation_checkin_checkout_missing_err_msg );
+		} else if ( '' === checkin_date ) {
+			item_validated = false;
+			$( '.ersrv-reservation-error#checkin-checkout-dates-error-' + item_id ).text( reservation_checkin_missing_err_msg );
+		} else if ( '' === checkout_date ) {
+			item_validated = false;
+			$( '.ersrv-reservation-error#checkin-checkout-dates-error-' + item_id ).text( reservation_checkout_missing_err_msg );
+		} else {
+			/**
+			 * If the reservation period is more than allowed.
+			 * Get the dates between checkin and checkout dates.
+			 */
+			var new_reservation_dates = ersrv_get_dates_between_2_dates( checkin_date, checkout_date );
+			var new_reservation_days  = new_reservation_dates.length;
+			if ( min_reservation > new_reservation_days ) {
+				item_validated = false;
+				$( '.ersrv-reservation-error#checkin-checkout-dates-error-' + item_id ).text( reservation_lesser_reservation_days_err_msg.replace( 'XX', min_reservation ) );
+			} else if ( max_reservation < new_reservation_days ) {
+				item_validated = false;
+				$( '.ersrv-reservation-error#checkin-checkout-dates-error-' + item_id ).text( reservation_greater_reservation_days_err_msg.replace( 'XX', max_reservation ) );
+			}
+		}
+
+		// Exit, if we cannot process the reservation.
+		if ( false === item_validated ) {
+			ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, reservation_item_changes_invalidated );
+			return false;
 		}
 
 		// Block the button.
@@ -275,15 +324,11 @@ jQuery(document).ready(function ($) {
 			type: 'POST',
 			data: {
 				action: 'edit_reservation_validate_item_changes',
-				item_id: item_id,
 				product_id: product_id,
 				checkin_date: checkin_date,
 				checkout_date: checkout_date,
-				adult_count: adult_count,
-				kid_count: kid_count,
-				accomodation_limit: accomodation_limit,
-				min_reservation: min_reservation,
-				max_reservation: max_reservation,
+				old_checkin_date: old_checkin_date,
+				old_checkout_date: old_checkout_date,
 			},
 			success: function ( response ) {
 				// Return, if the response is not proper.
@@ -297,13 +342,16 @@ jQuery(document).ready(function ($) {
 					// Unblock the button.
 					unblock_element( this_button );
 
-					// Is success.
-					var is_success = response.data.is_success;
+					// Is success & toast message.
+					var is_success    = response.data.is_success;
+					var toast_message = response.data.toast_message;
 
-					// Show the error message.
+					// Show error notification.
 					if ( 'no' === is_success ) {
-						// Show error notification.
-						ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, response.data.toast_message );
+						ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, toast_message );
+					} else if ( 'yes' === is_success ) {
+						ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, toast_message );
+						this_button.parents( '.details' ).find( '.confirmed-validation-of-item' ).val( 1 );
 					}
 				}
 			},
@@ -526,5 +574,33 @@ jQuery(document).ready(function ($) {
 		formatted_date = formatted_date.replace( 'yy', year );
 
 		return formatted_date;
+	}
+
+	/**
+	 * Get the dates that faal between 2 dates.
+	 *
+	 * @param {*} from 
+	 * @param {*} to 
+	 * @returns
+	 */
+	function ersrv_get_dates_between_2_dates( from, to ) {
+		var dates = [];
+
+		// Return, if either of the date is blank.
+		if ( '' === from || '' === to ) {
+			return dates;
+		}
+
+		// Get the date time javascript object.
+		from = new Date( from );
+		to   = new Date( to );
+
+		// Iterate through the end date to get the array of between dates.
+		while ( from <= to ) {
+			dates.push( new Date( from ) );
+			from.setDate( from.getDate() + 1 );
+		}
+
+		return dates;
 	}
 } );
