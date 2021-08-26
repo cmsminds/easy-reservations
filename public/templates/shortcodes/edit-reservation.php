@@ -44,7 +44,7 @@ if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
 	$next_date       = gmdate($php_date_format, (strtotime('now') + 86400));
 }
 ?>
-<div class="edit-order-wrapper pb-5">
+<div class="wrapper edit-order-wrapper pb-5">
 	<div class="section-title"><?php echo wp_kses_post($page_title); ?></div>
 	<?php
 	/**
@@ -95,7 +95,7 @@ if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
 					$min_reservation_period = (!empty($item_details['min_reservation_period'])) ? $item_details['min_reservation_period'] : '';
 					$max_reservation_period = (!empty($item_details['max_reservation_period'])) ? $item_details['max_reservation_period'] : '';
 			?>
-					<div class="ersrv-edit-reservation-item-card card mb-3" data-orderid="<?php echo esc_attr($order_id); ?>" data-productid="<?php echo esc_attr($product_id); ?>" data-itemid="<?php echo esc_attr($item_id); ?>">
+					<div class=" ersrv-edit-reservation-item-card card mb-3" data-orderid="<?php echo esc_attr($order_id); ?>" data-productid="<?php echo esc_attr($product_id); ?>" data-itemid="<?php echo esc_attr($item_id); ?>">
 						<div class="row no-gutters">
 							<div class="col-12 col-lg-4">
 								<a href="<?php echo esc_url(get_permalink($product_id)); ?>">
@@ -118,9 +118,7 @@ if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
 														</div>
 													</div>
 													<div class="col-12 col-md-6">
-														<div class="d-flex justify-content-between">
-															<label for="ersrv-edit-reservation-item-checkout-date-<?php echo esc_attr($item_id); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e('Checkout', 'easy-reservations'); ?></label>
-														</div>
+														<label for="ersrv-edit-reservation-item-checkout-date-<?php echo esc_attr($item_id); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e('Checkout', 'easy-reservations'); ?></label>
 														<div><input type="text" id="ersrv-edit-reservation-item-checkout-date-<?php echo esc_attr($item_id); ?>" value="<?php echo esc_html($checkout_date); ?>" data-oldval="<?php echo esc_html($checkout_date); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkout-date form-control date-control text-left rounded-lg" placeholder="<?php echo esc_html($next_date); ?>"></div>
 													</div>
 													<div class="col-12">

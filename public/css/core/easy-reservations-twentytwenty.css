@@ -1699,4 +1699,27 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
 .text-theme-primary {
   color: #cd2653;
 }
+
+.ersrv-edit-reservation-template #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ersrv-order-reserved-date a {
+  color: #fff;
+  background-color: #e693a9;
+  border-radius: 100%;
+}
+
+.ersrv-edit-reservation-template #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ersrv-date-active a {
+  color: #fff;
+  background-color: #cd2653;
+  border-radius: 100%;
+}
+
+.ersrv-edit-reservation-template .ui-datepicker-calendar .ui-state-disabled *,
+.ersrv-edit-reservation-template .ui-datepicker-calendar .ersrv-date-disabled * {
+  color: #fff;
+  background-color: #e0e0e0;
+  border-radius: 100%;
+}
+
+.ersrv-order-reserved-dates-notifier::before {
+  background-color: #e693a9;
+}
 /*# sourceMappingURL=easy-reservations-twentytwenty.css.map */
