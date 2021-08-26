@@ -44,7 +44,7 @@ if ( ! empty( $order_id ) && ! empty( $action ) && 'edit-reservation' === $actio
 	$next_date       = gmdate( $php_date_format, ( strtotime( 'now' ) + 86400 ) );
 }
 ?>
-<div class="wrapper edit-order-wrapper pb-5">
+<div class="edit-order-wrapper pb-5">
 	<div class="section-title"><?php echo wp_kses_post( $page_title ); ?></div>
 	<?php
 	/**

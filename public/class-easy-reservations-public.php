@@ -2045,7 +2045,7 @@ class Easy_Reservations_Public {
 		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
 
 		// Check if action mismatches.
-		if ( empty( $action ) || 'edit_reservation_validate_item_changes' !== $action ) {
+		if ( empty( $action ) || 'edit_reservation_initiate_datepicker' !== $action ) {
 			echo 0;
 			wp_die();
 		}

@@ -57,6 +57,9 @@ jQuery(document).ready(function ($) {
 
 					// Set the hidden value to be 1.
 					$( '#datepicker-initiated-' + item_id ).val( '1' );
+
+					this_input.trigger( 'change' );
+					// this_input.trigger( 'click' );
 				}
 			},
 		} );
