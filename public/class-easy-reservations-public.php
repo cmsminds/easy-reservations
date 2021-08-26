@@ -1958,6 +1958,8 @@ class Easy_Reservations_Public {
 		$adult_count        = (int) filter_input( INPUT_POST, 'adult_count', FILTER_SANITIZE_NUMBER_INT );
 		$kid_count          = (int) filter_input( INPUT_POST, 'kid_count', FILTER_SANITIZE_NUMBER_INT );
 		$accomodation_limit = (int) filter_input( INPUT_POST, 'accomodation_limit', FILTER_SANITIZE_NUMBER_INT );
+		$min_reservation    = (int) filter_input( INPUT_POST, 'min_reservation', FILTER_SANITIZE_NUMBER_INT );
+		$max_reservation    = (int) filter_input( INPUT_POST, 'max_reservation', FILTER_SANITIZE_NUMBER_INT );
 		$checkin_date       = filter_input( INPUT_POST, 'checkin_date', FILTER_SANITIZE_STRING );
 		$checkout_date      = filter_input( INPUT_POST, 'checkout_date', FILTER_SANITIZE_STRING );
 
@@ -1980,6 +1982,28 @@ class Easy_Reservations_Public {
 			$error_message .= '<li>' . __( 'Please provide the checkin date.', 'easy-reservations' ) . '</li>';
 		} elseif ( empty( $checkout_date ) ) {
 			$error_message .= '<li>' . __( 'Please provide the checkout date.', 'easy-reservations' ) . '</li>';
+		} else {
+			// Get the dates between the new checkin and checkout dates.
+			$new_reservation_dates_obj = ersrv_get_dates_within_2_dates( $checkin_date, $checkout_date );
+			$new_reservation_dates     = array();
+			if ( ! empty( $new_reservation_dates_obj ) ) {
+				foreach ( $new_reservation_dates_obj as $date ) {
+					$new_reservation_dates[] = $date->format( ersrv_get_php_date_format() );
+				}
+			}
+
+			// Check if the reserved dates count are less that the min reservation period.
+			if ( 0 !== $min_reservation && count( $new_reservation_dates ) < $min_reservation ) {
+				$error_message .= '<li>' . sprintf( __( 'The item can be reserved for a min. of %1$d days.', 'easy-reservations' ), $min_reservation ) . '</li>';
+			} elseif ( 0 !== $max_reservation && count( $new_reservation_dates ) > $max_reservation ) {
+				$error_message .= '<li>' . sprintf( __( 'The item can be reserved for a max. of %1$d days.', 'easy-reservations' ), $max_reservation ) . '</li>';
+			} else {
+				// Get the already reserved dates.
+				$reserved_dates = get_post_meta( $product_id, '_ersrv_reservation_blockout_dates', true );
+				$reserved_dates = ( ! empty( $reserved_dates ) && is_array( $reserved_dates ) ) ? $reserved_dates : array();
+			}
+
+			// 'reservation_blocked_dates_err_msg'            => __( 'The dates you have selected for reservation contain the dates that are already reserved. Kindly check the availability on the left hand side and then proceed with the reservation.', 'easy-reservations' ),
 		}
 
 		// See if there are error messages.

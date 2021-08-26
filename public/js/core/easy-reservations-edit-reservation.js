@@ -123,9 +123,6 @@ jQuery(document).ready(function ($) {
 
 					// Set the hidden value to be 1.
 					$( '#datepicker-initiated-' + item_id ).val( '1' );
-
-					this_input.trigger( 'change' );
-					this_input.trigger( 'click' );
 				}
 			},
 		} );
@@ -250,6 +247,23 @@ jQuery(document).ready(function ($) {
 		var adult_count        = $( '#ersrv-edit-reservation-item-adult-count-' + item_id ).val();
 		var kid_count          = $( '#ersrv-edit-reservation-item-kid-count-' + item_id ).val();
 		var accomodation_limit = $( '#accomodation-limit-' + item_id ).val();
+		var min_reservation    = $( '#min-reservation-period-' + item_id ).val();
+		var max_reservation    = $( '#max-reservation-period-' + item_id ).val();
+
+		// Item validated.
+		var item_validated = true;
+
+		// Guests count.
+		if ( -1 === is_valid_number( adult_count ) && -1 === is_valid_number( kid_count ) ) {
+			item_validated = false;
+			$( '.ersrv-reservation-error.accomodation-error' ).text( reservation_guests_err_msg );
+		} else if ( -1 === is_valid_number( adult_count ) && -1 !== is_valid_number( kid_count ) ) {
+			item_validated = false;
+			$( '.ersrv-reservation-error.accomodation-error' ).text( reservation_only_kids_guests_err_msg );
+		} else if ( accomodation_limit < guests ) {
+			item_validated = false;
+			$( '.ersrv-reservation-error.accomodation-error' ).text( reservation_guests_count_exceeded_err_msg );
+		}
 
 		// Block the button.
 		block_element( this_button );
@@ -268,6 +282,8 @@ jQuery(document).ready(function ($) {
 				adult_count: adult_count,
 				kid_count: kid_count,
 				accomodation_limit: accomodation_limit,
+				min_reservation: min_reservation,
+				max_reservation: max_reservation,
 			},
 			success: function ( response ) {
 				// Return, if the response is not proper.
