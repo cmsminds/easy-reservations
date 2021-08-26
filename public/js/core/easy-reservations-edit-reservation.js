@@ -105,15 +105,16 @@ jQuery(document).ready(function ($) {
 							// Return the datepicker day object.
 							return [ date_enabled, date_class ];
 						},
-						// onSelect: function ( selected_date, instance ) {
-						// 	if ( 'ersrv-single-reservation-checkin-datepicker' === instance.id ) {
-						// 		// Min date for checkout should be on/after the checkin date.
-						// 		$( '#ersrv-single-reservation-checkout-datepicker' ).datepicker( 'option', 'minDate', selected_date );
-						// 		setTimeout( function() {
-						// 			$( '#ersrv-single-reservation-checkout-datepicker' ).datepicker( 'show' );
-						// 		}, 16 );
-						// 	}
-						// },
+						onSelect: function ( selected_date, instance ) {
+							console.log( 'instance.id', instance.id, 'item_id', item_id );
+							// if ( 'ersrv-single-reservation-checkin-datepicker' === instance.id ) {
+							// 	// Min date for checkout should be on/after the checkin date.
+							// 	$( '#ersrv-single-reservation-checkout-datepicker' ).datepicker( 'option', 'minDate', selected_date );
+							// 	setTimeout( function() {
+							// 		$( '#ersrv-single-reservation-checkout-datepicker' ).datepicker( 'show' );
+							// 	}, 16 );
+							// }
+						},
 						dateFormat: date_format,
 						minDate: 0,
 					} );
