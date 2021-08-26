@@ -106,14 +106,13 @@ jQuery(document).ready(function ($) {
 							return [ date_enabled, date_class ];
 						},
 						onSelect: function ( selected_date, instance ) {
-							console.log( 'instance.id', instance.id, 'item_id', item_id );
-							// if ( 'ersrv-single-reservation-checkin-datepicker' === instance.id ) {
-							// 	// Min date for checkout should be on/after the checkin date.
-							// 	$( '#ersrv-single-reservation-checkout-datepicker' ).datepicker( 'option', 'minDate', selected_date );
-							// 	setTimeout( function() {
-							// 		$( '#ersrv-single-reservation-checkout-datepicker' ).datepicker( 'show' );
-							// 	}, 16 );
-							// }
+							if ( 'ersrv-edit-reservation-item-checkin-date-' + item_id === instance.id ) {
+								// Min date for checkout should be on/after the checkin date.
+								$( '#ersrv-edit-reservation-item-checkout-date-' + item_id ).datepicker( 'option', 'minDate', selected_date );
+								setTimeout( function() {
+									$( '#ersrv-edit-reservation-item-checkout-date-' + item_id ).datepicker( 'show' );
+								}, 16 );
+							}
 						},
 						dateFormat: date_format,
 						minDate: 0,
