@@ -1704,12 +1704,14 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
   color: #fff;
   background-color: #e693a9;
   border-radius: 100%;
+  padding: 8px 8px;
 }
 
 .ersrv-edit-reservation-template #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ersrv-date-active a {
   color: #fff;
   background-color: #cd2653;
   border-radius: 100%;
+  padding: 8px 8px;
 }
 
 .ersrv-edit-reservation-template .ui-datepicker-calendar .ui-state-disabled *,
@@ -1717,6 +1719,7 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
   color: #fff;
   background-color: #e0e0e0;
   border-radius: 100%;
+  padding: 8px 8px !important;
 }
 
 .ersrv-order-reserved-dates-notifier::before {
