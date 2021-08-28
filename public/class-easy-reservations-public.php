@@ -364,8 +364,7 @@ class Easy_Reservations_Public {
 		$is_search_page         = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
 		$is_reservation_page    = ersrv_product_is_reservation( get_the_ID() );
 		$is_view_order_endpoint = isset( $wp_query->query_vars[ 'view-order' ] );
-
-		$reservation_item_details = ( ersrv_product_is_reservation( get_the_ID() ) ) ? ersrv_get_item_details( get_the_ID() ) : array();
+		$reservation_item_details = ( $is_reservation_page ) ? ersrv_get_item_details( get_the_ID() ) : array();
 		$search_reservations_page = ersrv_get_page_id( 'search-reservations' );
 		// Custom public script.
 		wp_enqueue_script(

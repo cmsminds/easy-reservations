@@ -32,6 +32,7 @@ class Easy_Reservations_Custom_Email_Manager {
 		add_action( 'ersrv_after_reservation_cancellation_request_declined', array( &$this, 'ersrv_ersrv_after_reservation_cancellation_request_declined_callback' ) );
 		add_action( 'ersrv_after_reservation_cancellation_request_deleted', array( &$this, 'ersrv_ersrv_after_reservation_cancellation_request_deleted_callback' ) );
 		add_action( 'woocommerce_new_order', array( $this, 'ersrv_woocommerce_new_order_callback' ), 20, 2 );
+		add_action( 'ersrv_update_reservation', array( $this, 'ersrv_ersrv_update_reservation_callback' ), 10, 2 );
 		add_filter( 'woocommerce_email_classes', array( &$this, 'ersrv_woocommerce_email_classes_callback' ) );
 	}
 
@@ -188,6 +189,27 @@ class Easy_Reservations_Custom_Email_Manager {
 	}
 
 	/**
+	 * Send notificaiton when the reservation is updated.
+	 *
+	 * @param int      $order_id WooCommerce order id.
+	 * @param WC_Order $wc_order WooCommerce order.
+	 * @since 1.0.0
+	 */
+	public function ersrv_ersrv_update_reservation_callback( $order_id, $wc_order ) {
+		new WC_Emails();
+		/**
+		 * This hook fires when there is a new reservation order placed.
+		 *
+		 * This hook is helpful in managing actions while sending emails.
+		 *
+		 * @param int      $order_id WooCommerce order id.
+		 * @param WC_Order $wc_order WooCommerce order.
+		 * @since 1.0.0 
+		 */
+		do_action( 'ersrv_send_update_reservation_notification', $order_id, $wc_order );
+	}
+
+	/**
 	 * Add custom class to send reservation emails.
 	 *
 	 * @param array $email_classes Email classes array.
@@ -222,6 +244,10 @@ class Easy_Reservations_Custom_Email_Manager {
 		// Rental agreement email.
 		require_once 'class-rental-agreement-email.php'; // Require the class file.
 		$email_classes['Rental_Agreement_Email'] = new Rental_Agreement_Email(); // Put in the classes into existing classes.
+
+		// Update reservation email.
+		require_once 'class-update-reservation-email.php'; // Require the class file.
+		$email_classes['Update_Reservation_Email'] = new Update_Reservation_Email(); // Put in the classes into existing classes.
 
 		return $email_classes;
 	}
