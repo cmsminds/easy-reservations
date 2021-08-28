@@ -144,3 +144,7 @@ function ersrv_plugin_actions_callback( $links ) {
 
 	return array_merge( $this_plugin_links, $links );
 }
+
+add_action( 'init', function() {
+	do_action( 'ersrv_update_reservation', $order_id );
+} );

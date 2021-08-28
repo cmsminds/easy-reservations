@@ -313,6 +313,7 @@ class Easy_Reservations_Public {
 					'reservation_lesser_reservation_days_err_msg'  => __( 'The item can be reserved for a min. of XX days.', 'easy-reservations' ),
 					'reservation_greater_reservation_days_err_msg' => __( 'The item can be reserved for a max. of XX days.', 'easy-reservations' ),
 					'reservation_item_changes_invalidated'         => __( 'Reservation changes cannot be validated.', 'easy-reservations' ),
+					'cannot_update_reservation_item_invalidated'   => __( 'The reservation cannot be updated as the changes you made to the reservation have not been validated.', 'easy-reservations' ),
 				)
 			);
 		}
@@ -2112,6 +2113,87 @@ class Easy_Reservations_Public {
 			'code'                 => 'datepicker-initiated',
 			'reserved_dates'       => $reserved_dates,
 			'order_reserved_dates' => $order_reserved_dates,
+		);
+		wp_send_json_success( $response );
+		wp_die();
+	}
+
+	/**
+	 * Update the reservation.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_update_reservation_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+		// Check if action mismatches.
+		if ( empty( $action ) || 'update_reservation' !== $action ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Posted data.
+		$order_id        = (int) filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT );
+		$cost_difference = (float) filter_input( INPUT_POST, 'cost_difference', FILTER_SANITIZE_STRING );
+		$order_total     = (float) filter_input( INPUT_POST, 'order_total', FILTER_SANITIZE_STRING );
+		$posted_array    = filter_input_array( INPUT_POST );
+		$items_data      = ( ! empty( $posted_array['items_data'] ) ) ? $posted_array['items_data'] : array();
+
+		// Update the order meta.
+		update_post_meta( $order_id, 'ersrv_reservation_update', 1 );
+		update_post_meta( $order_id, 'ersrv_cost_difference', $cost_difference );
+		update_post_meta( $order_id, '_order_total', $order_total );
+
+		// If there are items, update the item meta.
+		if ( ! empty( $items_data ) && is_array( $items_data ) ) {
+			// Iterate through the items.
+			foreach ( $items_data as $item_data ) {
+				$item_id = ( ! empty( $item_data['item_id'] ) ) ? $item_data['item_id'] : '';
+
+				// Skip, if the item id is unavailable.
+				if ( empty( $item_id ) ) {
+					continue;
+				}
+
+				// Get the other data.
+				$item_total     = ( ! empty( $item_data['item_total'] ) ) ? $item_data['item_total'] : 0;
+				$adult_subtotal = ( ! empty( $item_data['adult_subtotal'] ) ) ? $item_data['adult_subtotal'] : 0;
+				$kids_subtotal  = ( ! empty( $item_data['kids_subtotal'] ) ) ? $item_data['kids_subtotal'] : 0;
+				$checkin        = ( ! empty( $item_data['checkin'] ) ) ? $item_data['checkin'] : '';
+				$checkout       = ( ! empty( $item_data['checkout'] ) ) ? $item_data['checkout'] : '';
+				$adult_count    = ( ! empty( $item_data['adult_count'] ) ) ? $item_data['adult_count'] : 0;
+				$kids_count     = ( ! empty( $item_data['kids_count'] ) ) ? $item_data['kids_count'] : 0;
+
+				// Update all the data now.
+				wc_update_order_item_meta( $item_id, '_line_subtotal', $item_total );
+				wc_update_order_item_meta( $item_id, '_line_total', $item_total );
+				wc_update_order_item_meta( $item_id, 'Checkin Date', $checkin );
+				wc_update_order_item_meta( $item_id, 'Checkout Date', $checkout );
+				wc_update_order_item_meta( $item_id, 'Adult Count', $adult_count );
+				wc_update_order_item_meta( $item_id, 'Kids Count', $kids_count );
+				wc_update_order_item_meta( $item_id, 'Adult Subtotal', $adult_subtotal );
+				wc_update_order_item_meta( $item_id, 'Kids Subtotal', $kids_subtotal );
+			}
+		}
+
+		// WC Order.
+		$wc_order = wc_get_order( $order_id );
+
+		/**
+		 * This hook runs during the AJAX call for updating the reservation order.
+		 *
+		 * This action executes after the reservation is successfully updated.
+		 *
+		 * @param int $order_id WooCommerce order ID.
+		 * @since 1.0.0
+		 */
+		do_action( 'ersrv_update_reservation', $order_id );
+
+		// Return the AJAX response.
+		$response = array(
+			'code'            => 'reservation-updated',
+			'view_order_link' => $wc_order->get_view_order_url(),
+			'toast_message'   => __( 'Your reservation has been updated successfully. Redirecting to the order details now.', 'easy-reservations' ),
 		);
 		wp_send_json_success( $response );
 		wp_die();

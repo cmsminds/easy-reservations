@@ -1220,6 +1220,13 @@ jQuery(document).ready(function ($) {
 	} );
 
 	/**
+	 * Close the notification.
+	 */
+	$( document ).on( 'click', '.ersrv-notification .close', function() {
+		$( '.ersrv-notification-wrapper .toast' ).removeClass( 'show' ).addClass( 'hide' );
+	} );
+
+	/**
 	 * Add reservation to cart.
 	 */
 	function ersrv_add_reservation_to_cart( add_to_cart_button, cart_data ) {

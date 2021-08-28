@@ -30,7 +30,8 @@ if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
 	$page_title = apply_filters('ersrv_edit_reservation_page_title', $page_title, $order_id);
 
 	// WooCommerce order.
-	$wc_order = wc_get_order($order_id);
+	$wc_order        = wc_get_order( $order_id );
+	$view_order_link = $wc_order->get_view_order_url();
 
 	// Get the order total.
 	$order_total = (float) $wc_order->get_total();
@@ -38,10 +39,8 @@ if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
 	// Get the items.
 	$line_items = $wc_order->get_items();
 
-	// Current date.
-	$php_date_format = ersrv_get_php_date_format();
-	$curr_date       = ersrv_get_current_date($php_date_format);
-	$next_date       = gmdate($php_date_format, (strtotime('now') + 86400));
+	// Cancel update link.
+	$cancel_reservation = "location.href = '{$view_order_link}'";
 }
 ?>
 <div class="wrapper edit-order-wrapper pb-5">
@@ -94,8 +93,8 @@ if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
 					$accomodation_limit     = (!empty($item_details['accomodation_limit'])) ? $item_details['accomodation_limit'] : '';
 					$min_reservation_period = (!empty($item_details['min_reservation_period'])) ? $item_details['min_reservation_period'] : '';
 					$max_reservation_period = (!empty($item_details['max_reservation_period'])) ? $item_details['max_reservation_period'] : '';
-			?>
-					<div class=" ersrv-edit-reservation-item-card card mb-3" data-orderid="<?php echo esc_attr($order_id); ?>" data-productid="<?php echo esc_attr($product_id); ?>" data-itemid="<?php echo esc_attr($item_id); ?>">
+					?>
+					<div class=" ersrv-edit-reservation-item-card card mb-3" data-productid="<?php echo esc_attr($product_id); ?>" data-itemid="<?php echo esc_attr($item_id); ?>">
 						<div class="row no-gutters">
 							<div class="col-12 col-lg-4">
 								<a href="<?php echo esc_url(get_permalink($product_id)); ?>">
@@ -114,12 +113,12 @@ if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
 													<div class="col-12 col-md-6">
 														<label for="ersrv-edit-reservation-item-checkin-date-<?php echo esc_attr($item_id); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e('Checkin', 'easy-reservations'); ?></label>
 														<div>
-															<input type="text" id="ersrv-edit-reservation-item-checkin-date-<?php echo esc_attr($item_id); ?>" value="<?php echo esc_html($checkin_date); ?>" data-oldval="<?php echo esc_html($checkin_date); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkin-date form-control date-control text-left rounded-lg" placeholder="<?php echo esc_html($curr_date); ?>">
+															<input type="text" id="ersrv-edit-reservation-item-checkin-date-<?php echo esc_attr($item_id); ?>" value="<?php echo esc_html($checkin_date); ?>" data-oldval="<?php echo esc_html($checkin_date); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkin-date form-control date-control text-left rounded-lg" placeholder="<?php echo esc_attr( ersrv_get_php_date_format() ); ?>">
 														</div>
 													</div>
 													<div class="col-12 col-md-6">
 														<label for="ersrv-edit-reservation-item-checkout-date-<?php echo esc_attr($item_id); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e('Checkout', 'easy-reservations'); ?></label>
-														<div><input type="text" id="ersrv-edit-reservation-item-checkout-date-<?php echo esc_attr($item_id); ?>" value="<?php echo esc_html($checkout_date); ?>" data-oldval="<?php echo esc_html($checkout_date); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkout-date form-control date-control text-left rounded-lg" placeholder="<?php echo esc_html($next_date); ?>"></div>
+														<div><input type="text" id="ersrv-edit-reservation-item-checkout-date-<?php echo esc_attr($item_id); ?>" value="<?php echo esc_html($checkout_date); ?>" data-oldval="<?php echo esc_html($checkout_date); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkout-date form-control date-control text-left rounded-lg" placeholder="<?php echo esc_attr( ersrv_get_php_date_format() ); ?>"></div>
 													</div>
 													<div class="col-12">
 														<div class="d-flex flex-wrap ersrv-edit-reservation-dates-indicators mb-3 pt-2">
@@ -272,7 +271,7 @@ if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
 													</div>
 													<div class="col-12 col-md-7 mb-6 text-right">
 														<button class="btn btn-accent non-clickable ersrv-edit-reservation-validate-item-changes"><?php esc_html_e('Validate Changes', 'easy-reservations'); ?></button>
-														<input type="hidden" class="confirmed-validation-of-item" value="1" />
+														<input type="hidden" id="confirmed-validation-of-item-<?php echo esc_attr( $item_id ); ?>" value="1" />
 
 														<!-- ITEM DETAILS -->
 														<input type="hidden" id="accomodation-limit-<?php echo esc_attr($item_id); ?>" value="<?php echo esc_html($accomodation_limit); ?>" />
@@ -295,13 +294,15 @@ if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
 
 				<!-- UPDATE RESERVATION -->
 				<div class="group-update-btn d-flex align-items-center justify-content-center ersrv-update-reservation flex-column">
-					<p class="font-lato font-size-16 color-black mb-3"><?php echo sprintf(__('Cost difference: %2$s%1$s%3$s (to be paid by the customer on arrival)', 'easy-reservations'), wc_price(0), '<span class="ersrv-edit-reservation-cost-difference">', '</span>'); ?></p>
-					<input type="hidden" class="ersrv-edit-reservation-order-total" value="<?php echo esc_html($order_total); ?>" />
-					<button class="btn btn-accent non-clickable"><?php esc_html_e('Update Reservation', 'easy-reservations'); ?></button>
+					<p class="font-lato font-size-16 color-black mb-3"><?php echo sprintf( __( 'Cost difference: %2$s%1$s%3$s (to be paid by the customer on arrival)', 'easy-reservations' ), wc_price(0), '<span class="ersrv-edit-reservation-cost-difference">', '</span>' ); ?></p>
+					<input type="hidden" class="ersrv-edit-reservation-order-total" value="<?php echo esc_html( $order_total ); ?>" />
+					<input type="hidden" class="ersrv-order-id" value="<?php echo esc_attr( $order_id ); ?>" />
+					<button class="btn btn-accent cancel" onclick="<?php echo esc_attr( $cancel_reservation ); ?>"><?php esc_html_e( 'Cancel', 'easy-reservations' ); ?></button>
+					<button class="btn btn-accent update non-clickable"><?php esc_html_e( 'Update Reservation', 'easy-reservations' ); ?></button>
 				</div>
 			<?php } else {
 				$my_account = wc_get_page_permalink('myaccount');
-			?>
+				?>
 				<div class="woocommerce-message woocommerce-message--info woocommerce-Message woocommerce-Message--info woocommerce-info">
 					<a class="woocommerce-Button button" href="<?php echo esc_url($my_account); ?>"><?php esc_html_e('My Account', 'woocommerce'); ?></a>
 					<?php esc_html_e('Invalid access.', 'easy-reservations'); ?>
