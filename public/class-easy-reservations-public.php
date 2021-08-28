@@ -775,6 +775,9 @@ class Easy_Reservations_Public {
 			return;
 		}
 
+		// Print the cost difference if it's there, so the customer knows about the payment.
+		ersrv_print_updated_reservation_cost_difference( $order_id );
+
 		// Print the reservation custom actions now.
 		?>
 		<div class="ersrv-reservation-actions-container">

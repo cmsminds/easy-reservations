@@ -1073,6 +1073,28 @@ class Easy_Reservations_Admin {
 					'side',
 					'high'
 				);
+
+				// Check if the order is updated.
+				$is_order_updated = get_post_meta( $post_id, 'ersrv_reservation_update', true );
+				if ( ! empty( $is_order_updated ) && '1' === $is_order_updated ) {
+					// Get the cost difference.
+					$cost_difference = (float) get_post_meta( $post_id, 'ersrv_cost_difference', true );
+
+					if ( ! empty( $cost_difference ) && 0 < $cost_difference ) {
+						// Metabox for driving license.
+						add_meta_box(
+							'ersrv-updated-reservation-order-cost-difference',
+							__( 'Easy Reservations: Updated Order Cost Difference', 'easy-reservations' ),
+							array( $this, 'ersrv_updated_reservation_order_cost_difference' ),
+							'shop_order',
+							'side',
+							'high',
+							array(
+								'cost_difference' => $cost_difference,
+							)
+						);
+					}
+				}
 			}
 		}
 	}
@@ -1118,6 +1140,14 @@ class Easy_Reservations_Admin {
 		</div>
 		<?php
 		echo ob_get_clean();
+	}
+
+	public function ersrv_updated_reservation_order_cost_difference( $post, $metabox_data ) {
+		$cost_difference = ( ! empty( $metabox_data['args']['cost_difference'] ) ) ? $metabox_data['args']['cost_difference'] : '';
+
+		if ( ! empty( $cost_difference ) ) {
+			echo sprintf( __( 'The customer needs to pay %1$s%3$s%2$s before onboarding.', 'easy-reservations' ), '<strong>', '</strong>', wc_price( $cost_difference ) );
+		}
 	}
 
 	/**

@@ -2531,3 +2531,94 @@ if ( ! function_exists( 'ersrv_get_readable_order_status' ) ) {
 		return ( ! empty( $valid_stuses[ "wc-{$status}" ] ) ) ? $valid_stuses[ "wc-{$status}" ] : '';
 	}
 }
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_print_updated_reservation_cost_difference' ) ) {
+	/**
+	 * Print the html for the updated reservation cost difference.
+	 *
+	 * @param int $order_id WooCommerce order ID.
+	 * @since 1.0.0
+	 */
+	function ersrv_print_updated_reservation_cost_difference( $order_id ) {
+		// Check if the order is updated.
+		$is_order_updated = get_post_meta( $order_id, 'ersrv_reservation_update', true );
+
+		// Return, if the reservation is not updated.
+		if ( empty( $is_order_updated ) || '1' !== $is_order_updated ) {
+			return;
+		}
+
+		// Get the cost difference.
+		$cost_difference = (float) get_post_meta( $order_id, 'ersrv_cost_difference', true );
+
+		// Return, if there is no cost difference.
+		if ( empty( $cost_difference ) ) {
+			return;
+		}
+
+		// Prepare the HTML now.
+		ob_start();
+		?>
+		<p><?php esc_html_e( 'Since the reservation order was updated, you need to pay this before you onboard:', 'easy-reservations' ); ?></p>
+		<table class="woocommerce-table woocommerce-table--order-details cost_difference_details">
+			<tbody>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Updated Reservation: Cost Difference', 'easy-reservations' ); ?></th>
+					<td>
+						<strong>
+							<?php
+							echo wp_kses(
+								wc_price( $cost_difference ),
+								array(
+									'span' => array(
+										'class' => array(),
+									),
+								)
+							);
+							?>
+						</strong>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<?php
+		$cost_difference_html = ob_get_clean();
+
+		/**
+		 * This hook executes when there is order details printed.
+		 *
+		 * This filters helps you modify the cost difference html.
+		 *
+		 * @param string $cost_difference_html Cost difference HTML.
+		 * @param int    $order_id WooCommerce order ID.
+		 * @return string
+		 * @since 1.0.0
+		 */
+		echo apply_filters(
+			'ersrv_updated_reservation_cost_difference_html',
+			wp_kses(
+				$cost_difference_html,
+				array(
+					'p' => array(),
+					'table' => array(
+						'class' => array(),
+					),
+					'table' => array(),
+					'tr' => array(),
+					'th' => array(
+						'scope' => array(),
+					),
+					'td' => array(),
+					'strong' => array(),
+					'span' => array(
+						'class' => array(),
+					),
+				)
+			),
+			$order_id
+		);
+	}
+}
