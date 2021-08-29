@@ -514,6 +514,53 @@ class Easy_Reservations_Public {
 		$page      = (int) filter_input( INPUT_POST, 'page', FILTER_SANITIZE_NUMBER_INT );
 		$page      = ( ! empty( $page ) ) ? $page : 1;
 
+		// Search requests.
+		$location        = filter_input( INPUT_POST, 'location', FILTER_SANITIZE_STRING );
+		$type            = filter_input( INPUT_POST, 'type', FILTER_SANITIZE_NUMBER_INT );
+		$accomodation    = filter_input( INPUT_POST, 'accomodation', FILTER_SANITIZE_NUMBER_INT );
+		$price_min_range = filter_input( INPUT_POST, 'price_min_range', FILTER_SANITIZE_NUMBER_FLOAT );
+		$price_max_range = filter_input( INPUT_POST, 'price_max_range', FILTER_SANITIZE_NUMBER_FLOAT );
+
+		// If the location is set.
+		if ( ! empty( $location ) ) {
+			$args['meta_query']['relation'] = 'OR';
+			$args['meta_query'][]           = array(
+				'key'     => '_ersrv_item_location',
+				'value'   => $location,
+				'compare' => 'LIKE',
+			);
+		}
+
+		// If the reservation item type is set.
+		if ( ! empty( $type ) ) {
+			$args['tax_query'][] = array(
+				'taxonomy' => 'reservation-item-type',
+				'field'    => 'term_id',
+				'terms'    => $type,
+			);
+		}
+
+		// If the accomodation is set.
+		if ( ! empty( $accomodation ) ) {
+			$args['meta_query']['relation'] = 'OR';
+			$args['meta_query'][]           = array(
+				'key'     => '_ersrv_accomodation_limit',
+				'value'   => $accomodation,
+				'compare' => '>=',
+			);
+		}
+
+		// If the price range values are available.
+		if ( ! empty( $price_min_range ) && ! empty( $price_max_range ) ) {
+			$args['meta_query']['relation'] = 'OR';
+			$args['meta_query'][]           = array(
+				'key'     => '_regular_price',
+				'value'   => array( $price_min_range, $price_max_range ),
+				'type'    => 'numeric',
+				'compare' => 'BETWEEN',
+			);
+		}
+
 		// If the post type is available.
 		if ( ! empty( $post_type ) ) {
 			// Set the taxonomy args for woocommerce products.
@@ -541,6 +588,11 @@ class Easy_Reservations_Public {
 		// If the page is available.
 		if ( ! empty( $page ) ) {
 			$args['paged'] = $page;
+		}
+
+		// Remove the relation parameter from the meta query arguments if there is only 1 request.
+		if ( ! empty( $args['meta_query'] ) && 2 === count( $args['meta_query'] ) ) {
+			unset( $args['meta_query']['relation'] );
 		}
 
 		return $args;
@@ -869,7 +921,9 @@ class Easy_Reservations_Public {
 		if ( empty( $reservation_item_ids ) || ! is_array( $reservation_item_ids ) ) {
 			wp_send_json_success(
 				array(
-					'code' => 'no-items-found'
+					'code'        => 'reservation-posts-not-found',
+					'html'        => ersrv_no_reservation_item_found_html(),
+					'items_count' => __( '0 items', 'easy-reservations' ),
 				)
 			);
 			wp_die();
@@ -2196,6 +2250,114 @@ class Easy_Reservations_Public {
 			'code'            => 'reservation-updated',
 			'view_order_link' => $wc_order->get_view_order_url(),
 			'toast_message'   => __( 'Your reservation has been updated successfully. Redirecting to the order details now.', 'easy-reservations' ),
+		);
+		wp_send_json_success( $response );
+		wp_die();
+	}
+
+	/**
+	 * Whether the extra zeros should be removed from price.
+	 *
+	 * @param boolean $trim_zeros Remove zeros.
+	 * @return boolean
+	 * @since 1.0.0
+	 */
+	public function ersrv_woocommerce_price_trim_zeros_callback( $trim_zeros ) {
+		$trim_extra_zeros = ersrv_get_plugin_settings( 'ersrv_trim_zeros_from_price' );
+		$trim_zeros       = ( ! empty( $trim_extra_zeros ) && 'no' === $trim_extra_zeros ) ? false : true;
+
+		return $trim_zeros;
+	}
+
+	/**
+	 * AJAX to submit the search and return matching reservations.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_search_reservations_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+		// Check if action mismatches.
+		if ( empty( $action ) || 'search_reservations' !== $action ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Get the reservation items.
+		$reservation_posts_query    = ersrv_get_posts( 'product' );
+		$reservation_post_ids       = $reservation_posts_query->posts;
+		$reservation_post_ids_found = $reservation_posts_query->found_posts;
+
+		// Return the response, if the reservation posts are not found.
+		if ( empty( $reservation_post_ids ) || ! is_array( $reservation_post_ids ) ) {
+			$response = array(
+				'code'        => 'reservation-posts-not-found',
+				'html'        => ersrv_no_reservation_item_found_html( true ),
+				'items_count' => __( '0 items', 'easy-reservations' ),
+			);
+			wp_send_json_success( $response );
+			wp_die();
+		}
+
+		// Reservation post IDs that qualify to the 
+		$final_reservation_ids = $reservation_post_ids;
+
+		// Check through the requested checkin and checkout dates.
+		$posted_array           = filter_input_array( INPUT_POST );
+		$checkin_checkout_dates = ( ! empty( $posted_array['checkin_checkout_dates'] ) ) ? $posted_array['checkin_checkout_dates'] : array();
+		if ( ! empty( $checkin_checkout_dates ) && is_array( $checkin_checkout_dates ) ) {
+			$final_reservation_ids = array();
+			// Iterate through the found items to check if the requested checkin and checkout dates don't overlap.
+			foreach ( $reservation_post_ids as $reservation_post_id ) {
+				$item_reserved_dates = get_post_meta( $reservation_post_id, '_ersrv_reservation_blockout_dates', true );
+
+				// If there is no reserved date, this item qualifies to the search result.
+				if ( empty( $item_reserved_dates ) || ! is_array( $item_reserved_dates ) ) {
+					$final_reservation_ids[] = $reservation_post_id;
+					continue;
+				}
+
+				// Final reserved dates.
+				$reserved_dates = array();
+
+				// Get the reserved dates in an array.
+				foreach ( $item_reserved_dates as $item_reserved_date ) {
+					$reserved_date = ( ! empty( $item_reserved_date['date'] ) ) ? $item_reserved_date['date'] : '';
+
+					// Skip, if the date is unavailable.
+					if ( empty( $reserved_date ) ) {
+						continue;
+					}
+
+					$reserved_dates[] = $reserved_date;
+				}
+
+				// Find the intersecting dates between the requested dates and the already reserved ones.
+				$intersecting_dates = array_intersect( $checkin_checkout_dates, $reserved_dates );
+
+				// If there is no intersecting date, the item qualifies for the result.
+				if ( empty( $intersecting_dates ) ) {
+					$final_reservation_ids[] = $reservation_post_id;
+				}
+			}
+		}
+
+		// Prepare the html now.
+		$html = '';
+
+		// Iterate through the qualified reservation items.
+		foreach ( $final_reservation_ids as $reservation_post_id ) {
+			$html .= ersrv_get_reservation_item_block_html( $reservation_post_id );
+		}
+
+		// Count of qualifying reservation posts.
+		$qualified_reservation_posts = count( $final_reservation_ids );
+
+		// Return the AJAX response.
+		$response = array(
+			'code'        => 'reservation-posts-found',
+			'html'        => $html,
+			'items_count' => sprintf( _n( '%d item', '%d items', $qualified_reservation_posts, 'easy-reservations' ), number_format_i18n( $qualified_reservation_posts ) ),
 		);
 		wp_send_json_success( $response );
 		wp_die();

@@ -123,6 +123,12 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 				'type'  => 'checkbox',
 			),
 			array(
+				'title' => __( 'Remove ".00" From Price', 'easy-reservations' ),
+				'desc'  => __( 'This sets whether the extra zeros from the price should be removed or not.', 'easy-reservations' ),
+				'id'    => 'ersrv_trim_zeros_from_price',
+				'type'  => 'checkbox',
+			),
+			array(
 				'title'       => __( 'Google Maps API Key', 'easy-reservations' ),
 				'desc'        => __( 'This holds the google maps API key.', 'easy-reservations' ),
 				'desc_tip'    => true,

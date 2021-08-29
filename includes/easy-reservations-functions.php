@@ -138,6 +138,11 @@ function ersrv_get_plugin_settings( $setting ) {
 			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : __( 'Edit Reservation', 'easy-reservations' );
 			break;
 
+		case 'ersrv_trim_zeros_from_price':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : 'no';
+			break;
+
 		default:
 			$data = -1;
 	}
@@ -1745,19 +1750,26 @@ if ( ! function_exists( 'ersrv_register_reservation_type_taxonomy' ) ) {
 	 * @since 1.0.0
 	 */
 	function ersrv_register_reservation_type_taxonomy() {
-		// Add new taxonomy, make it hierarchical (like categories)
-		$labels = array(
-			'name'              => _x( 'Reservation Item Types', 'taxonomy general name', 'easy-reservations' ),
-			'singular_name'     => _x( 'Reservation Item Type', 'taxonomy singular name', 'easy-reservations' ),
-			'search_items'      => __( 'Search Reservation Item Types', 'easy-reservations' ),
-			'all_items'         => __( 'All Reservation Item Types', 'easy-reservations' ),
-			'parent_item'       => __( 'Parent Reservation Item Type', 'easy-reservations' ),
-			'parent_item_colon' => __( 'Parent Reservation Item Type:', 'easy-reservations' ),
-			'edit_item'         => __( 'Edit Reservation Item Type', 'easy-reservations' ),
-			'update_item'       => __( 'Update Reservation Item Type', 'easy-reservations' ),
-			'add_new_item'      => __( 'Add New Reservation Item Type', 'easy-reservations' ),
-			'new_item_name'     => __( 'New Reservation Item Type Name', 'easy-reservations' ),
-			'menu_name'         => __( 'Reservation Item Types', 'easy-reservations' ),
+		// Taxonomy arguments.
+		$args = array(
+			'labels'            => array(
+				'name'              => _x( 'Reservation Item Types', 'taxonomy general name', 'easy-reservations' ),
+				'singular_name'     => _x( 'Reservation Item Type', 'taxonomy singular name', 'easy-reservations' ),
+				'search_items'      => __( 'Search Reservation Item Types', 'easy-reservations' ),
+				'all_items'         => __( 'All Reservation Item Types', 'easy-reservations' ),
+				'parent_item'       => __( 'Parent Reservation Item Type', 'easy-reservations' ),
+				'parent_item_colon' => __( 'Parent Reservation Item Type:', 'easy-reservations' ),
+				'edit_item'         => __( 'Edit Reservation Item Type', 'easy-reservations' ),
+				'update_item'       => __( 'Update Reservation Item Type', 'easy-reservations' ),
+				'add_new_item'      => __( 'Add New Reservation Item Type', 'easy-reservations' ),
+				'new_item_name'     => __( 'New Reservation Item Type Name', 'easy-reservations' ),
+				'menu_name'         => __( 'Reservation Item Types', 'easy-reservations' ),
+			),
+			'hierarchical'      => true,
+			'show_ui'           => true,
+			'show_admin_column' => true,
+			'query_var'         => true,
+			'rewrite'           => array( 'slug' => 'reservation-item-type' ),
 		);
 
 		/**
@@ -1765,20 +1777,13 @@ if ( ! function_exists( 'ersrv_register_reservation_type_taxonomy' ) ) {
 		 *
 		 * This hook helps in modifying the reservation item type taxonomy arguments.
 		 *
-		 * @param array $labels Taxonomy labels array.
+		 * @param array $args Taxonomy arguments array.
 		 * @return array
 		 * @since 1.0.0
 		 */
-		$labels = apply_filters( 'ersrv_reservation_type_taxonomy_args', $labels );
-		$args   = array(
-			'hierarchical'      => true,
-			'labels'            => $labels,
-			'show_ui'           => true,
-			'show_admin_column' => true,
-			'query_var'         => true,
-			'rewrite'           => array( 'slug' => 'reservation-item-type' ),
-		);
-	 
+		$args = apply_filters( 'ersrv_reservation_type_taxonomy_args', $args );
+
+		// Register the taxonomy.
 		register_taxonomy( 'reservation-item-type', array( 'product' ), $args );
 	}
 }
@@ -2620,5 +2625,33 @@ if ( ! function_exists( 'ersrv_print_updated_reservation_cost_difference' ) ) {
 			),
 			$order_id
 		);
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_no_reservation_item_found_html' ) ) {
+	/**
+	 * Return the html when no reservation item is found.
+	 *
+	 * @return string
+	 * @since 1.0.0
+	 */
+	function ersrv_no_reservation_item_found_html( $include_reset = false ) {
+		ob_start();
+		?>
+		<div class="ersrv-no-reservation-post-found">
+			<p><?php esc_html_e( 'No reservation items found !!', 'easy-reservations' ); ?></p>
+			<?php if ( $include_reset ) {
+				$search_page_id = ersrv_get_page_id( 'search-reservations' );
+				$search_page    = get_permalink( $search_page_id );
+				?>
+				<a class="btn btn-accent" href="<?php echo esc_url( $search_page ); ?>"><?php esc_html_e( 'Reset Search', 'easy-reservations' ); ?></a>
+			<?php } ?>
+		</div>
+		<?php
+
+		return ob_get_clean();
 	}
 }

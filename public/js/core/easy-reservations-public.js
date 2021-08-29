@@ -162,14 +162,13 @@ jQuery(document).ready(function ($) {
 		// Price range slider.
 		$( '.ersrv-search-item-price-range' ).slider( {
 			range: true,
-			min: 0,
+			min: 1,
 			max: 10000,
-			values: [0, 10000],
+			values: [1, 10000],
 			slide: function (event, ui) {
-				$( '.price-value' ).html( woo_currency + ui.values[0] + ' to ' + woo_currency + ui.values[1]);
+				$( '.price-value' ).html( ersrv_get_formatted_price( ui.values[0] ) + ' to ' + ersrv_get_formatted_price( ui.values[1] ) );
 			}
 		} );
-		// $( '.price-value' ).html( woo_currency + $( '.ersrv-search-item-price-range' ).slider( values, 0 ) + ' to ' + woo_currency + $( '.ersrv-search-item-price-range' ).slider( values, 1 ) );
 	}
 
 	/**
@@ -189,7 +188,7 @@ jQuery(document).ready(function ($) {
 	/**
 	 * Accomodation adult charge.
 	 */
-	 $( document ).on( 'keyup click', '#adult-accomodation-count', function() {
+	$( document ).on( 'keyup click', '#adult-accomodation-count', function() {
 		var this_input       = $( this );
 		var adult_count      = parseInt( this_input.val() );
 		adult_count          = ( -1 === is_valid_number( adult_count ) ) ? 0 : adult_count;
@@ -421,8 +420,9 @@ jQuery(document).ready(function ($) {
 				
 				if ( 'items-found' === response.data.code ) { // If items are found.
 					$( '.ersrv-search-reservations-items-container' ).html( response.data.html );
-					$( '.ersrv-loadmore-container' ).html( response.data.load_more_html );
-				} else if ( 'no-items-found' === response.data.code ) { // If items are found.
+				} else if ( 'reservation-posts-not-found' === response.data.code ) { // If items are found.
+					$( '.ersrv-search-reservations-items-container' ).html( response.data.html );
+					$( '.ersrv-reservation-items-count' ).text( response.data.items_count );
 				}
 			},
 		} );
@@ -1227,6 +1227,75 @@ jQuery(document).ready(function ($) {
 	} );
 
 	/**
+	 * Check if any value is changed, so the user should confirm availability.
+	 */
+	$( document ).on( 'keyup', '.ersrv-search-parameter', function( evt ) {
+		var key_code   = evt.keyCode || evt.which;
+
+		// If enter key is pressed.
+		if ( 1 === is_valid_number( key_code ) && 13 === key_code ) {
+			$( '.ersrv-submit-reservation-search' ).click();
+		}
+	} );
+
+	/**
+	 * Submit the search.
+	 */
+	$( document ).on( 'click', '.ersrv-submit-reservation-search', function() {
+		var location               = $( '.ersrv-item-search-location' ).val();
+		var type                   = parseInt( $( '.ersrv-item-type' ).val() );
+		var checkin                = $( '#ersrv-search-checkin' ).val();
+		var checkout               = $( '#ersrv-search-checkout' ).val();
+		var accomodation           = parseInt( $( '.ersrv-item-search-accomodation' ).val() );
+		var price_min_range        = parseFloat( $( '.ersrv-search-item-price-range' ).slider( 'values', 0 ) );
+		var price_max_range        = parseFloat( $( '.ersrv-search-item-price-range' ).slider( 'values', 1 ) );
+		var checkin_checkout_dates = [];
+
+		// Get the dates array between the checkin and checkout dates.
+		var checkin_checkout_dates_obj = ersrv_get_dates_between_2_dates( checkin, checkout );
+		for ( var i in checkin_checkout_dates_obj ) {
+			checkin_checkout_dates.push( ersrv_get_formatted_date( checkin_checkout_dates_obj[i] ) );
+		}
+
+		// Block the wrapper.
+		// block_element( $( '.ersrv-form-wrapper' ) );
+
+		// Submit the search.
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'search_reservations',
+				location: location,
+				type: type,
+				checkin_checkout_dates: checkin_checkout_dates,
+				accomodation: accomodation,
+				price_min_range: price_min_range,
+				price_max_range: price_max_range,
+			},
+			success: function ( response ) {
+				// Check for invalid ajax request.
+				if ( 0 === response ) {
+					console.log( 'easy reservations: invalid ajax request' );
+					return false;
+				}
+
+				// Response code.
+				var code = response.data.code;
+				if ( 'reservation-posts-found' === code || 'reservation-posts-found' === code ) {
+					// Unblock the wrapper.
+					unblock_element( $( '.ersrv-form-wrapper' ) );
+					// Response html.
+					$( '.ersrv-search-reservations-items-container' ).html( response.data.html );
+					// Items count.
+					$( '.ersrv-reservation-items-count' ).text( response.data.items_count );
+				}
+			},
+		} );
+	} );
+
+	/**
 	 * Add reservation to cart.
 	 */
 	function ersrv_add_reservation_to_cart( add_to_cart_button, cart_data ) {
@@ -1497,6 +1566,30 @@ jQuery(document).ready(function ($) {
 		$( '.ersrv-notification .ersrv-notification-icon' ).addClass( icon );
 		$( '.ersrv-notification .ersrv-notification-heading' ).text( heading );
 		$( '.ersrv-notification .ersrv-notification-message' ).html( message );
+	}
+
+	/**
+	 * Return the formatted price.
+	 *
+	 * @param {*} cost 
+	 * @returns 
+	 */
+	function ersrv_get_formatted_price( cost ) {
+		// Upto 2 decimal places.
+		cost = cost.toFixed( 2 );
+
+		// Let's first comma format the price.
+		var cost_parts = cost.toString().split( '.' );
+		cost_parts[0]  = cost_parts[0].replace( /\B(?=(\d{3})+(?!\d))/g, ',' );
+		cost           = cost_parts.join( '.' );
+		
+		// Prepare the cost html now.
+		var cost_html  = '<span class="woocommerce-Price-amount amount">';
+		cost_html     += '<span class="woocommerce-Price-currencySymbol">' + woo_currency + '</span>';
+		cost_html     += cost;
+		cost_html     += '</span>';
+
+		return cost_html;
 	}
 
 	/**

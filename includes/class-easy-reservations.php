@@ -250,6 +250,9 @@ class Easy_Reservations {
 		$this->loader->add_action( 'wp_ajax_nopriv_edit_reservation_initiate_datepicker', $plugin_public, 'ersrv_edit_reservation_initiate_datepicker_callback' );
 		$this->loader->add_action( 'wp_ajax_update_reservation', $plugin_public, 'ersrv_update_reservation_callback' );
 		$this->loader->add_action( 'wp_ajax_nopriv_update_reservation', $plugin_public, 'ersrv_update_reservation_callback' );
+		$this->loader->add_filter( 'woocommerce_price_trim_zeros', $plugin_public, 'ersrv_woocommerce_price_trim_zeros_callback' );
+		$this->loader->add_action( 'wp_ajax_search_reservations', $plugin_public, 'ersrv_search_reservations_callback' );
+		$this->loader->add_action( 'wp_ajax_nopriv_search_reservations', $plugin_public, 'ersrv_search_reservations_callback' );
 	}
 
 	/**

@@ -35,9 +35,6 @@ $search_price_max = filter_input( INPUT_GET, 'price_max', FILTER_SANITIZE_STRING
 $search_price_max = ( ! is_null( $search_price_max ) ) ? $search_price_max : '';
 $search_boat_type = (int) filter_input( INPUT_GET, 'boat_type', FILTER_SANITIZE_NUMBER_INT );
 $search_boat_type = ( ! is_null( $search_boat_type ) ) ? $search_boat_type : 0;
-
-// WooCommerce currency.
-$woo_currency = get_woocommerce_currency_symbol();
 ?>
 <section class="wrapper search-page" id="wrapper">
 	<div class="banner text-center">
@@ -46,16 +43,16 @@ $woo_currency = get_woocommerce_currency_symbol();
 				<div class="page-title">
 					<h1 class="font-Poppins font-size-40 font-weight-semibold color-white"><?php esc_html_e( 'Search for a boat', 'easy-reservations' ); ?></h1>
 				</div>
-				<div class="form-wrapper">
+				<div class="form-wrapper ersrv-form-wrapper">
 					<form action="#" class="form-inner">
 						<div class="form-row">
 							<div class="col-12 col-md-3 col-lg-3">
 								<div class="form-group">
-									<input type="text" value="<?php echo esc_html( $search_location ); ?>" class="ersrv-item-search-location form-control date-control ship-icon-field text-left rounded-lg" placeholder="<?php esc_html_e( 'Desired location', 'easy-reservations' ); ?>">
+									<input type="text" value="<?php echo esc_html( $search_location ); ?>" class="ersrv-search-parameter ersrv-item-search-location form-control date-control ship-icon-field text-left rounded-lg" placeholder="<?php esc_html_e( 'Desired location', 'easy-reservations' ); ?>">
 								</div>
 							</div>
 							<div class="col-12 col-md-3 col-lg-3">
-								<select class="selectpicker form-control Boat-Types mb-3" id="boat-types" data-size="5" data-style="btn-outline-light focus-none" title="Boat Type">
+								<select class="ersrv-search-parameter ersrv-item-type selectpicker form-control Boat-Types mb-3" id="boat-types" data-size="5" data-style="btn-outline-light focus-none" title="Boat Type">
 									<?php if ( ! empty( $reservation_item_types ) && is_array( $reservation_item_types ) ) { ?>
 										<?php foreach ( $reservation_item_types as $item_type ) {
 											$is_selected = ( 0 !== $search_boat_type && $search_boat_type === $item_type->term_id );
@@ -69,10 +66,10 @@ $woo_currency = get_woocommerce_currency_symbol();
 								<div class="input-daterange">
 									<div class="form-row">
 										<div class="col-12 col-md-6">
-											<input id="ersrv-search-checkin" value="<?php echo esc_html( $search_checkin ); ?>" type="text" class="form-control date-control text-left rounded-lg mb-3" placeholder="Check in">
+											<input id="ersrv-search-checkin" value="<?php echo esc_html( $search_checkin ); ?>" type="text" class="ersrv-search-parameter form-control date-control text-left rounded-lg mb-3" placeholder="Check in">
 										</div>
 										<div class="col-12 col-md-6">
-											<input id="ersrv-search-checkout" value="<?php echo esc_html( $search_checkout ); ?>" type="text" class="form-control date-control text-left rounded-lg mb-3" placeholder="Check out">
+											<input id="ersrv-search-checkout" value="<?php echo esc_html( $search_checkout ); ?>" type="text" class="ersrv-search-parameter form-control date-control text-left rounded-lg mb-3" placeholder="Check out">
 										</div>
 									</div>
 								</div>
@@ -83,7 +80,7 @@ $woo_currency = get_woocommerce_currency_symbol();
 								<div class="slider-wrapper">
 									<div class="d-flex flex-wrap align-items-center justify-content-center mb-2">
 										<h4 class="font-lato font-size-14 font-weight-bolder color-black text-center mb-0 mr-2"><?php esc_html_e( 'Price Per Night:', 'easy-reservations' ); ?></h4>
-										<h4 class="font-lato font-size-20 font-weight-bolder color-black text-center mb-0 price-value"><?php echo esc_html( $woo_currency );?>0 to <?php echo esc_html( $woo_currency );?>10,000</h4>
+										<h4 class="font-lato font-size-20 font-weight-bolder color-black text-center mb-0 price-value"><?php echo sprintf( __( '%1$s to %2$s', 'easy-reservations' ), wc_price( 1 ), wc_price( 10000 ) ); ?></h4>
 									</div>
 									<div class="search-price-range-slider ersrv-search-item-price-range"></div>
 								</div>
@@ -92,17 +89,8 @@ $woo_currency = get_woocommerce_currency_symbol();
 								<div class="input-daterange">
 									<div class="form-row">
 										<div class="col-12 col-md-6">
-											<!-- <select class="selectpicker form-control Boat-Types mb-3" id="boat-types" data-size="5" data-style="btn-outline-light focus-none" title="Boat Type">
-												<?php if ( ! empty( $reservation_item_types ) && is_array( $reservation_item_types ) ) { ?>
-													<?php foreach ( $reservation_item_types as $item_type ) {
-														$is_selected = ( 0 !== $search_boat_type && $search_boat_type === $item_type->term_id );
-														?>
-														<option <?php echo ( $is_selected ) ? 'selected' : ''; ?> value="<?php echo esc_attr( $item_type->term_id ); ?>"><?php echo esc_html( $item_type->name ); ?></option>
-													<?php } ?>
-												<?php } ?>
-											</select> -->
 											<div class="form-group">
-												<input type="text" value="" class="ersrv-item-search-accomodation form-control rounded-lg" placeholder="<?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?>">
+												<input type="number" value="" class="ersrv-search-parameter ersrv-item-search-accomodation form-control rounded-lg" placeholder="<?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?>">
 											</div>
 										</div>
 										<div class="col-12 col-md-6">
@@ -123,7 +111,7 @@ $woo_currency = get_woocommerce_currency_symbol();
 	<div class="content-part">
 		<div class="container">
 			<div class="search-results-wrapper">
-				<h4 class="title font-Poppins"><?php echo sprintf( __( 'Advanced Search: %1$s%3$s items%2$s', 'easy-reservations' ), '<span class="result-no">', '</span>', count( $total_reservation_posts ) ) ?></h4>
+				<h4 class="title font-Poppins"><?php echo sprintf( __( 'Advanced Search: %1$s%3$s items%2$s', 'easy-reservations' ), '<span class="ersrv-reservation-items-count result-no">', '</span>', count( $total_reservation_posts ) ) ?></h4>
 				<div class="search-result-inner ersrv-search-reservations-items-container form-row">
 					<div class="jumbotron text-center w-100 bg-transparent">
 						<h3 class="loading-title"><?php esc_html_e( 'Please wait while we load items...', 'easy-reservations' ); ?></h3>
