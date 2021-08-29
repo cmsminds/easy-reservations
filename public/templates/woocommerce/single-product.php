@@ -264,11 +264,11 @@ $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platform
 											<tbody>
 												<tr class="item-price-summary">
 													<th><?php esc_html_e( 'Adults:', 'easy-reservations' ); ?></th>
-													<td><span class="font-lato font-weight-bold color-accent">--</span></td>
+													<td><span class="ersrv-cost font-lato font-weight-bold color-accent">--</span></td>
 												</tr>
 												<tr class="kids-charge-summary">
 													<th><?php esc_html_e( 'Kids:', 'easy-reservations' ); ?></th>
-													<td><span class="font-lato font-weight-bold color-accent">--</span></td>
+													<td><span class="ersrv-cost font-lato font-weight-bold color-accent">--</span></td>
 												</tr>
 												<tr class="security-amount-summary">
 													<th><?php esc_html_e( 'Security:', 'easy-reservations' ); ?></th>
@@ -289,12 +289,12 @@ $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platform
 												</tr>
 												<tr class="amenities-summary">
 													<th><?php esc_html_e( 'Amenities:', 'easy-reservations' ); ?></th>
-													<td><span class="font-lato font-weight-bold color-accent">--</span></td>
+													<td><span class="ersrv-cost font-lato font-weight-bold color-accent">--</span></td>
 												</tr>
 												<tr class="new-reservation-total-cost">
 													<th><?php esc_html_e( 'Total:', 'easy-reservations' ); ?></th>
 													<td>
-														<span class="font-lato font-weight-bold color-accent">
+														<span class="ersrv-cost font-lato font-weight-bold color-accent">
 															<?php
 															echo wp_kses(
 																wc_price( $security_amount ),

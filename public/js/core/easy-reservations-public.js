@@ -189,48 +189,41 @@ jQuery(document).ready(function ($) {
 	 * Accomodation adult charge.
 	 */
 	$( document ).on( 'keyup click', '#adult-accomodation-count', function() {
-		var this_input       = $( this );
-		var adult_count      = parseInt( this_input.val() );
-		adult_count          = ( -1 === is_valid_number( adult_count ) ) ? 0 : adult_count;
-		var per_adult_charge = parseFloat( $( '#adult-charge' ).val() );
-		var total_charge     = adult_count * per_adult_charge;
-		total_charge         = total_charge.toFixed( 2 );
-		$( 'tr.item-price-summary td span' ).html( woo_currency + total_charge );
-
-		// Calculate the total cost.
-		ersrv_calculate_reservation_total_cost();
+		var this_input             = $( this );
+		var adult_count            = parseInt( this_input.val() );
+		adult_count                = ( -1 === is_valid_number( adult_count ) ) ? 0 : adult_count;
+		var per_adult_charge       = parseFloat( $( '#adult-charge' ).val() );
+		var total_charge           = adult_count * per_adult_charge;
+		var formatted_total_charge = ersrv_get_formatted_price( total_charge );
+		$( 'tr.item-price-summary td span.ersrv-cost' ).html( formatted_total_charge );
+		ersrv_calculate_reservation_total_cost(); // Calculate the total cost.
 	} );
 
 	/**
 	 * Accomodation adult charge - quick view modal.
 	 */
 	$( document ).on( 'keyup click', '#quick-view-adult-accomodation-count', function() {
-		var this_input       = $( this );
-		var adult_count      = parseInt( this_input.val() );
-		adult_count          = ( -1 === is_valid_number( adult_count ) ) ? 0 : adult_count;
-		var per_adult_charge = parseFloat( $( '#quick-view-adult-charge' ).val() );
-		var total_charge     = adult_count * per_adult_charge;
-		total_charge         = total_charge.toFixed( 2 );
+		var this_input             = $( this );
+		var adult_count            = parseInt( this_input.val() );
+		adult_count                = ( -1 === is_valid_number( adult_count ) ) ? 0 : adult_count;
+		var per_adult_charge       = parseFloat( $( '#quick-view-adult-charge' ).val() );
+		var total_charge           = adult_count * per_adult_charge;
 		$( '#quick-view-adult-subtotal' ).val( total_charge );
-
-		// Calculate the total cost.
-		ersrv_calculate_reservation_total_cost_quick_view();
+		ersrv_calculate_reservation_total_cost_quick_view(); // Calculate the total cost.
 	} );
 
 	/**
 	 * Accomodation kids charge.
 	 */
 	 $( document ).on( 'keyup click', '#kid-accomodation-count', function() {
-		var this_input     = $( this );
-		var kids_count     = parseInt( this_input.val() );
-		kids_count         = ( -1 === is_valid_number( kids_count ) ) ? 0 : kids_count;
-		var per_kid_charge = parseFloat( $( '#kid-charge' ).val() );
-		var total_charge   = kids_count * per_kid_charge;
-		total_charge       = total_charge.toFixed( 2 );
-		$( 'tr.kids-charge-summary td span' ).html( woo_currency + total_charge );
-
-		// Calculate the total cost.
-		ersrv_calculate_reservation_total_cost();
+		var this_input             = $( this );
+		var kids_count             = parseInt( this_input.val() );
+		kids_count                 = ( -1 === is_valid_number( kids_count ) ) ? 0 : kids_count;
+		var per_kid_charge         = parseFloat( $( '#kid-charge' ).val() );
+		var total_charge           = kids_count * per_kid_charge;
+		var formatted_total_charge = ersrv_get_formatted_price( total_charge );
+		$( 'tr.kids-charge-summary td span.ersrv-cost' ).html( formatted_total_charge );
+		ersrv_calculate_reservation_total_cost(); // Calculate the total cost.
 	} );
 
 	/**
@@ -242,11 +235,8 @@ jQuery(document).ready(function ($) {
 		kids_count         = ( -1 === is_valid_number( kids_count ) ) ? 0 : kids_count;
 		var per_kid_charge = parseFloat( $( '#quick-view-kid-charge' ).val() );
 		var total_charge   = kids_count * per_kid_charge;
-		total_charge       = total_charge.toFixed( 2 );
 		$( '#quick-view-kid-subtotal' ).val( total_charge );
-
-		// Calculate the total cost.
-		ersrv_calculate_reservation_total_cost_quick_view();
+		ersrv_calculate_reservation_total_cost_quick_view(); // Calculate the total cost.
 	} );
 
 	/**
@@ -264,21 +254,16 @@ jQuery(document).ready(function ($) {
 			var this_element = $( this );
 			var is_checked = this_element.is( ':checked' );
 			if ( true === is_checked ) {
-				var amenity_cost      = parseFloat( this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost' ) );
-				var amenity_cost_type = this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost_type' );
-				amenity_cost          = ( 'per_day' === amenity_cost_type ) ? ( amenity_cost * reservation_dates_count ) : amenity_cost;
+				var amenity_cost        = parseFloat( this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost' ) );
+				var amenity_cost_type   = this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost_type' );
+				amenity_cost            = ( 'per_day' === amenity_cost_type ) ? ( amenity_cost * reservation_dates_count ) : amenity_cost;
 				amenities_summary_cost += parseFloat( amenity_cost );
 			}
 		} );
 
-		// Limit to 2 decimal places.
-		amenities_summary_cost = amenities_summary_cost.toFixed( 2 );
-
-		// Paste the final cost.
-		$( 'tr.amenities-summary td span' ).html( woo_currency + amenities_summary_cost );
-
-		// Calculate the total cost.
-		ersrv_calculate_reservation_total_cost();
+		var formatted_amenities_cost = ersrv_get_formatted_price( amenities_summary_cost ); // Formatted amenities cost.
+		$( 'tr.amenities-summary td span.ersrv-cost' ).html( formatted_amenities_cost ); // Paste the final cost.
+		ersrv_calculate_reservation_total_cost(); // Calculate the total cost.
 	} );
 
 	/**
@@ -1258,7 +1243,7 @@ jQuery(document).ready(function ($) {
 		}
 
 		// Block the wrapper.
-		// block_element( $( '.ersrv-form-wrapper' ) );
+		block_element( $( '.ersrv-form-wrapper' ) );
 
 		// Submit the search.
 		$.ajax( {
@@ -1449,11 +1434,11 @@ jQuery(document).ready(function ($) {
 		// Addup to the total cost.
 		var total_cost = item_subtotal + kids_subtotal + security_subtotal + amenities_subtotal;
 
-		// Limit to 2 decimal places.
-		total_cost = total_cost.toFixed( 2 );
+		// Formatted total cost.
+		var formatted_total_cost = ersrv_get_formatted_price( total_cost );
 
 		// Paste the final total.
-		$( 'tr.new-reservation-total-cost td span' ).html( woo_currency + total_cost );
+		$( 'tr.new-reservation-total-cost td span' ).html( formatted_total_cost );
 	}
 
 	/**
