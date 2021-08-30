@@ -343,7 +343,7 @@ a.btn:hover,
     text-transform: lowercase;
 }
 /* Experimental */
-/* body::after {
+body::after {
     position: fixed;
     z-index: 99999;
     height: 100%;
@@ -354,4 +354,4 @@ a.btn:hover,
     pointer-events: none;
     top: 0px;
     left: 0px;
-} */
+}
