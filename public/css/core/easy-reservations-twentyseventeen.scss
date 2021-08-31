@@ -12,7 +12,9 @@
         .details {
             max-width: 500px;
             a{
-                color: $white;
+                &:not(.dropdown-item){
+                    color: $white;
+                }
             }
         }
     }

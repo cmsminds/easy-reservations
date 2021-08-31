@@ -12,7 +12,9 @@
         .details {
             max-width: 500px;
             a{
-                color: $white;
+                &:not(.dropdown-item){
+                    color: $white;
+                }
             }
         }
     }
@@ -339,6 +341,15 @@
 
             .details {
                 max-width: 100%;
+                .slider-wrapper{
+                    div.mb-2{
+                        margin-bottom: 16px !important;
+                    }
+                    *{
+                        letter-spacing: normal;
+                        margin-top: 0px ;
+                    }
+                }
             }
 
             .page-title {
@@ -355,7 +366,7 @@
                 padding: 26px 26px 29px 27px;
 
                 .form-inner {
-                    .bootstrap-select{
+                    .bootstrap-select:not(.show){
                         overflow: hidden;
                     }
 
@@ -407,6 +418,7 @@
                     font-weight: 700;
                     margin-bottom: 36px;
                     text-align: center;
+                    letter-spacing: normal;
                 }
 
                 .search-result-inner {

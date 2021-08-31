@@ -687,7 +687,7 @@ img {
   max-width: 360px;
 }
 
-.wrapper .banner .details a {
+.wrapper .banner .details a:not(.dropdown-item) {
   color: #fff;
 }
 

@@ -342,6 +342,24 @@ a.btn:hover,
 .ersrv-edit-reservation-template .ersrv-reservation-error{
     text-transform: lowercase;
 }
+.ersrv-no-reservation-post-found{
+    background-image: url(../../images/no_data.png);
+    width: 100%;
+    padding-top: 300px;
+    background-size: 400px;
+    background-repeat: no-repeat;
+    background-position: top center;
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
 /* Experimental */
 /*body::after {
     position: fixed;

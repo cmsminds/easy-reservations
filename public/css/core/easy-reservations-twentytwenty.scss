@@ -11,6 +11,11 @@
         background-repeat: no-repeat;
         .details {
             max-width: 500px;
+            // a{
+            //     &:not(.dropdown-item){
+            //         color: $white;
+            //     }
+            // }
         }
     }
     .content-part {
