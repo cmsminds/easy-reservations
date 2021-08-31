@@ -938,7 +938,7 @@ class Easy_Reservations_Public {
 		// Send the response.
 		wp_send_json_success(
 			array(
-				'code' => 'items-found',
+				'code' => 'reservation-posts-found',
 				'html' => $html,
 			)
 		);

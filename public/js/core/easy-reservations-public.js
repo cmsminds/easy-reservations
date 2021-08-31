@@ -403,11 +403,16 @@ jQuery(document).ready(function ($) {
 					return false;
 				}
 				
-				if ( 'items-found' === response.data.code ) { // If items are found.
+				if ( 'reservation-posts-found' === response.data.code ) { // If items are found.
 					$( '.ersrv-search-reservations-items-container' ).html( response.data.html );
+					// Add the "form-row" class, if there are search items.
+					$( '.ersrv-search-reservations-items-container' ).addClass( 'form-row' );
 				} else if ( 'reservation-posts-not-found' === response.data.code ) { // If items are found.
 					$( '.ersrv-search-reservations-items-container' ).html( response.data.html );
 					$( '.ersrv-reservation-items-count' ).text( response.data.items_count );
+
+					// Remove the "form-row" class, if there are no search items.
+					$( '.ersrv-search-reservations-items-container' ).removeClass( 'form-row' );
 				}
 			},
 		} );
@@ -1275,6 +1280,16 @@ jQuery(document).ready(function ($) {
 					$( '.ersrv-search-reservations-items-container' ).html( response.data.html );
 					// Items count.
 					$( '.ersrv-reservation-items-count' ).text( response.data.items_count );
+				}
+
+				// Add the "form-row" class, if there are search items.
+				if ( 'reservation-posts-found' === code ) {
+					$( '.ersrv-search-reservations-items-container' ).addClass( 'form-row' );
+				}
+
+				// Remove the "form-row" class, if there are no search items.
+				if ( 'reservation-posts-not-found' === code ) {
+					$( '.ersrv-search-reservations-items-container' ).removeClass( 'form-row' );
 				}
 			},
 		} );
