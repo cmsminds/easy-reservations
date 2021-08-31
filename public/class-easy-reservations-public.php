@@ -518,8 +518,8 @@ class Easy_Reservations_Public {
 		$location        = filter_input( INPUT_POST, 'location', FILTER_SANITIZE_STRING );
 		$type            = filter_input( INPUT_POST, 'type', FILTER_SANITIZE_NUMBER_INT );
 		$accomodation    = filter_input( INPUT_POST, 'accomodation', FILTER_SANITIZE_NUMBER_INT );
-		$price_min_range = filter_input( INPUT_POST, 'price_min_range', FILTER_SANITIZE_NUMBER_FLOAT );
-		$price_max_range = filter_input( INPUT_POST, 'price_max_range', FILTER_SANITIZE_NUMBER_FLOAT );
+		$price_min_range = (float) filter_input( INPUT_POST, 'price_min_range', FILTER_SANITIZE_STRING );
+		$price_max_range = (float) filter_input( INPUT_POST, 'price_max_range', FILTER_SANITIZE_STRING );
 
 		// If the location is set.
 		if ( ! empty( $location ) ) {
@@ -2301,6 +2301,10 @@ class Easy_Reservations_Public {
 
 		// Reservation post IDs that qualify to the 
 		$final_reservation_ids = $reservation_post_ids;
+
+		debug( $reservation_post_ids );
+		debug( $final_reservation_ids );
+		die;
 
 		// Check through the requested checkin and checkout dates.
 		$posted_array           = filter_input_array( INPUT_POST );

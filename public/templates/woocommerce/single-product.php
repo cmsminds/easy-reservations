@@ -165,7 +165,7 @@ $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platform
 						<div class="collapse" id="ship-location-collapse">
 							<div class="dropdown-divider"></div>
 							<?php if ( ! empty( $api_key ) ) { ?>
-								<iframe width="100%" height="400px" src="https://www.google.com/maps/embed/v1/place?key=<?php echo $api_key; ?>&q=Space+Needle,Seattle+WA" style="border:0" loading="lazy" allowfullscreen></iframe>
+								<iframe width="100%" height="400px" src="https://www.google.com/maps/embed/v1/place?key=<?php echo esc_html( $api_key ); ?>&q=<?php echo esc_html( $location ); ?>" style="border:0" loading="lazy" allowfullscreen></iframe>
 							<?php } else { ?>
 								<p><?php echo wp_kses_post( $location ); ?></p>
 							<?php } ?>

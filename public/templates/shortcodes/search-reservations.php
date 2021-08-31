@@ -79,8 +79,8 @@ $search_boat_type = ( ! is_null( $search_boat_type ) ) ? $search_boat_type : 0;
 							<div class="col-12 col-md-5 col-lg-6">
 								<div class="slider-wrapper">
 									<div class="d-flex flex-wrap align-items-center justify-content-center mb-2">
-										<h4 class="font-lato font-size-14 font-weight-bolder color-black text-center mb-0 mr-2"><?php esc_html_e( 'Price Per Night:', 'easy-reservations' ); ?></h4>
-										<h4 class="font-lato font-size-20 font-weight-bolder color-black text-center mb-0 price-value"><?php echo sprintf( __( '%1$s to %2$s', 'easy-reservations' ), wc_price( 1 ), wc_price( 10000 ) ); ?></h4>
+										<h3 class="font-lato font-size-14 font-weight-bolder color-black text-center mb-0 mr-2"><?php esc_html_e( 'Price per night:', 'easy-reservations' ); ?></h3>
+										<h3 class="font-lato font-size-20 font-weight-bolder color-black text-center mb-0 price-value"><?php echo sprintf( __( '%1$s to %2$s', 'easy-reservations' ), wc_price( 1 ), wc_price( 10000 ) ); ?></h3>
 									</div>
 									<div class="search-price-range-slider ersrv-search-item-price-range"></div>
 								</div>
@@ -111,7 +111,7 @@ $search_boat_type = ( ! is_null( $search_boat_type ) ) ? $search_boat_type : 0;
 	<div class="content-part">
 		<div class="container">
 			<div class="search-results-wrapper">
-				<h4 class="title font-Poppins"><?php echo sprintf( __( 'Advanced Search: %1$s%3$s items%2$s', 'easy-reservations' ), '<span class="ersrv-reservation-items-count result-no">', '</span>', count( $total_reservation_posts ) ) ?></h4>
+				<h3 class="title font-Poppins"><?php echo sprintf( __( 'Advanced Search: %1$s%3$s Items%2$s', 'easy-reservations' ), '<span class="ersrv-reservation-items-count result-no">', '</span>', count( $total_reservation_posts ) ) ?></h3>
 				<div class="search-result-inner ersrv-search-reservations-items-container form-row">
 					<div class="jumbotron text-center w-100 bg-transparent">
 						<h3 class="loading-title"><?php esc_html_e( 'Please wait while we load items...', 'easy-reservations' ); ?></h3>

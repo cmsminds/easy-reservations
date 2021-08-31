@@ -1243,7 +1243,7 @@ jQuery(document).ready(function ($) {
 		}
 
 		// Block the wrapper.
-		block_element( $( '.ersrv-form-wrapper' ) );
+		// block_element( $( '.ersrv-form-wrapper' ) );
 
 		// Submit the search.
 		$.ajax( {
