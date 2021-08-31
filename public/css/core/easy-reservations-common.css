@@ -269,12 +269,25 @@ a.btn:hover,
     opacity: 1;
     visibility: visible;
 }
-.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary table{
+.ersrv-edit-reservation-item-summary table{
     margin-bottom: 0px;
 }
-.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary table td, 
-.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary table th{
-    padding: 0.2rem 0.6rem;
+.ersrv-edit-reservation-item-summary table td, 
+.ersrv-edit-reservation-item-summary table th{
+    padding: 0.1rem 0.6rem;
+    vertical-align: middle;
+}
+.ersrv-edit-reservation-item-summary table td *, 
+.ersrv-edit-reservation-item-summary table th{
+    color: #7e808c !important;
+    font-size: 16px;
+}
+.ersrv-edit-reservation-item-summary table .edit-reservation-item-total-cost{
+    border-top: 1px solid #000;
+}
+.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary table .edit-reservation-item-total-cost *{
+    color: #000 !important;
+
 }
 .edit-order-wrapper .card .CTA h4 .ersrv-split-reservation-cost{
     font-size: 14px;

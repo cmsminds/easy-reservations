@@ -30,7 +30,7 @@ if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
 	$page_title = apply_filters('ersrv_edit_reservation_page_title', $page_title, $order_id);
 
 	// WooCommerce order.
-	$wc_order        = wc_get_order( $order_id );
+	$wc_order        = wc_get_order($order_id);
 	$view_order_link = $wc_order->get_view_order_url();
 
 	// Get the order total.
@@ -93,7 +93,7 @@ if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
 					$accomodation_limit     = (!empty($item_details['accomodation_limit'])) ? $item_details['accomodation_limit'] : '';
 					$min_reservation_period = (!empty($item_details['min_reservation_period'])) ? $item_details['min_reservation_period'] : '';
 					$max_reservation_period = (!empty($item_details['max_reservation_period'])) ? $item_details['max_reservation_period'] : '';
-					?>
+			?>
 					<div class=" ersrv-edit-reservation-item-card card mb-3" data-productid="<?php echo esc_attr($product_id); ?>" data-itemid="<?php echo esc_attr($item_id); ?>">
 						<div class="row no-gutters">
 							<div class="col-12 col-lg-4">
@@ -113,12 +113,12 @@ if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
 													<div class="col-12 col-md-6">
 														<label for="ersrv-edit-reservation-item-checkin-date-<?php echo esc_attr($item_id); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e('Checkin', 'easy-reservations'); ?></label>
 														<div>
-															<input type="text" id="ersrv-edit-reservation-item-checkin-date-<?php echo esc_attr($item_id); ?>" value="<?php echo esc_html($checkin_date); ?>" data-oldval="<?php echo esc_html($checkin_date); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkin-date form-control date-control text-left rounded-lg" placeholder="<?php echo esc_attr( ersrv_get_php_date_format() ); ?>">
+															<input type="text" id="ersrv-edit-reservation-item-checkin-date-<?php echo esc_attr($item_id); ?>" value="<?php echo esc_html($checkin_date); ?>" data-oldval="<?php echo esc_html($checkin_date); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkin-date form-control date-control text-left rounded-lg" placeholder="<?php echo esc_attr(ersrv_get_php_date_format()); ?>">
 														</div>
 													</div>
 													<div class="col-12 col-md-6">
 														<label for="ersrv-edit-reservation-item-checkout-date-<?php echo esc_attr($item_id); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e('Checkout', 'easy-reservations'); ?></label>
-														<div><input type="text" id="ersrv-edit-reservation-item-checkout-date-<?php echo esc_attr($item_id); ?>" value="<?php echo esc_html($checkout_date); ?>" data-oldval="<?php echo esc_html($checkout_date); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkout-date form-control date-control text-left rounded-lg" placeholder="<?php echo esc_attr( ersrv_get_php_date_format() ); ?>"></div>
+														<div><input type="text" id="ersrv-edit-reservation-item-checkout-date-<?php echo esc_attr($item_id); ?>" value="<?php echo esc_html($checkout_date); ?>" data-oldval="<?php echo esc_html($checkout_date); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkout-date form-control date-control text-left rounded-lg" placeholder="<?php echo esc_attr(ersrv_get_php_date_format()); ?>"></div>
 													</div>
 													<div class="col-12">
 														<div class="d-flex flex-wrap ersrv-edit-reservation-dates-indicators mb-3 pt-2">
@@ -173,105 +173,12 @@ if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
 													<div class="col-12 col-md-5 mb-4 mb-md-0">
 														<h4 class="font-Poppins font-size-16 color-black font-weight-bold mb-0">
 															<?php echo sprintf(__('Subtotal: %2$s%1$s%3$s', 'easy-reservations'), wc_price($item_total), '<span id="ersrv-edit-reservation-item-subtotal-' . $item_id . '">', '</span>'); ?>
-															<a class="ersrv-split-reservation-cost text-theme-primary" href="javascript:void(0);"><?php esc_html_e('Know More', 'easy-reservations'); ?></a>
-															<div class="ersrv-edit-reservation-item-summary" id="ersrv-edit-reservation-item-summary-<?php echo esc_attr($item_id); ?>">
-																<div class="ersrv-edit-reservation-item-summary-wrapper">
-																	<table class="table table-borderless">
-																		<tbody>
-																			<tr class="item-price-summary" id="item-price-summary-<?php echo esc_attr($item_id); ?>">
-																				<th><?php esc_html_e('Adults:', 'easy-reservations'); ?></th>
-																				<td>
-																					<span class="ersrv-cost font-lato font-weight-bold color-accent">
-																						<?php
-																						echo wp_kses(
-																							wc_price($adult_subtotal),
-																							array(
-																								'span' => array(
-																									'class' => array(),
-																								),
-																							)
-																						);
-																						?>
-																					</span>
-																				</td>
-																			</tr>
-																			<tr class="kids-charge-summary" id="kids-charge-summary-<?php echo esc_attr($item_id); ?>">
-																				<th><?php esc_html_e('Kids:', 'easy-reservations'); ?></th>
-																				<td>
-																					<span class="ersrv-cost font-lato font-weight-bold color-accent">
-																						<?php
-																						echo wp_kses(
-																							wc_price($kid_subtotal),
-																							array(
-																								'span' => array(
-																									'class' => array(),
-																								),
-																							)
-																						);
-																						?>
-																					</span>
-																				</td>
-																			</tr>
-																			<tr class="amenities-summary" id="amenities-summary-<?php echo esc_attr($item_id); ?>">
-																				<th><?php esc_html_e('Amenities:', 'easy-reservations'); ?></th>
-																				<td>
-																					<span class="ersrv-cost font-lato font-weight-bold color-accent">
-																						<?php
-																						echo wp_kses(
-																							wc_price($amenities_subtotal),
-																							array(
-																								'span' => array(
-																									'class' => array(),
-																								),
-																							)
-																						);
-																						?>
-																					</span>
-																				</td>
-																			</tr>
-																			<tr class="security-summary" id="security-summary-<?php echo esc_attr($item_id); ?>">
-																				<th><?php esc_html_e('Security:', 'easy-reservations'); ?></th>
-																				<td>
-																					<span class="ersrv-cost font-lato font-weight-bold color-accent">
-																						<?php
-																						echo wp_kses(
-																							wc_price($security_amount),
-																							array(
-																								'span' => array(
-																									'class' => array(),
-																								),
-																							)
-																						);
-																						?>
-																					</span>
-																				</td>
-																			</tr>
-																			<tr class="edit-reservation-item-total-cost" id="edit-reservation-item-total-cost-<?php echo esc_attr($item_id); ?>">
-																				<th><?php esc_html_e('Total:', 'easy-reservations'); ?></th>
-																				<td>
-																					<span class="ersrv-cost font-lato font-weight-bold color-accent">
-																						<?php
-																						echo wp_kses(
-																							wc_price($item_total),
-																							array(
-																								'span' => array(
-																									'class' => array(),
-																								),
-																							)
-																						);
-																						?>
-																					</span>
-																				</td>
-																			</tr>
-																		</tbody>
-																	</table>
-																</div>
-															</div>
+															<a class="ersrv-split-reservation-cost text-theme-primary" href="javascript:void(0);" data-toggle="modal" data-target="#summaryModal"><?php esc_html_e('Know More', 'easy-reservations'); ?></a>
 														</h4>
 													</div>
 													<div class="col-12 col-md-7 mb-6 text-right">
 														<button class="btn btn-accent non-clickable ersrv-edit-reservation-validate-item-changes"><?php esc_html_e('Validate Changes', 'easy-reservations'); ?></button>
-														<input type="hidden" id="confirmed-validation-of-item-<?php echo esc_attr( $item_id ); ?>" value="1" />
+														<input type="hidden" id="confirmed-validation-of-item-<?php echo esc_attr($item_id); ?>" value="1" />
 
 														<!-- ITEM DETAILS -->
 														<input type="hidden" id="accomodation-limit-<?php echo esc_attr($item_id); ?>" value="<?php echo esc_html($accomodation_limit); ?>" />
@@ -294,26 +201,135 @@ if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
 
 				<!-- UPDATE RESERVATION -->
 				<div class="group-update-btn d-flex align-items-center justify-content-center ersrv-update-reservation flex-wrap">
-					<input type="hidden" class="ersrv-edit-reservation-order-total" value="<?php echo esc_html( $order_total ); ?>" />
-					<input type="hidden" class="ersrv-order-id" value="<?php echo esc_attr( $order_id ); ?>" />
+					<input type="hidden" class="ersrv-edit-reservation-order-total" value="<?php echo esc_html($order_total); ?>" />
+					<input type="hidden" class="ersrv-order-id" value="<?php echo esc_attr($order_id); ?>" />
 					<div>
-						<p class="font-lato font-size-16 color-black mb-3 text-center"><?php echo sprintf( __( 'Cost difference: %2$s%1$s%3$s (to be paid by the customer on arrival)', 'easy-reservations' ), wc_price(0), '<span class="ersrv-edit-reservation-cost-difference">', '</span>' ); ?></p>
+						<p class="font-lato font-size-16 color-black mb-3 text-center"><?php echo sprintf(__('Cost difference: %2$s%1$s%3$s (to be paid by the customer on arrival)', 'easy-reservations'), wc_price(0), '<span class="ersrv-edit-reservation-cost-difference">', '</span>'); ?></p>
 					</div>
 					<div class="ml-auto mr-3">
-						<button class="btn btn-secondary cancel" onclick="<?php echo esc_attr( $cancel_reservation ); ?>"><?php esc_html_e( 'Cancel', 'easy-reservations' ); ?></button>
+						<button class="btn btn-secondary cancel" onclick="<?php echo esc_attr($cancel_reservation); ?>"><?php esc_html_e('Cancel', 'easy-reservations'); ?></button>
 					</div>
 					<div class="">
-						<button class="btn btn-accent update non-clickable"><?php esc_html_e( 'Update Reservation', 'easy-reservations' ); ?></button>
+						<button class="btn btn-accent update non-clickable"><?php esc_html_e('Update Reservation', 'easy-reservations'); ?></button>
 					</div>
 				</div>
 			<?php } else {
 				$my_account = wc_get_page_permalink('myaccount');
-				?>
+			?>
 				<div class="woocommerce-message woocommerce-message--info woocommerce-Message woocommerce-Message--info woocommerce-info">
 					<a class="woocommerce-Button button" href="<?php echo esc_url($my_account); ?>"><?php esc_html_e('My Account', 'woocommerce'); ?></a>
 					<?php esc_html_e('Invalid access.', 'easy-reservations'); ?>
 				</div>
 			<?php } ?>
+		</div>
+	</div>
+	
+	<!-- Modal for summery-->
+	<div class="modal fade" id="summaryModal" tabindex="-1" aria-labelledby="summaryModal" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm">
+			<div class="modal-content border-0">
+				<div class="modal-header bg-transparent border-0">
+					<!-- <h5 class="modal-title" id="summaryModal">Modal title</h5> -->
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="ersrv-edit-reservation-item-summary" id="ersrv-edit-reservation-item-summary-<?php echo esc_attr($item_id); ?>">
+						<div class="ersrv-edit-reservation-item-summary-wrapper pb-3">
+							<table class="table table-borderless">
+								<tbody>
+									<tr class="item-price-summary" id="item-price-summary-<?php echo esc_attr($item_id); ?>">
+										<th><?php esc_html_e('Adults:', 'easy-reservations'); ?></th>
+										<td>
+											<span class="ersrv-cost font-lato font-weight-bold color-accent">
+												<?php
+												echo wp_kses(
+													wc_price($adult_subtotal),
+													array(
+														'span' => array(
+															'class' => array(),
+														),
+													)
+												);
+												?>
+											</span>
+										</td>
+									</tr>
+									<tr class="kids-charge-summary" id="kids-charge-summary-<?php echo esc_attr($item_id); ?>">
+										<th><?php esc_html_e('Kids:', 'easy-reservations'); ?></th>
+										<td>
+											<span class="ersrv-cost font-lato font-weight-bold color-accent">
+												<?php
+												echo wp_kses(
+													wc_price($kid_subtotal),
+													array(
+														'span' => array(
+															'class' => array(),
+														),
+													)
+												);
+												?>
+											</span>
+										</td>
+									</tr>
+									<tr class="amenities-summary" id="amenities-summary-<?php echo esc_attr($item_id); ?>">
+										<th><?php esc_html_e('Amenities:', 'easy-reservations'); ?></th>
+										<td>
+											<span class="ersrv-cost font-lato font-weight-bold color-accent">
+												<?php
+												echo wp_kses(
+													wc_price($amenities_subtotal),
+													array(
+														'span' => array(
+															'class' => array(),
+														),
+													)
+												);
+												?>
+											</span>
+										</td>
+									</tr>
+									<tr class="security-summary" id="security-summary-<?php echo esc_attr($item_id); ?>">
+										<th><?php esc_html_e('Security:', 'easy-reservations'); ?></th>
+										<td>
+											<span class="ersrv-cost font-lato font-weight-bold color-accent">
+												<?php
+												echo wp_kses(
+													wc_price($security_amount),
+													array(
+														'span' => array(
+															'class' => array(),
+														),
+													)
+												);
+												?>
+											</span>
+										</td>
+									</tr>
+									<tr class="edit-reservation-item-total-cost" id="edit-reservation-item-total-cost-<?php echo esc_attr($item_id); ?>">
+										<th><?php esc_html_e('Total:', 'easy-reservations'); ?></th>
+										<td>
+											<span class="ersrv-cost font-lato font-weight-bold color-accent">
+												<?php
+												echo wp_kses(
+													wc_price($item_total),
+													array(
+														'span' => array(
+															'class' => array(),
+														),
+													)
+												);
+												?>
+											</span>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
