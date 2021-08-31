@@ -237,12 +237,12 @@ class Easy_Reservations_Admin {
 
 		// Hide the general tab.
 		if ( ! empty( $tabs['general'] ) ) {
-			$tabs['general']['class'][] = "hide_if_{$this->custom_product_type}";
+			// $tabs['general']['class'][] = "hide_if_{$this->custom_product_type}";
 		}
 
 		// Hide the inventory tab.
 		if ( ! empty( $tabs['inventory'] ) ) {
-			$tabs['inventory']['class'][] = "hide_if_{$this->custom_product_type}";
+			// $tabs['inventory']['class'][] = "hide_if_{$this->custom_product_type}";
 		}
 
 		// Hide the shipping tab.
