@@ -1268,7 +1268,7 @@ jQuery(document).ready(function ($) {
 
 				// Response code.
 				var code = response.data.code;
-				if ( 'reservation-posts-found' === code || 'reservation-posts-found' === code ) {
+				if ( 'reservation-posts-found' === code || 'reservation-posts-not-found' === code ) {
 					// Unblock the wrapper.
 					unblock_element( $( '.ersrv-form-wrapper' ) );
 					// Response html.
