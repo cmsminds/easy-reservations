@@ -2302,10 +2302,6 @@ class Easy_Reservations_Public {
 		// Reservation post IDs that qualify to the 
 		$final_reservation_ids = $reservation_post_ids;
 
-		debug( $reservation_post_ids );
-		debug( $final_reservation_ids );
-		die;
-
 		// Check through the requested checkin and checkout dates.
 		$posted_array           = filter_input_array( INPUT_POST );
 		$checkin_checkout_dates = ( ! empty( $posted_array['checkin_checkout_dates'] ) ) ? $posted_array['checkin_checkout_dates'] : array();

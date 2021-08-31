@@ -98,6 +98,8 @@ class Easy_Reservations_Admin {
 			wp_enqueue_style(
 				$this->plugin_name . '-font-awesome-style',
 				'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css',
+				array(),
+				time(),
 			);
 		}
 
@@ -135,7 +137,8 @@ class Easy_Reservations_Admin {
 				$this->plugin_name . '-jquery-ui-script',
 				ERSRV_PLUGIN_URL . 'public/js/ui/jquery-ui.min.js',
 				array( 'jquery' ),
-				filemtime( ERSRV_PLUGIN_PATH . 'public/js/ui/jquery-ui.min.js' )
+				filemtime( ERSRV_PLUGIN_PATH . 'public/js/ui/jquery-ui.min.js' ),
+				true
 			);
 		}
 
@@ -237,12 +240,12 @@ class Easy_Reservations_Admin {
 
 		// Hide the general tab.
 		if ( ! empty( $tabs['general'] ) ) {
-			// $tabs['general']['class'][] = "hide_if_{$this->custom_product_type}";
+			$tabs['general']['class'][] = "hide_if_{$this->custom_product_type}";
 		}
 
 		// Hide the inventory tab.
 		if ( ! empty( $tabs['inventory'] ) ) {
-			// $tabs['inventory']['class'][] = "hide_if_{$this->custom_product_type}";
+			$tabs['inventory']['class'][] = "hide_if_{$this->custom_product_type}";
 		}
 
 		// Hide the shipping tab.
@@ -295,7 +298,7 @@ class Easy_Reservations_Admin {
 	 */
 	public function ersrv_woocommerce_process_product_meta_callback( $post_id ) {
 		$location                  = filter_input( INPUT_POST, 'location', FILTER_SANITIZE_STRING );
-		$security_amt              = (float)filter_input( INPUT_POST, 'security_amount', FILTER_SANITIZE_STRING );
+		$security_amt              = (float) filter_input( INPUT_POST, 'security_amount', FILTER_SANITIZE_STRING );
 		$accomodation_limit        = (int) filter_input( INPUT_POST, 'accomodation_limit', FILTER_SANITIZE_NUMBER_INT );
 		$accomodation_adult_charge = (float) filter_input( INPUT_POST, 'accomodation_adult_charge', FILTER_SANITIZE_STRING );
 		$accomodation_kid_charge   = (float) filter_input( INPUT_POST, 'accomodation_kid_charge', FILTER_SANITIZE_STRING );
@@ -706,7 +709,7 @@ class Easy_Reservations_Admin {
 		$args            = array(
 			'label'   => __( 'Requests Per Page', 'easy-reservations' ),
 			'default' => 10,
-			'option'  => 'ersrv_cancellation_requests_per_page'
+			'option'  => 'ersrv_cancellation_requests_per_page',
 		);
 
 		add_screen_option( $per_page_option, $args );
@@ -718,8 +721,13 @@ class Easy_Reservations_Admin {
 
 	/**
 	 * Set the screen options values.
+	 *
+	 * @param boolean $status The value to save instead of the option value.
+	 * @param string  $option Screen option slug.
+	 * @param string  $value Screen option new value.
 	 */
 	public function ersrv_set_screen_option_callback( $status, $option, $value ) {
+
 		return $value;
 	}
 
@@ -757,6 +765,7 @@ class Easy_Reservations_Admin {
 			wp_send_json_error(
 				array(
 					'code'          => 'ersrv-user-exists',
+					/* translators: 1: %s: customer email address */
 					'error_message' => sprintf( __( 'User with the requested email, %1$s, already exists. Please try with a different email address.', 'easy-reservations' ), $email ),
 				)
 			);
@@ -870,6 +879,10 @@ class Easy_Reservations_Admin {
 		$amenities_subtotal = (float) filter_input( INPUT_POST, 'amenities_subtotal', FILTER_SANITIZE_STRING );
 		$item_total         = (float) filter_input( INPUT_POST, 'item_total', FILTER_SANITIZE_STRING );
 
+		// Customer IP address.
+		$server_data         = wp_unslash( $_SERVER );
+		$customer_ip_address = sanitize_text_field( $server_data['REMOTE_ADDR'] );
+
 		// Prepare the billing address.
 		$billing_address = array(
 			'first_name' => get_user_meta( $customer_id, 'billing_first_name', true ),
@@ -884,9 +897,11 @@ class Easy_Reservations_Admin {
 			'email'      => get_user_meta( $customer_id, 'billing_email', true ),
 			'phone'      => get_user_meta( $customer_id, 'billing_phone', true ),
 		);
-		$order_args      = array(
+
+		// Order arguments.
+		$order_args = array(
 			'status'              => 'pending',
-			'customer_ip_address' => $_SERVER['REMOTE_ADDR'],
+			'customer_ip_address' => $customer_ip_address,
 		);
 
 		/**
@@ -903,7 +918,7 @@ class Easy_Reservations_Admin {
 		$wc_order->set_currency( get_woocommerce_currency() );
 		$wc_order->set_prices_include_tax( 'yes' === get_option( 'woocommerce_prices_include_tax' ) );
 
-		// Set the array for tax calculations
+		// Set the array for tax calculations.
 		$calculate_tax_for = array(
 			'country'  => ( ! empty( $billing_address['country'] ) ) ? $billing_address['country'] : '',
 			'state'    => ( ! empty( $billing_address['state'] ) ) ? $billing_address['state'] : '',
@@ -920,7 +935,7 @@ class Easy_Reservations_Admin {
 			)
 		);
 
-		$line_item  = $wc_order->get_item( $item_id, false );
+		$line_item = $wc_order->get_item( $item_id, false );
 		$line_item->calculate_taxes( $calculate_tax_for );
 		$line_item->update_meta_data( 'Checkin Date', $checkin_date ); // Update the checkin date.
 		$line_item->update_meta_data( 'Checkout Date', $checkout_date ); // Update the checkout date.
@@ -1115,7 +1130,21 @@ class Easy_Reservations_Admin {
 			<p><button type="button" class="button add-to-gcal"><?php esc_html_e( 'Email Google Calendar Invite', 'easy-reservations' ); ?></button></p>
 		</div>
 		<?php
-		echo ob_get_clean();
+
+		// Print the content now.
+		echo wp_kses(
+			ob_get_clean(),
+			array(
+				'div'    => array(
+					'class' => array(),
+				),
+				'p'      => array(),
+				'button' => array(
+					'type'  => array(),
+					'class' => array(),
+				),
+			),
+		);
 	}
 
 	/**
@@ -1139,14 +1168,45 @@ class Easy_Reservations_Admin {
 			<p><a href="<?php echo esc_url( $license_url ); ?>" class="button" download><?php esc_html_e( 'Download Driving License', 'easy-reservations' ); ?></a></p>
 		</div>
 		<?php
-		echo ob_get_clean();
+
+		// Print the content now.
+		echo wp_kses(
+			ob_get_clean(),
+			array(
+				'div' => array(
+					'class' => array(),
+				),
+				'p'   => array(),
+				'a'   => array(
+					'href'     => array(),
+					'class'    => array(),
+					'download' => array(),
+				),
+			),
+		);
 	}
 
+	/**
+	 * Metabox to show the cost dofference after any reservation is updated by the customer.
+	 *
+	 * @param WP_Post $post WordPress post object.
+	 * @param array   $metabox_data Metabox arguments.
+	 * @since 1.0.0
+	 */
 	public function ersrv_updated_reservation_order_cost_difference( $post, $metabox_data ) {
 		$cost_difference = ( ! empty( $metabox_data['args']['cost_difference'] ) ) ? $metabox_data['args']['cost_difference'] : '';
 
 		if ( ! empty( $cost_difference ) ) {
-			echo sprintf( __( 'The customer needs to pay %1$s%3$s%2$s before onboarding.', 'easy-reservations' ), '<strong>', '</strong>', wc_price( $cost_difference ) );
+			echo wp_kses(
+				/* translators: 1: %s: strong tag open, 2: %s: strong tag closed, 3: %s: cost difference */
+				sprintf( __( 'The customer needs to pay %1$s%3$s%2$s before onboarding.', 'easy-reservations' ), '<strong>', '</strong>', wc_price( $cost_difference ) ),
+				array(
+					'strong' => array(),
+					'span'   => array(
+						'class' => array(),
+					),
+				)
+			);
 		}
 	}
 
@@ -1159,10 +1219,8 @@ class Easy_Reservations_Admin {
 	 * @since 1.0.0
 	 */
 	public function ersrv_woocommerce_admin_order_preview_actions_callback( $actions, $wc_order ) {
-		$order_id              = $wc_order->get_id();
-		
-		// Check if the order has reservation items.
-		$is_reservation_order  = ersrv_order_is_reservation( $wc_order );
+		$order_id             = $wc_order->get_id();
+		$is_reservation_order = ersrv_order_is_reservation( $wc_order ); // Check if the order has reservation items.
 
 		// Return the actions if the order is not reservation order.
 		if ( ! $is_reservation_order ) {
@@ -1201,10 +1259,8 @@ class Easy_Reservations_Admin {
 	 * @since 1.0.0
 	 */
 	public function ersrv_woocommerce_admin_order_actions_callback( $actions, $wc_order ) {
-		$order_id              = $wc_order->get_id();
-		
-		// Check if the order has reservation items.
-		$is_reservation_order  = ersrv_order_is_reservation( $wc_order );
+		$order_id             = $wc_order->get_id();
+		$is_reservation_order = ersrv_order_is_reservation( $wc_order ); // Check if the order has reservation items.
 
 		// Return the actions if the order is not reservation order.
 		if ( ! $is_reservation_order ) {
@@ -1255,12 +1311,12 @@ class Easy_Reservations_Admin {
 		$order_id = (int) $order_id;
 
 		// Check if the order has reservation items.
-		$wc_order              = wc_get_order( $order_id );
-		$is_reservation_order  = ersrv_order_is_reservation( $wc_order );
+		$wc_order             = wc_get_order( $order_id );
+		$is_reservation_order = ersrv_order_is_reservation( $wc_order );
 
 		// Return the actions if the order is not reservation order.
 		if ( ! $is_reservation_order ) {
-			return $actions;
+			return;
 		}
 
 		// Check if the order status is allowed for receipts.
@@ -1390,7 +1446,7 @@ class Easy_Reservations_Admin {
 
 			// Get the PHP date format.
 			$php_date_format = ersrv_get_php_date_format( $new_date_format );
-			
+
 			// New reserved dates.
 			$new_reserved_dates = array();
 
@@ -1433,7 +1489,7 @@ class Easy_Reservations_Admin {
 
 		// Posted data.
 		$order_id = (int) filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT );
-		
+
 		// Email the google candar invitation to customer's email address.
 		ersrv_email_reservation_data_to_google_calendar( $order_id );
 
@@ -1462,7 +1518,7 @@ class Easy_Reservations_Admin {
 
 		// Posted data.
 		$order_id = (int) filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT );
-		
+
 		// Email the google candar invitation to customer's email address.
 		ersrv_email_reservation_data_to_icalendar( $order_id );
 
@@ -1511,6 +1567,7 @@ class Easy_Reservations_Admin {
 		// Send the response.
 		$response = array(
 			'code'          => 'reservation-cancellation-request-deleted',
+			/* translators: 1: %s: anchor tag open, 2: %s: anchor tag closed */
 			'toast_message' => sprintf( __( 'Reservation cancellation request deleted. Click %1$shere%2$s to refresh the page.', 'easy-reservations' ), '<a href="' . admin_url( 'admin.php?page=reservation-calcellation-requests' ) . '">', '</a>' ),
 		);
 		wp_send_json_success( $response );
@@ -1551,6 +1608,7 @@ class Easy_Reservations_Admin {
 		// Send the response.
 		$response = array(
 			'code'          => 'reservation-cancellation-request-declined',
+			/* translators: 1: %s: anchor tag open, 2: %s: anchor tag closed */
 			'toast_message' => sprintf( __( 'Reservation cancellation request declined. Click %1$shere%2$s to refresh the page.', 'easy-reservations' ), '<a href="' . admin_url( 'admin.php?page=reservation-calcellation-requests' ) . '">', '</a>' ),
 		);
 		wp_send_json_success( $response );
@@ -1591,6 +1649,7 @@ class Easy_Reservations_Admin {
 		// Send the response.
 		$response = array(
 			'code'          => 'reservation-cancellation-request-approved',
+			/* translators: 1: %s: anchor tag open, 2: %s: anchor tag closed */
 			'toast_message' => sprintf( __( 'Reservation cancellation request approved. Click %1$shere%2$s to refresh the page.', 'easy-reservations' ), '<a href="' . admin_url( 'admin.php?page=reservation-calcellation-requests' ) . '">', '</a>' ),
 		);
 		wp_send_json_success( $response );

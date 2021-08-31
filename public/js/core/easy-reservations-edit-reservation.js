@@ -252,15 +252,6 @@ jQuery(document).ready(function ($) {
 	} );
 
 	/**
-	 * Open the cost splitter box.
-	 */
-	$( document ).on( 'click', '.ersrv-split-reservation-cost', function() {
-		var this_button = $( this );
-		var item_id = this_button.parents( '.ersrv-edit-reservation-item-card' ).data( 'itemid' );
-		$( '#ersrv-edit-reservation-item-summary-' + item_id ).toggleClass( 'show' );
-	} );
-
-	/**
 	 * Check if any value is changed, so the user should confirm availability.
 	 */
 	$( document ).on( 'keyup click change', '.ersrv-edit-reservation-item-value', function() {
