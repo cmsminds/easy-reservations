@@ -13,4 +13,5 @@ do_action( 'woocommerce_email_header', $email_heading );
 <p><?php echo $opening_paragraph; ?></p>
 <p><?php esc_html_e( 'This is a system generated email. Please DO NOT respond to it.', 'easy-reservations' ); ?></p>
 <p><?php echo make_clickable( sprintf( __( 'You can view the order details in the dashboard here: %s', 'easy-reservations' ), $item_data->order_view_url ) ); ?></p>
-<?php do_action( 'woocommerce_email_footer' );
+<?php
+do_action( 'woocommerce_email_footer' );

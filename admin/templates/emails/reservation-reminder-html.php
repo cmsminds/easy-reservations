@@ -1,12 +1,16 @@
 <?php
 /**
  * Reservation reminder email.
+ *
+ * @package Easy_Reservations
+ * @subpackage Easy_Reservations/admin/templates/emails
  */
+defined( 'ABSPATH' ) || exit;
+
 $opening_paragraph = sprintf( __( 'This is a kind reminder about your reservation order #%1$d that was placed on %2$s. The details about the reservation item are as follows:', 'easy-reservations' ), $item_data->order_id, $item_data->order_date );
 $view_order_url    = $item_data->order_view_url;
 $order_item        = $item_data->item;
 do_action( 'woocommerce_email_header', $email_heading );
-
 ?>
 <p><?php echo $opening_paragraph; ?></p>
 <table cellspacing="0" cellpadding="6" style="width: 100%; border: 1px solid #eee;" bordercolor="#eee">
