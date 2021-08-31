@@ -245,9 +245,7 @@ class Reservation_Reminder_Email extends WC_Email {
 				'default'     => 'html',
 				'class'       => 'email_type',
 				'options'		=> array(
-					'plain'		=> __( 'Plain text', 'easy-reservations' ),
-					'html' 		=> __( 'HTML', 'easy-reservations' ),
-					'multipart' => __( 'Multipart', 'easy-reservations' ),
+					'html' => __( 'HTML', 'easy-reservations' ),
 				)
 			)
 		);
