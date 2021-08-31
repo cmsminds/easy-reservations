@@ -11,55 +11,64 @@
 defined('ABSPATH') || exit; // Exit if accessed directly.
 
 // Requested query arguments.
-$action      = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
-$order_id    = (int) filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+$action      = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
+$order_id    = (int) filter_input( INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT );
 $page_title  = get_the_title();
+$valid_order = false;
 
-if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
-	$page_title .= ': #' . $order_id;
-
-	/**
-	 * This hook executed on the edit reservation page.
-	 *
-	 * This filter helps modifying the page's main title.
-	 *
-	 * @param string $page_title Page title.
-	 * @param int    $order_id WooCommerce order ID.
-	 * @return string
-	 */
-	$page_title = apply_filters('ersrv_edit_reservation_page_title', $page_title, $order_id);
-
+if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 	// WooCommerce order.
-	$wc_order        = wc_get_order($order_id);
-	$view_order_link = $wc_order->get_view_order_url();
+	$wc_order = wc_get_order( $order_id );
+	
+	// Check for the valid action and WooCommerce order.
+	if ( 'edit-reservation' === $action && false !== $wc_order ) {
+		$valid_order = true;
+		$page_title .= ': #' . $order_id;
 
-	// Get the order total.
-	$order_total = (float) $wc_order->get_total();
+		/**
+		 * This hook executed on the edit reservation page.
+		 *
+		 * This filter helps modifying the page's main title.
+		 *
+		 * @param string $page_title Page title.
+		 * @param int    $order_id WooCommerce order ID.
+		 * @return string
+		 */
+		$page_title = apply_filters('ersrv_edit_reservation_page_title', $page_title, $order_id);
 
-	// Get the items.
-	$line_items = $wc_order->get_items();
+		// View order link.
+		$view_order_link = $wc_order->get_view_order_url();
 
-	// Cancel update link.
-	$cancel_reservation = "location.href = '{$view_order_link}'";
+		// Get the order total.
+		$order_total = (float) $wc_order->get_total();
+
+		// Get the items.
+		$line_items = $wc_order->get_items();
+
+		// Cancel update link.
+		$cancel_reservation = "location.href = '{$view_order_link}'";
+	}
 }
 ?>
 <div class="wrapper edit-order-wrapper pb-5">
 	<div class="section-title"><?php echo wp_kses_post($page_title); ?></div>
 	<?php
-	/**
-	 * This hook executes on edit reservation page.
-	 *
-	 * This filter helps adding some content after the main title.
-	 *
-	 * @param int $order_id WooCommerce order ID.
-	 */
-	do_action('ersrv_edit_reservation_after_main_title', $order_id);
+	if ( $valid_order ) {
+		/**
+		 * This hook executes on edit reservation page.
+		 *
+		 * This filter helps adding some content after the main title.
+		 *
+		 * @param int $order_id WooCommerce order ID.
+		 */
+		do_action( 'ersrv_edit_reservation_after_main_title', $order_id );
+	}
 	?>
 	<div class="contents">
 		<div class="container">
 			<?php
-			if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
-				foreach ($line_items as $line_item) {
+			if ( $valid_order ) {
+				foreach ( $line_items as $line_item ) {
 					$item_id    = $line_item->get_id();
 					$product_id = $line_item->get_product_id();
 
@@ -93,7 +102,7 @@ if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
 					$accomodation_limit     = (!empty($item_details['accomodation_limit'])) ? $item_details['accomodation_limit'] : '';
 					$min_reservation_period = (!empty($item_details['min_reservation_period'])) ? $item_details['min_reservation_period'] : '';
 					$max_reservation_period = (!empty($item_details['max_reservation_period'])) ? $item_details['max_reservation_period'] : '';
-			?>
+					?>
 					<div class=" ersrv-edit-reservation-item-card card mb-3" data-productid="<?php echo esc_attr($product_id); ?>" data-itemid="<?php echo esc_attr($item_id); ?>">
 						<div class="row no-gutters">
 							<div class="col-12 col-lg-4">
@@ -213,9 +222,10 @@ if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
 						<button class="btn btn-accent update non-clickable"><?php esc_html_e('Update Reservation', 'easy-reservations'); ?></button>
 					</div>
 				</div>
-			<?php } else {
+			<?php
+			} else {
 				$my_account = wc_get_page_permalink('myaccount');
-			?>
+				?>
 				<div class="woocommerce-message woocommerce-message--info woocommerce-Message woocommerce-Message--info woocommerce-info">
 					<a class="woocommerce-Button button" href="<?php echo esc_url($my_account); ?>"><?php esc_html_e('My Account', 'woocommerce'); ?></a>
 					<?php esc_html_e('Invalid access.', 'easy-reservations'); ?>

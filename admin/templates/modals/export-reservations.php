@@ -16,11 +16,11 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 		<div class="ersrv-date-ranges">
 			<div class="from">
 				<label for="ersrv-date-from"><?php esc_html_e( 'From', 'easy-reservations' ); ?></label>
-				<input type="date" id="ersrv-date-from" />
+				<input type="text" id="ersrv-date-from" class="ersrv-export-reservation-date-field" />
 			</div>
 			<div class="to">
 				<label for="ersrv-date-to"><?php esc_html_e( 'To', 'easy-reservations' ); ?></label>
-				<input type="date" id="ersrv-date-to" />
+				<input type="text" id="ersrv-date-to" class="ersrv-export-reservation-date-field" />
 			</div>
 		</div>
 		<div class="submit-export">

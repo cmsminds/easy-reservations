@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Include the class file if previously it does not exist.
 if ( ! class_exists( 'WP_List_Table' ) ) {
-	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
 
 /**
@@ -25,19 +25,19 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	 * Set up a constructor that references the parent constructor.
 	 * We use the parent reference to set some default configs.
 	 */
-	function __construct(){
+	public function __construct() {
 		global $status, $page;
-				
-		// Set parent defaults
+
+		// Set parent defaults.
 		parent::__construct(
 			array(
 				'singular' => 'reservation_cancellation_request',
 				'plural'   => 'reservation_cancellation_requests',
-				'ajax'     => true
+				'ajax'     => true,
 			)
 		);
-		
 	}
+
 	/**
 	 * Prepare the items for the table to process
 	 *
@@ -59,7 +59,7 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 		$this->set_pagination_args(
 			array(
 				'total_items' => $total_items,
-				'per_page'    => $per_page
+				'per_page'    => $per_page,
 			)
 		);
 
@@ -70,7 +70,7 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		$this->process_bulk_action(); // Process the bulk action.
-		$this->items           = $data;
+		$this->items = $data;
 	}
 
 	/**
@@ -97,13 +97,13 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	 *
 	 * @return array
 	 */
-	function get_sortable_columns() {
+	public function get_sortable_columns() {
 		$sortable_columns = array(
 			'date_time' => array( 'date_time', false ),
 		);
 
 		return $sortable_columns;
-    }
+	}
 
 	/**
 	 * Define which columns are hidden
@@ -116,15 +116,15 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	}
 
 	/**
-	* Get the table data
-	*
-	* @return array
-	*/
+	 * Get the table data
+	 *
+	 * @return array
+	 */
 	private function table_data() {
 		global $wpdb;
 		$wc_order_items_meta_table   = "{$wpdb->prefix}woocommerce_order_itemmeta";
 		$cancellation_requests_query = "SELECT `order_item_id` FROM `{$wc_order_items_meta_table}` WHERE `meta_key` = 'ersrv_cancellation_request'";
-		$cancellation_requests       = $wpdb->get_results( $cancellation_requests_query );
+		$cancellation_requests       = $wpdb->get_results( $cancellation_requests_query ); 
 
 		// Return blank data, if there is no cancellation request.
 		if ( empty( $cancellation_requests ) || ! is_array( $cancellation_requests ) ) {

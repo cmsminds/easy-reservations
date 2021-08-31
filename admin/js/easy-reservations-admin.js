@@ -56,10 +56,28 @@ jQuery( document ).ready( function( $ ) {
 		$( new_reservation_button ).insertAfter( 'body.woocommerce-page.post-type-shop_order .wrap h1.wp-heading-inline' );
 	}
 
+	/**
+	 * Implement the datepicker on the export reservations modal.
+	 */
+	if ( $( '.ersrv-export-reservation-date-field' ).length ) {
+		$( '.ersrv-export-reservation-date-field' ).datepicker( {
+			dateFormat: date_format,
+			onSelect: function ( selected_date, instance ) {
+				if ( 'ersrv-date-from' === instance.id ) {
+					// Min date for checkout should be on/after the checkin date.
+					$( '#ersrv-date-to' ).datepicker( 'option', 'minDate', selected_date );
+					setTimeout( function() {
+						$( '#ersrv-date-to' ).datepicker( 'show' );
+					}, 16 );
+				}
+			},
+		} );
+	}
+
 	if ( $( '.ersrv-has-datepicker' ).length ) {
 		$( '.ersrv-has-datepicker' ).datepicker( {
 			minDate: 0,
-			dateFormat: 'yy-mm-dd',
+			dateFormat: date_format,
 			onSelect: function ( selected_date, instance ) {
 				if ( 'ersrv-blockout-date-from' === instance.id ) {
 					// Min date for checkout should be on/after the checkin date.

@@ -1163,9 +1163,12 @@ class Easy_Reservations_Admin {
 
 		ob_start();
 		?>
-		<div class="ersrv-driving-license-download-container">
-			<p><?php esc_html_e( 'Click on the button below to download customer\'s driving license.', 'easy-reservations' ); ?></p>
-			<p><a href="<?php echo esc_url( $license_url ); ?>" class="button" download><?php esc_html_e( 'Download Driving License', 'easy-reservations' ); ?></a></p>
+		<div class="ersrv-driving-license-container edit-order">
+			<p><?php esc_html_e( 'Click on the buttons below to download & view customer\'s driving license.', 'easy-reservations' ); ?></p>
+			<p>
+				<a href="<?php echo esc_url( $license_url ); ?>" class="button download" download><?php esc_html_e( 'Download Driving License', 'easy-reservations' ); ?></a>
+				<a href="<?php echo esc_url( $license_url ); ?>" rel="noopener noreferrer" class="button view" target="_blank"><?php esc_html_e( 'View Driving License', 'easy-reservations' ); ?></a>
+			</p>
 		</div>
 		<?php
 

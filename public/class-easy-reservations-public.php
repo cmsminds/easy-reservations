@@ -515,11 +515,9 @@ class Easy_Reservations_Public {
 		$page      = ( ! empty( $page ) ) ? $page : 1;
 
 		// Search requests.
-		$location        = filter_input( INPUT_POST, 'location', FILTER_SANITIZE_STRING );
-		$type            = filter_input( INPUT_POST, 'type', FILTER_SANITIZE_NUMBER_INT );
-		$accomodation    = filter_input( INPUT_POST, 'accomodation', FILTER_SANITIZE_NUMBER_INT );
-		$price_min_range = (float) filter_input( INPUT_POST, 'price_min_range', FILTER_SANITIZE_STRING );
-		$price_max_range = (float) filter_input( INPUT_POST, 'price_max_range', FILTER_SANITIZE_STRING );
+		$location     = filter_input( INPUT_POST, 'location', FILTER_SANITIZE_STRING );
+		$type         = filter_input( INPUT_POST, 'type', FILTER_SANITIZE_NUMBER_INT );
+		$accomodation = filter_input( INPUT_POST, 'accomodation', FILTER_SANITIZE_NUMBER_INT );
 
 		// If the location is set.
 		if ( ! empty( $location ) ) {
@@ -547,17 +545,6 @@ class Easy_Reservations_Public {
 				'key'     => '_ersrv_accomodation_limit',
 				'value'   => $accomodation,
 				'compare' => '>=',
-			);
-		}
-
-		// If the price range values are available.
-		if ( ! empty( $price_min_range ) && ! empty( $price_max_range ) ) {
-			$args['meta_query']['relation'] = 'OR';
-			$args['meta_query'][]           = array(
-				'key'     => '_regular_price',
-				'value'   => array( $price_min_range, $price_max_range ),
-				'type'    => 'numeric',
-				'compare' => 'BETWEEN',
 			);
 		}
 
@@ -1743,7 +1730,7 @@ class Easy_Reservations_Public {
 		?>
 		<div class="woocommerce-additional-fields__field-wrapper">
 			<p class="form-row ersrv-driving-license" id="ersrv_driving_license_field">
-				<label for="reservation-driving-license" class=""><?php esc_html_e( 'Driving License', 'easy-reservations' ); ?></label>
+				<label for="reservation-driving-license" class=""><?php esc_html_e( 'Driving License', 'easy-reservations' ); ?><span class="required">*</span></label>
 				<span class="woocommerce-input-wrapper">
 					<input type="file" name="reservation-driving-license" id="reservation-driving-license" />
 				</span>
@@ -2240,10 +2227,11 @@ class Easy_Reservations_Public {
 		 *
 		 * This action executes after the reservation is successfully updated.
 		 *
-		 * @param int $order_id WooCommerce order ID.
+		 * @param int      $order_id WooCommerce order ID.
+		 * @param WC_Order $wc_order WooCommerce order object.
 		 * @since 1.0.0
 		 */
-		do_action( 'ersrv_update_reservation', $order_id );
+		do_action( 'ersrv_update_reservation', $order_id, $wc_order );
 
 		// Return the AJAX response.
 		$response = array(

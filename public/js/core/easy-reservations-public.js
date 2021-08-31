@@ -157,20 +157,6 @@ jQuery(document).ready(function ($) {
 		} );
 	}
 
-	// If it's the search page or product page.
-	if ( 'yes' === is_product || 'yes' === is_search_page ) {
-		// Price range slider.
-		$( '.ersrv-search-item-price-range' ).slider( {
-			range: true,
-			min: 1,
-			max: 10000,
-			values: [1, 10000],
-			slide: function (event, ui) {
-				$( '.price-value' ).html( ersrv_get_formatted_price( ui.values[0] ) + ' to ' + ersrv_get_formatted_price( ui.values[1] ) );
-			}
-		} );
-	}
-
 	/**
 	 * Block/unblock amenities block based on checkin and checkout dates.
 	 */
@@ -1237,8 +1223,6 @@ jQuery(document).ready(function ($) {
 		var checkin                = $( '#ersrv-search-checkin' ).val();
 		var checkout               = $( '#ersrv-search-checkout' ).val();
 		var accomodation           = parseInt( $( '.ersrv-item-search-accomodation' ).val() );
-		var price_min_range        = parseFloat( $( '.ersrv-search-item-price-range' ).slider( 'values', 0 ) );
-		var price_max_range        = parseFloat( $( '.ersrv-search-item-price-range' ).slider( 'values', 1 ) );
 		var checkin_checkout_dates = [];
 
 		// Get the dates array between the checkin and checkout dates.
@@ -1261,8 +1245,6 @@ jQuery(document).ready(function ($) {
 				type: type,
 				checkin_checkout_dates: checkin_checkout_dates,
 				accomodation: accomodation,
-				price_min_range: price_min_range,
-				price_max_range: price_max_range,
 			},
 			success: function ( response ) {
 				// Check for invalid ajax request.

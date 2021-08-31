@@ -235,7 +235,7 @@ $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platform
 										<p class="ersrv-reservation-error checkin-checkout-dates-error"></p>
 									</div>
 									<div class="book-items-wrapper mb-4 pb-3">
-										<label for="book-items" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'No book items', 'easy-reservations' ); ?></label>
+										<label for="book-items" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Guests', 'easy-reservations' ); ?><span class="required">*</span></label>
 										<input id="adult-accomodation-count" placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" type="number" class="form-control mb-3" />
 										<input id="kid-accomodation-count" placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" type="number" class="form-control" />
 										<p class="ersrv-reservation-error accomodation-error"></p>
@@ -359,13 +359,6 @@ $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platform
 									<div class="input-daterange d-flex flex-column flex-fill mb-4 pb-3">
 										<input id="ersrv-search-checkin" type="text" class="form-control date-control text-left rounded-lg mb-3" placeholder="Check in">
 										<input id="ersrv-search-checkout" type="text" class="form-control date-control text-left rounded-lg" placeholder="Check out">
-									</div>
-									<div class="range-slider-wrapper mb-4 pb-2">
-										<h4 class="font-lato font-size-14 font-weight-normal color-black text-center mb-2"><?php esc_html_e( 'Price Range', 'easy-reservations' ); ?></h4>
-										<h4 class="font-lato font-size-20 font-weight-bolder color-black text-center mb-0 price-value"><?php echo esc_html( $woo_currency );?>0 to <?php echo esc_html( $woo_currency );?>10,000</h4>
-										<div class="slider-wrapper mt-3">
-											<div class="ersrv-search-item-price-range" id="slider-range"></div>
-										</div>
 									</div>
 									<div class="book-items-wrapper mb-4 pb-3">
 										<select class="selectpicker form-control Boat-Types" id="boat-types" data-size="5" data-style="btn-outline-secondary focus-none" title="<?php esc_html_e( 'Select Item Type', 'easy-reservations' ); ?>">

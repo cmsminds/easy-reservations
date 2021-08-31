@@ -77,13 +77,6 @@ $search_boat_type = ( ! is_null( $search_boat_type ) ) ? $search_boat_type : 0;
 						</div>
 						<div class="form-row">
 							<div class="col-12 col-md-5 col-lg-6">
-								<div class="slider-wrapper">
-									<div class="d-flex flex-wrap align-items-center justify-content-center mb-2">
-										<h3 class="font-lato font-weight-normal color-black text-center mb-0 mr-2"><?php esc_html_e( 'Price per night:', 'easy-reservations' ); ?></h3>
-										<h3 class="font-lato font-weight-normal color-black text-center mb-0 price-value"><?php echo sprintf( __( '%1$s to %2$s', 'easy-reservations' ), wc_price( 1 ), wc_price( 10000 ) ); ?></h3>
-									</div>
-									<div class="search-price-range-slider ersrv-search-item-price-range"></div>
-								</div>
 							</div>
 							<div class="col-12 col-md-7 col-lg-6">
 								<div class="input-daterange">
