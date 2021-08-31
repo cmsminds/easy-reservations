@@ -171,6 +171,9 @@ a.btn:hover,
 .search-page .slider-wrapper *{
     color: white;
 }
+.search-page .slider-wrapper h3{
+    font-size: 16px !important;
+}
 .search-page .slider-wrapper > h4:nth-child(1){
     margin-bottom: 0px !important;
 }
