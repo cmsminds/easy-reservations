@@ -274,8 +274,11 @@ a.btn:hover,
 }
 .ersrv-edit-reservation-item-summary table td, 
 .ersrv-edit-reservation-item-summary table th{
-    padding: 0.1rem 0.6rem;
+    padding: 0rem 0.5rem;
     vertical-align: middle;
+}
+.ersrv-edit-reservation-item-summary table td{
+    text-align: right;
 }
 .ersrv-edit-reservation-item-summary table td *, 
 .ersrv-edit-reservation-item-summary table th{
@@ -285,7 +288,7 @@ a.btn:hover,
 .ersrv-edit-reservation-item-summary table .edit-reservation-item-total-cost{
     border-top: 1px solid #000;
 }
-.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary table .edit-reservation-item-total-cost *{
+.ersrv-edit-reservation-item-summary table .edit-reservation-item-total-cost *{
     color: #000 !important;
 
 }

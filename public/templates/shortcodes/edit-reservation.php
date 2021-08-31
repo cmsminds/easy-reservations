@@ -228,15 +228,15 @@ if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
 	<div class="modal fade" id="summaryModal" tabindex="-1" aria-labelledby="summaryModal" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm">
 			<div class="modal-content border-0">
-				<div class="modal-header bg-transparent border-0">
-					<!-- <h5 class="modal-title" id="summaryModal">Modal title</h5> -->
+				<!-- <div class="modal-header bg-transparent border-0">
+					<h5 class="modal-title" id="summaryModal">Modal title</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-				</div>
+				</div> -->
 				<div class="modal-body">
 					<div class="ersrv-edit-reservation-item-summary" id="ersrv-edit-reservation-item-summary-<?php echo esc_attr($item_id); ?>">
-						<div class="ersrv-edit-reservation-item-summary-wrapper pb-3">
+						<div class="ersrv-edit-reservation-item-summary-wrapper p-3">
 							<table class="table table-borderless">
 								<tbody>
 									<tr class="item-price-summary" id="item-price-summary-<?php echo esc_attr($item_id); ?>">
