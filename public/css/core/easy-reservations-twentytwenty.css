@@ -1114,6 +1114,24 @@ img {
   max-width: 100%;
 }
 
+.wrapper.search-page .banner .details .slider-wrapper div.mb-2 {
+  margin-bottom: 16px !important;
+}
+
+.wrapper.search-page .banner .details .slider-wrapper div.mb-2 * {
+  margin: 0px;
+}
+
+.wrapper.search-page .banner .details .slider-wrapper * {
+  letter-spacing: normal;
+  margin-top: 0px;
+  padding-top: 0px;
+}
+
+.wrapper.search-page .banner .details .slider-wrapper .ui-slider .ui-slider-handle {
+  top: -.5em;
+}
+
 .wrapper.search-page .banner .page-title {
   margin-bottom: 102px !important;
 }
@@ -1724,5 +1742,9 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
 
 .ersrv-order-reserved-dates-notifier::before {
   background-color: #e693a9;
+}
+
+.ersrv-no-reservation-post-found a.btn {
+  font-size: 16px;
 }
 /*# sourceMappingURL=easy-reservations-twentytwenty.css.map */

@@ -1100,6 +1100,16 @@ img {
   max-width: 100%;
 }
 
+.wrapper.search-page .banner .details .slider-wrapper div.mb-2 {
+  margin-bottom: 16px !important;
+}
+
+.wrapper.search-page .banner .details .slider-wrapper * {
+  letter-spacing: normal;
+  margin-top: 0px;
+  padding-top: 0px;
+}
+
 .wrapper.search-page .banner .page-title {
   margin-bottom: 102px !important;
 }

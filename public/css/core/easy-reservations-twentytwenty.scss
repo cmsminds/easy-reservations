@@ -341,6 +341,22 @@
 
             .details {
                 max-width: 100%;
+                .slider-wrapper{
+                    div.mb-2{
+                        margin-bottom: 16px !important;
+                        *{
+                            margin: 0px;
+                        }
+                    }
+                    *{
+                        letter-spacing: normal;
+                        margin-top: 0px;
+                        padding-top: 0px;
+                    }
+                    .ui-slider .ui-slider-handle{
+                        top: -.5em;
+                    }
+                }
             }
 
             .page-title {
@@ -909,4 +925,7 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
     &::before{
         background-color: $accent-300;
     }
+}
+.ersrv-no-reservation-post-found a.btn{
+    font-size: 16px;
 }

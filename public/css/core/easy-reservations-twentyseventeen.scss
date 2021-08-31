@@ -349,6 +349,16 @@
 
             .details {
                 max-width: 100%;
+                .slider-wrapper{
+                    div.mb-2{
+                        margin-bottom: 16px !important;
+                    }
+                    *{
+                        letter-spacing: normal;
+                        margin-top: 0px;
+                        padding-top: 0px;
+                    }
+                }
             }
 
             .page-title {

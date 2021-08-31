@@ -293,12 +293,18 @@ if (!empty($order_id) && !empty($action) && 'edit-reservation' === $action) {
 				<?php } ?>
 
 				<!-- UPDATE RESERVATION -->
-				<div class="group-update-btn d-flex align-items-center justify-content-center ersrv-update-reservation flex-column">
-					<p class="font-lato font-size-16 color-black mb-3"><?php echo sprintf( __( 'Cost difference: %2$s%1$s%3$s (to be paid by the customer on arrival)', 'easy-reservations' ), wc_price(0), '<span class="ersrv-edit-reservation-cost-difference">', '</span>' ); ?></p>
+				<div class="group-update-btn d-flex align-items-center justify-content-center ersrv-update-reservation flex-wrap">
 					<input type="hidden" class="ersrv-edit-reservation-order-total" value="<?php echo esc_html( $order_total ); ?>" />
 					<input type="hidden" class="ersrv-order-id" value="<?php echo esc_attr( $order_id ); ?>" />
-					<button class="btn btn-accent cancel" onclick="<?php echo esc_attr( $cancel_reservation ); ?>"><?php esc_html_e( 'Cancel', 'easy-reservations' ); ?></button>
-					<button class="btn btn-accent update non-clickable"><?php esc_html_e( 'Update Reservation', 'easy-reservations' ); ?></button>
+					<div>
+						<p class="font-lato font-size-16 color-black mb-3 text-center"><?php echo sprintf( __( 'Cost difference: %2$s%1$s%3$s (to be paid by the customer on arrival)', 'easy-reservations' ), wc_price(0), '<span class="ersrv-edit-reservation-cost-difference">', '</span>' ); ?></p>
+					</div>
+					<div class="ml-auto mr-3">
+						<button class="btn btn-secondary cancel" onclick="<?php echo esc_attr( $cancel_reservation ); ?>"><?php esc_html_e( 'Cancel', 'easy-reservations' ); ?></button>
+					</div>
+					<div class="">
+						<button class="btn btn-accent update non-clickable"><?php esc_html_e( 'Update Reservation', 'easy-reservations' ); ?></button>
+					</div>
 				</div>
 			<?php } else {
 				$my_account = wc_get_page_permalink('myaccount');
