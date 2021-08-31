@@ -192,19 +192,19 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 		 * @return string
 		 * @since 1.0.0
 		 */
-		echo apply_filters( 'ersrv_no_cancellation_requests_found_message', $no_items_message );
+		echo esc_html( apply_filters( 'ersrv_no_cancellation_requests_found_message', $no_items_message ) );
 	}
 
 	/**
 	 * Define what data to show on each column of the table
 	 *
-	 * @param  array $item        Data
-	 * @param  string $column_name - Current column name
+	 * @param array  $item Data.
+	 * @param string $column_name - Current column name.
 	 *
 	 * @return mixed
 	 */
 	public function column_default( $item, $column_name ) {
-		switch( $column_name ) {
+		switch ( $column_name ) {
 			case 'date_time':
 			case 'item':
 			case 'item_subtotal':
@@ -228,12 +228,16 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 		$item_id = ( ! empty( $item['item_id'] ) ) ? $item['item_id'] : '';
 		// Build row actions.
 		$actions = array(
+			/* translators: 1: %s: anchor tag open, 2: %s: anchor tag closed */
 			'approve_request' => sprintf( __( '%1$sApprove%2$s', 'easy-reservations' ), '<a href="javascript:void(0);" class="approve-request" title="' . esc_html__( 'Approve this cancellation request.', 'easy-reservations' ) . '">', '</a>' ),
+			/* translators: 1: %s: anchor tag open, 2: %s: anchor tag closed */
 			'decline_request' => sprintf( __( '%1$sDecline%2$s', 'easy-reservations' ), '<a href="javascript:void(0);" class="decline" title="' . esc_html__( 'Decline this cancellation request.', 'easy-reservations' ) . '">', '</a>' ),
-			'delete'  => sprintf( __( '%1$sDelete%2$s', 'easy-reservations' ), '<a href="javascript:void(0);" class="delete" title="' . esc_html__( 'Delete this cancellation request.', 'easy-reservations' ) . '">', '</a>' ),
+			/* translators: 1: %s: anchor tag open, 2: %s: anchor tag closed */
+			'delete'          => sprintf( __( '%1$sDelete%2$s', 'easy-reservations' ), '<a href="javascript:void(0);" class="delete" title="' . esc_html__( 'Delete this cancellation request.', 'easy-reservations' ) . '">', '</a>' ),
 		);
 
 		// Return the title contents.
+		/* translators: 1: %s: item name, 2: %s: row actions, 3: %s: div tag open, 4: %s: div tag closed */
 		return sprintf(
 			'%1$s%3$s%2$s%4$s',
 			$item['item'],
@@ -242,7 +246,7 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 			'</div>'
 		);
 	}
-	
+
 	/**
 	 * The checkbox column.
 	 *
@@ -267,7 +271,7 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 		$actions = array(
 			'bulk_approve_requests' => __( 'Approve', 'easy-reservations' ),
 			'bulk_decline_requests' => __( 'Decline', 'easy-reservations' ),
-			'bulk_delete_requests' => __( 'Delete', 'easy-reservations' ),
+			'bulk_delete_requests'  => __( 'Delete', 'easy-reservations' ),
 		);
 
 		return $actions;
@@ -279,8 +283,7 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	public function process_bulk_action() {
 		// Detect if the delete action was triggered.
 		if ( 'bulk_delete_requests' === $this->current_action() ) {
-			wp_die('Items deleted (or they would be if we had items to delete)!');
+			wp_die( 'Items deleted (or they would be if we had items to delete)!' );
 		}
-		
 	}
 }

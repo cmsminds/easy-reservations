@@ -2342,6 +2342,17 @@ class Easy_Reservations_Public {
 			}
 		}
 
+		// Return the response, if the reservation posts are not found according to the checkin and checkout dates.
+		if ( empty( $final_reservation_ids ) || ! is_array( $final_reservation_ids ) ) {
+			$response = array(
+				'code'        => 'reservation-posts-not-found',
+				'html'        => ersrv_no_reservation_item_found_html( true ),
+				'items_count' => __( '0 items', 'easy-reservations' ),
+			);
+			wp_send_json_success( $response );
+			wp_die();
+		}
+
 		// Prepare the html now.
 		$html = '';
 
