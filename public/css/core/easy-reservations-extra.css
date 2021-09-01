@@ -1,9 +1,10 @@
 .non-clickable {
-	pointer-events: none !important;
-	opacity: 0.5;
+    pointer-events: none !important;
+    opacity: 0.5;
 }
-.non-clickable *::after, 
-.non-clickable *::before{
+
+.non-clickable *::after,
+.non-clickable *::before {
     pointer-events: none !important;
 }
 
@@ -757,4 +758,16 @@
     top: 50%;
     transform: translate(0, -50%);
 }
+
 /* tooltip css end */
+.woocommerce-cart table.cart img,
+.woocommerce-checkout table.cart img,
+#add_payment_method table.cart img,
+.woocommerce table.shop_table .product-thumbnail img,
+.woocommerce-page table.shop_table .product-thumbnail img {
+    width: 100px;
+    max-width: 100px;
+}
+.theme-twentytwentyone .woocommerce .woocommerce-cart-form .product-thumbnail .attachment-woocommerce_thumbnail{
+    max-width: 100px !important;
+}
