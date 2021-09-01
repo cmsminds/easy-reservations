@@ -506,3 +506,18 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
     transform: translate(0, -50%);
 }
 /* tooltip css end */
+.ersrv-driving-license-container.edit-order a{
+	transition: all ease-in-out 0.25s;
+}
+.ersrv-driving-license-container.edit-order a span{
+	vertical-align: middle;
+	width: 0px;
+	opacity: 0;
+	transform: translateX(-16px);
+	transition: all ease-in-out 0.25s;
+}
+.ersrv-driving-license-container.edit-order a:hover span{
+	width: auto;
+	opacity: 1;
+	transform:none;
+}
