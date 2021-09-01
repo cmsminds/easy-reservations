@@ -1082,12 +1082,15 @@ jQuery(document).ready(function ($) {
 	/**
 	 * Upload the driving license copy on the checkout page.
 	 */
-	$( document ).on( 'click', '.ersrv-driving-license button', function() {
+	$( document ).on( 'click', '.ersrv-driving-license button.upload', function() {
 		// Check if the license is provided to upload.
 		if ( -1 === is_valid_string( $( 'input[name="reservation-driving-license"]' ).val() ) ) {
 			ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, driving_license_empty_file_error );
 			return false;
 		}
+
+		// View license button.
+		var view_license_button = $( '.ersrv-driving-license button.view' );
 
 		var oFReader        = new FileReader();
 		var driving_license = document.getElementById( 'reservation-driving-license' );
@@ -1120,11 +1123,10 @@ jQuery(document).ready(function ($) {
 
 				// If the driving license is uploaded.
 				if ( 'driving-license-uploaded' === response.data.code ) {
-					// Unblock the element.
-					unblock_element( $( '.ersrv-driving-license' ) );
-
-					// Show toast.
-					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
+					unblock_element( $( '.ersrv-driving-license' ) ); // Unblock the element.
+					view_license_button.attr( 'onclick', response.data.view_license_url );
+					unblock_element( view_license_button ); // Unblock the view button as well.
+					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message ); // Show toast.
 				}
 			},
 		} );

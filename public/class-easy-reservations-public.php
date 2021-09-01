@@ -131,6 +131,12 @@ class Easy_Reservations_Public {
 
 		/* ---------------------------------------STYLES--------------------------------------- */
 
+		// Enqueue the free font-awesome style.
+		wp_enqueue_style(
+			$this->plugin_name . '-font-awesome-style',
+			'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css',
+		);
+
 		// If it's only the search page.
 		if ( $is_search_page ) {
 			// Enqueue the slick slider style.
@@ -166,12 +172,6 @@ class Easy_Reservations_Public {
 				ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap-select.min.css',
 				array(),
 				filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap-select.min.css' )
-			);
-
-			// Enqueue the free font-awesome style.
-			wp_enqueue_style(
-				$this->plugin_name . '-font-awesome-style',
-				'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css',
 			);
 
 			// Enqueue the public style only when the style url and path are available.
@@ -1723,9 +1723,12 @@ class Easy_Reservations_Public {
 		}
 
 		// Get the attachment ID, if already uploaded.
-		$attachment_id  = WC()->session->get( 'reservation_driving_license_attachment_id' );
-		$attachment_url = ersrv_get_attachment_url_from_attachment_id( $attachment_id );
+		$attachment_id      = WC()->session->get( 'reservation_driving_license_attachment_id' );
+		$attachment_url     = ersrv_get_attachment_url_from_attachment_id( $attachment_id );
+		$view_license_url   = ( ! is_null( $attachment_id ) ) ? "location.href = '{$attachment_url}'" : '';
+		$view_license_class = ( ! is_null( $attachment_id ) ) ? '' : 'non-clickable';
 
+		// Prepare the HTML now.
 		ob_start();
 		?>
 		<div class="woocommerce-additional-fields__field-wrapper">
@@ -1734,7 +1737,8 @@ class Easy_Reservations_Public {
 				<span class="woocommerce-input-wrapper">
 					<input type="file" name="reservation-driving-license" id="reservation-driving-license" />
 				</span>
-				<button type="button" class="button"><?php esc_html_e( 'Upload the license', 'easy-reservations' ); ?></button>
+				<button type="button" class="upload btn btn-accent"><span class="sr-only"><?php esc_html_e( 'Upload', 'easy-reservations' ); ?></span><span class="fa fa-upload"></span></button>
+				<button type="button" onclick="<?php echo esc_attr( $view_license_url ); ?>" class="view btn btn-accent <?php echo esc_attr( $view_license_class ); ?>"><span class="sr-only"><?php esc_html_e( 'View', 'easy-reservations' ); ?></span><span class="fa fa-eye"></span></button>
 			</p>
 		</div>
 		<?php
@@ -1778,10 +1782,15 @@ class Easy_Reservations_Public {
 		// Update the attachment ID in woocommerce session.
 		WC()->session->set( 'reservation_driving_license_attachment_id', $attach_id );
 
+		// Return with the on click attribute.
+		$attachment_url   = ersrv_get_attachment_url_from_attachment_id( $attach_id );
+		$view_license_url = "location.href = '{$attachment_url}'";
+
 		// Prepare the response.
 		$response = array(
-			'code'          => 'driving-license-uploaded',
-			'toast_message' => __( 'Driving license is uploaded successfully. Place order to get this attached with your order.', 'easy-reservations' ),
+			'code'             => 'driving-license-uploaded',
+			'view_license_url' => $view_license_url,
+			'toast_message'    => __( 'Driving license is uploaded successfully. Place order to get this attached with your order.', 'easy-reservations' ),
 		);
 		wp_send_json_success( $response );
 		wp_die();
