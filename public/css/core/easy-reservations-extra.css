@@ -642,7 +642,7 @@
     position: relative;
     cursor: pointer;
     color: #3bb4e5;
-    border-bottom: 0.05em dotted #3bb4e5;
+    /* border-bottom: 0.05em dotted #3bb4e5; */
     box-sizing: border-box;
     font-style: normal;
     transition: all .25s ease-in-out
@@ -650,7 +650,7 @@
 
 .tooltip:hover {
     color: #069;
-    border-bottom: 0.05em dotted #069
+    /* border-bottom: 0.05em dotted #069 */
 }
 
 /*the tip*/
