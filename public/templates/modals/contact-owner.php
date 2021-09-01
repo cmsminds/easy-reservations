@@ -46,7 +46,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 							<span class="ersrv-reservation-error contact-owner-customer-message"></span>
 						</div>
 						<div class="form-group text-right">
-							<button class="ersrv-submit-contact-owner-request btn btn-primary" type="button"><?php esc_html_e( 'Send Message', 'easy-reservations' ); ?></button>
+							<button class="ersrv-submit-contact-owner-request btn btn-accent" type="button"><?php esc_html_e( 'Send Message', 'easy-reservations' ); ?></button>
 						</div>
 					</div>
 				</div>
