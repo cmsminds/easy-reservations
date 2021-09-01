@@ -1176,11 +1176,14 @@ class Easy_Reservations_Admin {
 		echo wp_kses(
 			ob_get_clean(),
 			array(
-				'div' => array(
+				'div'  => array(
 					'class' => array(),
 				),
-				'p'   => array(),
-				'a'   => array(
+				'span' => array(
+					'class' => array(),
+				),
+				'p'    => array(),
+				'a'    => array(
 					'href'     => array(),
 					'class'    => array(),
 					'download' => array(),
