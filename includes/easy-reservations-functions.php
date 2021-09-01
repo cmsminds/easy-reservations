@@ -2331,8 +2331,8 @@ if ( ! function_exists( 'ersrv_print_calendar_buttons' ) ) {
 		ob_start();
 		?>
 		<div class="ersrv-reservation-calendars-container" data-oid="<?php echo esc_attr( $order_id ); ?>">
-			<a href="#" class="button add-to-gcal" title="<?php echo wp_kses_post( $google_calendar_button_text ); ?>"><?php echo wp_kses_post( $google_calendar_button_text ); ?></a>
-			<a href="#" class="button add-to-ical" title="<?php echo wp_kses_post( $icalendar_button_text ); ?>"><?php echo wp_kses_post( $icalendar_button_text ); ?></a>
+			<a href="#" class="btn btn-accent add-to-gcal" title="<?php echo wp_kses_post( $google_calendar_button_text ); ?>"><?php echo wp_kses_post( $google_calendar_button_text ); ?></a>
+			<a href="#" class="btn btn-accent add-to-ical" title="<?php echo wp_kses_post( $icalendar_button_text ); ?>"><?php echo wp_kses_post( $icalendar_button_text ); ?></a>
 		</div>
 		<?php
 		$reservations_calendar_container = ob_get_clean();
@@ -2397,7 +2397,7 @@ if ( ! function_exists( 'ersrv_print_receipt_button' ) ) {
 		$button_title = ersrv_download_reservation_receipt_button_title( $order_id );
 		?>
 		<div class="ersrv-reservation-receipt-container">
-			<a href="<?php echo esc_url( $button_url ); ?>" class="button" title="<?php echo esc_html( $button_title ); ?>"><?php echo esc_html( $button_text ); ?></a>
+			<a href="<?php echo esc_url( $button_url ); ?>" class="btn btn-accent" title="<?php echo esc_html( $button_title ); ?>"><?php echo esc_html( $button_text ); ?></a>
 		</div>
 		<?php
 	}
@@ -2432,7 +2432,7 @@ if ( ! function_exists( 'ersrv_print_reservation_cancel_button' ) ) {
 		$tooltip_text      = apply_filters( 'ersrv_reservation_cancellation_request_button_tooltip_text', $tooltip_text, $already_requested );
 		?>
 		<div data-tooltip="<?php echo esc_html( $tooltip_text ); ?>" class="tooltip ersrv-reservation-cancellation-container" data-order="<?php echo esc_attr( $order_id ); ?>" data-item="<?php echo esc_attr( $item_id ); ?>">
-			<button type="button" class="button <?php echo ( ! empty( $already_requested ) ) ? 'non-clickable' : ''; ?>" title="<?php echo esc_html( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></a>
+			<button type="button" class="btn btn-accent <?php echo ( ! empty( $already_requested ) ) ? 'non-clickable' : ''; ?>" title="<?php echo esc_html( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></a>
 		</div>
 		<?php
 	}
@@ -2468,7 +2468,7 @@ if ( ! function_exists( 'ersrv_print_edit_reservation_button' ) ) {
 		$edit_reservation_page_url = add_query_arg( $query_params, $edit_reservation_page_url );
 		?>
 		<div class="ersrv-edit-reservation-container">
-			<a href="<?php echo esc_url( $edit_reservation_page_url ); ?>" class="button" title="<?php echo esc_html( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></a>
+			<a href="<?php echo esc_url( $edit_reservation_page_url ); ?>" class="btn btn-accent" title="<?php echo esc_html( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></a>
 		</div>
 		<?php
 	}
