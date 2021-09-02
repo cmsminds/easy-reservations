@@ -356,11 +356,11 @@ $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platform
 									<div class="form-group">
 										<input type="text" class="ersrv-item-search-location form-control ship-icon-field text-left rounded-lg" placeholder="<?php esc_html_e( 'Desired location', 'easy-reservations' ); ?>">
 									</div>
-									<div class="input-daterange d-flex flex-column flex-fill mb-4 pb-3">
+									<div class="input-daterange d-flex flex-column flex-fill pb-3">
 										<input id="ersrv-search-checkin" type="text" class="form-control date-control text-left rounded-lg mb-3" placeholder="Check in">
 										<input id="ersrv-search-checkout" type="text" class="form-control date-control text-left rounded-lg" placeholder="Check out">
 									</div>
-									<div class="book-items-wrapper mb-4 pb-3">
+									<div class="book-items-wrapper pb-3">
 										<select class="selectpicker form-control Boat-Types" id="boat-types" data-size="5" data-style="btn-outline-secondary focus-none" title="<?php esc_html_e( 'Select Item Type', 'easy-reservations' ); ?>">
 											<?php if ( ! empty( $reservation_item_types ) && is_array( $reservation_item_types ) ) { ?>
 												<?php foreach ( $reservation_item_types as $item_type ) { ?>

@@ -30,6 +30,8 @@ jQuery(document).ready(function ($) {
 	var driving_license_invalid_file_error           = ERSRV_Public_Script_Vars.driving_license_invalid_file_error;
 	var driving_license_empty_file_error             = ERSRV_Public_Script_Vars.driving_license_empty_file_error;
 	var cancel_reservation_confirmation_message      = ERSRV_Public_Script_Vars.cancel_reservation_confirmation_message;
+	var checkin_provided_checkout_not                = ERSRV_Public_Script_Vars.checkin_provided_checkout_not;
+	var checkout_provided_checkin_not                = ERSRV_Public_Script_Vars.checkout_provided_checkin_not; 
 
 	// Custom vars.
 	var quick_view_reserved_dates = [];
@@ -374,34 +376,30 @@ jQuery(document).ready(function ($) {
 	 * Fire the AJAX to load the reservation items on search page.
 	 */
 	if ( 'yes' === is_search_page ) {
-		// Send the AJAX now.
-		$.ajax( {
-			dataType: 'JSON',
-			url: ajaxurl,
-			type: 'POST',
-			data: {
-				action: 'get_reservation_items',
-			},
-			success: function ( response ) {
-				// Check for invalid ajax request.
-				if ( 0 === response ) {
-					console.log( 'easy reservations: invalid ajax request' );
-					return false;
-				}
-				
-				if ( 'reservation-posts-found' === response.data.code ) { // If items are found.
-					$( '.ersrv-search-reservations-items-container' ).html( response.data.html );
-					// Add the "form-row" class, if there are search items.
-					$( '.ersrv-search-reservations-items-container' ).addClass( 'form-row' );
-				} else if ( 'reservation-posts-not-found' === response.data.code ) { // If items are found.
-					$( '.ersrv-search-reservations-items-container' ).html( response.data.html );
-					$( '.ersrv-reservation-items-count' ).text( response.data.items_count );
+		var type                   = parseInt( ersrv_get_query_string_parameter_value( 'boat_type' ) );
+		var location               = ersrv_get_query_string_parameter_value( 'location' );
+		var checkin                = ersrv_get_query_string_parameter_value( 'checkin' );
+		var checkout               = ersrv_get_query_string_parameter_value( 'checkout' );
+		var checkin_checkout_dates = [];
 
-					// Remove the "form-row" class, if there are no search items.
-					$( '.ersrv-search-reservations-items-container' ).removeClass( 'form-row' );
-				}
-			},
-		} );
+		if ( 1 === is_valid_string( checkin ) && 1 === is_valid_string( checkout ) ) {
+			// Get the dates array between the checkin and checkout dates.
+			var checkin_checkout_dates_obj = ersrv_get_dates_between_2_dates( checkin, checkout );
+			for ( var m in checkin_checkout_dates_obj ) {
+				checkin_checkout_dates.push( ersrv_get_formatted_date( checkin_checkout_dates_obj[m] ) );
+			}
+		}
+
+		// AJAX arguments.
+		var ajax_params = {
+			action: 'search_reservations',
+			location: ( 1 === is_valid_string( location ) ) ? location : '',
+			type: ( 1 === is_valid_number( type ) ) ? type : '',
+			checkin_checkout_dates: checkin_checkout_dates,
+		};
+
+		// Submit the ajax search now.
+		ersrv_submit_search_reservations( ajax_params );
 
 		/**
 		 * Load more reservation items.
@@ -911,37 +909,66 @@ jQuery(document).ready(function ($) {
 	 * Submit search request from single item page.
 	 */
 	$( document ).on( 'click', '.ersrv-submit-search-request', function() {
-		var checkin_date    = $( '#ersrv-search-checkin' ).val();
-		var checkout_date   = $( '#ersrv-search-checkout' ).val();
-		var location        = $( '.ersrv-item-search-location' ).val();
-		var price_min_range = $( '.ersrv-search-item-price-range' ).slider( 'values', 0 );
-		var price_max_range = $( '.ersrv-search-item-price-range' ).slider( 'values', 1 );
-		var boat_type       = parseInt( $( '#boat-types' ).val() );
+		var checkin_date  = $( '#ersrv-search-checkin' ).val();
+		var checkout_date = $( '#ersrv-search-checkout' ).val();
+		var location      = $( '.ersrv-item-search-location' ).val();
+		var boat_type     = parseInt( $( '#boat-types' ).val() );
+		var is_error      = false;
+		var error_message = '';
+
+		// If checkin date is available and checkout date not.
+		if ( 1 === is_valid_string( checkin_date ) && -1 === is_valid_string( checkout_date ) ) {
+			is_error      = true;
+			error_message = checkin_provided_checkout_not;
+		} else if ( -1 === is_valid_string( checkin_date ) && 1 === is_valid_string( checkout_date ) ) {
+			is_error      = true;
+			error_message = checkout_provided_checkin_not;
+		}
+
+		// Check if there is error.
+		if ( true === is_error ) {
+			ersrv_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, error_message );
+			return false;
+		}
 
 		// Take an empty array.
-		var query_params_array = {
-			'checkin': checkin_date,
-			'checkout': checkout_date,
-			'location': location,
-			'price_min': price_min_range,
-			'price_max': price_max_range,
-			'boat_type': boat_type,
-		};
+		var query_params_array = {};
+		var search_url         = search_reservations_page_url;
+
+		// Checkin date.
+		if ( 1 === is_valid_string( checkin_date ) ) {
+			query_params_array.checkin = checkin_date;
+		}
+
+		// Checkout date.
+		if ( 1 === is_valid_string( checkout_date ) ) {
+			query_params_array.checkout = checkout_date;
+		}
+
+		// Location.
+		if ( 1 === is_valid_string( location ) ) {
+			query_params_array.location = location;
+		}
+
+		// Boat types.
+		if ( 1 === is_valid_number( boat_type ) ) {
+			query_params_array.boat_type = boat_type;
+		}
 
 		// Iterate through the items in the object to create query parameters.
 		var index = 0;
 		$.each( query_params_array, function( key, value ) {
 			if ( 0 === index ) {
-				search_reservations_page_url += '?' + key + '=' + value;
+				search_url += '?' + key + '=' + value;
 			} else {
-				search_reservations_page_url += '&' + key + '=' + value;
+				search_url += '&' + key + '=' + value;
 			}
 
 			index++;
 		} );
 
 		// Redirect now.
-		window.location.href = search_reservations_page_url;
+		window.location.href = search_url;
 	} );
 
 	/**
@@ -1126,6 +1153,7 @@ jQuery(document).ready(function ($) {
 					unblock_element( $( '.ersrv-driving-license' ) ); // Unblock the element.
 					view_license_button.attr( 'onclick', response.data.view_license_url );
 					unblock_element( view_license_button ); // Unblock the view button as well.
+					$( '.ersrv-uploaded-checkout-license-file' ).html( response.data.view_license_html );
 					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message ); // Show toast.
 				}
 			},
@@ -1221,11 +1249,28 @@ jQuery(document).ready(function ($) {
 	 */
 	$( document ).on( 'click', '.ersrv-submit-reservation-search', function() {
 		var location               = $( '.ersrv-item-search-location' ).val();
-		var type                   = parseInt( $( '.ersrv-item-type' ).val() );
+		var type                   = parseInt( $( 'select.ersrv-reservation-item-type' ).val() );
 		var checkin                = $( '#ersrv-search-checkin' ).val();
 		var checkout               = $( '#ersrv-search-checkout' ).val();
 		var accomodation           = parseInt( $( '.ersrv-item-search-accomodation' ).val() );
 		var checkin_checkout_dates = [];
+		var is_error               = false;
+		var error_message          = '';
+
+		// If checkin date is available and checkout date not.
+		if ( 1 === is_valid_string( checkin ) && -1 === is_valid_string( checkout ) ) {
+			is_error      = true;
+			error_message = checkin_provided_checkout_not;
+		} else if ( -1 === is_valid_string( checkin ) && 1 === is_valid_string( checkout ) ) {
+			is_error      = true;
+			error_message = checkout_provided_checkin_not;
+		}
+
+		// Check if there is error.
+		if ( true === is_error ) {
+			ersrv_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, error_message );
+			return false;
+		}
 
 		// Get the dates array between the checkin and checkout dates.
 		var checkin_checkout_dates_obj = ersrv_get_dates_between_2_dates( checkin, checkout );
@@ -1236,25 +1281,36 @@ jQuery(document).ready(function ($) {
 		// Block the wrapper.
 		block_element( $( '.ersrv-form-wrapper' ) );
 
-		// Submit the search.
+		// AJAX arguments.
+		var ajax_params = {
+			action: 'search_reservations',
+			location: location,
+			type: type,
+			checkin_checkout_dates: checkin_checkout_dates,
+			accomodation: accomodation,
+		};
+
+		// Submit the ajax search now.
+		ersrv_submit_search_reservations( ajax_params );
+	} );
+
+	/**
+	 * Submit the search AJAX.
+	 */
+	function ersrv_submit_search_reservations( args ) {
+		// Send the AJAX now.
 		$.ajax( {
 			dataType: 'JSON',
 			url: ajaxurl,
 			type: 'POST',
-			data: {
-				action: 'search_reservations',
-				location: location,
-				type: type,
-				checkin_checkout_dates: checkin_checkout_dates,
-				accomodation: accomodation,
-			},
+			data: args,
 			success: function ( response ) {
 				// Check for invalid ajax request.
 				if ( 0 === response ) {
 					console.log( 'easy reservations: invalid ajax request' );
 					return false;
 				}
-
+				
 				// Response code.
 				var code = response.data.code;
 				if ( 'reservation-posts-found' === code || 'reservation-posts-not-found' === code ) {
@@ -1277,7 +1333,7 @@ jQuery(document).ready(function ($) {
 				}
 			},
 		} );
-	} );
+	}
 
 	/**
 	 * Add reservation to cart.
@@ -1574,6 +1630,20 @@ jQuery(document).ready(function ($) {
 		cost_html     += '</span>';
 
 		return cost_html;
+	}
+
+	/**
+	 * Get query string parameter value.
+	 *
+	 * @param {string} string
+	 * @return {string} string
+	 */
+	function ersrv_get_query_string_parameter_value( param_name ) {
+		var url_string = window.location.href;
+		var url        = new URL( url_string );
+		var val        = url.searchParams.get( param_name );
+
+		return val;
 	}
 
 	/**

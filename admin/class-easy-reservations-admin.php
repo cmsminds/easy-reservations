@@ -1040,6 +1040,7 @@ class Easy_Reservations_Admin {
 			// If accomodation adult charge is available.
 			if ( ! empty( $accomodation_adult_charge ) ) {
 				update_post_meta( $post_id, '_regular_price', $accomodation_adult_charge );
+				delete_post_meta( $post_id, '_sale_price' );
 				update_post_meta( $post_id, '_price', $accomodation_adult_charge );
 			} else {
 				delete_post_meta( $post_id, '_regular_price' );

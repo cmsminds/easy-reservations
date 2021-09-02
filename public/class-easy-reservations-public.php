@@ -408,6 +408,8 @@ class Easy_Reservations_Public {
 			'driving_license_invalid_file_error'           => sprintf( __( 'Invalid file selected. Allowed extensions are: %1$s', 'easy-reservations' ), implode( ', ', $driving_license_allowed_extensions ) ),
 			'driving_license_empty_file_error'             => __( 'Please provide a driving license to upload.', 'easy-reservations' ),
 			'cancel_reservation_confirmation_message'      => __( 'Click OK to confirm your cancellation. This action won\'t be undone.', 'easy-reservations' ),
+			'checkin_provided_checkout_not'                => __( 'Since you provided the checkin date, checkout date is mandatory.', 'easy-reservations' ),
+			'checkout_provided_checkin_not'                => __( 'Since you provided the checkout date, checkin date is mandatory.', 'easy-reservations' ),
 		);
 
 		/**
@@ -531,6 +533,7 @@ class Easy_Reservations_Public {
 
 		// If the reservation item type is set.
 		if ( ! empty( $type ) ) {
+			$args['tax_query']['relation'] = 'AND';
 			$args['tax_query'][] = array(
 				'taxonomy' => 'reservation-item-type',
 				'field'    => 'term_id',
@@ -698,7 +701,7 @@ class Easy_Reservations_Public {
 	 */
 	public function ersrv_template_include_callback( $template ) {
 		// Override the product single page.
-		if ( ersrv_product_is_reservation( get_the_ID() ) ) {
+		if ( is_product() && ersrv_product_is_reservation( get_the_ID() ) ) {
 			$template = ERSRV_PLUGIN_PATH . 'public/templates/woocommerce/single-product.php';
 		}
 
@@ -884,52 +887,6 @@ class Easy_Reservations_Public {
 			</div>
 		</div>
 		<?php
-	}
-
-	/**
-	 * AJAX to get reservation items on search page.
-	 *
-	 * @since 1.0.0
-	 */
-	public function ersrv_get_reservation_items_callback() {
-		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
-
-		// Exit, if the action mismatches.
-		if ( empty( $action ) || 'get_reservation_items' !== $action ) {
-			echo 0;
-			wp_die();
-		}
-
-		// Get the items now.
-		$reservation_items_query = ersrv_get_posts( 'product' );
-		$reservation_item_ids    = $reservation_items_query->posts;
-
-		// Return the response if there are no items available.
-		if ( empty( $reservation_item_ids ) || ! is_array( $reservation_item_ids ) ) {
-			wp_send_json_success(
-				array(
-					'code'        => 'reservation-posts-not-found',
-					'html'        => ersrv_no_reservation_item_found_html(),
-					'items_count' => __( '0 items', 'easy-reservations' ),
-				)
-			);
-			wp_die();
-		}
-
-		// Iterate through the item IDs to generate the HTML.
-		$html = '';
-		foreach ( $reservation_item_ids as $item_id ) {
-			$html .= ersrv_get_reservation_item_block_html( $item_id );
-		}
-
-		// Send the response.
-		wp_send_json_success(
-			array(
-				'code' => 'reservation-posts-found',
-				'html' => $html,
-			)
-		);
-		wp_die();
 	}
 
 	/**
@@ -1733,12 +1690,19 @@ class Easy_Reservations_Public {
 		?>
 		<div class="woocommerce-additional-fields__field-wrapper">
 			<p class="form-row ersrv-driving-license" id="ersrv_driving_license_field">
-				<label for="reservation-driving-license" class=""><?php esc_html_e( 'Driving License', 'easy-reservations' ); ?><span class="required">*</span></label>
+				<label for="reservation-driving-license" class=""><?php esc_html_e( 'Driving License', 'easy-reservations' ); ?> <span class="required">*</span></label>
 				<span class="woocommerce-input-wrapper">
 					<input type="file" name="reservation-driving-license" id="reservation-driving-license" />
 				</span>
 				<button type="button" class="upload btn btn-accent"><span class="sr-only"><?php esc_html_e( 'Upload', 'easy-reservations' ); ?></span><span class="fa fa-upload"></span></button>
 				<button type="button" onclick="<?php echo esc_attr( $view_license_url ); ?>" class="view btn btn-accent <?php echo esc_attr( $view_license_class ); ?>"><span class="sr-only"><?php esc_html_e( 'View', 'easy-reservations' ); ?></span><span class="fa fa-eye"></span></button>
+				<?php if ( ! is_null( $attachment_id ) ) {
+					$filename = basename( $attachment_url );
+					?>
+					<div class="ersrv-uploaded-checkout-license-file">
+						<span><?php echo sprintf( __( 'Uploaded: %2$s%1$s%3$s', 'easy-reservations' ), $filename, '<a href="' . $attachment_url . '">', '</a>' ); ?></span>
+					</div>
+				<?php } ?>
 			</p>
 		</div>
 		<?php
@@ -1784,13 +1748,22 @@ class Easy_Reservations_Public {
 
 		// Return with the on click attribute.
 		$attachment_url   = ersrv_get_attachment_url_from_attachment_id( $attach_id );
+		$filename         = basename( $attachment_url );
 		$view_license_url = "location.href = '{$attachment_url}'";
+
+		// View license html.
+		ob_start();
+		?>
+		<span><?php echo sprintf( __( 'Uploaded: %2$s%1$s%3$s', 'easy-reservations' ), $filename, '<a href="' . $attachment_url . '">', '</a>' ); ?></span>
+		<?php
+		$view_license_html = ob_get_clean();
 
 		// Prepare the response.
 		$response = array(
-			'code'             => 'driving-license-uploaded',
-			'view_license_url' => $view_license_url,
-			'toast_message'    => __( 'Driving license is uploaded successfully. Place order to get this attached with your order.', 'easy-reservations' ),
+			'code'              => 'driving-license-uploaded',
+			'view_license_url'  => $view_license_url,
+			'view_license_html' => $view_license_html,
+			'toast_message'     => __( 'Driving license is uploaded successfully. Place order to get this attached with your order.', 'easy-reservations' ),
 		);
 		wp_send_json_success( $response );
 		wp_die();
@@ -2369,5 +2342,19 @@ class Easy_Reservations_Public {
 		);
 		wp_send_json_success( $response );
 		wp_die();
+	}
+
+	/**
+	 * Display the receipt button if there is no order status set in the admin.
+	 *
+	 * @param boolean $should_display Should display the button or not.
+	 * @return boolean
+	 * @since 1.0.0
+	 */
+	public function ersrv_ersrv_display_receipt_button_callback( $should_display ) {
+		$order_statuses = ersrv_get_plugin_settings( 'ersrv_easy_reservations_receipt_for_order_statuses' );
+		$should_display = ( empty( $order_statuses ) || ! is_array( $order_statuses ) ) ? true : $should_display;
+
+		return $should_display;
 	}
 }

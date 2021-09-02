@@ -686,7 +686,7 @@ if ( ! function_exists( 'ersrv_should_display_receipt_button' ) ) {
 
 		$order_statuses        = ersrv_get_plugin_settings( 'ersrv_easy_reservations_receipt_for_order_statuses' );
 		$order_status          = 'wc-' . $wc_order->get_status();
-		$display_order_receipt = ( in_array( $order_status, $order_statuses, true ) ) ? true : false;
+		$display_order_receipt = ( ! empty( $order_statuses ) && in_array( $order_status, $order_statuses, true ) ) ? true : false;
 
 		/**
 		 * Display receipt button filter.
@@ -825,18 +825,18 @@ if ( ! function_exists( 'ersrv_get_store_formatted_address' ) ) {
 	 * @return string
 	 */
 	function ersrv_get_store_formatted_address() {
-		$store_name    = ersrv_get_plugin_settings( 'ersrv_reservation_receipt_store_name' );
-		$address       = WC_Countries::get_base_address();
-		$address_2     = WC_Countries::get_base_address_2();
-		$city          = WC_Countries::get_base_city();
-		$state         = WC_Countries::get_base_state();
-		$country       = WC_Countries::get_base_country();
-		$postcode      = WC_Countries::get_base_postcode();
-		$store_country = WC()->countries->countries[ $country ];
-		$contries_obj  = new WC_Countries();
-		$store_states  = $contries_obj->get_states( $country );
-		$store_state   = ( ! empty( $store_states ) && ! empty( $state ) ) ? $store_states[ $state ] : '';
-		$store_address = "{$store_name},<br />{$address},<br />{$address_2},<br />{$city} - {$postcode},<br />{$store_state} - {$store_country}<br />";
+		$store_name       = ersrv_get_plugin_settings( 'ersrv_reservation_receipt_store_name' );
+		$wc_countries_obj = new WC_Countries();
+		$address          = $wc_countries_obj->get_base_address();
+		$address_2        = $wc_countries_obj->get_base_address_2();
+		$city             = $wc_countries_obj->get_base_city();
+		$state            = $wc_countries_obj->get_base_state();
+		$country          = $wc_countries_obj->get_base_country();
+		$postcode         = $wc_countries_obj->get_base_postcode();
+		$store_country    = WC()->countries->countries[ $country ];
+		$store_states     = $wc_countries_obj->get_states( $country );
+		$store_state      = ( ! empty( $store_states ) && ! empty( $state ) ) ? $store_states[ $state ] : '';
+		$store_address    = "{$store_name},<br />{$address},<br />{$address_2},<br />{$city} - {$postcode},<br />{$store_state} - {$store_country}<br />";
 
 		/**
 		 * Store address filter.
@@ -1024,15 +1024,15 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 		$date_created_formatted = gmdate( 'F j, Y, g:i A', strtotime( $date_created ) );
 
 		// Payment details.
-		$payment_method       = $wc_order->payment_method;
-		$payment_method_title = $wc_order->payment_method_title;
+		$payment_method       = $wc_order->get_payment_method();
+		$payment_method_title = $wc_order->get_payment_method_title();
 
 		// Watermark.
 		$watermarks = ersrv_get_receipt_watermarks();
 		$watermark  = $watermarks[ $order_status ]['text'];
 
 		// Coupons usage.
-		$used_coupons = $wc_order->get_used_coupons();
+		$used_coupons = $wc_order->get_items( 'coupon' );
 		$coupon_data  = ( ! empty( $used_coupons ) ) ? ersrv_get_order_coupon_data( $wc_order ) : array();
 		$coupon_str   = ( ! empty( $coupon_data ) ) ? ersrv_get_coupon_string( $coupon_data ) : '';
 
@@ -1386,7 +1386,7 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 
 			<!-- CUSTOMER NOTES -->
 			<?php
-			$customer_note = $wc_order->customer_message;
+			$customer_note = $wc_order->get_customer_note();
 			if ( ! empty( $customer_note ) ) {
 				?>
 				<tr width="100%">

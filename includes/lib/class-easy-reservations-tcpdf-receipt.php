@@ -42,6 +42,7 @@ class Easy_Reservations_TCPDF_Receipt extends TCPDF {
 			return;
 		}
 
+		$html                   = '';
 		$date_created           = $wc_order->get_date_created();
 		$date_created_formatted = gmdate( 'F j, Y, g:i A', strtotime( $date_created ) );
 		$date_paid              = $wc_order->get_date_paid();

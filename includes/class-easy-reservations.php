@@ -198,7 +198,7 @@ class Easy_Reservations {
 		$this->loader->add_action( 'wp_head', $plugin_public, 'ersrv_wp_head_callback' );
 		$this->loader->add_filter( 'woocommerce_product_add_to_cart_text', $plugin_public, 'ersrv_woocommerce_product_add_to_cart_text_callback', 10, 2 );
 		$this->loader->add_filter( 'woocommerce_related_products', $plugin_public, 'ersrv_woocommerce_related_products_callback', 20, 2 );
-		$this->loader->add_filter( 'template_include', $plugin_public, 'ersrv_template_include_callback', 99, 1 );
+		$this->loader->add_filter( 'template_include', $plugin_public, 'ersrv_template_include_callback', 99 );
 		$this->loader->add_shortcode( 'ersrv_search_reservations', $plugin_public, 'ersrv_ersrv_search_reservations_callback' );
 		$this->loader->add_action( 'ersrv_delete_reservation_pdf_receipts', $plugin_public, 'ersrv_ersrv_delete_reservation_pdf_receipts_callback' );
 		$this->loader->add_action( 'ersrv_reservation_reminder_email_notifications', $plugin_public, 'ersrv_ersrv_reservation_reminder_email_notifications_callback' );
@@ -206,8 +206,6 @@ class Easy_Reservations {
 		$this->loader->add_action( 'woocommerce_order_details_after_order_table', $plugin_public, 'ersrv_woocommerce_order_details_after_order_table_callback' );
 		$this->loader->add_filter( 'woocommerce_order_get_formatted_billing_address', $plugin_public, 'ersrv_woocommerce_order_get_formatted_billing_address_callback', 20, 2 );
 		$this->loader->add_action( 'dokan_order_detail_after_order_items', $plugin_public, 'ersrv_dokan_order_detail_after_order_items_callback' );
-		$this->loader->add_action( 'wp_ajax_get_reservation_items', $plugin_public, 'ersrv_get_reservation_items_callback' );
-		$this->loader->add_action( 'wp_ajax_nopriv_get_reservation_items', $plugin_public, 'ersrv_get_reservation_items_callback' );
 		$this->loader->add_action( 'wp_ajax_item_favourite', $plugin_public, 'ersrv_item_favourite_callback' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'ersrv_wp_footer_callback' );
 		$this->loader->add_filter( 'woocommerce_account_menu_items', $plugin_public, 'ersrv_woocommerce_account_menu_items_callback' );
@@ -253,6 +251,7 @@ class Easy_Reservations {
 		$this->loader->add_filter( 'woocommerce_price_trim_zeros', $plugin_public, 'ersrv_woocommerce_price_trim_zeros_callback' );
 		$this->loader->add_action( 'wp_ajax_search_reservations', $plugin_public, 'ersrv_search_reservations_callback' );
 		$this->loader->add_action( 'wp_ajax_nopriv_search_reservations', $plugin_public, 'ersrv_search_reservations_callback' );
+		$this->loader->add_filter( 'ersrv_display_receipt_button', $plugin_public, 'ersrv_ersrv_display_receipt_button_callback' );
 	}
 
 	/**
