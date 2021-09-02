@@ -183,7 +183,7 @@ a.btn:hover,
 .wrapper.search-page .banner .form-wrapper .form-inner input.date-control:not(.ship-icon-field) {
     background-position: 95% ;
 }
-.site a:focus:not(.wp-block-button__link):not(.wp-block-file__button){
+.site a:focus:not(.wp-block-button__link):not(.wp-block-file__button):not(.btn-outline-primary):not(.loadmore-btn){
     background: transparent !important;
 }
 #ui-datepicker-div .ersrv-date-active{
@@ -381,8 +381,23 @@ a.btn:hover,
     padding: 16px 32px;
     letter-spacing: normal;
 }
-
-
+.theme-twentytwenty .custom-control-input,
+.theme-twentytwentyone .custom-control-input{
+    position: absolute !important;
+}
+.theme-twentytwentyone .wrapper .sidebar-wrapper .book-tour .details .custom-switch, 
+.theme-twentytwentyone .wrapper .sidebar-wrapper .advanced-search .details .custom-switch{
+    transform: translateX(30px);
+}
+.theme-twentytwenty table{
+    margin-top: 0px !important;
+}
+.btn-outline-light{
+    color: #212529;
+}
+.ersrv-loadmore-container .loadmore-btn:focus{
+    color: #212529 !important;
+}
 
 
 
