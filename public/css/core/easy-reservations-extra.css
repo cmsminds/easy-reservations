@@ -771,3 +771,14 @@
 .theme-twentytwentyone .woocommerce .woocommerce-cart-form .product-thumbnail .attachment-woocommerce_thumbnail{
     max-width: 100px !important;
 }
+.theme-twentysixteen.woocommerce-cart .product-remove {
+    width: 60px;
+}
+.theme-twentysixteen.woocommerce-cart .product-name{
+    width: 250px;
+}
+.woocommerce-cart .product-name .variation,
+.woocommerce-cart .product-name .variation *{
+    font-size: 14px;
+    line-height: 22px;
+}
