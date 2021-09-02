@@ -480,11 +480,14 @@ a.btn:hover,
 .btn-outline-light {
     color: #212529;
 }
-
-
+.btn-outline-secondary:focus {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
 
 /* Experimental */
-/*body::after {
+body::after {
     position: fixed;
     z-index: 99999;
     height: 100%;
@@ -495,4 +498,4 @@ a.btn:hover,
     pointer-events: none;
     top: 0px;
     left: 0px;
-}*/
+}
