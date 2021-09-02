@@ -1747,4 +1747,8 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
 .ersrv-no-reservation-post-found a.btn {
   font-size: 16px;
 }
+
+.quick-close {
+  background-color: #cd2653;
+}
 /*# sourceMappingURL=easy-reservations-twentytwenty.css.map */

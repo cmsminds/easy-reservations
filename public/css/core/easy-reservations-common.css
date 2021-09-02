@@ -1,84 +1,100 @@
 .site,
 .theme-twentynineteen .site-content .site-main .page .entry-content,
 .theme-twentytwenty #site-content .wrapper,
-.theme-twentytwentyone .site-content > .content-area > #main .wrapper{
+.theme-twentytwentyone .site-content>.content-area>#main .wrapper {
     margin: 0px;
 }
-table{
+
+table {
     border-width: 0px;
 }
+
 .site-inner,
-.theme-astra .site-content > .ast-container,
-.theme-astra .site-content > .ast-container > section,
-.theme-storefront .site-content > .col-full,
-.theme-twentytwentyone .site-content > .content-area,
+.theme-astra .site-content>.ast-container,
+.theme-astra .site-content>.ast-container>section,
+.theme-storefront .site-content>.col-full,
+.theme-twentytwentyone .site-content>.content-area,
 .theme-twentynineteen .site-content .site-main .page .entry-content,
 .theme-twentynineteen .site-content .site-main .page .entry-content .wrapper,
 .theme-twentytwenty #site-content .wrapper,
-.theme-twentytwentyone .site-content > .content-area > #main .wrapper{
+.theme-twentytwentyone .site-content>.content-area>#main .wrapper {
     max-width: 100%;
 }
+
 .site-content,
-.theme-astra .site-content > .ast-container,
-.theme-storefront .site-content > .col-full,
-.theme-twentytwentyone .site-content > .content-area,
-.theme-twentytwentyone .site-content > .content-area > #main > .wrapper,
-.theme-twentynineteen .site-content .site-main .page .entry-content{
+.theme-astra .site-content>.ast-container,
+.theme-storefront .site-content>.col-full,
+.theme-twentytwentyone .site-content>.content-area,
+.theme-twentytwentyone .site-content>.content-area>#main>.wrapper,
+.theme-twentynineteen .site-content .site-main .page .entry-content {
     padding: 0px;
 }
-.theme-astra .site-content > .ast-container > section,
+
+.theme-astra .site-content>.ast-container>section,
 .theme-twentytwenty #site-content .wrapper,
-.theme-twentytwentyone .site-content > .content-area > #main .wrapper{
+.theme-twentytwentyone .site-content>.content-area>#main .wrapper {
     width: 100%;
 }
-.theme-astra .site-content .ast-container .content-area{
+
+.theme-astra .site-content .ast-container .content-area {
     margin-bottom: 0px !important;
 }
+
 .non-clickable {
-	pointer-events: none !important;
-	opacity: 0.5;
+    pointer-events: none !important;
+    opacity: 0.5;
 }
-.non-clickable *::after, 
-.non-clickable *::before{
+
+.non-clickable *::after,
+.non-clickable *::before {
     pointer-events: none !important;
 }
-h1:not(.site-title):before, h2:before,
+
+h1:not(.site-title):before,
+h2:before,
 .page .entry-header,
-.page .entry-footer{
+.page .entry-footer {
     display: none !important;
 }
-@media(max-width:1063px){
+
+@media(max-width:1063px) {
+
     .site-content,
-    .theme-astra .site-content > .ast-container,
-    .theme-storefront .site-content > .col-full,
-    .theme-twentytwentyone .site-content > .content-area > #main{
+    .theme-astra .site-content>.ast-container,
+    .theme-storefront .site-content>.col-full,
+    .theme-twentytwentyone .site-content>.content-area>#main {
         margin: 0px;
     }
 }
+
 /* Search page */
-.theme-twentyseventeen .site-content > .wrap{
+.theme-twentyseventeen .site-content>.wrap {
     margin: 0px;
     padding: 0px;
     max-width: 100%;
 }
-.theme-twentyseventeen .site-content > .wrap .page {
+
+.theme-twentyseventeen .site-content>.wrap .page {
     display: flex;
     flex-direction: column;
 }
-.theme-twentyseventeen .site-content > .wrap .page .entry-header,
-.theme-twentyseventeen .site-content > .wrap .page .entry-content{
+
+.theme-twentyseventeen .site-content>.wrap .page .entry-header,
+.theme-twentyseventeen .site-content>.wrap .page .entry-content {
     width: 100% !important;
     max-width: 100%;
     flex-basis: 100%;
 }
 
-.theme-astra .site-content > .ast-container .ast-article-single{
+.theme-astra .site-content>.ast-container .ast-article-single {
     padding: 0px;
 }
-.form-control{
+
+.form-control {
     border-radius: 4.8px !important;
 }
-.ersrv-reservation-error{
+
+.ersrv-reservation-error {
     color: #f00;
     font-size: 14px;
     font-weight: 400;
@@ -87,12 +103,14 @@ h1:not(.site-title):before, h2:before,
     text-transform: capitalize;
     margin: 10px 0px 0px 4px;
 }
+
 .sidebar-wrapper .calc-wrapper .table.table.table-borderless td,
-.sidebar-wrapper .calc-wrapper .table.table.table-borderless th{
+.sidebar-wrapper .calc-wrapper .table.table.table-borderless th {
     padding: 0px 0px 5px;
     font-size: 16px;
 }
-.ersrv-notification-wrapper{
+
+.ersrv-notification-wrapper {
     bottom: calc(40px - 1rem) !important;
     left: 0px;
     right: 0px;
@@ -101,7 +119,8 @@ h1:not(.site-title):before, h2:before,
     pointer-events: none;
     z-index: 99999 !important;
 }
-.ersrv-notification{
+
+.ersrv-notification {
     border: 1px solid transparent;
     transform: translateY(100px);
     transition: 0.3s ease-in-out;
@@ -109,130 +128,166 @@ h1:not(.site-title):before, h2:before,
     pointer-events: auto;
     z-index: 99999;
 }
-.ersrv-notification.toast.hide{
+
+.ersrv-notification.toast.hide {
     display: block;
 }
+
 .ersrv-notification.fade:not(.show),
-.ersrv-notification.toast:not(.hide){
+.ersrv-notification.toast:not(.hide) {
     transform: translateY(0px);
     transform-origin: top;
 }
+
 .ersrv-notification.bg-success *,
-.ersrv-notification.bg-danger *{
+.ersrv-notification.bg-danger * {
     color: #fff;
 }
-.ersrv-notification.bg-warning *{
+
+.ersrv-notification.bg-warning * {
     color: #000;
 }
-.ersrv-notification .close{
+
+.ersrv-notification .close {
     background-color: transparent !important;
 }
-.ersrv-notification a{
+
+.ersrv-notification a {
     text-decoration: underline;
 }
-.ui-datepicker td span{
+
+.ui-datepicker td span {
     padding: 9px;
     text-align: center;
 }
-#ui-datepicker-div td span{
+
+#ui-datepicker-div td span {
     padding: 6px;
 }
+
 .ui-datepicker-calendar .ui-state-disabled *,
-.ui-datepicker-calendar .ersrv-date-disabled *{
+.ui-datepicker-calendar .ersrv-date-disabled * {
     color: #fff;
     background-color: #e0e0e0;
     border-radius: 100%;
 }
+
 a.btn,
 .btn a,
 a.btn:hover,
-.btn a:hover{
+.btn a:hover {
     text-decoration: none !important;
 }
+
 .slider-wrapper .search-price-range-slider {
     margin: 0px 1.5rem;
 }
-.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .media a{
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .media a {
     width: 100%;
     height: 278.047px;
     overflow: hidden;
 }
-.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .media a img{
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .media a img {
     height: 100%;
     width: 100%;
     -o-object-fit: cover;
-       object-fit: cover;
+    object-fit: cover;
     -o-object-position: center center;
-       object-position: center center;
+    object-position: center center;
 }
-.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .price-info{
-    max-width:none;
+
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .price-info {
+    max-width: none;
 }
-.search-page .slider-wrapper *{
+
+.search-page .slider-wrapper * {
     color: white;
 }
-.search-page .slider-wrapper h3{
+
+.search-page .slider-wrapper h3 {
     font-size: 16px !important;
 }
-.search-page .slider-wrapper > h4:nth-child(1){
+
+.search-page .slider-wrapper>h4:nth-child(1) {
     margin-bottom: 0px !important;
 }
-.search-page .slider-wrapper > h4:nth-child(2){
+
+.search-page .slider-wrapper>h4:nth-child(2) {
     margin-bottom: 10px !important;
 }
+
 .wrapper.search-page .banner .form-wrapper .form-inner input.date-control:not(.ship-icon-field) {
-    background-position: 95% ;
+    background-position: 95%;
 }
-.site a:focus:not(.wp-block-button__link):not(.wp-block-file__button):not(.btn-outline-primary):not(.loadmore-btn){
+
+.site a:focus:not(.wp-block-button__link):not(.wp-block-file__button):not(.btn-outline-primary):not(.loadmore-btn) {
     background: transparent !important;
 }
-#ui-datepicker-div .ersrv-date-active{
+
+#ui-datepicker-div .ersrv-date-active {
     background-color: transparent !important;
 }
-@media(max-width:1024px){
+
+@media(max-width:1024px) {
+
     .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a,
     .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a,
-    .ui-datepicker td span{
+    .ui-datepicker td span {
         padding: 4px 6px;
     }
-} 
-@media(max-width:991px){
+}
+
+@media(max-width:991px) {
+
     .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a,
     .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a,
-    .ui-datepicker td span{
+    .ui-datepicker td span {
         padding: 9px;
     }
 }
-@media(max-width:767px){
-    #ui-datepicker-div .ui-datepicker-calendar tbody tr td a, #ui-datepicker-div .ui-datepicker-calendar tbody tr td a a{
+
+@media(max-width:767px) {
+
+    #ui-datepicker-div .ui-datepicker-calendar tbody tr td a,
+    #ui-datepicker-div .ui-datepicker-calendar tbody tr td a a {
         padding: 4px;
     }
-    .ui-datepicker-calendar .ui-state-disabled *, .ui-datepicker-calendar .ersrv-date-disabled *{
+
+    .ui-datepicker-calendar .ui-state-disabled *,
+    .ui-datepicker-calendar .ersrv-date-disabled * {
         padding: 6px !important;
     }
 }
+
 .edit-order-wrapper .section-title {
     font-size: 46px;
     text-align: center;
     margin-bottom: 44px;
     font-weight: 600;
 }
+
 .edit-order-wrapper .card .form-wrapper .form-control {
     padding: 8px 10px;
     background-position: 97% !important;
 }
+
 .edit-order-wrapper .card .card-title,
-.edit-order-wrapper .card .CTA h4{
+.edit-order-wrapper .card .CTA h4 {
     margin-top: 0px !important;
 }
-.edit-order-wrapper .card .CTA h4{
+
+.edit-order-wrapper .card .CTA h4 {
     font-size: 14px;
 }
+
 .edit-order-wrapper .card .CTA,
-.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary{
+.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary {
     position: relative;
 }
-.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary .ersrv-edit-reservation-item-summary-wrapper{
+
+.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary .ersrv-edit-reservation-item-summary-wrapper {
     position: absolute;
     bottom: 30px;
     max-width: 200px;
@@ -244,14 +299,15 @@ a.btn:hover,
     border: 1px solid transparent;
     border-radius: 10px;
     /* box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; */
-    box-shadow: 0rem 0.2rem 1rem rgba(0,0,0,.45);
+    box-shadow: 0rem 0.2rem 1rem rgba(0, 0, 0, .45);
     overflow: hidden;
     padding: 10px 0px;
     opacity: 0;
     z-index: 101;
     visibility: hidden;
 }
-.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary::after{
+
+.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary::after {
     content: "";
     position: absolute;
     right: 80px;
@@ -267,106 +323,130 @@ a.btn:hover,
     visibility: hidden;
     z-index: 102;
 }
+
 .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary.show .ersrv-edit-reservation-item-summary-wrapper,
-.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary.show::after{
+.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary.show::after {
     opacity: 1;
     visibility: visible;
 }
-.ersrv-edit-reservation-item-summary table{
+
+.ersrv-edit-reservation-item-summary table {
     margin-bottom: 0px;
 }
-.ersrv-edit-reservation-item-summary table td, 
-.ersrv-edit-reservation-item-summary table th{
+
+.ersrv-edit-reservation-item-summary table td,
+.ersrv-edit-reservation-item-summary table th {
     padding: 0.2rem 0.5rem;
     vertical-align: middle;
 }
-.ersrv-edit-reservation-item-summary table td{
+
+.ersrv-edit-reservation-item-summary table td {
     text-align: right;
 }
-.ersrv-edit-reservation-item-summary table td *, 
-.ersrv-edit-reservation-item-summary table th{
+
+.ersrv-edit-reservation-item-summary table td *,
+.ersrv-edit-reservation-item-summary table th {
     color: #7e808c !important;
     font-size: 16px;
 }
-.ersrv-edit-reservation-item-summary table .edit-reservation-item-total-cost{
+
+.ersrv-edit-reservation-item-summary table .edit-reservation-item-total-cost {
     border-top: 1px solid #a7a9b1;
 }
-.ersrv-edit-reservation-item-summary table .edit-reservation-item-total-cost *{
+
+.ersrv-edit-reservation-item-summary table .edit-reservation-item-total-cost * {
     color: #000 !important;
 
 }
-.edit-order-wrapper .card .CTA h4 .ersrv-split-reservation-cost{
+
+.edit-order-wrapper .card .CTA h4 .ersrv-split-reservation-cost {
     font-size: 14px;
     /* vertical-align: bottom; */
 }
-.details .form-wrapper .form-row label[for]{
+
+.details .form-wrapper .form-row label[for] {
     cursor: pointer;
 }
 
-@media(max-width:991px){
-    .ersrv-edit-reservation-template .site-main > article .entry-content{
-        margin: 0px;        
+@media(max-width:991px) {
+    .ersrv-edit-reservation-template .site-main>article .entry-content {
+        margin: 0px;
     }
 }
 
-@media(max-width:767px){
-    .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary .ersrv-edit-reservation-item-summary-wrapper{
+@media(max-width:767px) {
+    .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary .ersrv-edit-reservation-item-summary-wrapper {
         bottom: 40px;
     }
-    .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary::after{
+
+    .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary::after {
         top: -50px;
     }
-    .edit-order-wrapper .section-title{
+
+    .edit-order-wrapper .section-title {
         font-size: 28px;
     }
+
     .details .form-wrapper .form-row .col-12:not(:last-child) {
         margin-bottom: 1rem;
     }
 }
-.edit-order-wrapper .card .CTA .btn{
+
+.edit-order-wrapper .card .CTA .btn {
     font-size: 14px;
     letter-spacing: normal;
     text-transform: capitalize;
     padding: 4px 8px;
 }
-.theme-twentysixteen .edit-order-wrapper .card .CTA h4{
+
+.theme-twentysixteen .edit-order-wrapper .card .CTA h4 {
     letter-spacing: normal;
     text-transform: capitalize;
 }
-.edit-order-wrapper .card .card-title a{
+
+.edit-order-wrapper .card .card-title a {
     font-weight: 600;
 }
-.theme-twentytwenty .edit-order-wrapper .card .card-title{
+
+.theme-twentytwenty .edit-order-wrapper .card .card-title {
     font-size: 2.5rem;
 }
-.theme-twentysixteen .edit-order-wrapper .card a{
+
+.theme-twentysixteen .edit-order-wrapper .card a {
     box-shadow: none !important;
 }
+
 .theme-twentytwenty .edit-order-wrapper .card .custom-switch {
     padding-left: 1rem;
 }
+
 .theme-twentytwentyone .edit-order-wrapper .card .custom-switch {
     padding-left: 0.5rem;
 }
-.edit-order-wrapper .group-update-btn{
+
+.edit-order-wrapper .group-update-btn {
     margin-top: 30px;
 }
+
 /* .edit-order-wrapper .group-update-btn *:not(.btn){
     width: 100%;
     flex: 0 0 100%;
     text-align: center;
 } */
 .edit-order-wrapper .group-update-btn .btn,
-.edit-order-wrapper .group-update-btn h4{
+.edit-order-wrapper .group-update-btn h4 {
     font-size: 16px;
 }
-.edit-order-wrapper.wrapper{
+
+.edit-order-wrapper.wrapper {
     background-color: transparent !important;
 }
-.ersrv-edit-reservation-template .ersrv-reservation-error{
+
+.ersrv-edit-reservation-template .ersrv-reservation-error {
     text-transform: lowercase;
 }
-.ersrv-no-reservation-post-found{
+
+.ersrv-no-reservation-post-found {
     background-image: url(../../images/no_data.png);
     width: 100%;
     padding-top: 300px;
@@ -375,33 +455,31 @@ a.btn:hover,
     background-position: top center;
     text-align: center;
 }
-.ersrv-no-reservation-post-found a.btn{
+
+.ersrv-no-reservation-post-found a.btn {
     font-size: 16px;
     font-weight: 600;
     padding: 16px 32px;
     letter-spacing: normal;
 }
+
 .theme-twentytwenty .custom-control-input,
-.theme-twentytwentyone .custom-control-input{
+.theme-twentytwentyone .custom-control-input {
     position: absolute !important;
 }
-.theme-twentytwentyone .wrapper .sidebar-wrapper .book-tour .details .custom-switch, 
-.theme-twentytwentyone .wrapper .sidebar-wrapper .advanced-search .details .custom-switch{
+
+.theme-twentytwentyone .wrapper .sidebar-wrapper .book-tour .details .custom-switch,
+.theme-twentytwentyone .wrapper .sidebar-wrapper .advanced-search .details .custom-switch {
     transform: translateX(30px);
 }
-.theme-twentytwenty table{
+
+.theme-twentytwenty table {
     margin-top: 0px !important;
 }
-.btn-outline-light{
+
+.btn-outline-light {
     color: #212529;
 }
-.ersrv-loadmore-container .loadmore-btn:focus{
-    color: #212529 !important;
-}
-
-
-
-
 
 
 

@@ -1681,4 +1681,12 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
 .ersrv-order-reserved-dates-notifier::before {
   background-color: #c09bb9;
 }
+
+.quick-close {
+  background-color: #96588a;
+}
+
+form {
+  margin-bottom: 0px;
+}
 /*# sourceMappingURL=easy-reservations-storefront.css.map */
