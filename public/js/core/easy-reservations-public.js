@@ -170,13 +170,8 @@ jQuery(document).ready(function ($) {
 	 * Accomodation adult charge - quick view modal.
 	 */
 	$( document ).on( 'keyup click', '#quick-view-adult-accomodation-count', function() {
-		var this_input             = $( this );
-		var adult_count            = parseInt( this_input.val() );
-		adult_count                = ( -1 === is_valid_number( adult_count ) ) ? 0 : adult_count;
-		var per_adult_charge       = parseFloat( $( '#quick-view-adult-charge' ).val() );
-		var total_charge           = adult_count * per_adult_charge;
-		$( '#quick-view-adult-subtotal' ).val( total_charge );
-		ersrv_calculate_reservation_total_cost_quick_view(); // Calculate the total cost.
+		// Recalculate quick view item summary.
+		ersrv_recalculate_reservation_quick_view_item_summary();
 	} );
 
 	/**
@@ -191,13 +186,8 @@ jQuery(document).ready(function ($) {
 	 * Accomodation kids charge - quick view modal.
 	 */
 	$( document ).on( 'keyup click', '#quick-view-kid-accomodation-count', function() {
-		var this_input     = $( this );
-		var kids_count     = parseInt( this_input.val() );
-		kids_count         = ( -1 === is_valid_number( kids_count ) ) ? 0 : kids_count;
-		var per_kid_charge = parseFloat( $( '#quick-view-kid-charge' ).val() );
-		var total_charge   = kids_count * per_kid_charge;
-		$( '#quick-view-kid-subtotal' ).val( total_charge );
-		ersrv_calculate_reservation_total_cost_quick_view(); // Calculate the total cost.
+		// Recalculate quick view item summary.
+		ersrv_recalculate_reservation_quick_view_item_summary();
 	} );
 
 	/**
@@ -212,32 +202,8 @@ jQuery(document).ready(function ($) {
 	 * Amenities charge summary - quick view modal.
 	 */
 	$( document ).on( 'click', '.ersrv-quick-view-reservation-single-amenity', function() {
-		var amenities_summary_cost  = 0.0;
-		var checkin_date            = $( '#ersrv-quick-view-item-checkin-date' ).val();
-		var checkout_date           = $( '#ersrv-quick-view-item-checkout-date' ).val();
-		var reservation_dates       = ersrv_get_dates_between_2_dates( checkin_date, checkout_date );
-		var reservation_dates_count = reservation_dates.length;
-
-		// Collect the amenities and their charges.
-		$( '.ersrv-quick-view-reservation-single-amenity' ).each ( function() {
-			var this_element = $( this );
-			var is_checked = this_element.is( ':checked' );
-			if ( true === is_checked ) {
-				var amenity_cost      = parseFloat( this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost' ) );
-				var amenity_cost_type = this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost_type' );
-				amenity_cost          = ( 'per_day' === amenity_cost_type ) ? ( amenity_cost * reservation_dates_count ) : amenity_cost;
-				amenities_summary_cost += parseFloat( amenity_cost );
-			}
-		} );
-
-		// Limit to 2 decimal places.
-		amenities_summary_cost = amenities_summary_cost.toFixed( 2 );
-
-		// Paste the final cost.
-		$( '#quick-view-amenities-subtotal' ).val( amenities_summary_cost );
-
-		// Calculate the total cost.
-		ersrv_calculate_reservation_total_cost_quick_view();
+		// Recalculate quick view item summary.
+		ersrv_recalculate_reservation_quick_view_item_summary();
 	} );
 
 	/**
@@ -469,7 +435,7 @@ jQuery(document).ready(function ($) {
 		}
 
 		// Change the button text. 
-		this_button.text( '...' );
+		this_button.html( '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>' );
 
 		// Block the element now.
 		block_element( this_button );
@@ -547,15 +513,9 @@ jQuery(document).ready(function ($) {
 								setTimeout( function() {
 									$( '#ersrv-quick-view-item-checkout-date' ).datepicker( 'show' );
 								}, 16 );
-							}
-			
-							// Also check if the checkin and checkout dates are available, unblock the amenities wrapper.
-							var checkin_date  = $( '#ersrv-quick-view-item-checkin-date' ).val();
-							var checkout_date = $( '#ersrv-quick-view-item-checkout-date' ).val();
-							if ( '' !== checkin_date && '' !== checkout_date ) {
-								unblock_element( $( '.ersrv-item-amenities-wrapper' ) );
-							} else {
-								block_element( $( '.ersrv-item-amenities-wrapper' ) );
+							} else if ( 'ersrv-quick-view-item-checkout-date' === instance.id ) {
+								// Recalculate quick view item summary.
+								ersrv_recalculate_reservation_quick_view_item_summary();
 							}
 						},
 						dateFormat: date_format,
@@ -1252,12 +1212,16 @@ jQuery(document).ready(function ($) {
 	 * Sho the reservation slitted cost.
 	 */
 	$( document ).on( 'click', '.ersrv-split-reservation-cost', function() {
+		var this_anchor = $( this );
 		$( '.ersrv-reservation-details-item-summary' ).toggleClass( 'show' );
 
-		// Add a body class if the summary is visible.
-		$( 'body' ).removeClass( 'ersrv-reservation-cost-details-active' );
-		if ( $( '.ersrv-reservation-details-item-summary' ).hasClass( 'show' ) ) {
-			$( 'body' ).addClass( 'ersrv-reservation-cost-details-active' );
+		// Check if the click is from modal.
+		if ( ! this_anchor.hasClass( 'is-modal' ) ) {
+			// Add a body class if the summary is visible.
+			$( 'body' ).removeClass( 'ersrv-reservation-cost-details-active' );
+			if ( $( '.ersrv-reservation-details-item-summary' ).hasClass( 'show' ) ) {
+				$( 'body' ).addClass( 'ersrv-reservation-cost-details-active' );
+			}
 		}
 	} );
 
@@ -1675,6 +1639,70 @@ jQuery(document).ready(function ($) {
 		$( '.security-subtotal span.ersrv-cost' ).html( formatted_security_total );
 		$( '.reservation-item-subtotal span.ersrv-cost' ).html( formatted_total_cost );
 		$( '.reservation-item-subtotal span.ersrv-cost, .ersrv-reservation-item-subtotal.ersrv-cost' ).html( formatted_total_cost );
+	}
+
+	/**
+	 * Recalculate the item summary on the reservation quick view page.
+	 */
+	 function ersrv_recalculate_reservation_quick_view_item_summary() {
+		var checkin_date    = $( '#ersrv-quick-view-item-checkin-date' ).val();
+		var checkout_date   = $( '#ersrv-quick-view-item-checkout-date' ).val();
+		var selected_dates  = [];
+		var amenities_total = 0.0;
+
+		// Get the checkin and checkout dates.
+		var selected_dates_obj = ersrv_get_dates_between_2_dates( checkin_date, checkout_date );
+		for ( var m in selected_dates_obj ) {
+			selected_dates.push( ersrv_get_formatted_date( selected_dates_obj[m] ) );
+		}
+
+		// Get the count of the selected days.
+		var selected_dates_count = selected_dates.length;
+
+		// Accomodation.
+		var adult_count = parseInt( $( '#quick-view-adult-accomodation-count' ).val() );
+		adult_count     = ( -1 === is_valid_number( adult_count ) ) ? 1 : adult_count;
+		var kids_count  = parseInt( $( '#quick-view-kid-accomodation-count' ).val() );
+		kids_count      = ( -1 === is_valid_number( kids_count ) ) ? 0 : kids_count;
+
+		// Accomodation charges.
+		var adult_charge           = parseFloat( $( '#quick-view-adult-charge' ).val() );
+		adult_charge               = selected_dates_count * adult_count * adult_charge;
+		var formatted_adult_charge = ersrv_get_formatted_price( adult_charge );
+		var kids_charge            = parseFloat( $( '#quick-view-kid-charge' ).val() );
+		kids_charge                = selected_dates_count * kids_count * kids_charge;
+		var formatted_kids_charge  = ersrv_get_formatted_price( kids_charge );
+
+		// Amenities charges.
+		$( '.ersrv-quick-view-reservation-single-amenity' ).each ( function() {
+			var this_element = $( this );
+			var is_checked = this_element.is( ':checked' );
+			if ( true === is_checked ) {
+				var amenity_cost  = parseFloat( this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost' ) );
+				var cost_type     = this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost_type' );
+				amenity_cost      = ( 'per_day' === cost_type ) ? ( amenity_cost * selected_dates_count ) : amenity_cost;
+				amenities_total  += parseFloat( amenity_cost );
+			}
+		} );
+
+		// Formatted amenities cost.
+		var formatted_amenities_total = ersrv_get_formatted_price( amenities_total );
+
+		// Security charge.
+		var security_total           = parseFloat( $( '#quick-view-security-amount' ).val() );
+		var formatted_security_total = ersrv_get_formatted_price( security_total );
+
+		// Calculate the total cost now.
+		var total_cost           = adult_charge + kids_charge + amenities_total + security_total;
+		var formatted_total_cost = ersrv_get_formatted_price( total_cost );
+
+		// Put in all the totals now.
+		$( '.adults-subtotal span.ersrv-cost' ).html( formatted_adult_charge );
+		$( '.kids-subtotal span.ersrv-cost' ).html( formatted_kids_charge );
+		$( '.amenities-subtotal span.ersrv-cost' ).html( formatted_amenities_total );
+		$( '.security-subtotal span.ersrv-cost' ).html( formatted_security_total );
+		$( '.reservation-item-subtotal span.ersrv-cost' ).html( formatted_total_cost );
+		$( '.reservation-item-subtotal span.ersrv-cost, .ersrv-quick-view-item-subtotal.ersrv-cost' ).html( formatted_total_cost );
 	}
 
 	/**

@@ -265,23 +265,23 @@ $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platform
 													<tbody>
 														<tr class="adults-subtotal">
 															<th><?php esc_html_e( 'Adults:', 'easy-reservations' ); ?></th>
-															<td><span class="ersrv-cost font-lato font-weight-bold color-accent"></span></td>
+															<td><span class="ersrv-cost font-lato font-weight-bold color-accent">--</span></td>
 														</tr>
 														<tr class="kids-subtotal">
 															<th><?php esc_html_e( 'Kids:', 'easy-reservations' ); ?></th>
-															<td><span class="ersrv-cost font-lato font-weight-bold color-accent"></span></td>
+															<td><span class="ersrv-cost font-lato font-weight-bold color-accent">--</span></td>
 														</tr>
 														<tr class="amenities-subtotal">
 															<th><?php esc_html_e( 'Amenities:', 'easy-reservations' ); ?></th>
-															<td><span class="ersrv-cost font-lato font-weight-bold color-accent"></span></td>
+															<td><span class="ersrv-cost font-lato font-weight-bold color-accent">--</span></td>
 														</tr>
 														<tr class="security-subtotal">
 															<th><?php esc_html_e( 'Security:', 'easy-reservations' ); ?></th>
-															<td><span class="ersrv-cost font-lato font-weight-bold color-accent"></span></td>
+															<td><span class="ersrv-cost font-lato font-weight-bold color-accent">--</span></td>
 														</tr>
 														<tr class="reservation-item-subtotal">
 															<th><?php esc_html_e( 'Total:', 'easy-reservations' ); ?></th>
-															<td><span class="ersrv-cost font-lato font-weight-bold color-accent"></span></td>
+															<td><span class="ersrv-cost font-lato font-weight-bold color-accent">--</span></td>
 														</tr>
 													</tbody>
 												</table>
