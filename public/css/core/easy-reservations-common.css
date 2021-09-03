@@ -227,7 +227,7 @@ a.btn:hover,
     background-position: 95%;
 }
 
-.site a:focus:not(.wp-block-button__link):not(.wp-block-file__button):not(.btn-outline-primary):not(.loadmore-btn) {
+.site a:focus:not(.wp-block-button__link):not(.wp-block-file__button):not(.btn-outline-primary):not(.loadmore-btn):not(.btn) {
     background: transparent !important;
 }
 
@@ -557,7 +557,8 @@ a.btn:hover,
     padding-top: 5px !important;
 }
 
-.ersrv-reservation-cost-details-active{
+.ersrv-reservation-cost-details-active,
+.col-product .product-details .product-details-values{
     position: relative;
 }
 .ersrv-reservation-cost-details-active::after {
@@ -575,7 +576,19 @@ a.btn:hover,
     right: 0px;
     transition: 0.115s ease all;
 }
-
+.col-product .product-details .product-details-values .ersrv-reservation-details-item-summary{
+    max-width: 240px;
+}
+.col-product .product-details .product-details-values .ersrv-reservation-details-item-summary table tr:not(:last-child) td,
+.col-product .product-details .product-details-values .ersrv-reservation-details-item-summary table tr:not(:last-child) th{
+    padding: 0px;
+    padding-bottom: 5px;
+}
+.col-product .product-details .product-details-values .ersrv-reservation-details-item-summary table tr:last-child td,
+.col-product .product-details .product-details-values .ersrv-reservation-details-item-summary table tr:last-child th{
+    padding-right: 0px;
+    padding-left: 0px;
+}
 /* Experimental */
 /* body::after {
     position: fixed;
