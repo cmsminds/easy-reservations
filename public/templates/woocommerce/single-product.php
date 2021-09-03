@@ -256,8 +256,8 @@ $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platform
 									<?php } ?>
 									<div class="calc-wrapper mb-3">
 										<h4 class="font-Poppins font-size-16 color-black font-weight-bold mb-0">
-											<?php echo sprintf( __( 'Subtotal: %1$s', 'easy-reservations' ), '<span class="ersrv-reservation-item-subtotal ersrv-cost"></span>' ); ?>
-											<a class="ersrv-split-reservation-cost text-theme-primary" href="javascript:void(0);" data-toggle="modal" data-target="#summaryModal"><?php esc_html_e('Know More', 'easy-reservations'); ?></a>
+											<?php echo sprintf( __( 'Subtotal: %1$s', 'easy-reservations' ), '<span class="ersrv-reservation-item-subtotal ersrv-cost">--</span>' ); ?>
+											<a class="ersrv-split-reservation-cost text-theme-primary" href="javascript:void(0);"><?php esc_html_e( 'Know More', 'easy-reservations' ); ?></a>
 										</h4>
 										<div class="ersrv-reservation-details-item-summary">
 											<div class="ersrv-reservation-details-item-summary-wrapper p-3">

@@ -1253,6 +1253,12 @@ jQuery(document).ready(function ($) {
 	 */
 	$( document ).on( 'click', '.ersrv-split-reservation-cost', function() {
 		$( '.ersrv-reservation-details-item-summary' ).toggleClass( 'show' );
+
+		// Add a body class if the summary is visible.
+		$( 'body' ).removeClass( 'ersrv-reservation-cost-details-active' );
+		if ( $( '.ersrv-reservation-details-item-summary' ).hasClass( 'show' ) ) {
+			$( 'body' ).addClass( 'ersrv-reservation-cost-details-active' );
+		}
 	} );
 
 	/**
