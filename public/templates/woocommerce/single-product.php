@@ -237,7 +237,7 @@ $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platform
 										<p class="ersrv-reservation-error accomodation-error"></p>
 									</div>
 									<?php if ( ! empty( $amenities ) && is_array( $amenities ) ) { ?>
-										<div class="ersrv-item-amenities-wrapper non-clickable checkbox-wrapper mb-4 pb-3">
+										<div class="ersrv-item-amenities-wrapper checkbox-wrapper mb-4 pb-3">
 											<label for="amenities" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Amenities', 'easy-reservations' ); ?></label>
 											<?php foreach ( $amenities as $amenity_data ) {
 												$amenity_title     = ( ! empty( $amenity_data['title'] ) ) ? $amenity_data['title'] : '';
@@ -255,57 +255,10 @@ $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platform
 										</div>
 									<?php } ?>
 									<div class="calc-wrapper mb-3">
-										<label class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Summary', 'easy-reservations' ); ?></label>
-										<table class="table table-borderless">
-											<tbody>
-												<tr class="item-price-summary">
-													<th><?php esc_html_e( 'Adults:', 'easy-reservations' ); ?></th>
-													<td><span class="ersrv-cost font-lato font-weight-bold color-accent">--</span></td>
-												</tr>
-												<tr class="kids-charge-summary">
-													<th><?php esc_html_e( 'Kids:', 'easy-reservations' ); ?></th>
-													<td><span class="ersrv-cost font-lato font-weight-bold color-accent">--</span></td>
-												</tr>
-												<tr class="security-amount-summary">
-													<th><?php esc_html_e( 'Security:', 'easy-reservations' ); ?></th>
-													<td>
-														<span class="font-lato font-weight-bold color-accent">
-															<?php
-															echo wp_kses(
-																wc_price( $security_amount ),
-																array(
-																	'span' => array(
-																		'class' => array(),
-																	),
-																)
-															);
-															?>
-														</span>
-													</td>
-												</tr>
-												<tr class="amenities-summary">
-													<th><?php esc_html_e( 'Amenities:', 'easy-reservations' ); ?></th>
-													<td><span class="ersrv-cost font-lato font-weight-bold color-accent">--</span></td>
-												</tr>
-												<tr class="new-reservation-total-cost">
-													<th><?php esc_html_e( 'Total:', 'easy-reservations' ); ?></th>
-													<td>
-														<span class="ersrv-cost font-lato font-weight-bold color-accent">
-															<?php
-															echo wp_kses(
-																wc_price( $security_amount ),
-																array(
-																	'span' => array(
-																		'class' => array(),
-																	),
-																)
-															);
-															?>
-														</span>
-													</td>
-												</tr>
-											</tbody>
-										</table>
+										<h4 class="font-Poppins font-size-16 color-black font-weight-bold mb-0">
+											<?php echo sprintf( __( 'Subtotal: %1$s', 'easy-reservations' ), '<span class="ersrv-reservation-item-subtotal ersrv-cost"></span>' ); ?>
+											<a class="ersrv-split-reservation-cost text-theme-primary" href="javascript:void(0);" data-toggle="modal" data-target="#summaryModal"><?php esc_html_e('Know More', 'easy-reservations'); ?></a>
+										</h4>
 										<input type="hidden" id="accomodation-limit" value="<?php echo esc_html( $accomodation_limit ); ?>" />
 										<input type="hidden" id="min-reservation-period" value="<?php echo esc_html( $min_reservation_period ); ?>" />
 										<input type="hidden" id="max-reservation-period" value="<?php echo esc_html( $max_reservation_period ); ?>" />
@@ -376,6 +329,44 @@ $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platform
 									</div>
 								</form>
 							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- SUMMARY -->
+	<div class="modal fade" id="summaryModal" tabindex="-1" aria-labelledby="summaryModal" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm">
+			<div class="modal-content border-0">
+				<div class="modal-body">
+					<div class="ersrv-edit-reservation-item-summary" id="ersrv-edit-reservation-item-summary">
+						<div class="ersrv-edit-reservation-item-summary-wrapper p-3">
+							<table class="table table-borderless">
+								<tbody>
+									<tr class="adults-subtotal">
+										<th><?php esc_html_e( 'Adults:', 'easy-reservations' ); ?></th>
+										<td><span class="ersrv-cost font-lato font-weight-bold color-accent"></span></td>
+									</tr>
+									<tr class="kids-subtotal">
+										<th><?php esc_html_e( 'Kids:', 'easy-reservations' ); ?></th>
+										<td><span class="ersrv-cost font-lato font-weight-bold color-accent"></span></td>
+									</tr>
+									<tr class="amenities-subtotal">
+										<th><?php esc_html_e( 'Amenities:', 'easy-reservations' ); ?></th>
+										<td><span class="ersrv-cost font-lato font-weight-bold color-accent"></span></td>
+									</tr>
+									<tr class="security-subtotal">
+										<th><?php esc_html_e( 'Security:', 'easy-reservations' ); ?></th>
+										<td><span class="ersrv-cost font-lato font-weight-bold color-accent"></span></td>
+									</tr>
+									<tr class="reservation-item-subtotal">
+										<th><?php esc_html_e( 'Total:', 'easy-reservations' ); ?></th>
+										<td><span class="ersrv-cost font-lato font-weight-bold color-accent"></span></td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
