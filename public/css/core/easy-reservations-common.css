@@ -515,19 +515,16 @@ a.btn:hover,
     -webkit-backdrop-filter: blur(5px); */
     border: 1px solid transparent;
     box-shadow:
-  0 2.8px 2.2px rgba(0, 0, 0, 0.07),
-  0 6.7px 5.3px rgba(0, 0, 0, 0.05),
-  0 12.5px 10px rgba(0, 0, 0, 0.042),
-  0 22.3px 17.9px rgba(0, 0, 0, 0.035),
-  0 41.8px 33.4px rgba(0, 0, 0, 0.028),
-  0 100px 80px rgba(0, 0, 0, 0.02)
-;
-
-
+        0 2.8px 2.2px rgba(0, 0, 0, 0.07),
+        0 6.7px 5.3px rgba(0, 0, 0, 0.05),
+        0 12.5px 10px rgba(0, 0, 0, 0.042),
+        0 22.3px 17.9px rgba(0, 0, 0, 0.035),
+        0 41.8px 33.4px rgba(0, 0, 0, 0.028),
+        0 100px 80px rgba(0, 0, 0, 0.02);
 
     position: absolute;
     bottom: 20px;
-    z-index: 10;
+    z-index: 9999;
     transform-origin: bottom;
     transform: scaleY(0);
     transition: 0.3s ease-in-out;
@@ -541,6 +538,24 @@ a.btn:hover,
 
 .ersrv-reservation-details-item-summary table {
     margin-bottom: 0px;
+}
+.ersrv-reservation-cost-details-active{
+    position: relative;
+}
+.ersrv-reservation-cost-details-active::after {
+    position: fixed !important;
+    z-index: 9;
+    height: 100% !important;
+    width: 100% !important;
+    background: rgba(0,0,0,.25) !important;
+    content: "";
+    display: inline-block;
+    pointer-events: none;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    transition: 0.115s ease all;
 }
 
 /* Experimental */
