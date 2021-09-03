@@ -322,6 +322,9 @@ $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platform
 											<span class="mr-3"><img src="<?php echo esc_url( ERSRV_PLUGIN_URL . 'public/images/Instant-booking.png' ); ?>" alt="instant-booking"></span>
 											<span><?php esc_html_e( 'Instant Booking', 'easy-reservations' ); ?></span>
 										</button>
+										<div class="ersrv-powered-by-cmsminds" role="complementary">
+											<a href="https://cmsminds.com" title="<?php esc_html_e( 'Powered by cmsMinds opens in a new window', 'easy-reservations' ); ?>" target="_blank"><?php esc_html_e( 'Powered by cmsMinds', 'easy-reservations' ); ?></a>
+										</div>
 									</div>
 									<div class="dropdown-divider my-4 py-2"></div>
 									<div class="contact-owner mb-3 pb-2">
@@ -348,19 +351,19 @@ $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platform
 							</div>
 						</div>
 						<div class="advanced-search bgcolor-white rounded-xl text-center">
-							<div class="title mb-4 pb-2">
+							<div class="title pb-2">
 								<h3 class="font-Poppins font-size-24 font-weight-bold color-black"><?php esc_html_e( 'Advanced Search', 'easy-reservations' ); ?></h3>
 							</div>
 							<div class="details text-left">
 								<form action="">
-									<div class="form-group">
+									<div class="mb-2">
 										<input type="text" class="ersrv-item-search-location form-control ship-icon-field text-left rounded-lg" placeholder="<?php esc_html_e( 'Desired location', 'easy-reservations' ); ?>">
 									</div>
-									<div class="input-daterange d-flex flex-column flex-fill pb-3">
-										<input id="ersrv-search-checkin" type="text" class="form-control date-control text-left rounded-lg mb-3" placeholder="Check in">
+									<div class="input-daterange d-flex flex-column flex-fill pb-2">
+										<input id="ersrv-search-checkin" type="text" class="form-control date-control text-left rounded-lg mb-2" placeholder="Check in">
 										<input id="ersrv-search-checkout" type="text" class="form-control date-control text-left rounded-lg" placeholder="Check out">
 									</div>
-									<div class="book-items-wrapper pb-3">
+									<div class="book-items-wrapper pb-2">
 										<select class="selectpicker form-control Boat-Types" id="boat-types" data-size="5" data-style="btn-outline-secondary focus-none" title="<?php esc_html_e( 'Select Item Type', 'easy-reservations' ); ?>">
 											<?php if ( ! empty( $reservation_item_types ) && is_array( $reservation_item_types ) ) { ?>
 												<?php foreach ( $reservation_item_types as $item_type ) { ?>
