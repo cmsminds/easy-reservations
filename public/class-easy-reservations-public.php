@@ -1366,11 +1366,7 @@ class Easy_Reservations_Public {
 
 		// Check if there are amenities.
 		if ( ! empty( $cart_item_data['reservation_data']['amenities'] ) && is_array( $cart_item_data['reservation_data']['amenities'] ) ) {
-			foreach ( $cart_item_data['reservation_data']['amenities'] as $amenity_data ) {
-				$item->update_meta_data( 'Amenity: ' . $amenity_data['amenity'], $amenity_data['cost'] ); // Update the amenity data.
-			}
-
-			// Add the amenities subtotal to the item meta.
+			$item->update_meta_data( 'Amenities', $cart_item_data['reservation_data']['amenities'] ); // Update the amenities data.
 			$item->update_meta_data( 'Amenities Subtotal', $cart_item_data['reservation_data']['amenities_subtotal'] ); // Update the amenities subtotal.
 		}
 	}
@@ -1595,30 +1591,30 @@ class Easy_Reservations_Public {
 							<input type="hidden" id="quick-view-amenities-subtotal" value="" />
 							<input type="hidden" id="quick-view-security-subtotal" value="<?php echo esc_html( $security_amount ); ?>" />
 							<h4 class="font-size-20 font-weight-semibold"><?php esc_html_e( 'Subtotal', 'easy-reservations' ); ?></h4>
-							<label class="font-size-16"><?php echo sprintf( __( 'This will add %1$s to the cart.', 'easy-reservations' ), '<a href="javascript:void(0);" class="ersrv-split-reservation-cost is-modal"><span class="font-lato font-weight-bold color-accent ersrv-quick-view-item-subtotal ersrv-cost">--</span></a>' ); ?></label>
+							<label class="font-size-16"><?php echo sprintf( __( 'This will add %1$s to the cart.', 'easy-reservations' ), '<a href="javascript:void(0);" class="text-decoration-none ersrv-split-reservation-cost is-modal"><span class="font-lato font-weight-bold color-accent ersrv-quick-view-item-subtotal ersrv-cost">--</span></a>' ); ?></label>
 							<div class="ersrv-reservation-details-item-summary">
 								<div class="ersrv-reservation-details-item-summary-wrapper p-3">
 									<table class="table table-borderless">
 										<tbody>
 											<tr class="adults-subtotal">
 												<th><?php esc_html_e( 'Adults:', 'easy-reservations' ); ?></th>
-												<td><span class="ersrv-cost font-lato font-weight-bold color-accent">--</span></td>
+												<td><span data-cost="" class="ersrv-cost font-lato font-weight-bold color-accent">--</span></td>
 											</tr>
 											<tr class="kids-subtotal">
 												<th><?php esc_html_e( 'Kids:', 'easy-reservations' ); ?></th>
-												<td><span class="ersrv-cost font-lato font-weight-bold color-accent">--</span></td>
+												<td><span data-cost="" class="ersrv-cost font-lato font-weight-bold color-accent">--</span></td>
 											</tr>
 											<tr class="amenities-subtotal">
 												<th><?php esc_html_e( 'Amenities:', 'easy-reservations' ); ?></th>
-												<td><span class="ersrv-cost font-lato font-weight-bold color-accent">--</span></td>
+												<td><span data-cost="" class="ersrv-cost font-lato font-weight-bold color-accent">--</span></td>
 											</tr>
 											<tr class="security-subtotal">
 												<th><?php esc_html_e( 'Security:', 'easy-reservations' ); ?></th>
-												<td><span class="ersrv-cost font-lato font-weight-bold color-accent">--</span></td>
+												<td><span data-cost="" class="ersrv-cost font-lato font-weight-bold color-accent">--</span></td>
 											</tr>
 											<tr class="reservation-item-subtotal">
 												<th><?php esc_html_e( 'Total:', 'easy-reservations' ); ?></th>
-												<td><span class="ersrv-cost font-lato font-weight-bold color-accent">--</span></td>
+												<td><span data-cost="" class="ersrv-cost font-lato font-weight-bold color-accent">--</span></td>
 											</tr>
 										</tbody>
 									</table>

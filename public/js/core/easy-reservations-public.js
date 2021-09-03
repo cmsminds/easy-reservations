@@ -672,13 +672,14 @@ jQuery(document).ready(function ($) {
 			adult_count: adult_count,
 			kid_count: kid_count,
 			amenities: amenities,
-			item_subtotal: ersrv_get_reservation_item_subtotal(),
-			kids_subtotal: ersrv_get_reservation_kids_subtotal(),
-			security_subtotal: ersrv_get_security_subtotal(),
-			amenities_subtotal: ersrv_get_amenities_subtotal(),
-			item_total: ersrv_get_item_total(),
+			item_subtotal: $( '.adults-subtotal span.ersrv-cost' ).data( 'cost' ),
+			kids_subtotal: $( '.kids-subtotal span.ersrv-cost' ).data( 'cost' ),
+			security_subtotal: $( '.security-subtotal span.ersrv-cost' ).data( 'cost' ),
+			amenities_subtotal: $( '.amenities-subtotal span.ersrv-cost' ).data( 'cost' ),
+			item_total: $( '.reservation-item-subtotal span.ersrv-cost' ).data( 'cost' ),
 		};
 
+		// Add reservation to the cart.
 		ersrv_add_reservation_to_cart( this_button, data );
 	} );
 
@@ -802,13 +803,14 @@ jQuery(document).ready(function ($) {
 			adult_count: adult_count,
 			kid_count: kid_count,
 			amenities: amenities,
-			item_subtotal: parseFloat( $( '#quick-view-adult-subtotal' ).val() ),
-			kids_subtotal: parseFloat( $( '#quick-view-kid-subtotal' ).val() ),
-			security_subtotal: parseFloat( $( '#quick-view-security-subtotal' ).val() ),
-			amenities_subtotal: parseFloat( $( '#quick-view-amenities-subtotal' ).val() ),
-			item_total: parseFloat( ersrv_get_quick_view_item_total() ),
+			item_subtotal: $( '.adults-subtotal span.ersrv-cost' ).data( 'cost' ),
+			kids_subtotal: $( '.kids-subtotal span.ersrv-cost' ).data( 'cost' ),
+			security_subtotal: $( '.security-subtotal span.ersrv-cost' ).data( 'cost' ),
+			amenities_subtotal: $( '.amenities-subtotal span.ersrv-cost' ).data( 'cost' ),
+			item_total: $( '.reservation-item-subtotal span.ersrv-cost' ).data( 'cost' ),
 		};
 
+		// Add reservation to the cart.
 		ersrv_add_reservation_to_cart( this_button, data );
 	} );
 
@@ -1633,11 +1635,11 @@ jQuery(document).ready(function ($) {
 		var formatted_total_cost = ersrv_get_formatted_price( total_cost );
 
 		// Put in all the totals now.
-		$( '.adults-subtotal span.ersrv-cost' ).html( formatted_adult_charge );
-		$( '.kids-subtotal span.ersrv-cost' ).html( formatted_kids_charge );
-		$( '.amenities-subtotal span.ersrv-cost' ).html( formatted_amenities_total );
-		$( '.security-subtotal span.ersrv-cost' ).html( formatted_security_total );
-		$( '.reservation-item-subtotal span.ersrv-cost' ).html( formatted_total_cost );
+		$( '.adults-subtotal span.ersrv-cost' ).html( formatted_adult_charge ).data( 'cost', adult_charge );
+		$( '.kids-subtotal span.ersrv-cost' ).html( formatted_kids_charge ).data( 'cost', kids_charge );
+		$( '.amenities-subtotal span.ersrv-cost' ).html( formatted_amenities_total ).data( 'cost', amenities_total );
+		$( '.security-subtotal span.ersrv-cost' ).html( formatted_security_total ).data( 'cost', security_total );
+		$( '.reservation-item-subtotal span.ersrv-cost' ).html( formatted_total_cost ).data( 'cost', total_cost );
 		$( '.reservation-item-subtotal span.ersrv-cost, .ersrv-reservation-item-subtotal.ersrv-cost' ).html( formatted_total_cost );
 	}
 
