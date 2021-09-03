@@ -62,7 +62,8 @@ div#ersrv-export-reservations-modal .ersrv-modal-content {
 }
 .ersrv-date-ranges .from,
 .ersrv-date-ranges .to,
-.ersrv-modal-content .format{
+.ersrv-modal-content .format,
+.ersrv-blockout-dates-message{
 	display: flex;
 	align-items: flex-start;
 	justify-content: flex-start;
@@ -76,13 +77,14 @@ div#ersrv-export-reservations-modal .ersrv-modal-content {
 	font-size: 14px;
 	font-weight: 600;
 	margin-right: 8px;
+	min-width: 65px;
 }
-.ersrv-date-ranges .from label,
+/* .ersrv-date-ranges .from label,
 .ersrv-date-ranges .to label,
 .ersrv-modal-content .format label{
 	min-width: 50px;
     margin: 0px;
-}
+} */
 .ersrv-date-ranges .from{
 	margin-bottom: 10px;
 }
