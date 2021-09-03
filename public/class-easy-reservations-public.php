@@ -1696,13 +1696,14 @@ class Easy_Reservations_Public {
 				</span>
 				<button type="button" class="upload btn btn-accent"><span class="sr-only"><?php esc_html_e( 'Upload', 'easy-reservations' ); ?></span><span class="fa fa-upload"></span></button>
 				<button type="button" onclick="<?php echo esc_attr( $view_license_url ); ?>" class="view btn btn-accent <?php echo esc_attr( $view_license_class ); ?>"><span class="sr-only"><?php esc_html_e( 'View', 'easy-reservations' ); ?></span><span class="fa fa-eye"></span></button>
+				<div class="ersrv-uploaded-checkout-license-file">
 				<?php if ( ! is_null( $attachment_id ) ) {
 					$filename = basename( $attachment_url );
+					$filename = ( 25 <= strlen( $filename ) ) ? ersrv_shorten_filename( $filename ) : $filename;
 					?>
-					<div class="ersrv-uploaded-checkout-license-file">
-						<span><?php echo sprintf( __( 'Uploaded: %2$s%1$s%3$s', 'easy-reservations' ), $filename, '<a href="' . $attachment_url . '">', '</a>' ); ?></span>
-					</div>
+					<span><?php echo sprintf( __( 'Uploaded: %2$s%1$s%3$s', 'easy-reservations' ), $filename, '<a href="' . $attachment_url . '">', '</a>' ); ?></span>
 				<?php } ?>
+				</div>
 			</p>
 		</div>
 		<?php
@@ -1749,6 +1750,7 @@ class Easy_Reservations_Public {
 		// Return with the on click attribute.
 		$attachment_url   = ersrv_get_attachment_url_from_attachment_id( $attach_id );
 		$filename         = basename( $attachment_url );
+		$filename         = ( 25 <= strlen( $filename ) ) ? ersrv_shorten_filename( $filename ) : $filename;
 		$view_license_url = "location.href = '{$attachment_url}'";
 
 		// View license html.
