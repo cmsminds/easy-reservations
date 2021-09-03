@@ -236,6 +236,21 @@
     border-radius: 5px;
 }
 
+.modal-dialog-right {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 0px;
+    align-items: center;
+    min-height: calc(100% - 3.5rem);
+}
+.modal-dialog-left {
+    display: flex;
+    justify-content: flex-start;
+    margin-right: 0px;
+    align-items: center;
+    min-height: calc(100% - 3.5rem);
+}
+
 @media(max-width:1024px) {
 	.modal-content {
 		height: auto;
