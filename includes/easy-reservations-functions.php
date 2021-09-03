@@ -2655,3 +2655,38 @@ if ( ! function_exists( 'ersrv_no_reservation_item_found_html' ) ) {
 		return ob_get_clean();
 	}
 }
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_shorten_filename' ) ) {
+	/**
+	 * Return the shortened filename from a very long filename.
+	 *
+	 * @param string $long_filename Long filename.
+	 * @return string
+	 * @since 1.0.0
+	 */
+	function ersrv_shorten_filename( $long_filename ) {
+		// Return, if the filename is empty.
+		if ( empty( $long_filename ) ) {
+			return $long_filename;
+		}
+
+		
+		$left_part  = substr( $long_filename, 0, 9 ); // Get the left part of the filename.
+		$right_part = substr( $long_filename, -9, 9 ); // Get the right part of the filename.
+		$filename   = "{$left_part}...{$right_part}";
+
+		/**
+		 * This hooks runs on the checkout page basically where the license files are uploaded.
+		 *
+		 * This hooks helps in modifying the shortened filename.
+		 *
+		 * @param string $filename File name.
+		 * @return string
+		 * @since 1.0.0
+		 */
+		return apply_filters( 'ersrv_shortened_filename', $filename );
+	}
+}
