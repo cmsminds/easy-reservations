@@ -97,12 +97,25 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 .woocommerce_options_panel .form-field.blockout-dates-row {
 	padding-left: 16px !important;
 	display: flex;
+	margin: 0px;
+}
+.woocommerce_options_panel p.form-field,
+.woocommerce_options_panel fieldset.form-field{
+	margin-top: 0px;
+	margin-bottom: 0px;
 }
 
 .amenities-row .short,
 .blockout-dates-row .short {
-	width: calc(100%/ 2 - 16px) !important;
-	margin-right: 16px;
+	width: calc(100%/ 2 - 8px) !important;
+	margin-right: 8px;
+}
+.ersrv-amenity-charge-type{
+	margin-right: 8px !important;
+}
+.amenities-list .amenities-row{
+    margin-top: 0px;
+	margin-bottom: 0px;
 }
 
 .reservations-amenities-header,
@@ -527,4 +540,8 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 }
 .ersrv-driving-license-container.edit-order a.view:hover span{
 	transform: translateX(0px) translateY(-2px);
+}
+.button[class*="ersrv-"]::before,
+.button[class^="ersrv-"]::before{
+	vertical-align: middle;
 }

@@ -1,7 +1,8 @@
-body:not(.theme-twentysixteen):not(.woocommerce-shop) .site,
+body:not(.archive):not(.tax-reservation-item-type) .site,
+body:not(.archive):not(.post-type-archive):not(.post-type-archive-product) .site,
 .theme-twentynineteen .site-content .site-main .page .entry-content,
 .theme-twentytwenty #site-content .wrapper,
-.theme-twentytwentyone .site-content>.content-area>#main .wrapper {
+.theme-twentytwentyone:not(.archive):not(.post-type-archive):not(.post-type-archive-product) .site-content>.content-area>#main .wrapper{
     margin: 0px;
 }
 
@@ -10,8 +11,8 @@ table {
 }
 
 .site-inner,
-.theme-astra .site-content>.ast-container,
-.theme-astra .site-content>.ast-container>section,
+.theme-astra:not(.archive):not(.post-type-archive):not(.post-type-archive-product) .site-content>.ast-container,
+.theme-astra:not(.archive):not(.post-type-archive):not(.post-type-archive-product) .site-content>.ast-container>section,
 .theme-storefront .site-content>.col-full,
 .theme-twentytwentyone .site-content>.content-area,
 .theme-twentynineteen .site-content .site-main .page .entry-content,
@@ -21,12 +22,13 @@ table {
     max-width: 100%;
 }
 
-body:not(.theme-twentysixteen):not(.woocommerce-shop) .site-content,
-.theme-astra .site-content>.ast-container,
+body:not(.archive):not(.tax-reservation-item-type) .site-content,
+body:not(.archive):not(.post-type-archive):not(.post-type-archive-product) .site-content,
+.theme-astra:not(.archive):not(.post-type-archive):not(.post-type-archive-product) .site-content>.ast-container,
 .theme-storefront .site-content>.col-full,
-.theme-twentytwentyone .site-content>.content-area,
-.theme-twentytwentyone .site-content>.content-area>#main>.wrapper,
-.theme-twentynineteen .site-content .site-main .page .entry-content {
+.theme-twentytwentyone:not(.archive):not(.post-type-archive):not(.post-type-archive-product) .site-content>.content-area,
+.theme-twentytwentyone:not(.archive):not(.post-type-archive):not(.post-type-archive-product) .site-content>.content-area>#main>.wrapper,
+.theme-twentynineteen .site-content .site-main .page .entry-content{
     padding: 0px;
 }
 
@@ -39,9 +41,9 @@ body:not(.theme-twentysixteen):not(.woocommerce-shop) .site-content,
 .theme-astra .site-content .ast-container .content-area {
     margin-bottom: 0px !important;
 }
-body.theme-twentysixteen{
+/* body.theme-twentysixteen{
     background-color: #1a1a1a;
-}
+} */
 .non-clickable {
     pointer-events: none !important;
     opacity: 0.5;
@@ -70,7 +72,7 @@ h2:before,
 }
 
 /* Search page */
-.theme-twentyseventeen .site-content>.wrap {
+.theme-twentyseventeen:not(.archive):not(.post-type-archive):not(.post-type-archive-product) .site-content>.wrap {
     margin: 0px;
     padding: 0px;
     max-width: 100%;
@@ -487,9 +489,21 @@ a.btn:hover,
     background-color: #6c757d;
     border-color: #6c757d;
 }
+.ersrv-powered-by-cmsminds a{
+    margin-top: 16px;
+    text-indent: -9999px;
+    display: block;
+    height: 24px;
+    width: 100%;
+    background-image: url(../../images/Powered-by.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 
 /* Experimental */
-body::after {
+/* body::after {
     position: fixed;
     z-index: 99999;
     height: 100%;
@@ -500,4 +514,4 @@ body::after {
     pointer-events: none;
     top: 0px;
     left: 0px;
-}
+} */
