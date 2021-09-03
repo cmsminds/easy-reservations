@@ -539,6 +539,24 @@ a.btn:hover,
 .ersrv-reservation-details-item-summary table {
     margin-bottom: 0px;
 }
+.ersrv-reservation-details-item-summary table td,
+.ersrv-reservation-details-item-summary table td *,
+.ersrv-reservation-details-item-summary table th {
+    color: #7e808c !important;
+    line-height: normal;
+}
+.ersrv-reservation-details-item-summary table td{
+    text-align: right;
+}
+.ersrv-reservation-details-item-summary table .reservation-item-subtotal {
+    border-top: 1px solid #a7a9b1;
+}
+.ersrv-reservation-details-item-summary table .reservation-item-subtotal * {
+    color: #000 !important;
+    padding-bottom: 0px !important;
+    padding-top: 5px !important;
+}
+
 .ersrv-reservation-cost-details-active{
     position: relative;
 }
