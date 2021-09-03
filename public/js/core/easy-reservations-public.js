@@ -1249,6 +1249,13 @@ jQuery(document).ready(function ($) {
 	} );
 
 	/**
+	 * Sho the reservation slitted cost.
+	 */
+	$( document ).on( 'click', '.ersrv-split-reservation-cost', function() {
+		$( '.ersrv-reservation-details-item-summary' ).toggleClass( 'show' );
+	} );
+
+	/**
 	 * Submit the search AJAX.
 	 */
 	function ersrv_submit_search_reservations( args ) {
