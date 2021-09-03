@@ -1,4 +1,4 @@
-.site,
+body:not(.theme-twentysixteen):not(.woocommerce-shop) .site,
 .theme-twentynineteen .site-content .site-main .page .entry-content,
 .theme-twentytwenty #site-content .wrapper,
 .theme-twentytwentyone .site-content>.content-area>#main .wrapper {
@@ -21,7 +21,7 @@ table {
     max-width: 100%;
 }
 
-.site-content,
+body:not(.theme-twentysixteen):not(.woocommerce-shop) .site-content,
 .theme-astra .site-content>.ast-container,
 .theme-storefront .site-content>.col-full,
 .theme-twentytwentyone .site-content>.content-area,
@@ -39,7 +39,9 @@ table {
 .theme-astra .site-content .ast-container .content-area {
     margin-bottom: 0px !important;
 }
-
+body.theme-twentysixteen{
+    background-color: #1a1a1a;
+}
 .non-clickable {
     pointer-events: none !important;
     opacity: 0.5;
