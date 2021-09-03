@@ -2,7 +2,7 @@ body:not(.archive):not(.tax-reservation-item-type) .site,
 body:not(.archive):not(.post-type-archive):not(.post-type-archive-product) .site,
 .theme-twentynineteen .site-content .site-main .page .entry-content,
 .theme-twentytwenty #site-content .wrapper,
-.theme-twentytwentyone:not(.archive):not(.post-type-archive):not(.post-type-archive-product) .site-content>.content-area>#main .wrapper{
+.theme-twentytwentyone:not(.archive):not(.post-type-archive):not(.post-type-archive-product) .site-content>.content-area>#main .wrapper {
     margin: 0px;
 }
 
@@ -28,7 +28,7 @@ body:not(.archive):not(.post-type-archive):not(.post-type-archive-product) .site
 .theme-storefront .site-content>.col-full,
 .theme-twentytwentyone:not(.archive):not(.post-type-archive):not(.post-type-archive-product) .site-content>.content-area,
 .theme-twentytwentyone:not(.archive):not(.post-type-archive):not(.post-type-archive-product) .site-content>.content-area>#main>.wrapper,
-.theme-twentynineteen .site-content .site-main .page .entry-content{
+.theme-twentynineteen .site-content .site-main .page .entry-content {
     padding: 0px;
 }
 
@@ -41,6 +41,7 @@ body:not(.archive):not(.post-type-archive):not(.post-type-archive-product) .site
 .theme-astra .site-content .ast-container .content-area {
     margin-bottom: 0px !important;
 }
+
 /* body.theme-twentysixteen{
     background-color: #1a1a1a;
 } */
@@ -484,12 +485,14 @@ a.btn:hover,
 .btn-outline-light {
     color: #212529;
 }
+
 .btn-outline-secondary:focus {
     color: #fff;
     background-color: #6c757d;
     border-color: #6c757d;
 }
-.ersrv-powered-by-cmsminds a{
+
+.ersrv-powered-by-cmsminds a {
     margin-top: 16px;
     text-indent: -9999px;
     display: block;
@@ -501,6 +504,44 @@ a.btn:hover,
     background-position: center;
 }
 
+.wrapper .sidebar-wrapper .book-tour .calc-wrapper {
+    position: relative;
+}
+
+.ersrv-reservation-details-item-summary {
+    background: rgba(255, 255, 255, 1);
+    border-radius: 8px;
+    /* backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px); */
+    border: 1px solid transparent;
+    box-shadow:
+  0 2.8px 2.2px rgba(0, 0, 0, 0.07),
+  0 6.7px 5.3px rgba(0, 0, 0, 0.05),
+  0 12.5px 10px rgba(0, 0, 0, 0.042),
+  0 22.3px 17.9px rgba(0, 0, 0, 0.035),
+  0 41.8px 33.4px rgba(0, 0, 0, 0.028),
+  0 100px 80px rgba(0, 0, 0, 0.02)
+;
+
+
+
+    position: absolute;
+    bottom: 20px;
+    z-index: 10;
+    transform-origin: bottom;
+    transform: scaleY(0);
+    transition: 0.3s ease-in-out;
+    margin: 10px 30px;
+}
+
+.ersrv-reservation-details-item-summary.show {
+    transform: none;
+    transform-origin: bottom;
+}
+
+.ersrv-reservation-details-item-summary table {
+    margin-bottom: 0px;
+}
 
 /* Experimental */
 /* body::after {
