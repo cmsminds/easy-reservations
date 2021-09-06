@@ -558,8 +558,12 @@ a.btn:hover,
 }
 
 .ersrv-reservation-cost-details-active,
+.ersrv-split-reservation-cost,
 .col-product .product-details .product-details-values{
     position: relative;
+}
+.ersrv-split-reservation-cost{
+    z-index: 9999;
 }
 .ersrv-reservation-cost-details-active::after {
     position: fixed !important;
@@ -569,7 +573,7 @@ a.btn:hover,
     background: rgba(0,0,0,.25) !important;
     content: "";
     display: inline-block;
-    pointer-events: none;
+    /* pointer-events: none; */
     top: 0px;
     left: 0px;
     bottom: 0px;
