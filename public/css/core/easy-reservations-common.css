@@ -528,7 +528,7 @@ a.btn:hover,
     transform-origin: bottom;
     transform: scaleY(0);
     transition: 0.3s ease-in-out;
-    margin: 10px 30px;
+    margin: 10px 20px;
 }
 
 .ersrv-reservation-details-item-summary.show {
