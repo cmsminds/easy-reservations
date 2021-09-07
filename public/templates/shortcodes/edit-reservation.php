@@ -134,13 +134,13 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 														</div>
 													</div>
 													<div class="col-12">
-														<div class="d-flex flex-wrap ersrv-edit-reservation-dates-indicators mb-3 pt-2">
+														<div class="d-flex flex-wrap ersrv-edit-reservation-dates-indicators mb-0 pt-2">
 															<div class="ersrv-available-dates-notifier"><span><?php esc_html_e('Available Dates', 'easy-reservations'); ?></span></div>
 															<div class="ersrv-order-reserved-dates-notifier ml-md-3"><span><?php esc_html_e('Order Reserved Dates', 'easy-reservations'); ?></span></div>
 															<div class="ersrv-unavailable-dates-notifier ml-md-3"><span><?php esc_html_e('Unvailable Dates', 'easy-reservations'); ?></span></div>
 														</div>
 													</div>
-													<p class="ersrv-reservation-error" id="checkin-checkout-dates-error-<?php echo esc_attr($item_id); ?>"></p>
+													<p class="ersrv-reservation-error mt-3" id="checkin-checkout-dates-error-<?php echo esc_attr($item_id); ?>"></p>
 												</div>
 											</div>
 										</div>
