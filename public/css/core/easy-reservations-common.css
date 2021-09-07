@@ -593,6 +593,16 @@ a.btn:hover,
     padding-right: 0px;
     padding-left: 0px;
 }
+.ersrv-edit-reservation-item-card .bookItems .position-relative label{
+    position: absolute;
+    right: 10px;
+    top: 7px;
+    color: #686868;
+}
+
+
+
+
 /* Experimental */
 /* body::after {
     position: fixed;
