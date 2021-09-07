@@ -611,6 +611,9 @@ a.btn:hover,
 .edit-order-wrapper .ersrv-edit-reservation-item-card .position-relative input.form-control{
     padding-left: 100px;
 }
+.ersrv-edit-reservation-template .ersrv-reservation-error:empty{
+    display: none;
+}
 /* .edit-order-wrapper .ersrv-edit-reservation-item-card .bookingDates .position-relative input.form-control{
     padding-left: 100px;
 } */
