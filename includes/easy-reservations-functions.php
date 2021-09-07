@@ -2733,3 +2733,40 @@ if ( ! function_exists( 'ersrv_shorten_filename' ) ) {
 		return apply_filters( 'ersrv_shortened_filename', $filename );
 	}
 }
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_is_amenity_reserved' ) ) {
+	/**
+	 * Check if the amenity is reserved.
+	 *
+	 * @param string $amenity_title Amenity title.
+	 * @param array  $reserved_amenities Reserved amenities.
+	 * @return boolean
+	 * @since 1.0.0
+	 */
+	function ersrv_is_amenity_reserved( $amenity_title, $reserved_amenities ) {
+		// Return false, if the reserved amenities array is empty.
+		if ( empty( $reserved_amenities ) || ! is_array( $reserved_amenities ) ) {
+			return false;
+		}
+
+		// Reserved amenities titles.
+		$reserved_amenities_titles = array_column( $reserved_amenities, 'amenity' );
+		$is_reserved               = ( ! empty( $reserved_amenities_titles ) && in_array( $amenity_title, $reserved_amenities_titles, true ) ) ? true : false;
+
+		/**
+		 * This hook executes on the edit reservation page.
+		 *
+		 * This hook helps in modifying the value whether the amenity is reserved or not.
+		 *
+		 * @param boolean $is_reserved Is the amenity reserved.
+		 * @param string $amenity_title Amenity title.
+		 * @param array  $reserved_amenities Reserved amenities.
+		 * @return boolean
+		 * @since 1.0.0
+		 */
+		return apply_filters( 'ersrv_is_amenity_reserved', $is_reserved, $amenity_title, $reserved_amenities );
+	}
+}

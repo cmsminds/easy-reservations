@@ -18,6 +18,8 @@ jQuery(document).ready(function ($) {
 	var reservation_greater_reservation_days_err_msg = ERSRV_Edit_Reservation_Script_Vars.reservation_greater_reservation_days_err_msg;
 	var reservation_item_changes_invalidated         = ERSRV_Edit_Reservation_Script_Vars.reservation_item_changes_invalidated;
 	var cannot_update_reservation_item_invalidated   = ERSRV_Edit_Reservation_Script_Vars.cannot_update_reservation_item_invalidated;
+	var customer_payable_cost_difference_message     = ERSRV_Edit_Reservation_Script_Vars.customer_payable_cost_difference_message;
+	var admin_payable_cost_difference_message        = ERSRV_Edit_Reservation_Script_Vars.admin_payable_cost_difference_message;
 
 	// If sidebar is to be removed on reservation single page.
 	$( '#secondary' ).remove();
@@ -128,6 +130,15 @@ jQuery(document).ready(function ($) {
 									$( '#ersrv-edit-reservation-item-checkout-date-' + item_id ).datepicker( 'show' );
 								}, 16 );
 							}
+
+							var checkin_date  = $( '#ersrv-edit-reservation-item-checkin-date-' + item_id ).val();
+							var checkout_date = $( '#ersrv-edit-reservation-item-checkin-date-' + item_id ).val();
+
+							// Calculate the totals, if both the dates are available.
+							if ( 1 === is_valid_string( checkin_date ) && 1 === is_valid_string( checkout_date ) ) {
+								// Recalculate the product summary.
+								ersrv_recalculate_edit_reservation_item_summary( item_id );
+							}
 						},
 						dateFormat: date_format,
 						minDate: 0,
@@ -179,6 +190,8 @@ jQuery(document).ready(function ($) {
 			ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, cannot_update_reservation_item_invalidated );
 			return false;
 		}
+
+		return false;
 
 		// Order ID.
 		var order_id = parseInt( $( '.ersrv-order-id' ).val() );
@@ -300,40 +313,25 @@ jQuery(document).ready(function ($) {
 	$( document ).on( 'keyup click', '.ersrv-edit-reservation-item-adult-count', function() {
 		var this_input  = $( this );
 		var item_id     = this_input.parents( '.ersrv-edit-reservation-item-card' ).data( 'itemid' );
-		var adult_count = parseInt( this_input.val() );
-		adult_count     = ( -1 === is_valid_number( adult_count ) ) ? 0 : adult_count;
-
-		// Manage the adult's cost.
-		var per_adult_charge       = parseFloat( $( '#adult-charge-' + item_id ).val() );
-		var total_charge           = adult_count * per_adult_charge;
-		var formatted_total_charge = ersrv_get_formatted_price( total_charge );
-
-		// Paste this final adult price in summary.
-		$( 'tr#item-price-summary-' + item_id + ' td span.ersrv-cost' ).html( formatted_total_charge );
-
-		// Calculate the total cost.
-		ersrv_calculate_edit_reservation_item_total_cost( item_id );
+		ersrv_recalculate_edit_reservation_item_summary( item_id ); // Recalculate the product summary.
 	} );
 
 	/**
 	 * Edit reservation kid accomodation charge.
 	 */
 	$( document ).on( 'keyup click', '.ersrv-edit-reservation-item-kid-count', function() {
-		var this_input = $( this );
-		var item_id    = this_input.parents( '.ersrv-edit-reservation-item-card' ).data( 'itemid' );
-		var kid_count  = parseInt( this_input.val() );
-		kid_count      = ( -1 === is_valid_number( kid_count ) ) ? 0 : kid_count;
+		var this_input  = $( this );
+		var item_id     = this_input.parents( '.ersrv-edit-reservation-item-card' ).data( 'itemid' );
+		ersrv_recalculate_edit_reservation_item_summary( item_id ); // Recalculate the product summary.
+	} );
 
-		// Manage the kids cost.
-		var per_kid_charge         = parseFloat( $( '#kid-charge-' + item_id ).val() );
-		var total_charge           = kid_count * per_kid_charge;
-		var formatted_total_charge = ersrv_get_formatted_price( total_charge );
-
-		// Paste this final kid price in summary.
-		$( 'tr#kids-charge-summary-' + item_id + ' td span.ersrv-cost' ).html( formatted_total_charge );
-
-		// Calculate the total cost.
-		ersrv_calculate_edit_reservation_item_total_cost( item_id );
+	/**
+	 * Amenities charge summary.
+	 */
+	 $( document ).on( 'click', '.ersrv-single-amenity-block', function() {
+		var this_element  = $( this );
+		var item_id       = this_element.parents( '.ersrv-edit-reservation-item-card' ).data( 'itemid' );
+		ersrv_recalculate_edit_reservation_item_summary( item_id ); // Recalculate the product summary.
 	} );
 
 	/**
@@ -453,6 +451,15 @@ jQuery(document).ready(function ($) {
 	} );
 
 	/**
+	 * Show/hide the reservation splitted cost.
+	 */
+	$( document ).on( 'click', '.ersrv-split-reservation-cost', function() {
+		var this_anchor = $( this );
+		var item_id     = this_anchor.parents( '.ersrv-edit-reservation-item-card' ).data( 'itemid' );
+		$( '#ersrv-edit-reservation-item-summary-' + item_id ).toggleClass( 'show' );
+	} );
+
+	/**
 	 * Get the item subtotal.
 	 *
 	 * @returns number
@@ -521,36 +528,7 @@ jQuery(document).ready(function ($) {
 		$( 'tr#edit-reservation-item-total-cost-' + item_id + ' td span.ersrv-cost' ).html( total_cost_formatted );
 		$( 'span#ersrv-edit-reservation-item-subtotal-' + item_id ).html( total_cost_formatted );
 
-		// Calculate the cost difference.
-		ersrv_calculate_reservation_cost_difference();
-
 		return total_cost;
-	}
-
-	/**
-	 * Calculate the cost difference.
-	 */
-	function ersrv_calculate_reservation_cost_difference() {
-		var item_new_total = 0.00;
-		// Iterate through the items to get IDs.
-		$( '.ersrv-edit-reservation-item-card' ).each( function() {
-			var this_card   = $( this );
-			var item_id     = this_card.data( 'itemid' );
-			var subtotal    = $( '#ersrv-edit-reservation-item-subtotal-' + item_id ).text();
-			subtotal        = parseFloat( subtotal.replace( /[^\d.]/g, '' ) );
-			subtotal        = ( -1 === is_valid_number( subtotal ) ) ? 0 : subtotal;
-			item_new_total += subtotal;
-		} );
-
-		// Calculate the cost difference now.
-		var old_order_total = parseFloat( $( '.ersrv-edit-reservation-order-total' ).val() );
-		var cost_difference = item_new_total - old_order_total;
-
-		// Get the formatted cost difference.
-		cost_difference = ersrv_get_formatted_price( cost_difference );
-
-		// Paste the cost difference.
-		$( '.ersrv-edit-reservation-cost-difference' ).html( cost_difference );
 	}
 
 	/**
@@ -709,5 +687,117 @@ jQuery(document).ready(function ($) {
 		}
 
 		return dates;
+	}
+
+	/**
+	 * Recalculate the item summary on the reservation quick view page.
+	 */
+	function ersrv_recalculate_edit_reservation_item_summary( item_id ) {
+		var checkin_date    = $( '#ersrv-edit-reservation-item-checkin-date-' + item_id ).val();
+		var checkout_date   = $( '#ersrv-edit-reservation-item-checkout-date-' + item_id ).val();
+		var selected_dates  = [];
+		var amenities_total = 0.0;
+
+		// Get the checkin and checkout dates.
+		var selected_dates_obj = ersrv_get_dates_between_2_dates( checkin_date, checkout_date );
+		for ( var m in selected_dates_obj ) {
+			selected_dates.push( ersrv_get_formatted_date( selected_dates_obj[m] ) );
+		}
+
+		// Get the count of the selected days.
+		var selected_dates_count = selected_dates.length;
+
+		// Accomodation.
+		var adult_count = parseInt( $( '#ersrv-edit-reservation-item-adult-count-' + item_id ).val() );
+		adult_count     = ( -1 === is_valid_number( adult_count ) ) ? 1 : adult_count;
+		var kids_count  = parseInt( $( '#ersrv-edit-reservation-item-kid-count-' + item_id ).val() );
+		kids_count      = ( -1 === is_valid_number( kids_count ) ) ? 0 : kids_count;
+
+		// Accomodation charges.
+		var adult_charge           = parseFloat( $( '#adult-charge-' + item_id ).val() );
+		adult_charge               = selected_dates_count * adult_count * adult_charge;
+		var formatted_adult_charge = ersrv_get_formatted_price( adult_charge );
+		var kids_charge            = parseFloat( $( '#kid-charge-' + item_id ).val() );
+		kids_charge                = selected_dates_count * kids_count * kids_charge;
+		var formatted_kids_charge  = ersrv_get_formatted_price( kids_charge );
+
+		// Amenities charges.
+		$( '#ersrv-amenities-wrapper-' + item_id ).find( '.ersrv-single-amenity-block' ).each ( function() {
+			var this_div      = $( this );
+			var this_checkbox = this_div.find( 'input[type="checkbox"]' );
+			var is_checked    = this_checkbox.is( ':checked' );
+			if ( true === is_checked ) {
+				var amenity_cost  = parseFloat( this_div.data( 'cost' ) );
+				var cost_type     = this_div.data( 'cost_type' );
+				amenity_cost      = ( 'per_day' === cost_type ) ? ( amenity_cost * selected_dates_count ) : amenity_cost;
+				amenity_cost      = parseFloat( amenity_cost.toFixed( 2 ) );
+				amenities_total  += amenity_cost;
+			}
+		} );
+
+		// Formatted amenities cost.
+		var formatted_amenities_total = ersrv_get_formatted_price( amenities_total );
+
+		// Security charge.
+		var security_total           = parseFloat( $( '#security-amount-' + item_id ).val() );
+		var formatted_security_total = ersrv_get_formatted_price( security_total );
+
+		// Calculate the total cost now.
+		var total_cost           = adult_charge + kids_charge + amenities_total + security_total;
+		var formatted_total_cost = ersrv_get_formatted_price( total_cost );
+
+		// Put in all the totals now.
+		$( '#item-price-summary-' + item_id + ' td span.ersrv-cost' ).html( formatted_adult_charge ).data( 'cost', adult_charge );
+		$( '#kids-charge-summary-' + item_id + ' td span.ersrv-cost' ).html( formatted_kids_charge ).data( 'cost', kids_charge );
+		$( '#amenities-summary-' + item_id + ' td span.ersrv-cost' ).html( formatted_amenities_total ).data( 'cost', amenities_total );
+		$( '#security-summary-' + item_id + ' td span.ersrv-cost' ).html( formatted_security_total ).data( 'cost', security_total );
+		$( '#edit-reservation-item-total-cost-' + item_id + ' td span.ersrv-cost' ).html( formatted_total_cost ).data( 'cost', total_cost );
+		$( '#ersrv-edit-reservation-item-subtotal-' + item_id ).html( formatted_total_cost );
+
+		// Calculate the cost difference.
+		ersrv_calculate_reservation_cost_difference();
+	}
+
+	/**
+	 * Calculate the cost difference.
+	 */
+	function ersrv_calculate_reservation_cost_difference() {
+		var item_new_total = 0.00;
+		// Iterate through the items to get IDs.
+		$( '.ersrv-edit-reservation-item-card' ).each( function() {
+			var this_card   = $( this );
+			var item_id     = this_card.data( 'itemid' );
+			var subtotal    = $( '#ersrv-edit-reservation-item-subtotal-' + item_id ).text();
+			subtotal        = parseFloat( subtotal.replace( /[^\d.]/g, '' ) );
+			subtotal        = ( -1 === is_valid_number( subtotal ) ) ? 0 : subtotal;
+			item_new_total += subtotal;
+		} );
+
+		// See if we have the total of non reservation items.
+		var non_reservations_items_total = parseFloat( $( '.ersrv-edit-reservation-non-reservation-items-total' ).val() );
+		item_new_total                  += non_reservations_items_total;
+
+		// Calculate the cost difference now.
+		var old_order_total = parseFloat( $( '.ersrv-edit-reservation-order-total' ).val() );
+		var cost_difference = item_new_total - old_order_total;
+
+		/**
+		 * If the cost difference is more than 0, then the payment is to be made by the customer.
+		 * Otherwise, the payment would be returned by the store owner.
+		 */
+		if( 0 < cost_difference ) {
+			$( '.ersrv-cost-difference-text' ).html( customer_payable_cost_difference_message );
+		} else if( 0 > cost_difference ) {
+			cost_difference = Math.abs( cost_difference );
+			$( '.ersrv-cost-difference-text' ).html( admin_payable_cost_difference_message );
+		} else {
+			$( '.ersrv-cost-difference-text' ).html( '' );
+		}
+
+		// Get the formatted cost difference.
+		cost_difference = ersrv_get_formatted_price( cost_difference );
+
+		// Paste the cost difference.
+		$( '.ersrv-edit-reservation-cost-difference' ).html( cost_difference );
 	}
 } );

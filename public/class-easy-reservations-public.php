@@ -314,6 +314,8 @@ class Easy_Reservations_Public {
 					'reservation_greater_reservation_days_err_msg' => __( 'The item can be reserved for a max. of XX days.', 'easy-reservations' ),
 					'reservation_item_changes_invalidated'         => __( 'Reservation changes cannot be validated.', 'easy-reservations' ),
 					'cannot_update_reservation_item_invalidated'   => __( 'The reservation cannot be updated as the changes you made to the reservation have not been validated.', 'easy-reservations' ),
+					'customer_payable_cost_difference_message'     => sprintf( __( 'Cost difference: %2$s%1$s%3$s (to be paid by the customer on arrival)', 'easy-reservations' ), '--', '<span class="ersrv-edit-reservation-cost-difference">', '</span>' ),
+					'admin_payable_cost_difference_message'        => sprintf( __( 'Cost difference: %2$s%1$s%3$s (to be refunded by the administrator after the reservation is complete)', 'easy-reservations' ), '--', '<span class="ersrv-edit-reservation-cost-difference">', '</span>' ),
 				)
 			);
 		}
@@ -2094,7 +2096,7 @@ class Easy_Reservations_Public {
 	 */
 	public function ersrv_ersrv_edit_reservation_after_main_title_callback() {
 		// Header message.
-		$header_message = __( 'Please note that the reserved days and the reserved accomodation cannot be decreased.', 'easy-reservations' );
+		$header_message = __( 'Make your changes below and validate them before updating the reservation.', 'easy-reservations' );
 		/**
 		 * This hook executes on the edit reservation page.
 		 *

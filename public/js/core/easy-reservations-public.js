@@ -149,10 +149,7 @@ jQuery(document).ready(function ($) {
 
 				// Calculate the totals, if both the dates are available.
 				if ( 1 === is_valid_string( checkin_date ) && 1 === is_valid_string( checkout_date ) ) {
-					/**
-					 * This means that the checkout date is selected.
-					 * Recalculate the product summary.
-					 */
+					// Recalculate the product summary.
 					ersrv_recalculate_reservation_details_item_summary();
 				}
 			},
@@ -1217,7 +1214,7 @@ jQuery(document).ready(function ($) {
 	} );
 
 	/**
-	 * Sho the reservation slitted cost.
+	 * Show/hide the reservation splitted cost.
 	 */
 	$( document ).on( 'click', '.ersrv-split-reservation-cost', function() {
 		var this_anchor = $( this );
