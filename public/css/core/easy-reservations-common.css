@@ -593,12 +593,25 @@ a.btn:hover,
     padding-right: 0px;
     padding-left: 0px;
 }
-.ersrv-edit-reservation-item-card .bookItems .position-relative label{
+.edit-order-wrapper .ersrv-edit-reservation-item-card .position-relative label{
     position: absolute;
-    right: 10px;
-    top: 7px;
+    left: 10px;
+    top: 0px;
     color: #686868;
+    margin: 0px;
+    border-right: 2px solid #d1d1d1;
+    height: 100%;
+    vertical-align: middle;
+    line-height: 2.5;
+    padding-right: 10px;
+    min-width: 80px;
 }
+.edit-order-wrapper .ersrv-edit-reservation-item-card .position-relative input.form-control{
+    padding-left: 100px;
+}
+/* .edit-order-wrapper .ersrv-edit-reservation-item-card .bookingDates .position-relative input.form-control{
+    padding-left: 100px;
+} */
 
 
 
