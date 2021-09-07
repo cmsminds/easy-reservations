@@ -19,6 +19,11 @@ jQuery(document).ready(function ($) {
 	var reservation_item_changes_invalidated         = ERSRV_Edit_Reservation_Script_Vars.reservation_item_changes_invalidated;
 	var cannot_update_reservation_item_invalidated   = ERSRV_Edit_Reservation_Script_Vars.cannot_update_reservation_item_invalidated;
 
+	// If sidebar is to be removed on reservation single page.
+	$( '#secondary' ).remove();
+	$( '#content-bottom-widgets' ).remove();
+	$( '#primary' ).css( 'width', '100%' );
+
 	/**
 	 * Click on the checkin and checkout date to fetch the dates available while editing the reservation.
 	 */

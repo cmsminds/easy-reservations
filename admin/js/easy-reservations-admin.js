@@ -39,6 +39,9 @@ jQuery( document ).ready( function( $ ) {
 	var delete_reservation_cancellation_cnf_message  = ERSRV_Admin_Script_Vars.delete_reservation_cancellation_cnf_message;
 	var decline_reservation_cancellation_cnf_message = ERSRV_Admin_Script_Vars.decline_reservation_cancellation_cnf_message;
 	var approve_reservation_cancellation_cnf_message = ERSRV_Admin_Script_Vars.approve_reservation_cancellation_cnf_message;
+	var driving_license_allowed_extensions           = ERSRV_Admin_Script_Vars.driving_license_allowed_extensions;
+	var driving_license_invalid_file_error           = ERSRV_Admin_Script_Vars.driving_license_invalid_file_error;
+	var driving_license_empty_file_error             = ERSRV_Admin_Script_Vars.driving_license_empty_file_error;
 	var new_reservation_item_reserved_dates          = [];
 	var post_type                                    = ersrv_get_query_string_parameter_value( 'post_type' );
 
@@ -1122,7 +1125,7 @@ jQuery( document ).ready( function( $ ) {
 	/**
 	 * Approve the reservation cancellation request.
 	 */
-	 $( document ).on( 'click', '.ersrv-cancellation-request-actions .approve-request', function() {
+	$( document ).on( 'click', '.ersrv-cancellation-request-actions .approve-request', function() {
 		var this_button  = $( this );
 		var line_item_id = this_button.parents( '.ersrv-cancellation-request-actions' ).data( 'item' );
 		var confirmation = confirm( approve_reservation_cancellation_cnf_message );
@@ -1162,6 +1165,78 @@ jQuery( document ).ready( function( $ ) {
 
 					// Show the notification.
 					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
+				}
+			},
+		} );
+	} );
+
+	/**
+	 * Validate the driving license file.
+	 */
+	$( document ).on( 'change', 'input[name="reservation-driving-license"]', function() {
+		var file = $( this ).val();
+		var ext  = file.split( '.' ).pop();
+
+		// Check if this extension is among the extensions allowed.
+		if ( 0 < driving_license_allowed_extensions.length && -1 === $.inArray( ext, driving_license_allowed_extensions ) ) {
+			ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, driving_license_invalid_file_error );
+
+			// Reset the file input type.
+			var driving_license = $( 'input[name="reservation-driving-license"]' );
+			driving_license.wrap( '<form>' ).closest( 'form' ).get(0).reset();
+			driving_license.unwrap();
+
+			return false;
+		}
+	} );
+
+	/**
+	 * Upload the driving license copy on the checkout page.
+	 */
+	 $( document ).on( 'click', '.ersrv-upload-license.upload', function() {
+		// Check if the license is provided to upload.
+		if ( -1 === is_valid_string( $( 'input[name="reservation-driving-license"]' ).val() ) ) {
+			ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, driving_license_empty_file_error );
+			return false;
+		}
+
+		var oFReader        = new FileReader();
+		var driving_license = document.getElementById( 'reservation-driving-license' );
+		oFReader.readAsDataURL( driving_license.files[0] );
+
+		// Prepare the form data.
+		var fd = new FormData();
+		fd.append( 'driving_license_file', driving_license.files[0] );
+
+		// AJAX action.
+		fd.append( 'action', 'upload_driving_license' );
+
+		// AJAX order ID.
+		fd.append( 'order_id', $( '#post_ID' ).val() );
+
+		// Block the element.
+		block_element( $( '.ersrv-driving-license-container' ) );
+
+		// Shoot the AJAX now.
+		$.ajax( {
+			type: 'POST',
+			url: ajaxurl,
+			data: fd,
+			contentType: false,
+			processData: false,
+			dataType: 'JSON',
+			success: function ( response ) {
+				// Return, if the response is not proper.
+				if ( 0 === response ) {
+					console.warn( 'easy-reservations: invalid ajax call' );
+					return false;
+				}
+
+				// If the driving license is uploaded.
+				if ( 'driving-license-uploaded' === response.data.code ) {
+					unblock_element( $( '.ersrv-driving-license-container' ) ); // Unblock the element.
+					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message ); // Show toast.
+					window.location.href = window.location.href;
 				}
 			},
 		} );

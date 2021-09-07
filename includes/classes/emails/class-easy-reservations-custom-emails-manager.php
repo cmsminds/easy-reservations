@@ -31,7 +31,7 @@ class Easy_Reservations_Custom_Email_Manager {
 		add_action( 'ersrv_after_reservation_cancellation_request_approved', array( &$this, 'ersrv_ersrv_after_reservation_cancellation_request_approved_callback' ) );
 		add_action( 'ersrv_after_reservation_cancellation_request_declined', array( &$this, 'ersrv_ersrv_after_reservation_cancellation_request_declined_callback' ) );
 		add_action( 'ersrv_after_reservation_cancellation_request_deleted', array( &$this, 'ersrv_ersrv_after_reservation_cancellation_request_deleted_callback' ) );
-		add_action( 'woocommerce_new_order', array( $this, 'ersrv_woocommerce_new_order_callback' ), 20, 2 );
+		add_action( 'ersrv_after_blocking_reservation_dates', array( $this, 'ersrv_ersrv_after_blocking_reservation_dates_callback' ), 20, 2 );
 		add_action( 'ersrv_update_reservation', array( $this, 'ersrv_ersrv_update_reservation_callback' ), 10, 2 );
 		add_filter( 'woocommerce_email_classes', array( &$this, 'ersrv_woocommerce_email_classes_callback' ) );
 	}
@@ -158,7 +158,7 @@ class Easy_Reservations_Custom_Email_Manager {
 	 * @param WC_Order $wc_order WooCommerce order.
 	 * @since 1.0.0
 	 */
-	public function ersrv_woocommerce_new_order_callback( $order_id, $wc_order ) {
+	public function ersrv_ersrv_after_blocking_reservation_dates_callback( $order_id, $wc_order ) {
 		// Check if the rental agreement emails are configured to be sent.
 		$enable_reservation_rental_agreement = ersrv_get_plugin_settings( 'ersrv_enable_reservation_rental_agreement' );
 

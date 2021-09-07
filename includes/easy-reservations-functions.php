@@ -33,11 +33,6 @@ function ersrv_get_plugin_settings( $setting ) {
 			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : __( 'Reserve It', 'easy-reservations' );
 			break;
 
-		case 'ersrv_remove_reservation_pages_sidebar':
-			$data = get_option( $setting );
-			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : 'no';
-			break;
-
 		case 'ersrv_reservation_receipt_store_name':
 			$data = get_option( $setting );
 			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : '';
@@ -139,6 +134,11 @@ function ersrv_get_plugin_settings( $setting ) {
 			break;
 
 		case 'ersrv_trim_zeros_from_price':
+			$data = get_option( $setting );
+			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : 'no';
+			break;
+
+		case 'ersrv_enable_receipt_button_my_account_orders_list':
 			$data = get_option( $setting );
 			$data = ( ! empty( $data ) && ! is_bool( $data ) ) ? $data : 'no';
 			break;
@@ -541,6 +541,32 @@ if ( ! function_exists( 'ersrv_product_is_reservation' ) ) {
 /**
  * Check if the function exists.
  */
+if ( ! function_exists( 'ersrv_get_driving_license_allowed_file_types' ) ) {
+	/**
+	 * Get the allowed file types for driving license.
+	 *
+	 * @return array
+	 * @since 1.0.0
+	 */
+	function ersrv_get_driving_license_allowed_file_types() {
+		$file_types = array( 'jpeg', 'jpg', 'pdf', 'png' );
+
+		/**
+		 * This hook runs on the checkout page and the order edit page.
+		 *
+		 * This filter helps in managing the allowed file types for the driving license.
+		 *
+		 * @param array $file_types File types array.
+		 * @return array
+		 * @since 1.0.0
+		 */
+		return apply_filters( 'ersrv_allowed_file_types_driving_license', $file_types );
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
 if ( ! function_exists( 'ersrv_get_admin_script_vars' ) ) {
 	/**
 	 * Return the array of script variables.
@@ -568,11 +594,19 @@ if ( ! function_exists( 'ersrv_get_admin_script_vars' ) ) {
 		}
 
 		// Add some script variables on product edit page.
-		if ( ! is_null( $post ) && 'product' === get_post_type( $post ) ) {
-			$blocked_dates = get_post_meta( $post, '_ersrv_reservation_blockout_dates', true );
-			$blocked_dates = ( empty( $blocked_dates ) || ! is_array( $blocked_dates ) ) ? array() : $blocked_dates;
-			$vars['ersrv_product_type'] = ersrv_get_custom_product_type_slug();
-			$vars['blocked_dates']      = $blocked_dates;
+		if ( ! is_null( $post ) ) {
+			// Product.
+			if ( 'product' === get_post_type( $post ) ) {
+				$blocked_dates = get_post_meta( $post, '_ersrv_reservation_blockout_dates', true );
+				$blocked_dates = ( empty( $blocked_dates ) || ! is_array( $blocked_dates ) ) ? array() : $blocked_dates;
+				$vars['ersrv_product_type'] = ersrv_get_custom_product_type_slug();
+				$vars['blocked_dates']      = $blocked_dates;
+			} elseif ( 'shop_order' === get_post_type( $post ) ) { // Shop order.
+				$driving_license_allowed_extensions         = ersrv_get_driving_license_allowed_file_types();
+				$vars['driving_license_allowed_extensions'] = $driving_license_allowed_extensions;
+				$vars['driving_license_invalid_file_error'] = sprintf( __( 'Invalid file selected. Allowed extensions are: %1$s', 'easy-reservations' ), implode( ', ', $driving_license_allowed_extensions ) );
+				$vars['driving_license_empty_file_error']   = __( 'Please provide a driving license to upload.', 'easy-reservations' );
+			}
 		}
 
 		// Add the error message to the array on new reservation page.
@@ -1847,8 +1881,9 @@ if ( ! function_exists( 'ersrv_block_dates_after_reservation_thankyou' ) ) {
 	 * @since 1.0.0
 	 */
 	function ersrv_block_dates_after_reservation_thankyou( $wc_order ) {
+		$order_id = $wc_order->get_id();
 		// Block the dates of the items so they show as reserved.
-		$dates_blocked = get_post_meta( $wc_order->get_id(), 'ersrv_blocked_dates_of_reservation_items', true );
+		$dates_blocked = get_post_meta( $order_id, 'ersrv_blocked_dates_of_reservation_items', true );
 
 		// Return, if the dates are already blocked.
 		if ( ! empty( $dates_blocked ) ) {
@@ -1912,7 +1947,15 @@ if ( ! function_exists( 'ersrv_block_dates_after_reservation_thankyou' ) ) {
 		}
 
 		// Update the database, so this is not fired again.
-		update_post_meta( $wc_order->get_id(), 'ersrv_blocked_dates_of_reservation_items', 1 );
+		update_post_meta( $order_id, 'ersrv_blocked_dates_of_reservation_items', 1 );
+
+		/**
+		 * This hook runs after the reservation order is placed.
+		 *
+		 * @param int      $order_id WooCommerce order ID.
+		 * @param WC_Order $wc_order WooCommerce order.
+		 */
+		do_action( 'ersrv_after_blocking_reservation_dates', $order_id, $wc_order );
 	}
 }
 

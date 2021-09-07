@@ -175,6 +175,7 @@ class Easy_Reservations {
 		$this->loader->add_action( 'wp_ajax_delete_reservation_cancellation_request', $plugin_admin, 'ersrv_delete_reservation_cancellation_request_callback' );
 		$this->loader->add_action( 'wp_ajax_decline_reservation_cancellation_request', $plugin_admin, 'ersrv_decline_reservation_cancellation_request_callback' );
 		$this->loader->add_action( 'wp_ajax_approve_reservation_cancellation_request', $plugin_admin, 'ersrv_approve_reservation_cancellation_request_callback' );
+		$this->loader->add_action( 'wp_ajax_upload_driving_license', $plugin_admin, 'ersrv_upload_driving_license_callback' );
 	}
 
 	/**
@@ -231,8 +232,8 @@ class Easy_Reservations {
 		$this->loader->add_action( 'wp_ajax_add_reservation_to_ical', $plugin_public, 'ersrv_add_reservation_to_ical_callback' );
 		$this->loader->add_action( 'wp_ajax_nopriv_add_reservation_to_ical', $plugin_public, 'ersrv_add_reservation_to_ical_callback' );
 		$this->loader->add_action( 'woocommerce_after_order_notes', $plugin_public, 'ersrv_woocommerce_after_order_notes_callback' );
-		$this->loader->add_action( 'wp_ajax_upload_driving_license', $plugin_public, 'ersrv_upload_driving_license_callback' );
-		$this->loader->add_action( 'wp_ajax_nopriv_upload_driving_license', $plugin_public, 'ersrv_upload_driving_license_callback' );
+		$this->loader->add_action( 'wp_ajax_upload_driving_license_checkout', $plugin_public, 'ersrv_upload_driving_license_checkout_callback' );
+		$this->loader->add_action( 'wp_ajax_nopriv_upload_driving_license_checkout', $plugin_public, 'ersrv_upload_driving_license_checkout_callback' );
 		$this->loader->add_action( 'woocommerce_checkout_process', $plugin_public, 'ersrv_woocommerce_checkout_process_callback' );
 		$this->loader->add_action( 'woocommerce_checkout_update_order_meta', $plugin_public, 'ersrv_woocommerce_checkout_update_order_meta_callback' );
 		$this->loader->add_action( 'woocommerce_order_item_meta_end', $plugin_public, 'ersrv_woocommerce_order_item_meta_end_callback', 20, 3 );

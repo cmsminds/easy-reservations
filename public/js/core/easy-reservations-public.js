@@ -3,7 +3,6 @@ jQuery(document).ready(function ($) {
 
 	// Localized variables.
 	var ajaxurl                                      = ERSRV_Public_Script_Vars.ajaxurl;
-	var remove_sidebar                               = ERSRV_Public_Script_Vars.remove_sidebar;
 	var is_product                                   = ERSRV_Public_Script_Vars.is_product;
 	var is_checkout                                  = ERSRV_Public_Script_Vars.is_checkout;
 	var is_search_page                               = ERSRV_Public_Script_Vars.is_search_page;
@@ -38,11 +37,9 @@ jQuery(document).ready(function ($) {
 
 	// If sidebar is to be removed on reservation single page.
 	if ( 'yes' === is_product || 'yes' === is_search_page || 'yes' === is_checkout ) {
-		if ( 'yes' === remove_sidebar ) {
-			$( '#secondary' ).remove();
-			$( '#content-bottom-widgets' ).remove();
-			$( '#primary' ).css( 'width', '100%' );
-		}
+		$( '#secondary' ).remove();
+		$( '#content-bottom-widgets' ).remove();
+		$( '#primary' ).css( 'width', '100%' );
 	}
 
 	// Search page checkin and checkout dates.
@@ -649,11 +646,11 @@ jQuery(document).ready(function ($) {
 		// Collect the amenities and their charges.
 		$( '.ersrv-new-reservation-single-amenity' ).each( function() {
 			var this_element = $( this );
-			var is_checked = this_element.is( ':checked' );
+			var is_checked   = this_element.is( ':checked' );
 			if ( true === is_checked ) {
-				var amenity_cost  = parseFloat( this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost' ) );
-				var cost_type     = this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost_type' );
-				amenity_cost      = ( 'per_day' === cost_type ) ? ( amenity_cost * reservation_days ) : amenity_cost;
+				var amenity_cost = parseFloat( this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost' ) );
+				var cost_type    = this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost_type' );
+				amenity_cost     = ( 'per_day' === cost_type ) ? ( amenity_cost * reservation_days ) : amenity_cost;
 
 				// Push the amenities cost into an array.
 				amenities.push( {
@@ -681,11 +678,11 @@ jQuery(document).ready(function ($) {
 			adult_count: adult_count,
 			kid_count: kid_count,
 			amenities: amenities,
-			item_subtotal: $( '.adults-subtotal span.ersrv-cost' ).data( 'cost' ),
-			kids_subtotal: $( '.kids-subtotal span.ersrv-cost' ).data( 'cost' ),
-			security_subtotal: $( '.security-subtotal span.ersrv-cost' ).data( 'cost' ),
-			amenities_subtotal: $( '.amenities-subtotal span.ersrv-cost' ).data( 'cost' ),
-			item_total: $( '.reservation-item-subtotal span.ersrv-cost' ).data( 'cost' ),
+			item_subtotal: $( '.adults-subtotal td span.ersrv-cost' ).data( 'cost' ),
+			kids_subtotal: $( '.kids-subtotal td span.ersrv-cost' ).data( 'cost' ),
+			security_subtotal: $( '.security-subtotal td span.ersrv-cost' ).data( 'cost' ),
+			amenities_subtotal: $( '.amenities-subtotal td span.ersrv-cost' ).data( 'cost' ),
+			item_total: $( '.reservation-item-subtotal td span.ersrv-cost' ).data( 'cost' ),
 		};
 
 		// Add reservation to the cart.
@@ -783,14 +780,17 @@ jQuery(document).ready(function ($) {
 		// Collect the amenities and their charges.
 		$( '.ersrv-quick-view-reservation-single-amenity' ).each ( function() {
 			var this_element = $( this );
-			var is_checked = this_element.is( ':checked' );
+			var is_checked   = this_element.is( ':checked' );
 			if ( true === is_checked ) {
-				amenities.push(
-					{
-						amenity: this_element.parents( '.ersrv-single-amenity-block' ).data( 'amenity' ),
-						cost: parseFloat( this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost' ) ),
-					}
-				);
+				var amenity_cost = parseFloat( this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost' ) );
+				var cost_type    = this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost_type' );
+				amenity_cost     = ( 'per_day' === cost_type ) ? ( amenity_cost * reservation_days ) : amenity_cost;
+
+				// Push the amenities cost into an array.
+				amenities.push( {
+					amenity: this_element.parents( '.ersrv-single-amenity-block' ).data( 'amenity' ),
+					cost: amenity_cost,
+				} );
 			}
 		} );
 
@@ -812,11 +812,11 @@ jQuery(document).ready(function ($) {
 			adult_count: adult_count,
 			kid_count: kid_count,
 			amenities: amenities,
-			item_subtotal: $( '.adults-subtotal span.ersrv-cost' ).data( 'cost' ),
-			kids_subtotal: $( '.kids-subtotal span.ersrv-cost' ).data( 'cost' ),
-			security_subtotal: $( '.security-subtotal span.ersrv-cost' ).data( 'cost' ),
-			amenities_subtotal: $( '.amenities-subtotal span.ersrv-cost' ).data( 'cost' ),
-			item_total: $( '.reservation-item-subtotal span.ersrv-cost' ).data( 'cost' ),
+			item_subtotal: $( '.adults-subtotal td span.ersrv-cost' ).data( 'cost' ),
+			kids_subtotal: $( '.kids-subtotal td span.ersrv-cost' ).data( 'cost' ),
+			security_subtotal: $( '.security-subtotal td span.ersrv-cost' ).data( 'cost' ),
+			amenities_subtotal: $( '.amenities-subtotal td span.ersrv-cost' ).data( 'cost' ),
+			item_total: $( '.reservation-item-subtotal td span.ersrv-cost' ).data( 'cost' ),
 		};
 
 		// Add reservation to the cart.
@@ -1013,13 +1013,10 @@ jQuery(document).ready(function ($) {
 	 */
 	$( document ).on( 'change', 'input[name="reservation-driving-license"]', function() {
 		var file = $( this ).val();
-		var ext = file.split( '.' ).pop();
-
-		// Vacate the error message.
-		$( '.ersrv-reservation-error.driving-license-invalid-file' ).text( '' );
+		var ext  = file.split( '.' ).pop();
 
 		// Check if this extension is among the extensions allowed.
-		if ( -1 === $.inArray( ext, driving_license_allowed_extensions ) ) {
+		if ( 0 < driving_license_allowed_extensions.length && -1 === $.inArray( ext, driving_license_allowed_extensions ) ) {
 			ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, driving_license_invalid_file_error );
 
 			// Reset the file input type.
@@ -1053,7 +1050,7 @@ jQuery(document).ready(function ($) {
 		fd.append( 'driving_license_file', driving_license.files[0] );
 
 		// AJAX action.
-		fd.append( 'action', 'upload_driving_license' );
+		fd.append( 'action', 'upload_driving_license_checkout' );
 
 		// Block the element.
 		block_element( $( '.ersrv-driving-license' ) );
@@ -1518,12 +1515,12 @@ jQuery(document).ready(function ($) {
 		var formatted_total_cost = ersrv_get_formatted_price( total_cost );
 
 		// Put in all the totals now.
-		$( '.adults-subtotal span.ersrv-cost' ).html( formatted_adult_charge ).data( 'cost', adult_charge );
-		$( '.kids-subtotal span.ersrv-cost' ).html( formatted_kids_charge ).data( 'cost', kids_charge );
-		$( '.amenities-subtotal span.ersrv-cost' ).html( formatted_amenities_total ).data( 'cost', amenities_total );
-		$( '.security-subtotal span.ersrv-cost' ).html( formatted_security_total ).data( 'cost', security_total );
-		$( '.reservation-item-subtotal span.ersrv-cost' ).html( formatted_total_cost ).data( 'cost', total_cost );
-		$( '.reservation-item-subtotal span.ersrv-cost, .ersrv-reservation-item-subtotal.ersrv-cost' ).html( formatted_total_cost );
+		$( '.adults-subtotal td span.ersrv-cost' ).html( formatted_adult_charge ).data( 'cost', adult_charge );
+		$( '.kids-subtotal td span.ersrv-cost' ).html( formatted_kids_charge ).data( 'cost', kids_charge );
+		$( '.amenities-subtotal td span.ersrv-cost' ).html( formatted_amenities_total ).data( 'cost', amenities_total );
+		$( '.security-subtotal td span.ersrv-cost' ).html( formatted_security_total ).data( 'cost', security_total );
+		$( '.reservation-item-subtotal td span.ersrv-cost' ).html( formatted_total_cost ).data( 'cost', total_cost );
+		$( '.ersrv-reservation-item-subtotal.ersrv-cost' ).html( formatted_total_cost );
 	}
 
 	/**
@@ -1582,12 +1579,12 @@ jQuery(document).ready(function ($) {
 		var formatted_total_cost = ersrv_get_formatted_price( total_cost );
 
 		// Put in all the totals now.
-		$( '.adults-subtotal span.ersrv-cost' ).html( formatted_adult_charge );
-		$( '.kids-subtotal span.ersrv-cost' ).html( formatted_kids_charge );
-		$( '.amenities-subtotal span.ersrv-cost' ).html( formatted_amenities_total );
-		$( '.security-subtotal span.ersrv-cost' ).html( formatted_security_total );
-		$( '.reservation-item-subtotal span.ersrv-cost' ).html( formatted_total_cost );
-		$( '.reservation-item-subtotal span.ersrv-cost, .ersrv-quick-view-item-subtotal.ersrv-cost' ).html( formatted_total_cost );
+		$( '.adults-subtotal td span.ersrv-cost' ).html( formatted_adult_charge ).data( 'cost', adult_charge );
+		$( '.kids-subtotal td span.ersrv-cost' ).html( formatted_kids_charge ).data( 'cost', kids_charge );
+		$( '.amenities-subtotal td span.ersrv-cost' ).html( formatted_amenities_total ).data( 'cost', amenities_total );
+		$( '.security-subtotal td span.ersrv-cost' ).html( formatted_security_total ).data( 'cost', security_total );
+		$( '.reservation-item-subtotal td span.ersrv-cost' ).html( formatted_total_cost ).data( 'cost', total_cost );
+		$( '.ersrv-quick-view-item-subtotal.ersrv-cost' ).html( formatted_total_cost );
 	}
 
 	/**

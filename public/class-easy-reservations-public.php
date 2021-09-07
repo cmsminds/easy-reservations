@@ -376,12 +376,11 @@ class Easy_Reservations_Public {
 		);
 
 		// Driving license file allowed extensions.
-		$driving_license_allowed_extensions = array( 'jpeg', 'jpg', 'pdf', 'png' );
+		$driving_license_allowed_extensions = ersrv_get_driving_license_allowed_file_types();
 
 		// Localized variables.
 		$localized_vars = array(
 			'ajaxurl'                                      => admin_url( 'admin-ajax.php' ),
-			'remove_sidebar'                               => ersrv_get_plugin_settings( 'ersrv_remove_reservation_pages_sidebar' ),
 			'is_product'                                   => ( is_product() ) ? 'yes' : 'no',
 			'is_checkout'                                  => ( is_checkout() ) ? 'yes' : 'no',
 			'is_search_page'                               => ( $is_search_page ) ? 'yes' : 'no',
@@ -776,11 +775,27 @@ class Easy_Reservations_Public {
 			return $actions;
 		}
 
+		/**
+		 * Remove the cancel action.
+		 * This is because there is a cancelation functionality for the reservations.
+		 */
+		if ( array_key_exists( 'cancel', $actions ) ) {
+			unset( $actions['cancel'] );
+		}
+
 		// Check if the order status is allowed for receipts.
 		$display_order_receipt = ersrv_should_display_receipt_button( $order_id );
 
 		// Return the actions if the receipt button should not be displayed.
 		if ( false === $display_order_receipt ) {
+			return $actions;
+		}
+
+		// Check if it's enabled to display on the listing page.
+		$display_on_order_listing = ersrv_get_plugin_settings( 'ersrv_enable_receipt_button_my_account_orders_list' );
+
+		// Return, if it's not allowed.
+		if ( empty( $display_on_order_listing ) || 'no' === $display_on_order_listing ) {
 			return $actions;
 		}
 
@@ -1490,8 +1505,6 @@ class Easy_Reservations_Public {
 		$max_reservation_period = ( ! empty( $item_details['max_reservation_period'] ) ) ? $item_details['max_reservation_period'] : '';
 		$reserved_dates         = ( ! empty( $item_details['reserved_dates'] ) ) ? $item_details['reserved_dates'] : '';
 		$php_date_format        = ersrv_get_php_date_format();
-		$curr_date              = ersrv_get_current_date( $php_date_format );
-		$next_date              = gmdate( $php_date_format, ( strtotime( 'now' ) + 86400 ) );
 
 		// Prepare the HTML.
 		?>
@@ -1539,11 +1552,11 @@ class Easy_Reservations_Public {
 								<div class="row form-row input-daterange">
 									<div class="col-6">
 										<h4 class="font-weight-semibold font-size-20"><?php esc_html_e( 'Check In', 'easy-reservations' ); ?></h4>
-										<div><input type="text" id="ersrv-quick-view-item-checkin-date" class="form-control date-control text-left rounded-lg" placeholder="<?php echo esc_html( $curr_date ); ?>"></div>
+										<div><input type="text" id="ersrv-quick-view-item-checkin-date" class="form-control date-control text-left rounded-lg" placeholder="<?php echo esc_html( $php_date_format ); ?>"></div>
 									</div>
 									<div class="col-6">
 										<h4 class="font-weight-semibold font-size-20"><?php esc_html_e( 'Check Out', 'easy-reservations' ); ?></h4>
-										<div><input type="text" id="ersrv-quick-view-item-checkout-date" class="form-control date-control text-left rounded-lg" placeholder="<?php echo esc_html( $next_date ); ?>"></div>
+										<div><input type="text" id="ersrv-quick-view-item-checkout-date" class="form-control date-control text-left rounded-lg" placeholder="<?php echo esc_html( $php_date_format ); ?>"></div>
 									</div>
 									<label class="ersrv-reservation-error checkin-checkout-dates-error"></label>
 								</div>
@@ -1639,19 +1652,11 @@ class Easy_Reservations_Public {
 		<?php
 		$html = ob_get_clean();
 
-		/**
-		 * This hook fires after the contact owner request is saved.
-		 *
-		 * This hook helps in adding actions after any contact owner request is saved.
-		 */
-		do_action( 'ersrv_save_contact_owner_request_after' );
-
 		// Prepare the response.
 		$response = array(
 			'code'           => 'quick-view-modal-fetched',
 			'html'           => $html,
 			'reserved_dates' => $reserved_dates,
-			'message'        => __( 'Contact request is saved successfully. One of our teammates will get back to you soon.', 'easy-reservations' ),
 		);
 		wp_send_json_success( $response );
 		wp_die();
@@ -1740,11 +1745,11 @@ class Easy_Reservations_Public {
 	 *
 	 * @since 1.0.0
 	 */
-	public function ersrv_upload_driving_license_callback() {
+	public function ersrv_upload_driving_license_checkout_callback() {
 		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
 
 		// Exit, if the action mismatches.
-		if ( empty( $action ) || 'upload_driving_license' !== $action ) {
+		if ( empty( $action ) || 'upload_driving_license_checkout' !== $action ) {
 			echo 0;
 			wp_die();
 		}
@@ -1770,6 +1775,8 @@ class Easy_Reservations_Public {
 
 		// Update the attachment ID in woocommerce session.
 		WC()->session->set( 'reservation_driving_license_attachment_id', $attach_id );
+
+		$attachment_id = WC()->session->get( 'reservation_driving_license_attachment_id' );
 
 		// Return with the on click attribute.
 		$attachment_url   = ersrv_get_attachment_url_from_attachment_id( $attach_id );
@@ -1863,6 +1870,12 @@ class Easy_Reservations_Public {
 	 * @since 1.0.0
 	 */
 	public function ersrv_woocommerce_order_item_meta_end_callback( $item_id, $item, $wc_order ) {
+		// Return, if this is order received endpoint.
+		if ( is_wc_endpoint_url( 'order-received' ) ) {
+			return;
+		}
+
+		// See if cancellation is enabled.
 		$cancellation_enabled = ersrv_get_plugin_settings( 'ersrv_enable_reservation_cancellation' );
 
 		// Return, if the cancellation is not enabled.

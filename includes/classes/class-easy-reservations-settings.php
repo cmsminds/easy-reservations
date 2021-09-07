@@ -111,12 +111,6 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 				'id'    => 'ersrv_reservation_general_settings',
 			),
 			array(
-				'title' => __( 'Remove Sidebar from Reservation Pages', 'easy-reservations' ),
-				'desc'  => __( 'This sets whether the sidebar is to be displayed on reservation pages.', 'easy-reservations' ),
-				'id'    => 'ersrv_remove_reservation_pages_sidebar',
-				'type'  => 'checkbox',
-			),
-			array(
 				'title' => __( 'Driving License Validation', 'easy-reservations' ),
 				'desc'  => __( 'This sets whether the driver needs to submit the driving license of the reservation or not.', 'easy-reservations' ),
 				'id'    => 'ersrv_driving_license_validation',
@@ -313,6 +307,12 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 				'desc_tip' => true,
 				'default'  => '',
 				'id'       => 'ersrv_easy_reservations_receipt_for_order_statuses',
+			),
+			array(
+				'title' => __( 'Display Button on My Account Order Listing Page', 'easy-reservations' ),
+				'desc'  => __( 'This sets whether the receipt button is to be displayed on the order listing page on the customers portal.', 'easy-reservations' ),
+				'id'    => 'ersrv_enable_receipt_button_my_account_orders_list',
+				'type'  => 'checkbox',
 			),
 			array(
 				'name'        => __( 'Receipt Button Text', 'easy-reservations' ),

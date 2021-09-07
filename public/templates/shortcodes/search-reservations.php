@@ -17,7 +17,7 @@ $posts_per_page                = (int) get_option( 'posts_per_page' );
 // Get the boat types.
 $reservation_item_types = get_terms(
 	array(
-		'taxonomy' => 'reservation-item-type',
+		'taxonomy'   => 'reservation-item-type',
 		'hide_empty' => true,
 	)
 );
@@ -41,7 +41,7 @@ $search_boat_type = ( ! is_null( $search_boat_type ) ) ? $search_boat_type : 0;
 		<div class="container">
 			<div class="details mx-auto font-lato">
 				<div class="page-title">
-					<h1 class="font-Poppins font-size-40 font-weight-semibold color-white"><?php esc_html_e( 'Search for a boat', 'easy-reservations' ); ?></h1>
+					<h1 class="font-Poppins font-size-40 font-weight-semibold color-white"><?php echo wp_kses_post( get_the_title() ); ?></h1>
 				</div>
 				<div class="form-wrapper ersrv-form-wrapper">
 					<form action="#" class="form-inner">

@@ -968,8 +968,14 @@ class Easy_Reservations_Admin {
 		 */
 		do_action( 'ersrv_create_reservation_from_admin_after' );
 
-		// Get the order link.
-		$order_edit_link = get_edit_post_link( $wc_order->get_id(), '&' );
+		/**
+		 * Get the order link.
+		 * If the driving license is mandatory, the user will be redirected to the order edit page.
+		 * And the admin should upload the driving license there.
+		 */
+		$allowed_to_upload_license = ersrv_get_plugin_settings( 'ersrv_driving_license_validation' );
+		$order_edit_link           = get_edit_post_link( $wc_order->get_id(), '&' );
+		$order_edit_link           = ( empty( $allowed_to_upload_license ) || 'no' === $allowed_to_upload_license ) ? $order_edit_link : $order_edit_link . '#ersrv-reservation-order-driving-license-file';
 
 		// Prepare the response.
 		wp_send_json_success(
@@ -1155,19 +1161,32 @@ class Easy_Reservations_Admin {
 		// Get the license attachment ID.
 		$license_id = get_post_meta( $post, 'reservation_driving_license_attachment_id', true );
 
-		// Get the license URL.
-		$license_url = ersrv_get_attachment_url_from_attachment_id( $license_id );
-
 		ob_start();
-		?>
-		<div class="ersrv-driving-license-container edit-order">
-			<p><?php esc_html_e( 'Click on the buttons below to download & view customer\'s driving license.', 'easy-reservations' ); ?></p>
-			<p>
-				<a href="<?php echo esc_url( $license_url ); ?>" class="button download" download><?php esc_html_e( 'Download', 'easy-reservations' ); ?><span class="dashicons dashicons-download"></span></a>
-				<a href="<?php echo esc_url( $license_url ); ?>" rel="noopener noreferrer" class="button view" target="_blank"><?php esc_html_e( 'View', 'easy-reservations' ); ?><span class="dashicons dashicons-visibility"></span></a>
-			</p>
-		</div>
-		<?php
+
+		// If the license is available.
+		if ( ! empty( $license_id ) ) {
+			// Get the license URL.
+			$license_url = ersrv_get_attachment_url_from_attachment_id( $license_id );
+			?>
+			<div class="ersrv-driving-license-container edit-order">
+				<p><?php esc_html_e( 'Click on the buttons below to download & view customer\'s driving license.', 'easy-reservations' ); ?></p>
+				<p>
+					<a href="<?php echo esc_url( $license_url ); ?>" class="button download" download><?php esc_html_e( 'Download', 'easy-reservations' ); ?><span class="dashicons dashicons-download"></span></a>
+					<a href="<?php echo esc_url( $license_url ); ?>" rel="noopener noreferrer" class="button view" target="_blank"><?php esc_html_e( 'View', 'easy-reservations' ); ?><span class="dashicons dashicons-visibility"></span></a>
+				</p>
+			</div>
+			<?php
+		} else {
+			?>
+			<div class="ersrv-driving-license-container edit-order">
+				<p><?php esc_html_e( 'There is no driving license uploaded. Please click the button below to upload one such.', 'easy-reservations' ); ?></p>
+				<p>
+					<input type="file" name="reservation-driving-license" id="reservation-driving-license" />
+					<button type="button" class="ersrv-upload-license button upload"><?php esc_html_e( 'Upload', 'easy-reservations' ); ?><span class="dashicons dashicons-upload"></span></button>
+				</p>
+			</div>
+			<?php
+		}
 
 		// Print the content now.
 		echo wp_kses(
@@ -1184,6 +1203,15 @@ class Easy_Reservations_Admin {
 					'href'     => array(),
 					'class'    => array(),
 					'download' => array(),
+				),
+				'button'    => array(
+					'type'     => array(),
+					'class'    => array(),
+				),
+				'input' => array(
+					'type' => array(),
+					'name' => array(),
+					'id'   => array(),
 				),
 			),
 		);
@@ -1654,6 +1682,52 @@ class Easy_Reservations_Admin {
 			'code'          => 'reservation-cancellation-request-approved',
 			/* translators: 1: %s: anchor tag open, 2: %s: anchor tag closed */
 			'toast_message' => sprintf( __( 'Reservation cancellation request approved. Click %1$shere%2$s to refresh the page.', 'easy-reservations' ), '<a href="' . admin_url( 'admin.php?page=reservation-calcellation-requests' ) . '">', '</a>' ),
+		);
+		wp_send_json_success( $response );
+		wp_die();
+	}
+
+	/**
+	 * AJAX to upload the driving license file on checkout.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_upload_driving_license_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+		// Exit, if the action mismatches.
+		if ( empty( $action ) || 'upload_driving_license' !== $action ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Upload the file now.
+		$driving_license_file_name = $_FILES['driving_license_file']['name'];
+		$driving_license_file_temp = $_FILES['driving_license_file']['tmp_name'];
+		$file_data                 = file_get_contents( $driving_license_file_temp );
+		$filename                  = basename( $driving_license_file_name );
+		$upload_dir                = wp_upload_dir();
+		$file_path                 = ( ! empty( $upload_dir['path'] ) ) ? $upload_dir['path'] . $filename : $upload_dir['basedir'] . $filename;
+		file_put_contents( $file_path, $file_data );
+
+		// Upload it as WP attachment.
+		$wp_filetype = wp_check_filetype( $filename, null );
+		$attachment  = array(
+			'post_mime_type' => $wp_filetype['type'],
+			'post_title'     => sanitize_file_name( $filename ),
+			'post_content'   => '',
+			'post_status'    => 'inherit'
+		);
+		$attach_id   = wp_insert_attachment( $attachment, $file_path );
+
+		// Attach this attachment ID with the order ID.
+		$order_id = filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT );
+		update_post_meta( $order_id, 'reservation_driving_license_attachment_id', $attach_id );
+
+		// Prepare the response.
+		$response = array(
+			'code'              => 'driving-license-uploaded',
+			'toast_message'     => __( 'Driving license is uploaded successfully. Reloading...', 'easy-reservations' ),
 		);
 		wp_send_json_success( $response );
 		wp_die();

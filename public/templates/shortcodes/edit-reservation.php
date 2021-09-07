@@ -144,12 +144,16 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 											<div class="bookItems mb-3">
 												<div class="row form-row input-daterange">
 													<div class="col-12 col-md-6">
-														<label for="ersrv-edit-reservation-item-adult-count-<?php echo esc_attr($item_id); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e('Adults', 'easy-reservations'); ?></label>
-														<div><input id="ersrv-edit-reservation-item-adult-count-<?php echo esc_attr($item_id); ?>" placeholder="<?php esc_html_e('No. of adults', 'easy-reservations'); ?>" type="number" min="<?php echo esc_html($adult_count); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-adult-count form-control rounded-lg" value="<?php echo esc_html($adult_count); ?>" data-oldval="<?php echo esc_html($adult_count); ?>" /></div>
+														<div class="position-relative">
+															<label for="ersrv-edit-reservation-item-adult-count-<?php echo esc_attr($item_id); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Adults', 'easy-reservations' ); ?></label>
+															<div><input onkeypress="return /[0-9]/i.test(event.key)" id="ersrv-edit-reservation-item-adult-count-<?php echo esc_attr($item_id); ?>" placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" type="text" min="<?php echo esc_html( $adult_count ); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-adult-count form-control rounded-lg" value="<?php echo esc_html($adult_count); ?>" data-oldval="<?php echo esc_html($adult_count); ?>" /></div>
+														</div>
 													</div>
 													<div class="col-12 col-md-6">
-														<label for="ersrv-edit-reservation-item-kid-count-<?php echo esc_attr($item_id); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e('Kid(s)', 'easy-reservations'); ?></label>
-														<div><input id="ersrv-edit-reservation-item-kid-count-<?php echo esc_attr($item_id); ?>" placeholder="<?php esc_html_e('No. of kids', 'easy-reservations'); ?>" type="number" min="<?php echo esc_html($kid_count); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-kid-count form-control rounded-lg" value="<?php echo esc_html($kid_count); ?>" data-oldval="<?php echo esc_html($kid_count); ?>" /></div>
+														<div class="position-relative">
+															<label for="ersrv-edit-reservation-item-kid-count-<?php echo esc_attr($item_id); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Kid(s)', 'easy-reservations' ); ?></label>
+															<div><input onkeypress="return /[0-9]/i.test(event.key)" id="ersrv-edit-reservation-item-kid-count-<?php echo esc_attr($item_id); ?>" placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" type="text" min="<?php echo esc_html($kid_count); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-kid-count form-control rounded-lg" value="<?php echo esc_html($kid_count); ?>" data-oldval="<?php echo esc_html($kid_count); ?>" /></div>
+														</div>
 													</div>
 													<p class="ersrv-reservation-error" id="guests-error-<?php echo esc_attr($item_id); ?>"></p>
 												</div>
