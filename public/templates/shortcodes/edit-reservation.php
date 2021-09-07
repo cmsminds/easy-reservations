@@ -142,6 +142,7 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 										</div>
 										<div class="form-wrapper">
 											<div class="bookItems mb-3">
+												<label><?php echo sprintf( __( 'Accomodation [Limit: ]', 'easy-reservations' ) ); ?></label>
 												<div class="row form-row input-daterange">
 													<div class="col-12 col-md-6">
 														<div class="position-relative">
