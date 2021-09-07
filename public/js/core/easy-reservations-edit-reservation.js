@@ -303,11 +303,6 @@ jQuery(document).ready(function ($) {
 		var adult_count = parseInt( this_input.val() );
 		adult_count     = ( -1 === is_valid_number( adult_count ) ) ? 0 : adult_count;
 
-		// The adult count should be minimum what was previously selected.
-		var min_adult_count = parseInt( this_input.attr( 'min' ) );
-		adult_count         = ( adult_count < min_adult_count ) ? min_adult_count : adult_count;
-		this_input.val( adult_count );
-
 		// Manage the adult's cost.
 		var per_adult_charge       = parseFloat( $( '#adult-charge-' + item_id ).val() );
 		var total_charge           = adult_count * per_adult_charge;
@@ -328,11 +323,6 @@ jQuery(document).ready(function ($) {
 		var item_id    = this_input.parents( '.ersrv-edit-reservation-item-card' ).data( 'itemid' );
 		var kid_count  = parseInt( this_input.val() );
 		kid_count      = ( -1 === is_valid_number( kid_count ) ) ? 0 : kid_count;
-
-		// The adult count should be minimum what was previously selected.
-		var min_kid_count = parseInt( this_input.attr( 'min' ) );
-		kid_count         = ( kid_count < min_kid_count ) ? min_kid_count : kid_count;
-		this_input.val( kid_count );
 
 		// Manage the kids cost.
 		var per_kid_charge         = parseFloat( $( '#kid-charge-' + item_id ).val() );
