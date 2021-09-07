@@ -145,7 +145,13 @@ jQuery(document).ready(function ($) {
 					setTimeout( function() {
 						$( '#ersrv-single-reservation-checkout-datepicker' ).datepicker( 'show' );
 					}, 16 );
-				} else if ( 'ersrv-single-reservation-checkout-datepicker' === instance.id ) {
+				}
+
+				var checkin_date    = $( '#ersrv-single-reservation-checkin-datepicker' ).val();
+				var checkout_date   = $( '#ersrv-single-reservation-checkout-datepicker' ).val();
+
+				// Calculate the totals, if both the dates are available.
+				if ( 1 === is_valid_string( checkin_date ) && 1 === is_valid_string( checkout_date ) ) {
 					/**
 					 * This means that the checkout date is selected.
 					 * Recalculate the product summary.
@@ -645,12 +651,15 @@ jQuery(document).ready(function ($) {
 			var this_element = $( this );
 			var is_checked = this_element.is( ':checked' );
 			if ( true === is_checked ) {
-				amenities.push(
-					{
-						amenity: this_element.parents( '.ersrv-single-amenity-block' ).data( 'amenity' ),
-						cost: this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost' ),
-					}
-				);
+				var amenity_cost  = parseFloat( this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost' ) );
+				var cost_type     = this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost_type' );
+				amenity_cost      = ( 'per_day' === cost_type ) ? ( amenity_cost * reservation_days ) : amenity_cost;
+
+				// Push the amenities cost into an array.
+				amenities.push( {
+					amenity: this_element.parents( '.ersrv-single-amenity-block' ).data( 'amenity' ),
+					cost: amenity_cost,
+				} );
 			}
 		} );
 
@@ -1352,132 +1361,6 @@ jQuery(document).ready(function ($) {
 		}
 
 		return dates;
-	}
-
-	/**
-	 * Get the item subtotal.
-	 *
-	 * @returns number
-	 */
-	function ersrv_get_reservation_item_subtotal() {
-		var item_subtotal = $( 'tr.item-price-summary td span' ).text();
-		item_subtotal     = parseFloat( item_subtotal.replace( /[^\d.]/g, '' ) );
-		item_subtotal     = ( -1 === is_valid_number( item_subtotal ) ) ? 0 : item_subtotal;
-		item_subtotal     = item_subtotal.toFixed( 2 );
-
-		return item_subtotal;
-	}
-
-	/**
-	 * Get the kids charge subtotal.
-	 *
-	 * @returns number
-	 */
-	function ersrv_get_reservation_kids_subtotal() {
-		var kids_subtotal = $( 'tr.kids-charge-summary td span' ).text();
-		kids_subtotal     = parseFloat( kids_subtotal.replace( /[^\d.]/g, '' ) );
-		kids_subtotal     = ( -1 === is_valid_number( kids_subtotal ) ) ? 0 : kids_subtotal;
-		kids_subtotal     = kids_subtotal.toFixed( 2 );
-
-		return kids_subtotal;
-	}
-
-	/**
-	 * Get the security amount subtotal.
-	 *
-	 * @returns number
-	 */
-	function ersrv_get_security_subtotal() {
-		var security_subtotal = $( 'tr.security-amount-summary td span span' ).text();
-		security_subtotal     = parseFloat( security_subtotal.replace( /[^\d.]/g, '' ) );
-		security_subtotal     = ( -1 === is_valid_number( security_subtotal ) ) ? 0 : security_subtotal;
-		security_subtotal     = security_subtotal.toFixed( 2 );
-
-		return security_subtotal;
-	}
-
-	/**
-	 * Get the amenities charge subtotal.
-	 *
-	 * @returns number
-	 */
-	function ersrv_get_amenities_subtotal() {
-		var amenities_subtotal = $( 'tr.amenities-summary td span' ).text();
-		amenities_subtotal     = parseFloat( amenities_subtotal.replace( /[^\d.]/g, '' ) );
-		amenities_subtotal     = ( -1 === is_valid_number( amenities_subtotal ) ) ? 0 : amenities_subtotal;
-		amenities_subtotal     = amenities_subtotal.toFixed( 2 );
-
-		return amenities_subtotal;
-	}
-
-	/**
-	 * Calculate the reservation total cost.
-	 */
-	function ersrv_calculate_reservation_total_cost() {
-		var item_subtotal      = parseFloat( ersrv_get_reservation_item_subtotal() );
-		var kids_subtotal      = parseFloat( ersrv_get_reservation_kids_subtotal() );
-		var security_subtotal  = parseFloat( ersrv_get_security_subtotal() );
-		var amenities_subtotal = parseFloat( ersrv_get_amenities_subtotal() );
-
-		// Addup to the total cost.
-		var total_cost = item_subtotal + kids_subtotal + security_subtotal + amenities_subtotal;
-
-		// Formatted total cost.
-		var formatted_total_cost = ersrv_get_formatted_price( total_cost );
-
-		// Paste the final total.
-		$( 'tr.new-reservation-total-cost td span' ).html( formatted_total_cost );
-	}
-
-	/**
-	 * Calculate the reservation total cost.
-	 */
-	function ersrv_calculate_reservation_total_cost_quick_view() {
-		var item_subtotal      = parseFloat( $( '#quick-view-adult-subtotal' ).val() );
-		item_subtotal          = ( -1 === is_valid_number( item_subtotal ) ) ? 0.0 : item_subtotal;
-		var kid_subtotal       = parseFloat( $( '#quick-view-kid-subtotal' ).val() );
-		kid_subtotal           = ( -1 === is_valid_number( kid_subtotal ) ) ? 0.0 : kid_subtotal;
-		var amenities_subtotal = parseFloat( $( '#quick-view-amenities-subtotal' ).val() );
-		amenities_subtotal     = ( -1 === is_valid_number( amenities_subtotal ) ) ? 0.0 : amenities_subtotal;
-		var security_subtotal  = parseFloat( $( '#quick-view-security-subtotal' ).val() );
-		security_subtotal      = ( -1 === is_valid_number( security_subtotal ) ) ? 0.0 : security_subtotal;
-
-		// Addup to the total cost.
-		var total_cost = item_subtotal + kid_subtotal + security_subtotal + amenities_subtotal;
-
-		// Limit to 2 decimal places.
-		total_cost = total_cost.toFixed( 2 );
-
-		// Paste the final total.
-		$( '.ersrv-quick-view-item-subtotal' ).html( woo_currency + total_cost );
-	}
-
-	/**
-	 * Get the item total charge.
-	 *
-	 * @returns number
-	 */
-	function ersrv_get_item_total() {
-		var item_total = $( 'tr.new-reservation-total-cost td span' ).text();
-		item_total     = parseFloat( item_total.replace( /[^\d.]/g, '' ) );
-		item_total     = ( -1 === is_valid_number( item_total ) ) ? 0 : item_total;
-		item_total     = item_total.toFixed( 2 );
-
-		return item_total;
-	}
-
-	/**
-	 * Get the item total charge in quick view modal.
-	 *
-	 * @returns number
-	 */
-	function ersrv_get_quick_view_item_total() {
-		var item_total = $( '.ersrv-quick-view-item-subtotal' ).text();
-		item_total     = parseFloat( item_total.replace( /[^\d.]/g, '' ) );
-		item_total     = ( -1 === is_valid_number( item_total ) ) ? 0 : item_total;
-		item_total     = item_total.toFixed( 2 );
-
-		return item_total;
 	}
 
 	/**

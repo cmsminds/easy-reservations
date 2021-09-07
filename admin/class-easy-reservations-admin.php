@@ -947,11 +947,7 @@ class Easy_Reservations_Admin {
 
 		// Update the amenities to order item meta.
 		if ( ! empty( $amenities ) && is_array( $amenities ) ) {
-			foreach ( $amenities as $amenity_data ) {
-				$line_item->update_meta_data( 'Amenity: ' . $amenity_data['amenity'], $amenity_data['cost'] ); // Update the amenity data.
-			}
-
-			// Add the amenities subtotal to the item meta.
+			$line_item->update_meta_data( 'Amenities', $amenities ); // Update the amenity data.
 			$line_item->update_meta_data( 'Amenities Subtotal', $amenities_subtotal ); // Update the amenities subtotal.
 		}
 

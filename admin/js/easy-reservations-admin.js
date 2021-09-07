@@ -103,7 +103,7 @@ jQuery( document ).ready( function( $ ) {
 					reserved_dates.push( blocked_dates[i].date );
 				}
 			}
-			console.log( 'reserved_dates', reserved_dates );
+
 			$( '.ersrv-has-datepicker' ).datepicker( {
 				beforeShowDay: function( date ) {
 					var loop_date          = ( ( '0' + date.getDate() ).slice( -2 ) );
@@ -529,6 +529,7 @@ jQuery( document ).ready( function( $ ) {
 			block_element( $( '.ersrv-add-new-reservation' ) );
 			block_element( $( '.new-reservation-summary' ) );
 			block_element( $( 'tr.ersrv-new-reservation-item-availability-row' ) );
+			block_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
 			return false;
 		}
 
@@ -573,6 +574,7 @@ jQuery( document ).ready( function( $ ) {
 					unblock_element( $( '.ersrv-add-new-reservation' ) );
 					unblock_element( $( '.new-reservation-summary' ) );
 					unblock_element( $( 'tr.ersrv-new-reservation-item-availability-row' ) );
+					unblock_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
 
 					// Item details.
 					var item_details       = response.data.details;
@@ -604,10 +606,11 @@ jQuery( document ).ready( function( $ ) {
 							// Also check if the checkin and checkout dates are available, unblock the amenities wrapper.
 							var checkin_date  = $( '#ersrv-checkin-date' ).val();
 							var checkout_date = $( '#ersrv-checkout-date' ).val();
-							if ( '' !== checkin_date && '' !== checkout_date ) {
-								unblock_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
-							} else {
-								block_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
+
+							// Calculate the totals, if both the dates are available.
+							if ( 1 === is_valid_string( checkin_date ) && 1 === is_valid_string( checkout_date ) ) {
+								// Recalculate the product summary.
+								ersrv_recalculate_reservation_details_item_summary();
 							}
 						},
 						beforeShowDay: function( date ) {
@@ -661,89 +664,33 @@ jQuery( document ).ready( function( $ ) {
 					// Security amount.
 					var security_amount   = ( -1 !== is_valid_number( item_details.security_amount ) ) ? parseFloat( item_details.security_amount ) : 0;
 					$( '#security-amount' ).val( security_amount );
-					$( 'tr.security-amount-summary td' ).html( item_details.currency + item_details.security_amount );
-					$( 'tr.new-reservation-total-cost td' ).html( item_details.currency + item_details.security_amount );
 				}
 			}
 		} );
 	} );
 
 	/**
-	 * Block/unblock amenities block based on checkin and checkout dates.
-	 */
-	$( document ).on( 'click', '#ersrv-checkin-date, #ersrv-checkout-date', function() {
-		// Also check if the checkin and checkout dates are available, unblock the amenities wrapper.
-		var checkin_date  = $( '#ersrv-checkin-date' ).val();
-		var checkout_date = $( '#ersrv-checkout-date' ).val();
-		if ( '' !== checkin_date && '' !== checkout_date ) {
-			unblock_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
-		} else {
-			block_element( $( 'tr.ersrv-new-reservation-amenities-row' ) );
-		}
-	} );
-
-	/**
 	 * Accomodation adult charge.
 	 */
 	$( document ).on( 'keyup click', '#adult-accomodation-count', function() {
-		var this_input       = $( this );
-		var adult_count      = parseInt( this_input.val() );
-		adult_count          = ( -1 === is_valid_number( adult_count ) ) ? 0 : adult_count;
-		var per_adult_charge = parseFloat( $( '#adult-charge' ).val() );
-		var total_charge     = adult_count * per_adult_charge;
-		total_charge         = total_charge.toFixed( 2 );
-		$( 'tr.item-price-summary td' ).html( woo_currency + total_charge );
-
-		// Calculate the total cost.
-		ersrv_calculate_reservation_total_cost();
+		// Recalculate the product summary.
+		ersrv_recalculate_reservation_details_item_summary();
 	} );
 
 	/**
 	 * Accomodation kids charge.
 	 */
 	$( document ).on( 'keyup click', '#kid-accomodation-count', function() {
-		var this_input     = $( this );
-		var kids_count     = parseInt( this_input.val() );
-		kids_count         = ( -1 === is_valid_number( kids_count ) ) ? 0 : kids_count;
-		var per_kid_charge = parseFloat( $( '#kid-charge' ).val() );
-		var total_charge   = kids_count * per_kid_charge;
-		total_charge         = total_charge.toFixed( 2 );
-		$( 'tr.kids-charge-summary td' ).html( woo_currency + total_charge );
-
-		// Calculate the total cost.
-		ersrv_calculate_reservation_total_cost();
+		// Recalculate the product summary.
+		ersrv_recalculate_reservation_details_item_summary();
 	} );
 
 	/**
 	 * Amenities charge summary.
 	 */
 	$( document ).on( 'click', '.ersrv-new-reservation-single-amenity', function() {
-		var amenities_summary_cost  = 0.0;
-		var checkin_date            = $( '#ersrv-checkin-date' ).val();
-		var checkout_date           = $( '#ersrv-checkout-date' ).val();
-		var reservation_dates       = ersrv_get_dates_between_2_dates( checkin_date, checkout_date );
-		var reservation_dates_count = reservation_dates.length;
-
-		// Collect the amenities and their charges.
-		$( '.ersrv-new-reservation-single-amenity' ).each( function() {
-			var this_element = $( this );
-			var is_checked = this_element.find( 'input[type="checkbox"]' ).is( ':checked' );
-			if ( true === is_checked ) {
-				var amenity_cost      = parseFloat( this_element.data( 'cost' ) );
-				var amenity_cost_type = this_element.data( 'cost_type' );
-				amenity_cost          = ( 'per_day' === amenity_cost_type ) ? ( amenity_cost * reservation_dates_count ) : amenity_cost;
-				amenities_summary_cost += parseFloat( amenity_cost );
-			}
-		} );
-
-		// Limit to 2 decimal places.
-		amenities_summary_cost = amenities_summary_cost.toFixed( 2 );
-
-		// Paste the final cost.
-		$( 'tr.amenities-summary td' ).html( woo_currency + amenities_summary_cost );
-
-		// Calculate the total cost.
-		ersrv_calculate_reservation_total_cost();
+		// Recalculate the product summary.
+		ersrv_recalculate_reservation_details_item_summary();
 	} );
 
 	/**
@@ -758,8 +705,8 @@ jQuery( document ).ready( function( $ ) {
 	 */
 	$( document ).on( 'click', '.ersrv-add-new-reservation', function() {
 		var this_button            = $( this );
-		var item_id                = $( '#item-id' ).val();
-		var customer_id            = $( '#customer-id' ).val();
+		var item_id                = parseInt( $( '#item-id' ).val() );
+		var customer_id            = parseInt( $( '#customer-id' ).val() );
 		customer_id                = ( -1 !== is_valid_number( customer_id ) ) ? customer_id : 0;
 		var accomodation_limit     = parseInt( $( '#accomodation-limit' ).val() );
 		var checkin_date           = $( '#ersrv-checkin-date' ).val();
@@ -864,29 +811,27 @@ jQuery( document ).ready( function( $ ) {
 		// Block element.
 		block_element( this_button );
 
-		// Send AJAX creating a reservation.
-		var data = {
-			action: 'create_reservation',
-			item_id: item_id,
-			customer_id: customer_id,
-			checkin_date: checkin_date,
-			checkout_date: checkout_date,
-			adult_count: adult_count,
-			kid_count: kid_count,
-			amenities: amenities,
-			customer_notes: $( '.ersrv-new-reservation-customer-note-row td textarea' ).val(),
-			item_subtotal: ersrv_get_reservation_item_subtotal(),
-			kids_subtotal: ersrv_get_reservation_kids_subtotal(),
-			security_subtotal: ersrv_get_security_subtotal(),
-			amenities_subtotal: ersrv_get_amenities_subtotal(),
-			item_total: ersrv_get_item_total(),
-		};
-
+		// Shoot the AJAX now for creating the reservation.
 		$.ajax( {
 			dataType: 'JSON',
 			url: ajaxurl,
 			type: 'POST',
-			data: data,
+			data: {
+				action: 'create_reservation',
+				item_id: item_id,
+				customer_id: customer_id,
+				checkin_date: checkin_date,
+				checkout_date: checkout_date,
+				adult_count: adult_count,
+				kid_count: kid_count,
+				amenities: amenities,
+				customer_notes: $( '.ersrv-new-reservation-customer-note-row td textarea' ).val(),
+				item_subtotal: $( 'tr.item-price-summary td span.ersrv-cost' ).data( 'cost' ),
+				kids_subtotal: $( 'tr.kids-charge-summary td span.ersrv-cost' ).data( 'cost' ),
+				security_subtotal: $( 'tr.security-amount-summary td span.ersrv-cost' ).data( 'cost' ),
+				amenities_subtotal: $( 'tr.amenities-summary td span.ersrv-cost' ).data( 'cost' ),
+				item_total: $( 'tr.new-reservation-total-cost td span.ersrv-cost' ).data( 'cost' ),
+			},
 			success: function ( response ) {
 				// Return, if the response is not proper.
 				if ( 0 === response ) {
@@ -1263,91 +1208,6 @@ jQuery( document ).ready( function( $ ) {
 	}
 
 	/**
-	 * Get the item subtotal.
-	 *
-	 * @returns number
-	 */
-	function ersrv_get_reservation_item_subtotal() {
-		var item_subtotal = $( 'tr.item-price-summary td' ).text();
-		item_subtotal     = parseFloat( item_subtotal.replace( /[^\d.]/g, '' ) );
-		item_subtotal     = ( -1 === is_valid_number( item_subtotal ) ) ? 0 : item_subtotal;
-
-		return item_subtotal;
-	}
-
-	/**
-	 * Get the kids charge subtotal.
-	 *
-	 * @returns number
-	 */
-	function ersrv_get_reservation_kids_subtotal() {
-		var kids_subtotal = $( 'tr.kids-charge-summary td' ).text();
-		kids_subtotal     = parseFloat( kids_subtotal.replace( /[^\d.]/g, '' ) );
-		kids_subtotal     = ( -1 === is_valid_number( kids_subtotal ) ) ? 0 : kids_subtotal;
-
-		return kids_subtotal;
-	}
-
-	/**
-	 * Get the security amount subtotal.
-	 *
-	 * @returns number
-	 */
-	function ersrv_get_security_subtotal() {
-		var security_subtotal = $( 'tr.security-amount-summary td' ).text();
-		security_subtotal     = parseFloat( security_subtotal.replace( /[^\d.]/g, '' ) );
-		security_subtotal     = ( -1 === is_valid_number( security_subtotal ) ) ? 0 : security_subtotal;
-
-		return security_subtotal;
-	}
-
-	/**
-	 * Get the amenities charge subtotal.
-	 *
-	 * @returns number
-	 */
-	function ersrv_get_amenities_subtotal() {
-		var amenities_subtotal = $( 'tr.amenities-summary td' ).text();
-		amenities_subtotal     = parseFloat( amenities_subtotal.replace( /[^\d.]/g, '' ) );
-		amenities_subtotal     = ( -1 === is_valid_number( amenities_subtotal ) ) ? 0 : amenities_subtotal;
-
-		return amenities_subtotal;
-	}
-
-	/**
-	 * Calculate the reservation total cost.
-	 */
-	function ersrv_calculate_reservation_total_cost() {
-		var item_subtotal      = ersrv_get_reservation_item_subtotal();
-		var kids_subtotal      = ersrv_get_reservation_kids_subtotal();
-		var security_subtotal  = ersrv_get_security_subtotal();
-		var amenities_subtotal = ersrv_get_amenities_subtotal();
-
-		// Addup to the total cost.
-		var total_cost = item_subtotal + kids_subtotal + security_subtotal + amenities_subtotal;
-
-		// Limit to 2 decimal places.
-		total_cost = total_cost.toFixed( 2 );
-
-		// Paste the final total.
-		$( 'tr.new-reservation-total-cost td' ).html( woo_currency + total_cost );
-	}
-
-	/**
-	 * Get the item total charge.
-	 *
-	 * @returns number
-	 */
-	function ersrv_get_item_total() {
-		var item_total = $( 'tr.new-reservation-total-cost td span' ).text();
-		item_total     = parseFloat( item_total.replace( /[^\d.]/g, '' ) );
-		item_total     = ( -1 === is_valid_number( item_total ) ) ? 0 : item_total;
-		item_total     = item_total.toFixed( 2 );
-
-		return item_total;
-	}
-
-	/**
 	 * Check if a email is valid.
 	 *
 	 * @param {string} email
@@ -1414,6 +1274,93 @@ jQuery( document ).ready( function( $ ) {
 		var val        = url.searchParams.get( param_name );
 
 		return val;
+	}
+
+	/**
+	 * Return the formatted price.
+	 *
+	 * @param {*} cost 
+	 * @returns 
+	 */
+	function ersrv_get_formatted_price( cost ) {
+		// Upto 2 decimal places.
+		cost = cost.toFixed( 2 );
+
+		// Let's first comma format the price.
+		var cost_parts = cost.toString().split( '.' );
+		cost_parts[0]  = cost_parts[0].replace( /\B(?=(\d{3})+(?!\d))/g, ',' );
+		cost           = cost_parts.join( '.' );
+		
+		// Prepare the cost html now.
+		var cost_html  = '<span class="woocommerce-Price-amount amount">';
+		cost_html     += '<span class="woocommerce-Price-currencySymbol">' + woo_currency + '</span>';
+		cost_html     += cost;
+		cost_html     += '</span>';
+
+		return cost_html;
+	}
+
+	/**
+	 * Recalculate the item summary on the reservation details page.
+	 */
+	function ersrv_recalculate_reservation_details_item_summary() {
+		var checkin_date    = $( '#ersrv-checkin-date' ).val();
+		var checkout_date   = $( '#ersrv-checkout-date' ).val();
+		var selected_dates  = [];
+		var amenities_total = 0.0;
+
+		// Get the checkin and checkout dates.
+		var selected_dates_obj = ersrv_get_dates_between_2_dates( checkin_date, checkout_date );
+		for ( var m in selected_dates_obj ) {
+			selected_dates.push( ersrv_get_formatted_date( selected_dates_obj[m] ) );
+		}
+
+		// Get the count of the selected days.
+		var selected_dates_count = selected_dates.length;
+
+		// Accomodation.
+		var adult_count = parseInt( $( '#adult-accomodation-count' ).val() );
+		adult_count     = ( -1 === is_valid_number( adult_count ) ) ? 1 : adult_count;
+		var kids_count  = parseInt( $( '#kid-accomodation-count' ).val() );
+		kids_count      = ( -1 === is_valid_number( kids_count ) ) ? 0 : kids_count;
+
+		// Accomodation charges.
+		var adult_charge           = parseFloat( $( '#adult-charge' ).val() );
+		adult_charge               = selected_dates_count * adult_count * adult_charge;
+		var formatted_adult_charge = ersrv_get_formatted_price( adult_charge );
+		var kids_charge            = parseFloat( $( '#kid-charge' ).val() );
+		kids_charge                = selected_dates_count * kids_count * kids_charge;
+		var formatted_kids_charge  = ersrv_get_formatted_price( kids_charge );
+
+		// Amenities charges.
+		$( '.ersrv-new-reservation-single-amenity' ).each ( function() {
+			var this_element = $( this );
+			var is_checked = this_element.find( 'input[type="checkbox"]' ).is( ':checked' );
+			if ( true === is_checked ) {
+				var amenity_cost = parseFloat( this_element.data( 'cost' ) );
+				var cost_type    = this_element.data( 'cost_type' );
+				amenity_cost     = ( 'per_day' === cost_type ) ? ( amenity_cost * selected_dates_count ) : amenity_cost;
+				amenities_total += parseFloat( amenity_cost );
+			}
+		} );
+
+		// Formatted amenities cost.
+		var formatted_amenities_total = ersrv_get_formatted_price( amenities_total );
+
+		// Security charge.
+		var security_total           = parseFloat( $( '#security-amount' ).val() );
+		var formatted_security_total = ersrv_get_formatted_price( security_total );
+
+		// Calculate the total cost now.
+		var total_cost           = adult_charge + kids_charge + amenities_total + security_total;
+		var formatted_total_cost = ersrv_get_formatted_price( total_cost );
+
+		// Put in all the totals now.
+		$( 'tr.item-price-summary td span.ersrv-cost' ).html( formatted_adult_charge ).data( 'cost', adult_charge );
+		$( 'tr.kids-charge-summary td span.ersrv-cost' ).html( formatted_kids_charge ).data( 'cost', kids_charge );
+		$( 'tr.security-amount-summary td span.ersrv-cost' ).html( formatted_security_total ).data( 'cost', security_total );
+		$( 'tr.amenities-summary td span.ersrv-cost' ).html( formatted_amenities_total ).data( 'cost', amenities_total );
+		$( 'tr.new-reservation-total-cost td span.ersrv-cost' ).html( formatted_total_cost ).data( 'cost', total_cost );
 	}
 
 	/**

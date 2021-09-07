@@ -103,8 +103,8 @@ $customers = get_users();
 					<small class="ersrv-new-reservation-limit-text"><?php esc_html_e( 'Limit: --', 'easy-reservations' ); ?></small>
 				</th>
 				<td>
-					<input type="number" id="adult-accomodation-count" min="1" max="12" step="1" class="regular-text" placeholder="<?php esc_html_e( 'No. of adults.', 'easy-reservations' ); ?>">
-					<input type="number" id="kid-accomodation-count" min="1" max="12" step="1" class="regular-text" placeholder="<?php esc_html_e( 'No. of kids.', 'easy-reservations' ); ?>">
+					<input type="number" id="adult-accomodation-count" min="1" step="1" class="regular-text" placeholder="<?php esc_html_e( 'No. of adults.', 'easy-reservations' ); ?>">
+					<input type="number" id="kid-accomodation-count" min="1" step="1" class="regular-text" placeholder="<?php esc_html_e( 'No. of kids.', 'easy-reservations' ); ?>">
 					<p class="ersrv-reservation-error accomodation-error"></p>
 				</td>
 			</tr>
@@ -143,25 +143,25 @@ $customers = get_users();
 			<tbody>
 				<tr class="item-price-summary">
 					<th scope="row"><?php esc_html_e( 'Item (Adult) Subtotal', 'easy-reservations' ); ?></th>
-					<td>--</td>
+					<td><span data-cost="" class="ersrv-cost">--</span></td>
 				</tr>
 				<tr class="kids-charge-summary">
 					<th scope="row"><?php esc_html_e( 'Kid(s) Subtotal', 'easy-reservations' ); ?></th>
-					<td>--</td>
+					<td><span data-cost="" class="ersrv-cost">--</span></td>
 				</tr>
 				<tr class="security-amount-summary">
 					<th scope="row"><?php esc_html_e( 'Security Fees Subtotal', 'easy-reservations' ); ?></th>
-					<td>--</td>
+					<td><span data-cost="" class="ersrv-cost">--</span></td>
 				</tr>
 				<tr class="amenities-summary">
 					<th scope="row"><?php esc_html_e( 'Amenities Subtotal', 'easy-reservations' ); ?></th>
-					<td>--</td>
+					<td><span data-cost="" class="ersrv-cost">--</span></td>
 				</tr>
 			</tbody>
 			<tfoot>
 				<tr class="new-reservation-total-cost">
 					<th scope="row"><?php esc_html_e( 'Total', 'easy-reservations' ); ?></th>
-					<td>--</td>
+					<td><span data-cost="" class="ersrv-cost">--</span></td>
 				</tr>
 			</tfoot>
 		</table>

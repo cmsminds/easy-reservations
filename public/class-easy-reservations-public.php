@@ -1725,7 +1725,7 @@ class Easy_Reservations_Public {
 					$filename = basename( $attachment_url );
 					$filename = ( 25 <= strlen( $filename ) ) ? ersrv_shorten_filename( $filename ) : $filename;
 					?>
-					<span><?php echo sprintf( __( 'Uploaded: %2$s%1$s%3$s', 'easy-reservations' ), $filename, '<a href="' . $attachment_url . '">', '</a>' ); ?></span>
+					<span><?php echo sprintf( __( 'Uploaded: %2$s%1$s%3$s', 'easy-reservations' ), $filename, '<a target="_blank" href="' . $attachment_url . '">', '</a>' ); ?></span>
 				<?php } ?>
 				</div>
 			</p>
@@ -1780,7 +1780,7 @@ class Easy_Reservations_Public {
 		// View license html.
 		ob_start();
 		?>
-		<span><?php echo sprintf( __( 'Uploaded: %2$s%1$s%3$s', 'easy-reservations' ), $filename, '<a href="' . $attachment_url . '">', '</a>' ); ?></span>
+		<span><?php echo sprintf( __( 'Uploaded: %2$s%1$s%3$s', 'easy-reservations' ), $filename, '<a target="_blank" href="' . $attachment_url . '">', '</a>' ); ?></span>
 		<?php
 		$view_license_html = ob_get_clean();
 
