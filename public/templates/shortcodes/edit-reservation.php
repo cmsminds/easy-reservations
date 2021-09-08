@@ -47,6 +47,7 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 			$non_reservation_items_total = 0.0; // Non reservation items total.
 			$line_items                  = $wc_order->get_items(); // Get the items.
 			$cancel_reservation          = "location.href = '{$view_order_link}'"; // Cancel update link.
+			$current_theme               = get_option( 'stylesheet' ); // Current stylesheet.
 		}
 	}
 }
@@ -198,7 +199,7 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 													<div class="col-12 col-md-5 mb-4 mb-md-0">
 														<h4 class="font-Poppins font-size-16 color-black font-weight-bold mb-0">
 															<?php echo sprintf(__('Subtotal: %2$s%1$s%3$s', 'easy-reservations'), wc_price( $item_total ), '<span id="ersrv-edit-reservation-item-subtotal-' . $item_id . '">', '</span>'); ?>
-															<a class="ersrv-split-reservation-cost text-theme-primary" href="javascript:void(0);" data-toggle="modal" data-target="#summaryModal"><?php esc_html_e( 'Know More', 'easy-reservations' ); ?></a>
+															<a class="ersrv-split-reservation-cost <?php echo ( 'twentysixteen' === $current_theme ) ? '' : 'text-theme-primary'; ?>" href="javascript:void(0);" data-toggle="modal" data-target="#summaryModal"><?php esc_html_e( 'Know More', 'easy-reservations' ); ?></a>
 														</h4>
 														<div class="ersrv-edit-reservation-item-summary" id="ersrv-edit-reservation-item-summary-<?php echo esc_attr( $item_id ); ?>">
 															<div class="ersrv-edit-reservation-item-summary-wrapper p-3">
