@@ -1378,11 +1378,29 @@ img {
   color: #fff;
 }
 
-.dropdown-toggle.btn-outline-light:hover .filter-option .filter-option-inner .filter-option-inner-inner, .dropdown-toggle.btn-outline-light:focus .filter-option .filter-option-inner .filter-option-inner-inner, .dropdown-toggle.btn-outline-light:active .filter-option .filter-option-inner .filter-option-inner-inner {
+.dropdown-toggle.btn-outline-light {
+  color: #666;
+}
+
+.dropdown-toggle.btn-outline-light:hover .filter-option .filter-option-inner .filter-option-inner-inner, .dropdown-toggle.btn-outline-light:active .filter-option .filter-option-inner .filter-option-inner-inner {
   color: #000;
 }
 
-.dropdown-toggle.btn-outline-light:hover::after, .dropdown-toggle.btn-outline-light:focus::after, .dropdown-toggle.btn-outline-light:active::after {
+.dropdown-toggle.btn-outline-light:hover::after, .dropdown-toggle.btn-outline-light:active::after {
+  -webkit-filter: invert(0);
+  filter: invert(0);
+}
+
+.dropdown-toggle.btn-outline-light:focus {
+  background-color: #f8f9fa !important;
+  border-color: #f8f9fa !important;
+}
+
+.dropdown-toggle.btn-outline-light:focus .filter-option .filter-option-inner .filter-option-inner-inner {
+  color: #000 !important;
+}
+
+.dropdown-toggle.btn-outline-light:focus::after {
   -webkit-filter: invert(0);
   filter: invert(0);
 }
