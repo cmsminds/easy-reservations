@@ -42,6 +42,7 @@ jQuery( document ).ready( function( $ ) {
 	var driving_license_allowed_extensions           = ERSRV_Admin_Script_Vars.driving_license_allowed_extensions;
 	var driving_license_invalid_file_error           = ERSRV_Admin_Script_Vars.driving_license_invalid_file_error;
 	var driving_license_empty_file_error             = ERSRV_Admin_Script_Vars.driving_license_empty_file_error;
+	var trim_zeros_from_price                        = ERSRV_Admin_Script_Vars.trim_zeros_from_price;
 	var new_reservation_item_reserved_dates          = [];
 	var post_type                                    = ersrv_get_query_string_parameter_value( 'post_type' );
 
@@ -1360,6 +1361,11 @@ jQuery( document ).ready( function( $ ) {
 	function ersrv_get_formatted_price( cost ) {
 		// Upto 2 decimal places.
 		cost = cost.toFixed( 2 );
+
+		// Remove the extra zeros from the price.
+		if ( 'yes' === trim_zeros_from_price ) {
+			cost = cost.replace( /\.00$/, '' );
+		}
 
 		// Let's first comma format the price.
 		var cost_parts = cost.toString().split( '.' );

@@ -312,10 +312,11 @@ class Easy_Reservations_Public {
 					'reservation_checkout_missing_err_msg'         => __( 'Please provide checkout dates.', 'easy-reservations' ),
 					'reservation_lesser_reservation_days_err_msg'  => __( 'The item can be reserved for a min. of XX days.', 'easy-reservations' ),
 					'reservation_greater_reservation_days_err_msg' => __( 'The item can be reserved for a max. of XX days.', 'easy-reservations' ),
-					'reservation_item_changes_invalidated'         => __( 'Reservation changes cannot be validated.', 'easy-reservations' ),
+					'reservation_item_changes_invalidated'         => __( 'Reservation changes did not validate for XX. Please check the values and try again.', 'easy-reservations' ),
 					'cannot_update_reservation_item_invalidated'   => __( 'The reservation cannot be updated as the changes you made to the reservation have not been validated.', 'easy-reservations' ),
-					'customer_payable_cost_difference_message'     => sprintf( __( 'Cost difference: %2$s%1$s%3$s (to be paid by the customer on arrival)', 'easy-reservations' ), '--', '<span class="ersrv-edit-reservation-cost-difference">', '</span>' ),
-					'admin_payable_cost_difference_message'        => sprintf( __( 'Cost difference: %2$s%1$s%3$s (to be refunded by the administrator after the reservation is complete)', 'easy-reservations' ), '--', '<span class="ersrv-edit-reservation-cost-difference">', '</span>' ),
+					'customer_payable_cost_difference_message'     => sprintf( __( 'The customer shall pay %4$s%2$s%1$s%3$s%5$s before onboarding.', 'easy-reservations' ), '--', '<span class="ersrv-edit-reservation-cost-difference">', '</span>', '<strong>', '</strong>' ),
+					'admin_payable_cost_difference_message'        => sprintf( __( 'The administrator shall refund %4$s%2$s%1$s%3$s%5$s after the reservation is complete.', 'easy-reservations' ), '--', '<span class="ersrv-edit-reservation-cost-difference">', '</span>', '<strong>', '</strong>' ),
+					'trim_zeros_from_price'                        => ersrv_get_plugin_settings( 'ersrv_trim_zeros_from_price' ),
 				)
 			);
 		}
@@ -411,6 +412,7 @@ class Easy_Reservations_Public {
 			'cancel_reservation_confirmation_message'      => __( 'Click OK to confirm your cancellation. This action won\'t be undone.', 'easy-reservations' ),
 			'checkin_provided_checkout_not'                => __( 'Since you provided the checkin date, checkout date is mandatory.', 'easy-reservations' ),
 			'checkout_provided_checkin_not'                => __( 'Since you provided the checkout date, checkin date is mandatory.', 'easy-reservations' ),
+			'trim_zeros_from_price'                        => ersrv_get_plugin_settings( 'ersrv_trim_zeros_from_price' ),
 		);
 
 		/**
@@ -1578,11 +1580,11 @@ class Easy_Reservations_Public {
 								</div>
 							</div>
 						</div>
-						<div class="amenities-values d-flex flex-column mb-3">
-							<h4 class="font-size-20 font-weight-semibold"><?php esc_html_e( 'Amenities', 'easy-reservations' ); ?></h4>
-							<div class="values ersrv-item-amenities-wrapper">
-								<div class="row form-row">
-									<?php if ( ! empty( $amenities ) && is_array( $amenities ) ) { ?>
+						<?php if ( ! empty( $amenities ) && is_array( $amenities ) ) { ?>
+							<div class="amenities-values d-flex flex-column mb-3">
+								<h4 class="font-size-20 font-weight-semibold"><?php esc_html_e( 'Amenities', 'easy-reservations' ); ?></h4>
+								<div class="values ersrv-item-amenities-wrapper">
+									<div class="row form-row">
 										<?php foreach ( $amenities as $amenity_data ) {
 											$amenity_title     = ( ! empty( $amenity_data['title'] ) ) ? $amenity_data['title'] : '';
 											$amenity_cost      = ( ! empty( $amenity_data['cost'] ) ) ? $amenity_data['cost'] : 0.00;
@@ -1596,10 +1598,10 @@ class Easy_Reservations_Public {
 												</div>
 											</div>
 										<?php } ?>
-									<?php } ?>
+									</div>
 								</div>
 							</div>
-						</div>
+						<?php } ?>
 						<div class="summary d-flex flex-column">
 							<input type="hidden" id="quick-view-adult-subtotal" value="" />
 							<input type="hidden" id="quick-view-kid-subtotal" value="" />

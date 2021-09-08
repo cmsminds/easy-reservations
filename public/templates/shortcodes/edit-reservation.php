@@ -109,7 +109,7 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 					$max_reservation_period = ( ! empty( $item_details['max_reservation_period'] ) ) ? $item_details['max_reservation_period'] : '';
 					$amenities              = ( ! empty( $item_details['amenities'] ) ) ? $item_details['amenities'] : array();
 					?>
-					<div class=" ersrv-edit-reservation-item-card card mb-3" data-productid="<?php echo esc_attr( $product_id ); ?>" data-itemid="<?php echo esc_attr( $item_id ); ?>">
+					<div class="ersrv-edit-reservation-item-card card mb-3" data-productid="<?php echo esc_attr( $product_id ); ?>" data-itemid="<?php echo esc_attr( $item_id ); ?>" data-itemname="<?php echo wp_kses_post( get_the_title( $product_id ) ); ?>">
 						<div class="row no-gutters">
 							<div class="col-12 col-lg-4">
 								<a href="<?php echo esc_url( get_permalink( $product_id ) ); ?>">
@@ -127,16 +127,16 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 												<div class="row form-row input-daterange">
 													<div class="col-12 col-md-6">
 														<div class="position-relative">
-															<label for="ersrv-edit-reservation-item-checkin-date-<?php echo esc_attr($item_id); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e('Checkin', 'easy-reservations'); ?></label>
+															<label for="ersrv-edit-reservation-item-checkin-date-<?php echo esc_attr( $item_id ); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Checkin', 'easy-reservations' ); ?></label>
 															<div>
-																<input type="text" id="ersrv-edit-reservation-item-checkin-date-<?php echo esc_attr($item_id); ?>" value="<?php echo esc_html($checkin_date); ?>" data-oldval="<?php echo esc_html($checkin_date); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkin-date form-control date-control text-left rounded-lg" placeholder="<?php echo esc_attr(ersrv_get_php_date_format()); ?>">
+																<input type="text" id="ersrv-edit-reservation-item-checkin-date-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $checkin_date ); ?>" data-oldval="<?php echo esc_html( $checkin_date ); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkin-date form-control date-control text-left rounded-lg" placeholder="<?php echo esc_attr( ersrv_get_php_date_format() ); ?>">
 															</div>
 														</div>
 													</div>
 													<div class="col-12 col-md-6">
 														<div class="position-relative">
-															<label for="ersrv-edit-reservation-item-checkout-date-<?php echo esc_attr($item_id); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e('Checkout', 'easy-reservations'); ?></label>
-															<div><input type="text" id="ersrv-edit-reservation-item-checkout-date-<?php echo esc_attr($item_id); ?>" value="<?php echo esc_html($checkout_date); ?>" data-oldval="<?php echo esc_html($checkout_date); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkout-date form-control date-control text-left rounded-lg" placeholder="<?php echo esc_attr(ersrv_get_php_date_format()); ?>"></div>
+															<label for="ersrv-edit-reservation-item-checkout-date-<?php echo esc_attr( $item_id ); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Checkout', 'easy-reservations' ); ?></label>
+															<div><input type="text" id="ersrv-edit-reservation-item-checkout-date-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $checkout_date ); ?>" data-oldval="<?php echo esc_html( $checkout_date ); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkout-date form-control date-control text-left rounded-lg" placeholder="<?php echo esc_attr( ersrv_get_php_date_format() ); ?>"></div>
 														</div>
 													</div>
 													<div class="col-12">
@@ -146,7 +146,7 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 															<div class="ersrv-unavailable-dates-notifier ml-md-3"><span><?php esc_html_e('Unvailable Dates', 'easy-reservations'); ?></span></div>
 														</div>
 													</div>
-													<p class="ersrv-reservation-error mt-3" id="checkin-checkout-dates-error-<?php echo esc_attr($item_id); ?>"></p>
+													<p class="ersrv-reservation-error mt-3" id="checkin-checkout-dates-error-<?php echo esc_attr( $item_id ); ?>"></p>
 												</div>
 											</div>
 										</div>
@@ -156,17 +156,17 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 												<div class="row form-row input-daterange">
 													<div class="col-12 col-md-6">
 														<div class="position-relative">
-															<label for="ersrv-edit-reservation-item-adult-count-<?php echo esc_attr($item_id); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Adults', 'easy-reservations' ); ?></label>
-															<div><input id="ersrv-edit-reservation-item-adult-count-<?php echo esc_attr($item_id); ?>" placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" type="number" min="1" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-adult-count form-control rounded-lg" value="<?php echo esc_html($adult_count); ?>" data-oldval="<?php echo esc_html($adult_count); ?>" /></div>
+															<label for="ersrv-edit-reservation-item-adult-count-<?php echo esc_attr( $item_id ); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Adults', 'easy-reservations' ); ?></label>
+															<div><input id="ersrv-edit-reservation-item-adult-count-<?php echo esc_attr( $item_id ); ?>" placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" type="number" min="1" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-adult-count form-control rounded-lg" value="<?php echo esc_html($adult_count); ?>" data-oldval="<?php echo esc_html($adult_count); ?>" /></div>
 														</div>
 													</div>
 													<div class="col-12 col-md-6">
 														<div class="position-relative">
-															<label for="ersrv-edit-reservation-item-kid-count-<?php echo esc_attr($item_id); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Kid(s)', 'easy-reservations' ); ?></label>
-															<div><input id="ersrv-edit-reservation-item-kid-count-<?php echo esc_attr($item_id); ?>" placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" type="number" min="1" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-kid-count form-control rounded-lg" value="<?php echo esc_html($kid_count); ?>" data-oldval="<?php echo esc_html($kid_count); ?>" /></div>
+															<label for="ersrv-edit-reservation-item-kid-count-<?php echo esc_attr( $item_id ); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Kid(s)', 'easy-reservations' ); ?></label>
+															<div><input id="ersrv-edit-reservation-item-kid-count-<?php echo esc_attr( $item_id ); ?>" placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" type="number" min="1" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-kid-count form-control rounded-lg" value="<?php echo esc_html($kid_count); ?>" data-oldval="<?php echo esc_html($kid_count); ?>" /></div>
 														</div>
 													</div>
-													<p class="ersrv-reservation-error" id="guests-error-<?php echo esc_attr($item_id); ?>"></p>
+													<p class="ersrv-reservation-error" id="guests-error-<?php echo esc_attr( $item_id ); ?>"></p>
 												</div>
 											</div>
 										</div>
@@ -199,15 +199,15 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 												<div class="row form-row align-items-center">
 													<div class="col-12 col-md-5 mb-4 mb-md-0">
 														<h4 class="font-Poppins font-size-16 color-black font-weight-bold mb-0">
-															<?php echo sprintf(__('Subtotal: %2$s%1$s%3$s', 'easy-reservations'), wc_price($item_total), '<span id="ersrv-edit-reservation-item-subtotal-' . $item_id . '">', '</span>'); ?>
-															<a class="ersrv-split-reservation-cost text-theme-primary" href="javascript:void(0);" data-toggle="modal" data-target="#summaryModal"><?php esc_html_e('Know More', 'easy-reservations'); ?></a>
+															<?php echo sprintf(__('Subtotal: %2$s%1$s%3$s', 'easy-reservations'), wc_price( $item_total ), '<span id="ersrv-edit-reservation-item-subtotal-' . $item_id . '">', '</span>'); ?>
+															<a class="ersrv-split-reservation-cost text-theme-primary" href="javascript:void(0);" data-toggle="modal" data-target="#summaryModal"><?php esc_html_e( 'Know More', 'easy-reservations' ); ?></a>
 														</h4>
-														<div class="ersrv-edit-reservation-item-summary" id="ersrv-edit-reservation-item-summary-<?php echo esc_attr($item_id); ?>">
+														<div class="ersrv-edit-reservation-item-summary" id="ersrv-edit-reservation-item-summary-<?php echo esc_attr( $item_id ); ?>">
 															<div class="ersrv-edit-reservation-item-summary-wrapper p-3">
 																<table class="table table-borderless">
 																	<tbody>
-																		<tr class="item-price-summary" id="item-price-summary-<?php echo esc_attr($item_id); ?>">
-																			<th><?php esc_html_e('Adults:', 'easy-reservations'); ?></th>
+																		<tr class="item-price-summary" id="item-price-summary-<?php echo esc_attr( $item_id ); ?>">
+																			<th><?php esc_html_e( 'Adults:', 'easy-reservations' ); ?></th>
 																			<td>
 																				<span class="ersrv-cost font-lato font-weight-bold color-accent">
 																					<?php
@@ -223,8 +223,8 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 																				</span>
 																			</td>
 																		</tr>
-																		<tr class="kids-charge-summary" id="kids-charge-summary-<?php echo esc_attr($item_id); ?>">
-																			<th><?php esc_html_e('Kids:', 'easy-reservations'); ?></th>
+																		<tr class="kids-charge-summary" id="kids-charge-summary-<?php echo esc_attr( $item_id ); ?>">
+																			<th><?php esc_html_e( 'Kids:', 'easy-reservations' ); ?></th>
 																			<td>
 																				<span class="ersrv-cost font-lato font-weight-bold color-accent">
 																					<?php
@@ -240,8 +240,8 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 																				</span>
 																			</td>
 																		</tr>
-																		<tr class="amenities-summary" id="amenities-summary-<?php echo esc_attr($item_id); ?>">
-																			<th><?php esc_html_e('Amenities:', 'easy-reservations'); ?></th>
+																		<tr class="amenities-summary" id="amenities-summary-<?php echo esc_attr( $item_id ); ?>">
+																			<th><?php esc_html_e( 'Amenities:', 'easy-reservations' ); ?></th>
 																			<td>
 																				<span class="ersrv-cost font-lato font-weight-bold color-accent">
 																					<?php
@@ -257,8 +257,8 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 																				</span>
 																			</td>
 																		</tr>
-																		<tr class="security-summary" id="security-summary-<?php echo esc_attr($item_id); ?>">
-																			<th><?php esc_html_e('Security:', 'easy-reservations'); ?></th>
+																		<tr class="security-summary" id="security-summary-<?php echo esc_attr( $item_id ); ?>">
+																			<th><?php esc_html_e( 'Security:', 'easy-reservations' ); ?></th>
 																			<td>
 																				<span class="ersrv-cost font-lato font-weight-bold color-accent">
 																					<?php
@@ -274,8 +274,8 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 																				</span>
 																			</td>
 																		</tr>
-																		<tr class="edit-reservation-item-total-cost" id="edit-reservation-item-total-cost-<?php echo esc_attr($item_id); ?>">
-																			<th><?php esc_html_e('Total:', 'easy-reservations'); ?></th>
+																		<tr class="edit-reservation-item-total-cost" id="edit-reservation-item-total-cost-<?php echo esc_attr( $item_id ); ?>">
+																			<th><?php esc_html_e( 'Total:', 'easy-reservations' ); ?></th>
 																			<td>
 																				<span class="ersrv-cost font-lato font-weight-bold color-accent">
 																					<?php
@@ -297,17 +297,13 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 														</div>
 													</div>
 													<div class="col-12 col-md-7 mb-6 text-right">
-														<button class="btn btn-accent non-clickable ersrv-edit-reservation-validate-item-changes"><?php esc_html_e('Validate Changes', 'easy-reservations'); ?></button>
-														<input type="hidden" id="confirmed-validation-of-item-<?php echo esc_attr($item_id); ?>" value="1" />
-
-														<!-- ITEM DETAILS -->
-														<input type="hidden" id="accomodation-limit-<?php echo esc_attr($item_id); ?>" value="<?php echo esc_html($accomodation_limit); ?>" />
-														<input type="hidden" id="min-reservation-period-<?php echo esc_attr($item_id); ?>" value="<?php echo esc_html($min_reservation_period); ?>" />
-														<input type="hidden" id="max-reservation-period-<?php echo esc_attr($item_id); ?>" value="<?php echo esc_html($max_reservation_period); ?>" />
-														<input type="hidden" id="adult-charge-<?php echo esc_attr($item_id); ?>" value="<?php echo esc_html($adult_charge); ?>" />
-														<input type="hidden" id="kid-charge-<?php echo esc_attr($item_id); ?>" value="<?php echo esc_html($kid_charge); ?>" />
-														<input type="hidden" id="security-amount-<?php echo esc_attr($item_id); ?>" value="<?php echo esc_html($security_amount); ?>" />
-														<input type="hidden" id="datepicker-initiated-<?php echo esc_attr($item_id); ?>" value="-1" />
+														<input type="hidden" id="accomodation-limit-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $accomodation_limit ); ?>" />
+														<input type="hidden" id="min-reservation-period-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $min_reservation_period ); ?>" />
+														<input type="hidden" id="max-reservation-period-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $max_reservation_period ); ?>" />
+														<input type="hidden" id="adult-charge-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $adult_charge ); ?>" />
+														<input type="hidden" id="kid-charge-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $kid_charge ); ?>" />
+														<input type="hidden" id="security-amount-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $security_amount ); ?>" />
+														<input type="hidden" id="datepicker-initiated-<?php echo esc_attr( $item_id ); ?>" value="-1" />
 													</div>
 												</div>
 											</div>
@@ -331,7 +327,7 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 						<button class="btn btn-secondary cancel" onclick="<?php echo esc_attr( $cancel_reservation ); ?>"><?php esc_html_e( 'Cancel', 'easy-reservations' ); ?></button>
 					</div>
 					<div class="">
-						<button class="btn btn-accent update non-clickable"><?php esc_html_e( 'Update Reservation', 'easy-reservations' ); ?></button>
+						<button class="btn btn-accent update"><?php esc_html_e( 'Update Reservation', 'easy-reservations' ); ?></button>
 					</div>
 				</div>
 			<?php

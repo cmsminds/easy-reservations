@@ -31,6 +31,7 @@ jQuery(document).ready(function ($) {
 	var cancel_reservation_confirmation_message      = ERSRV_Public_Script_Vars.cancel_reservation_confirmation_message;
 	var checkin_provided_checkout_not                = ERSRV_Public_Script_Vars.checkin_provided_checkout_not;
 	var checkout_provided_checkin_not                = ERSRV_Public_Script_Vars.checkout_provided_checkin_not; 
+	var trim_zeros_from_price                        = ERSRV_Public_Script_Vars.trim_zeros_from_price;   
 
 	// Custom vars.
 	var quick_view_reserved_dates = [];
@@ -1427,6 +1428,11 @@ jQuery(document).ready(function ($) {
 	function ersrv_get_formatted_price( cost ) {
 		// Upto 2 decimal places.
 		cost = cost.toFixed( 2 );
+
+		// Remove the extra zeros from the price.
+		if ( 'yes' === trim_zeros_from_price ) {
+			cost = cost.replace( /\.00$/, '' );
+		}
 
 		// Let's first comma format the price.
 		var cost_parts = cost.toString().split( '.' );
