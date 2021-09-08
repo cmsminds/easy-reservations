@@ -287,86 +287,8 @@ a.btn:hover,
     font-size: 14px;
 }
 
-.edit-order-wrapper .card .CTA,
-.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary {
+.edit-order-wrapper .card .CTA {
     position: relative;
-}
-
-.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary .ersrv-edit-reservation-item-summary-wrapper {
-    position: absolute;
-    bottom: 30px;
-    max-width: 200px;
-    right: 0px;
-    font-size: 14px;
-    line-height: normal;
-    height: auto;
-    background: #fff;
-    border: 1px solid transparent;
-    border-radius: 10px;
-    /* box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; */
-    box-shadow: 0rem 0.2rem 1rem rgba(0, 0, 0, .45);
-    overflow: hidden;
-    padding: 10px 0px;
-    opacity: 0;
-    z-index: 101;
-    visibility: hidden;
-}
-
-.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary::after {
-    content: "";
-    position: absolute;
-    right: 80px;
-    top: -40px;
-    display: inline-block;
-    height: 16px;
-    width: 16px;
-    background: #fff;
-    border: 1px solid transparent;
-    /* box-shadow: 0rem 0rem 1.2rem rgba(0,0,0,.35); */
-    transform: rotate(45deg);
-    opacity: 0;
-    visibility: hidden;
-    z-index: 102;
-}
-
-.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary.show .ersrv-edit-reservation-item-summary-wrapper,
-.edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary.show::after {
-    opacity: 1;
-    visibility: visible;
-}
-
-.ersrv-edit-reservation-item-summary table {
-    margin-bottom: 0px;
-}
-
-.ersrv-edit-reservation-item-summary table td,
-.ersrv-edit-reservation-item-summary table th {
-    padding: 0.2rem 0.5rem;
-    vertical-align: middle;
-}
-
-.ersrv-edit-reservation-item-summary table td {
-    text-align: right;
-}
-
-.ersrv-edit-reservation-item-summary table td *,
-.ersrv-edit-reservation-item-summary table th {
-    color: #7e808c !important;
-    font-size: 16px;
-}
-
-.ersrv-edit-reservation-item-summary table .edit-reservation-item-total-cost {
-    border-top: 1px solid #a7a9b1;
-}
-
-.ersrv-edit-reservation-item-summary table .edit-reservation-item-total-cost * {
-    color: #000 !important;
-
-}
-
-.edit-order-wrapper .card .CTA h4 .ersrv-split-reservation-cost {
-    font-size: 14px;
-    /* vertical-align: bottom; */
 }
 
 .details .form-wrapper .form-row label[for] {
@@ -380,14 +302,6 @@ a.btn:hover,
 }
 
 @media(max-width:767px) {
-    .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary .ersrv-edit-reservation-item-summary-wrapper {
-        bottom: 40px;
-    }
-
-    .edit-order-wrapper .card .CTA .ersrv-edit-reservation-item-summary::after {
-        top: -50px;
-    }
-
     .edit-order-wrapper .section-title {
         font-size: 28px;
     }
@@ -508,7 +422,8 @@ a.btn:hover,
     position: relative;
 }
 
-.ersrv-reservation-details-item-summary {
+.ersrv-reservation-details-item-summary,
+.ersrv-edit-reservation-item-summary {
     background: rgba(255, 255, 255, 1);
     border-radius: 8px;
     /* backdrop-filter: blur(5px);
@@ -531,26 +446,44 @@ a.btn:hover,
     margin: 10px 20px;
 }
 
-.ersrv-reservation-details-item-summary.show {
+.ersrv-reservation-details-item-summary.show,
+.ersrv-edit-reservation-item-summary.show {
     transform: none;
     transform-origin: bottom;
 }
 
-.ersrv-reservation-details-item-summary table {
+.ersrv-reservation-details-item-summary table,
+.ersrv-edit-reservation-item-summary table {
     margin-bottom: 0px;
 }
+
 .ersrv-reservation-details-item-summary table td,
 .ersrv-reservation-details-item-summary table td *,
-.ersrv-reservation-details-item-summary table th {
+.ersrv-reservation-details-item-summary table th,
+.ersrv-edit-reservation-item-summary table td,
+.ersrv-edit-reservation-item-summary table td *,
+.ersrv-edit-reservation-item-summary table th {
     color: #7e808c !important;
     line-height: normal;
 }
-.ersrv-reservation-details-item-summary table td{
+
+.ersrv-edit-reservation-item-summary table td,
+.ersrv-edit-reservation-item-summary table th {
+    padding: 0.2rem 0.5rem;
+    vertical-align: middle;
+}
+
+.ersrv-edit-reservation-item-summary table td,
+.ersrv-reservation-details-item-summary table td {
     text-align: right;
 }
+
+.ersrv-edit-reservation-item-summary table .edit-reservation-item-total-cost,
 .ersrv-reservation-details-item-summary table .reservation-item-subtotal {
     border-top: 1px solid #a7a9b1;
 }
+
+.ersrv-edit-reservation-item-summary table .edit-reservation-item-total-cost *,
 .ersrv-reservation-details-item-summary table .reservation-item-subtotal * {
     color: #000 !important;
     padding-bottom: 0px !important;
@@ -559,18 +492,20 @@ a.btn:hover,
 
 .ersrv-reservation-cost-details-active,
 .ersrv-split-reservation-cost,
-.col-product .product-details .product-details-values{
+.col-product .product-details .product-details-values {
     position: relative;
 }
-.ersrv-split-reservation-cost{
+
+.ersrv-split-reservation-cost {
     z-index: 9999;
 }
+
 .ersrv-reservation-cost-details-active::after {
     position: fixed !important;
     z-index: 9;
     height: 100% !important;
     width: 100% !important;
-    background: rgba(0,0,0,.25) !important;
+    background: rgba(0, 0, 0, .25) !important;
     content: "";
     display: inline-block;
     /* pointer-events: none; */
@@ -580,20 +515,24 @@ a.btn:hover,
     right: 0px;
     transition: 0.115s ease all;
 }
-.col-product .product-details .product-details-values .ersrv-reservation-details-item-summary{
+
+.col-product .product-details .product-details-values .ersrv-reservation-details-item-summary {
     max-width: 240px;
 }
+
 .col-product .product-details .product-details-values .ersrv-reservation-details-item-summary table tr:not(:last-child) td,
-.col-product .product-details .product-details-values .ersrv-reservation-details-item-summary table tr:not(:last-child) th{
+.col-product .product-details .product-details-values .ersrv-reservation-details-item-summary table tr:not(:last-child) th {
     padding: 0px;
     padding-bottom: 5px;
 }
+
 .col-product .product-details .product-details-values .ersrv-reservation-details-item-summary table tr:last-child td,
-.col-product .product-details .product-details-values .ersrv-reservation-details-item-summary table tr:last-child th{
+.col-product .product-details .product-details-values .ersrv-reservation-details-item-summary table tr:last-child th {
     padding-right: 0px;
     padding-left: 0px;
 }
-.edit-order-wrapper .ersrv-edit-reservation-item-card .position-relative label{
+
+.edit-order-wrapper .ersrv-edit-reservation-item-card .position-relative label {
     position: absolute;
     left: 10px;
     top: 0px;
@@ -608,12 +547,15 @@ a.btn:hover,
     padding-right: 10px;
     min-width: 80px;
 }
-.edit-order-wrapper .ersrv-edit-reservation-item-card .position-relative input.form-control{
+
+.edit-order-wrapper .ersrv-edit-reservation-item-card .position-relative input.form-control {
     padding-left: 100px;
 }
-.ersrv-edit-reservation-template .ersrv-reservation-error:empty{
+
+.ersrv-edit-reservation-template .ersrv-reservation-error:empty {
     display: none;
 }
+
 /* .edit-order-wrapper .ersrv-edit-reservation-item-card .bookingDates .position-relative input.form-control{
     padding-left: 100px;
 } */

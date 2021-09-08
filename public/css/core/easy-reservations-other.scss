@@ -749,9 +749,21 @@
     }
 }
 .dropdown-toggle.btn-outline-light{
-    &:hover,&:focus,&:active{
+    color: #666;
+    &:hover,&:active{
         .filter-option .filter-option-inner .filter-option-inner-inner{
             color: $black;
+        }
+        &::after{
+            -webkit-filter: invert(0);
+                    filter: invert(0);
+        }
+    }
+    &:focus{
+        background-color: #f8f9fa !important;
+        border-color: #f8f9fa !important;
+        .filter-option .filter-option-inner .filter-option-inner-inner{
+            color: $black !important;
         }
         &::after{
             -webkit-filter: invert(0);
