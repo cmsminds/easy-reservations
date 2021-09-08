@@ -445,7 +445,9 @@ a.btn:hover,
     transition: 0.3s ease-in-out;
     margin: 10px 20px;
 }
-
+.theme-twentysixteen .ersrv-edit-reservation-item-summary {
+    margin: 0px;
+}
 .ersrv-reservation-details-item-summary.show,
 .ersrv-edit-reservation-item-summary.show {
     transform: none;
