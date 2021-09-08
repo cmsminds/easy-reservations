@@ -313,10 +313,11 @@ class Easy_Reservations_Public {
 					'reservation_lesser_reservation_days_err_msg'  => __( 'The item can be reserved for a min. of XX days.', 'easy-reservations' ),
 					'reservation_greater_reservation_days_err_msg' => __( 'The item can be reserved for a max. of XX days.', 'easy-reservations' ),
 					'reservation_item_changes_invalidated'         => __( 'Reservation changes did not validate for XX. Please check the values and try again.', 'easy-reservations' ),
-					'cannot_update_reservation_item_invalidated'   => __( 'The reservation cannot be updated as the changes you made to the reservation have not been validated.', 'easy-reservations' ),
+					'cannot_update_reservation_no_change_done'     => __( 'The reservation cannot be updated since there is no change made.', 'easy-reservations' ),
 					'customer_payable_cost_difference_message'     => sprintf( __( 'The customer shall pay %4$s%2$s%1$s%3$s%5$s before onboarding.', 'easy-reservations' ), '--', '<span class="ersrv-edit-reservation-cost-difference">', '</span>', '<strong>', '</strong>' ),
 					'admin_payable_cost_difference_message'        => sprintf( __( 'The administrator shall refund %4$s%2$s%1$s%3$s%5$s after the reservation is complete.', 'easy-reservations' ), '--', '<span class="ersrv-edit-reservation-cost-difference">', '</span>', '<strong>', '</strong>' ),
 					'trim_zeros_from_price'                        => ersrv_get_plugin_settings( 'ersrv_trim_zeros_from_price' ),
+					'reservation_blocked_dates_err_msg_per_item'   => __( 'The dates selected for reserving XX contain the dates that are already reserved. Kindly check the availability on the left hand side and then proceed with the reservation.', 'easy-reservations' ),
 				)
 			);
 		}
@@ -397,7 +398,7 @@ class Easy_Reservations_Public {
 			'reservation_checkout_missing_err_msg'         => __( 'Please provide checkout dates.', 'easy-reservations' ),
 			'reservation_lesser_reservation_days_err_msg'  => __( 'The item can be reserved for a min. of XX days.', 'easy-reservations' ),
 			'reservation_greater_reservation_days_err_msg' => __( 'The item can be reserved for a max. of XX days.', 'easy-reservations' ),
-			'reservation_blocked_dates_err_msg'            => __( 'The dates you have selected for reservation contain the dates that are already reserved. Kindly check the availability on the left hand side and then proceed with the reservation.', 'easy-reservations' ),
+			'reservation_blocked_dates_err_msg'            => __( 'The dates selected for reservation contain the dates that are already reserved. Kindly check the availability on the left hand side and then proceed with the reservation.', 'easy-reservations' ),
 			'search_reservations_page_url'                 => get_permalink( $search_reservations_page ),
 			'date_format'                                  => ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' ),
 			'toast_success_heading'                        => __( 'Ohhoooo! Success..', 'easy-reservations' ),
@@ -2019,79 +2020,6 @@ class Easy_Reservations_Public {
 	}
 
 	/**
-	 * Validate item changes 
-	 */
-	public function ersrv_edit_reservation_validate_item_changes_callback() {
-		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
-
-		// Check if action mismatches.
-		if ( empty( $action ) || 'edit_reservation_validate_item_changes' !== $action ) {
-			echo 0;
-			wp_die();
-		}
-
-		// Posted data.
-		$product_id        = (int) filter_input( INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT );
-		$checkin_date      = filter_input( INPUT_POST, 'checkin_date', FILTER_SANITIZE_STRING );
-		$checkout_date     = filter_input( INPUT_POST, 'checkout_date', FILTER_SANITIZE_STRING );
-		$old_checkin_date  = filter_input( INPUT_POST, 'old_checkin_date', FILTER_SANITIZE_STRING );
-		$old_checkout_date = filter_input( INPUT_POST, 'old_checkout_date', FILTER_SANITIZE_STRING );
-
-		// Get the newly selected checkin and checkout dates.
-		$newly_selected_dates_obj = ersrv_get_dates_within_2_dates( $checkin_date, $checkout_date );
-		$newly_selected_dates     = array();
-		if ( ! empty( $newly_selected_dates_obj ) ) {
-			foreach ( $newly_selected_dates_obj as $date ) {
-				$newly_selected_dates[] = $date->format( ersrv_get_php_date_format() );
-			}
-		}
-
-		// Get the already reserved dates.
-		$reserved_dates           = get_post_meta( $product_id, '_ersrv_reservation_blockout_dates', true );
-		$reserved_dates           = ( ! empty( $reserved_dates ) && is_array( $reserved_dates ) ) ? $reserved_dates : array();
-		$reserved_dates_col_array = array_column( $reserved_dates, 'date' );
-
-		// Get the dates between the order actual checkin and checkout dates.
-		$order_reserved_dates_obj = ersrv_get_dates_within_2_dates( $old_checkin_date, $old_checkout_date );
-		$order_reserved_dates     = array();
-		if ( ! empty( $order_reserved_dates_obj ) ) {
-			foreach ( $order_reserved_dates_obj as $date ) {
-				$order_reserved_dates[] = $date->format( ersrv_get_php_date_format() );
-			}
-		}
-
-		// Remove this order dates from the total reserved dates.
-		foreach ( $order_reserved_dates as $order_reserved_date ) {
-			$reserved_date_key = array_search( $order_reserved_date, $reserved_dates_col_array, true );
-			unset( $reserved_dates_col_array[ $reserved_date_key ] );
-		}
-
-		/**
-		 * If there are common elements between the newly selected dates and the reserved dates,
-		 * the item cannot be validated, as the customer selected some already reserved dates.
-		 */
-		$common_dates = array_intersect( $newly_selected_dates, $reserved_dates_col_array );
-
-		// See if there are error messages.
-		if ( ! empty( $common_dates ) ) {
-			$is_success    = 'no';
-			$toast_message = __( 'The dates you have selected for reservation contain the dates that are already reserved. Kindly check the availability while selecting the dates and try again.', 'easy-reservations' );
-		} else {
-			$is_success    = 'yes';
-			$toast_message = __( 'The reservation item is validated.', 'easy-reservations' );
-		}
-
-		// Return the AJAX response.
-		$response = array(
-			'code'          => 'item-changes-validated',
-			'toast_message' => $toast_message,
-			'is_success'    => $is_success,
-		);
-		wp_send_json_success( $response );
-		wp_die();
-	}
-
-	/**
 	 * Add custom text on edit reservation edit page.
 	 *
 	 * @since 1.0.0
@@ -2176,6 +2104,11 @@ class Easy_Reservations_Public {
 			unset( $reserved_dates[ $reserved_date_key ] );
 		}
 
+		// If there are reserved dates still, reset their indexes.
+		if ( ! empty( $reserved_dates ) ) {
+			$reserved_dates = array_values( $reserved_dates );
+		}
+
 		// Return the AJAX response.
 		$response = array(
 			'code'                 => 'datepicker-initiated',
@@ -2201,15 +2134,17 @@ class Easy_Reservations_Public {
 		}
 
 		// Posted data.
-		$order_id        = (int) filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT );
-		$cost_difference = (float) filter_input( INPUT_POST, 'cost_difference', FILTER_SANITIZE_STRING );
-		$order_total     = (float) filter_input( INPUT_POST, 'order_total', FILTER_SANITIZE_STRING );
-		$posted_array    = filter_input_array( INPUT_POST );
-		$items_data      = ( ! empty( $posted_array['items_data'] ) ) ? $posted_array['items_data'] : array();
+		$order_id            = (int) filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT );
+		$cost_difference     = (float) filter_input( INPUT_POST, 'cost_difference', FILTER_SANITIZE_STRING );
+		$order_total         = (float) filter_input( INPUT_POST, 'order_total', FILTER_SANITIZE_STRING );
+		$cost_difference_key = filter_input( INPUT_POST, 'cost_difference_key', FILTER_SANITIZE_STRING );
+		$posted_array        = filter_input_array( INPUT_POST );
+		$items_data          = ( ! empty( $posted_array['items_data'] ) ) ? $posted_array['items_data'] : array();
 
 		// Update the order meta.
 		update_post_meta( $order_id, 'ersrv_reservation_update', 1 );
 		update_post_meta( $order_id, 'ersrv_cost_difference', $cost_difference );
+		update_post_meta( $order_id, 'ersrv_cost_difference_key', $cost_difference_key );
 		update_post_meta( $order_id, '_order_total', $order_total );
 
 		// If there are items, update the item meta.
@@ -2224,13 +2159,16 @@ class Easy_Reservations_Public {
 				}
 
 				// Get the other data.
-				$item_total     = ( ! empty( $item_data['item_total'] ) ) ? $item_data['item_total'] : 0;
-				$adult_subtotal = ( ! empty( $item_data['adult_subtotal'] ) ) ? $item_data['adult_subtotal'] : 0;
-				$kids_subtotal  = ( ! empty( $item_data['kids_subtotal'] ) ) ? $item_data['kids_subtotal'] : 0;
-				$checkin        = ( ! empty( $item_data['checkin'] ) ) ? $item_data['checkin'] : '';
-				$checkout       = ( ! empty( $item_data['checkout'] ) ) ? $item_data['checkout'] : '';
-				$adult_count    = ( ! empty( $item_data['adult_count'] ) ) ? $item_data['adult_count'] : 0;
-				$kids_count     = ( ! empty( $item_data['kids_count'] ) ) ? $item_data['kids_count'] : 0;
+				$item_total         = ( ! empty( $item_data['item_total'] ) ) ? $item_data['item_total'] : 0;
+				$adult_subtotal     = ( ! empty( $item_data['adult_subtotal'] ) ) ? $item_data['adult_subtotal'] : 0;
+				$kids_subtotal      = ( ! empty( $item_data['kids_subtotal'] ) ) ? $item_data['kids_subtotal'] : 0;
+				$amenities_subtotal = ( ! empty( $item_data['amenities_subtotal'] ) ) ? $item_data['amenities_subtotal'] : 0;
+				$security_subtotal  = ( ! empty( $item_data['security_subtotal'] ) ) ? $item_data['security_subtotal'] : 0;
+				$checkin            = ( ! empty( $item_data['checkin'] ) ) ? $item_data['checkin'] : '';
+				$checkout           = ( ! empty( $item_data['checkout'] ) ) ? $item_data['checkout'] : '';
+				$adult_count        = ( ! empty( $item_data['adult_count'] ) ) ? $item_data['adult_count'] : 0;
+				$kids_count         = ( ! empty( $item_data['kids_count'] ) ) ? $item_data['kids_count'] : 0;
+				$amenities          = ( ! empty( $item_data['amenities'] ) ) ? $item_data['amenities'] : array();
 
 				// Update all the data now.
 				wc_update_order_item_meta( $item_id, '_line_subtotal', $item_total );
@@ -2241,6 +2179,9 @@ class Easy_Reservations_Public {
 				wc_update_order_item_meta( $item_id, 'Kids Count', $kids_count );
 				wc_update_order_item_meta( $item_id, 'Adult Subtotal', $adult_subtotal );
 				wc_update_order_item_meta( $item_id, 'Kids Subtotal', $kids_subtotal );
+				wc_update_order_item_meta( $item_id, 'Amenities', $amenities );
+				wc_update_order_item_meta( $item_id, 'Amenities Subtotal', $amenities_subtotal );
+				wc_update_order_item_meta( $item_id, 'Security Amount', $security_subtotal );
 			}
 		}
 

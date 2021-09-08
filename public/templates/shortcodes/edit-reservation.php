@@ -304,6 +304,7 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 														<input type="hidden" id="kid-charge-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $kid_charge ); ?>" />
 														<input type="hidden" id="security-amount-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $security_amount ); ?>" />
 														<input type="hidden" id="datepicker-initiated-<?php echo esc_attr( $item_id ); ?>" value="-1" />
+														<input type="hidden" id="blocked-dates-<?php echo esc_attr( $item_id ); ?>" value="" />
 													</div>
 												</div>
 											</div>

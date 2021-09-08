@@ -17,10 +17,11 @@ jQuery(document).ready(function ($) {
 	var reservation_lesser_reservation_days_err_msg  = ERSRV_Edit_Reservation_Script_Vars.reservation_lesser_reservation_days_err_msg;
 	var reservation_greater_reservation_days_err_msg = ERSRV_Edit_Reservation_Script_Vars.reservation_greater_reservation_days_err_msg;
 	var reservation_item_changes_invalidated         = ERSRV_Edit_Reservation_Script_Vars.reservation_item_changes_invalidated;
-	var cannot_update_reservation_item_invalidated   = ERSRV_Edit_Reservation_Script_Vars.cannot_update_reservation_item_invalidated;
+	var cannot_update_reservation_no_change_done     = ERSRV_Edit_Reservation_Script_Vars.cannot_update_reservation_no_change_done;
 	var customer_payable_cost_difference_message     = ERSRV_Edit_Reservation_Script_Vars.customer_payable_cost_difference_message;
 	var admin_payable_cost_difference_message        = ERSRV_Edit_Reservation_Script_Vars.admin_payable_cost_difference_message;
 	var trim_zeros_from_price                        = ERSRV_Edit_Reservation_Script_Vars.trim_zeros_from_price;
+	var reservation_blocked_dates_err_msg_per_item   = ERSRV_Edit_Reservation_Script_Vars.reservation_blocked_dates_err_msg_per_item;
 
 	// If sidebar is to be removed on reservation single page.
 	$( '#secondary' ).remove();
@@ -85,7 +86,9 @@ jQuery(document).ready(function ($) {
 						}
 					}
 
-					console.log( 'blocked_dates', blocked_dates );
+					// Store the blocked dates in hidden field.
+					var blocked_dates_json = JSON.stringify( blocked_dates );
+					$( '#blocked-dates-' + item_id ).val( blocked_dates_json );
 
 					// Initiate the datepicker now.
 					$( '#ersrv-edit-reservation-item-checkin-date-' + item_id + ', #ersrv-edit-reservation-item-checkout-date-' + item_id ).datepicker( {
@@ -161,72 +164,86 @@ jQuery(document).ready(function ($) {
 	 * Update reservation.
 	 */
 	$( document ).on( 'click', '.ersrv-update-reservation button.update', function() {
-		var this_button          = $( this );
-		var is_reservation_error = {
-			is_valid: 1
-		};
+		var this_button = $( this );
 
 		// Check if the changes are validated.
 		$( '.ersrv-edit-reservation-item-card' ).each( function() {
-			var this_card        = $( this );
-			var item_id          = parseInt( this_card.data( 'itemid' ) );
-			var item_name        = this_card.data( 'itemname' );
-			var product_id       = parseInt( this_card.data( 'productid' ) );
-			is_reservation_error = ersrv_validate_reservations_before_update( item_id, item_name, product_id );
+			var this_card       = $( this );
+			var item_id         = parseInt( this_card.data( 'itemid' ) );
+			var item_name       = this_card.data( 'itemname' );
+			var is_update_error = ersrv_validate_reservations_before_update( item_id, item_name );
 
-			// Check if it's an error.
-			if ( -1 === is_reservation_error.is_valid ) {
-				ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, is_reservation_error.message );
+			// If it's the error.
+			if ( -1 === is_update_error.is_valid ) {
+				ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, is_update_error.message );
 				return false;
 			}
-			console.log( 'is_reservation_error', is_reservation_error );
-			return false;
 		} );
 
-		return false;
+		// Proceed when everything is fine to update.
+		var order_id             = parseInt( $( '.ersrv-order-id' ).val() ); // Order ID.
+		var cost_difference_data = ersrv_calculate_reservation_cost_difference(); // Cost difference.
+		var cost_difference      = ( 1 === is_valid_number( cost_difference_data.amount ) ) ? cost_difference_data.amount : 0;
 
-		// Order ID.
-		var order_id = parseInt( $( '.ersrv-order-id' ).val() );
+		// If there is no cost difference, the order cannot be updated.
+		if ( 0 === cost_difference ) {
+			ersrv_show_notification( 'bg-warning', 'fa-exclamation-circle', toast_notice_heading, cannot_update_reservation_no_change_done );
+			return false;
+		}
 
-		// Cost difference.
-		var cost_difference = ersrv_calculate_reservation_cost_difference();
-
-		console.log( 'cost_difference', cost_difference );
-		return false;
-
-		// Order total.
-		var order_total = 0.0;
-
-		// Items data.
-		var items_data = [];
+		var order_total         = cost_difference_data.item_order_total; // Order total.
+		var cost_difference_key = cost_difference_data.key; // Cost difference key.
+		var items_data          = []; // Items data.
 
 		/**
 		 * If you're here, it means that it is okay to update the reservation.
 		 * Iterate through the items to collect the new data.
 		 */
 		$( '.ersrv-edit-reservation-item-card' ).each( function() {
-			var this_card  = $( this );
-			var item_id    = parseInt( this_card.data( 'itemid' ) );
-			var item_total = parseFloat( ersrv_calculate_edit_reservation_item_total_cost( item_id ) );  
+			var this_card         = $( this );
+			var item_id           = parseInt( this_card.data( 'itemid' ) );
+			var item_total        = parseFloat( $( '#edit-reservation-item-total-cost-' + item_id + ' td span.ersrv-cost' ).data( 'cost' ) );  
+			var amenities         = [];
+			var checkin           = $( '#ersrv-edit-reservation-item-checkin-date-' + item_id ).val();
+			var checkout          = $( '#ersrv-edit-reservation-item-checkout-date-' + item_id ).val();
+			var reservation_dates = ersrv_get_dates_between_2_dates( checkin, checkout );
+			var reservation_days  = reservation_dates.length;
+
+			// Collect the amenities and their charges.
+			$( '.ersrv-new-reservation-single-amenity' ).each( function() {
+				var this_element = $( this );
+				var is_checked   = this_element.is( ':checked' );
+				if ( true === is_checked ) {
+					var amenity_cost = parseFloat( this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost' ) );
+					var cost_type    = this_element.parents( '.ersrv-single-amenity-block' ).data( 'cost_type' );
+					amenity_cost     = ( 'per_day' === cost_type ) ? ( amenity_cost * reservation_days ) : amenity_cost;
+
+					// Push the amenities cost into an array.
+					amenities.push( {
+						amenity: this_element.parents( '.ersrv-single-amenity-block' ).data( 'amenity' ),
+						cost: amenity_cost,
+					} );
+				}
+			} );
 
 			// Collect all the data in an array.
 			items_data.push( {
 					item_id: item_id,
-					adult_subtotal: parseFloat( ersrv_get_edit_reservation_item_subtotal( item_id ) ),
-					kids_subtotal: parseFloat( ersrv_get_edit_reservation_kids_subtotal( item_id ) ),
+					adult_subtotal: parseFloat( $( '#item-price-summary-' + item_id + ' td span.ersrv-cost' ).data( 'cost' ) ),
+					kids_subtotal: parseFloat( $( '#kids-charge-summary-' + item_id + ' td span.ersrv-cost' ).data( 'cost' ) ),
+					amenities_subtotal: parseFloat( $( '#amenities-summary-' + item_id + ' td span.ersrv-cost' ).data( 'cost' ) ),
+					amenities: amenities,
+					security_subtotal: parseFloat( $( '#security-summary-' + item_id + ' td span.ersrv-cost' ).data( 'cost' ) ),
 					item_total: item_total,
-					checkin: $( '#ersrv-edit-reservation-item-checkin-date-' + item_id ).val(),
-					checkout: $( '#ersrv-edit-reservation-item-checkout-date-' + item_id ).val(),
+					checkin: checkin,
+					checkout: checkout,
 					adult_count: parseInt( $( '#ersrv-edit-reservation-item-adult-count-' + item_id ).val() ),
 					kids_count: parseInt( $( '#ersrv-edit-reservation-item-kid-count-' + item_id ).val() ),
 			} );
 		} );
 
-		console.log( 'items_data', items_data );
-		return false;
-
 		// Block the button.
-		block_element( this_button );
+		// block_element( this_button );
 
 		// Process the AJAX.
 		$.ajax( {
@@ -237,6 +254,7 @@ jQuery(document).ready(function ($) {
 				action: 'update_reservation',
 				order_id: order_id,
 				cost_difference: cost_difference,
+				cost_difference_key: cost_difference_key,
 				items_data: items_data,
 				order_total: order_total,
 			},
@@ -301,7 +319,7 @@ jQuery(document).ready(function ($) {
 
 		// Add a body class if the summary is visible.
 		$( 'body' ).removeClass( 'ersrv-reservation-cost-details-active' );
-		if ( $( '.ersrv-reservation-details-item-summary' ).hasClass( 'show' ) ) {
+		if ( $( '#ersrv-edit-reservation-item-summary-' + item_id ).hasClass( 'show' ) ) {
 			$( 'body' ).addClass( 'ersrv-reservation-cost-details-active' );
 		}
 	} );
@@ -661,15 +679,12 @@ jQuery(document).ready(function ($) {
 	 *
 	 * @param {number} item_id
 	 * @param {string} item_name
-	 * @param {number} product_id
 	 * @returns {boolean}
 	 */
-	function ersrv_validate_reservations_before_update( item_id, item_name, product_id ) {
+	function ersrv_validate_reservations_before_update( item_id, item_name ) {
 		// Get the item details.
 		var checkin_date       = $( '#ersrv-edit-reservation-item-checkin-date-' + item_id ).val();
 		var checkout_date      = $( '#ersrv-edit-reservation-item-checkout-date-' + item_id ).val();
-		var old_checkin_date   = $( '#ersrv-edit-reservation-item-checkin-date-' + item_id ).data( 'oldval' );
-		var old_checkout_date  = $( '#ersrv-edit-reservation-item-checkout-date-' + item_id ).data( 'oldval' );
 		var adult_count        = parseInt( $( '#ersrv-edit-reservation-item-adult-count-' + item_id ).val() );
 		adult_count            = ( -1 !== is_valid_number( adult_count ) ) ? adult_count : 0;
 		var kid_count          = parseInt( $( '#ersrv-edit-reservation-item-kid-count-' + item_id ).val() );
@@ -720,6 +735,33 @@ jQuery(document).ready(function ($) {
 			} else if ( max_reservation < new_reservation_days ) {
 				item_validated = false;
 				$( '.ersrv-reservation-error#checkin-checkout-dates-error-' + item_id ).text( reservation_greater_reservation_days_err_msg.replace( 'XX', max_reservation ) );
+			} else {
+				// Iterate through the reservation dates to collect the readable dates.
+				var readable_reservation_dates = [];
+				for ( var i in new_reservation_dates ) {
+					readable_reservation_dates.push( ersrv_get_formatted_date( new_reservation_dates[i] ) );
+				}
+
+				// Check here, if the dates selected by the customer contains dates that are already reserved.
+				var reserved_dates = $( '#blocked-dates-' + item_id ).val();
+
+				// If there are reserved dates.
+				if ( '' !== reserved_dates ) {
+					reserved_dates     = JSON.parse( reserved_dates );
+
+					// Get the intersecting dates.
+					var intersecting_dates = $.grep( readable_reservation_dates, function( element ) {
+						return -1 !== $.inArray( element, reserved_dates );
+					} );
+
+					// So, if there are intersecting dates, then there is an error.
+					if ( 0 < intersecting_dates.length ) {
+						return {
+							is_valid: -1,
+							message: reservation_blocked_dates_err_msg_per_item.replace( 'XX', item_name ),
+						};
+					}
+				}
 			}
 		}
 
@@ -731,49 +773,10 @@ jQuery(document).ready(function ($) {
 			};
 		}
 
-		// Process the AJAX now to validate the checkin and checkout selected dates.
-		$.ajax( {
-			dataType: 'JSON',
-			url: ajaxurl,
-			type: 'POST',
-			data: {
-				action: 'edit_reservation_validate_item_changes',
-				product_id: product_id,
-				checkin_date: checkin_date,
-				checkout_date: checkout_date,
-				old_checkin_date: old_checkin_date,
-				old_checkout_date: old_checkout_date,
-			},
-			success: function ( response ) {
-				// Return, if the response is not proper.
-				if ( 0 === response ) {
-					console.warn( 'easy-reservations: invalid ajax call' );
-					return false;
-				}
-
-				// If the reservation is added.
-				if ( 'item-changes-validated' === response.data.code ) {
-					// Is success & toast message.
-					var is_success    = response.data.is_success;
-					var toast_message = response.data.toast_message;
-
-					console.log( 'is_success', is_success );
-					console.log( 'toast_message', toast_message );
-					return false;
-
-					// Show error notification.
-					if ( 'no' === is_success ) {
-						return {
-							is_valid: -1,
-							message: toast_message,
-						};
-					} else if ( 'yes' === is_success ) {
-						return {
-							is_valid: 1,
-						};
-					}
-				}
-			},
-		} );
+		// Return a positive response otherwise.
+		return {
+			is_valid: 1,
+			message: '',
+		};
 	}
 } );
