@@ -1108,7 +1108,8 @@ class Easy_Reservations_Admin {
 							'side',
 							'high',
 							array(
-								'cost_difference' => $cost_difference,
+								'cost_difference'     => $cost_difference,
+								'cost_difference_key' => get_post_meta( $post_id, 'ersrv_cost_difference_key', true ),
 							)
 						);
 					}
@@ -1225,19 +1226,33 @@ class Easy_Reservations_Admin {
 	 * @since 1.0.0
 	 */
 	public function ersrv_updated_reservation_order_cost_difference( $post, $metabox_data ) {
-		$cost_difference = ( ! empty( $metabox_data['args']['cost_difference'] ) ) ? $metabox_data['args']['cost_difference'] : '';
+		$cost_difference     = ( ! empty( $metabox_data['args']['cost_difference'] ) ) ? $metabox_data['args']['cost_difference'] : '';
+		$cost_difference_key = ( ! empty( $metabox_data['args']['cost_difference_key'] ) ) ? $metabox_data['args']['cost_difference_key'] : '';
 
 		if ( ! empty( $cost_difference ) ) {
-			echo wp_kses(
-				/* translators: 1: %s: strong tag open, 2: %s: strong tag closed, 3: %s: cost difference */
-				sprintf( __( 'The customer needs to pay %1$s%3$s%2$s before onboarding.', 'easy-reservations' ), '<strong>', '</strong>', wc_price( $cost_difference ) ),
-				array(
-					'strong' => array(),
-					'span'   => array(
-						'class' => array(),
-					),
-				)
-			);
+			if ( 'cost_difference_customer_payable' === $cost_difference_key ) {
+				echo wp_kses(
+					/* translators: 1: %s: strong tag open, 2: %s: strong tag closed, 3: %s: cost difference */
+					sprintf( __( 'The customer needs to pay %1$s%3$s%2$s before onboarding.', 'easy-reservations' ), '<strong>', '</strong>', wc_price( $cost_difference ) ),
+					array(
+						'strong' => array(),
+						'span'   => array(
+							'class' => array(),
+						),
+					)
+				);
+			} elseif ( 'cost_difference_admin_payable' === $cost_difference_key ) {
+				echo wp_kses(
+					/* translators: 1: %s: strong tag open, 2: %s: strong tag closed, 3: %s: cost difference */
+					sprintf( __( 'The admin shall refund %1$s%3$s%2$s after the reservation is complete.', 'easy-reservations' ), '<strong>', '</strong>', wc_price( $cost_difference ) ),
+					array(
+						'strong' => array(),
+						'span'   => array(
+							'class' => array(),
+						),
+					)
+				);
+			}
 		}
 	}
 

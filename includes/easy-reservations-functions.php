@@ -2502,6 +2502,8 @@ if ( ! function_exists( 'ersrv_print_edit_reservation_button' ) ) {
 			return;
 		}
 
+		$is_updated                = get_post_meta( $order_id, 'ersrv_reservation_update', true );
+		$updated_button_class      = ( ! empty( $is_updated ) && '1' === $is_updated ) ? 'non-clickable' : '';
 		$button_text               = ersrv_get_plugin_settings( 'ersrv_edit_reservation_button_text' );
 		$edit_reservation_page_id  = ersrv_get_page_id( 'edit-reservation' );
 		$edit_reservation_page_url = get_permalink( $edit_reservation_page_id );
@@ -2510,9 +2512,14 @@ if ( ! function_exists( 'ersrv_print_edit_reservation_button' ) ) {
 			'id'    => $order_id,
 		);
 		$edit_reservation_page_url = add_query_arg( $query_params, $edit_reservation_page_url );
+
+		if ( ! empty( $is_updated ) && '1' === $is_updated ) {
+			?><div data-tooltip="<?php esc_html_e( 'The reservation has already been updated once. Cannot update it more.', 'easy-reservations' ); ?>" class="tooltip ersrv-edit-reservation-container"><?php
+		} else {
+			?><div class="ersrv-edit-reservation-container"><?php
+		}
 		?>
-		<div class="ersrv-edit-reservation-container">
-			<a href="<?php echo esc_url( $edit_reservation_page_url ); ?>" class="btn btn-accent" title="<?php echo esc_html( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></a>
+			<a href="<?php echo esc_url( $edit_reservation_page_url ); ?>" class="btn btn-accent <?php echo esc_attr( $updated_button_class ); ?>" title="<?php echo esc_html( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></a>
 		</div>
 		<?php
 	}
@@ -2600,18 +2607,41 @@ if ( ! function_exists( 'ersrv_print_updated_reservation_cost_difference' ) ) {
 			return;
 		}
 
-		// Get the cost difference.
-		$cost_difference = (float) get_post_meta( $order_id, 'ersrv_cost_difference', true );
+		$cost_difference     = (float) get_post_meta( $order_id, 'ersrv_cost_difference', true ); // Get the cost difference.
+		$cost_difference_key = get_post_meta( $order_id, 'ersrv_cost_difference_key', true ); // Get the cost difference key.
+		$tagline             = '';
 
 		// Return, if there is no cost difference.
 		if ( empty( $cost_difference ) ) {
 			return;
 		}
 
+		// Tagline.
+		if ( ! empty( $cost_difference_key ) ) {
+			if ( 'cost_difference_customer_payable' === $cost_difference_key ) {
+				$tagline = __( 'Since the reservation order was updated, you need to pay this before you onboard:', 'easy-reservations' );
+			} elseif ( 'cost_difference_admin_payable' === $cost_difference_key ) {
+				$tagline = __( 'Since the reservation order was updated, the administrator shall refund this after you complete your reservation:', 'easy-reservations' );
+			}
+		}
+
+		/**
+		 * Hook for the tagline.
+		 * This hook runs on the view order endpoint.
+		 *
+		 * This filter helps modify the the tagline where the cost difference is displayed.
+		 *
+		 * @param string $tagline Cost difference tagline.
+		 * @param float  $cost_difference Cost difference amount.
+		 * @param string $cost_difference_key Cost difference key.
+		 * @param int    $order_id WooCommerce order ID.
+		 */
+		$tagline = apply_filters( 'ersrv_cost_difference_tagline', $tagline, $cost_difference, $cost_difference_key, $order_id );
+
 		// Prepare the HTML now.
 		ob_start();
 		?>
-		<p><?php esc_html_e( 'Since the reservation order was updated, you need to pay this before you onboard:', 'easy-reservations' ); ?></p>
+		<p><?php echo esc_html( $tagline ); ?></p>
 		<table class="woocommerce-table woocommerce-table--order-details cost_difference_details">
 			<tbody>
 				<tr>

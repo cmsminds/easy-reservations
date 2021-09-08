@@ -15,6 +15,7 @@ $action      = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
 $order_id    = (int) filter_input( INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT );
 $page_title  = get_the_title();
 $valid_order = false;
+$is_updated  = '';
 
 if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 	// WooCommerce order.
@@ -22,34 +23,31 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 	
 	// Check for the valid action and WooCommerce order.
 	if ( 'edit-reservation' === $action && false !== $wc_order ) {
-		$valid_order = true;
-		$page_title .= ': #' . $order_id;
+		$is_updated      = get_post_meta( $order_id, 'ersrv_reservation_update', true );
+		$view_order_link = $wc_order->get_view_order_url(); // View order link.
 
-		/**
-		 * This hook executed on the edit reservation page.
-		 *
-		 * This filter helps modifying the page's main title.
-		 *
-		 * @param string $page_title Page title.
-		 * @param int    $order_id WooCommerce order ID.
-		 * @return string
-		 */
-		$page_title = apply_filters('ersrv_edit_reservation_page_title', $page_title, $order_id);
+		// Check if the reservation is already updated once.
+		if ( ! empty( $is_updated ) && '1' === $is_updated ) {
+			$valid_order = false;
+		} else {
+			$valid_order = true;
+			$page_title .= ': #' . $order_id;
 
-		// View order link.
-		$view_order_link = $wc_order->get_view_order_url();
-
-		// Get the order total.
-		$order_total = $wc_order->get_total();
-
-		// Non reservation items total.
-		$non_reservation_items_total = 0.0;
-
-		// Get the items.
-		$line_items = $wc_order->get_items();
-
-		// Cancel update link.
-		$cancel_reservation = "location.href = '{$view_order_link}'";
+			/**
+			 * This hook executed on the edit reservation page.
+			 *
+			 * This filter helps modifying the page's main title.
+			 *
+			 * @param string $page_title Page title.
+			 * @param int    $order_id WooCommerce order ID.
+			 * @return string
+			 */
+			$page_title                  = apply_filters('ersrv_edit_reservation_page_title', $page_title, $order_id);
+			$order_total                 = $wc_order->get_total(); // Get the order total.
+			$non_reservation_items_total = 0.0; // Non reservation items total.
+			$line_items                  = $wc_order->get_items(); // Get the items.
+			$cancel_reservation          = "location.href = '{$view_order_link}'"; // Cancel update link.
+		}
 	}
 }
 ?>
@@ -333,13 +331,24 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 				</div>
 			<?php
 			} else {
-				$my_account = wc_get_page_permalink( 'myaccount' );
-				?>
-				<div class="woocommerce-message woocommerce-message--info woocommerce-Message woocommerce-Message--info woocommerce-info">
-					<a class="woocommerce-Button button" href="<?php echo esc_url( $my_account ); ?>"><?php esc_html_e( 'My Account', 'easy-reservations' ); ?></a>
-					<?php esc_html_e( 'Invalid access.', 'easy-reservations' ); ?>
-				</div>
-			<?php } ?>
+				if ( ! empty( $is_updated ) && '1' === $is_updated ) {
+					?>
+					<div class="woocommerce-message woocommerce-message--info woocommerce-Message woocommerce-Message--info woocommerce-info">
+						<a class="woocommerce-Button button" href="<?php echo esc_url( $view_order_link ); ?>"><?php esc_html_e( 'Back', 'easy-reservations' ); ?></a>
+						<?php esc_html_e( 'This order has already been edited once. Cannot edit it more.', 'easy-reservations' ); ?>
+					</div>
+					<?php
+				} else {
+					$my_account = wc_get_page_permalink( 'myaccount' );
+					?>
+					<div class="woocommerce-message woocommerce-message--info woocommerce-Message woocommerce-Message--info woocommerce-info">
+						<a class="woocommerce-Button button" href="<?php echo esc_url( $my_account ); ?>"><?php esc_html_e( 'My Account', 'easy-reservations' ); ?></a>
+						<?php esc_html_e( 'Invalid access.', 'easy-reservations' ); ?>
+					</div>
+					<?php
+				}
+			}
+			?>
 		</div>
 	</div>
 </div>
