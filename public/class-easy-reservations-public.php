@@ -318,6 +318,7 @@ class Easy_Reservations_Public {
 					'admin_payable_cost_difference_message'        => sprintf( __( 'The administrator shall refund %4$s%2$s%1$s%3$s%5$s after the reservation is complete.', 'easy-reservations' ), '--', '<span class="ersrv-edit-reservation-cost-difference">', '</span>', '<strong>', '</strong>' ),
 					'trim_zeros_from_price'                        => ersrv_get_plugin_settings( 'ersrv_trim_zeros_from_price' ),
 					'reservation_blocked_dates_err_msg_per_item'   => __( 'The dates selected for reserving XX contain the dates that are already reserved. Kindly check the availability on the left hand side and then proceed with the reservation.', 'easy-reservations' ),
+					'update_reservation_confirmation_message'      => __( 'Since there are no issues found with your changes, we are proceeding to update your reservation now. This alert is just take your consent because you won\'t be able to edit this reservation another time.', 'easy-reservations' ),
 				)
 			);
 		}
@@ -1123,6 +1124,8 @@ class Easy_Reservations_Public {
 		 */
 		do_action( 'ersrv_add_reservation_to_cart_before' );
 
+		die("pool");
+
 		// Prepare an array of all the posted data.
 		$reservation_data = array(
 			'item_id'         => $item_id,
@@ -1568,7 +1571,7 @@ class Easy_Reservations_Public {
 							</div>
 						</div>
 						<div class="accomodation-values d-flex flex-column mb-3">
-							<h4 class="font-size-20 font-weight-semibold"><?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?><small class="font-size-10 ml-1">(<?php echo sprintf( __( 'Limit: %1$d', 'easy-reservations' ), $accomodation_limit ); ?>)</small></h4>
+							<h4 class="font-size-20 font-weight-semibold"><?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?><small class="font-size-10 ml-1">(<?php echo sprintf( __( 'Limit: %1$d', 'easy-reservations' ), $accomodation_limit ); ?>)<span class="required">*</span></small></h4>
 							<div class="values">
 								<div class="row form-row">
 									<div class="col-6">
@@ -1713,6 +1716,10 @@ class Easy_Reservations_Public {
 			return;
 		}
 
+		// Allowed file types.
+		$driving_license_allowed_extensions = ersrv_get_driving_license_allowed_file_types();
+		$allowed_extensions_string          = ( ! empty( $driving_license_allowed_extensions ) && is_array( $driving_license_allowed_extensions ) ) ? implode( ',', $driving_license_allowed_extensions ) : '';
+
 		// Get the attachment ID, if already uploaded.
 		$attachment_id      = WC()->session->get( 'reservation_driving_license_attachment_id' );
 		$attachment_url     = ersrv_get_attachment_url_from_attachment_id( $attachment_id );
@@ -1726,7 +1733,7 @@ class Easy_Reservations_Public {
 			<p class="form-row ersrv-driving-license" id="ersrv_driving_license_field">
 				<label for="reservation-driving-license" class=""><?php esc_html_e( 'Driving License', 'easy-reservations' ); ?> <span class="required">*</span></label>
 				<span class="woocommerce-input-wrapper">
-					<input type="file" name="reservation-driving-license" id="reservation-driving-license" />
+					<input type="file" accept="<?php echo esc_attr( $allowed_extensions_string ); ?>" name="reservation-driving-license" id="reservation-driving-license" />
 				</span>
 				<button type="button" class="upload btn btn-accent"><span class="sr-only"><?php esc_html_e( 'Upload', 'easy-reservations' ); ?></span><span class="fa fa-upload"></span></button>
 				<button type="button" onclick="<?php echo esc_attr( $view_license_url ); ?>" class="view btn btn-accent <?php echo esc_attr( $view_license_class ); ?>"><span class="sr-only"><?php esc_html_e( 'View', 'easy-reservations' ); ?></span><span class="fa fa-eye"></span></button>
@@ -2340,5 +2347,52 @@ class Easy_Reservations_Public {
 		$should_display = ( empty( $order_statuses ) || ! is_array( $order_statuses ) ) ? true : $should_display;
 
 		return $should_display;
+	}
+
+	/**
+	 * Validate the item before adding the reservation to the cart.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_ersrv_add_reservation_to_cart_before_callback() {
+		// Posted data.
+		$item_id       = (int) filter_input( INPUT_POST, 'item_id', FILTER_SANITIZE_NUMBER_INT );
+		$checkin_date  = filter_input( INPUT_POST, 'checkin_date', FILTER_SANITIZE_STRING );
+		$checkout_date = filter_input( INPUT_POST, 'checkout_date', FILTER_SANITIZE_STRING );
+
+		// Check if we need to validate for the duplicate reservation item in the cart.
+		$cart_item_key = ersrv_is_reservation_item_already_in_cart( $item_id );
+
+		// Return back, if the requesting item ID is not already in the cart.
+		if ( false === $cart_item_key ) {
+			return;
+		}
+
+		// Need to dig in further if the clashing reservation dates.
+		$requesting_reservation_dates_obj = ersrv_get_dates_within_2_dates( $checkin_date, $checkout_date );
+		$requesting_reservation_dates_arr = array();
+
+		if ( ! empty( $requesting_reservation_dates_obj ) ) {
+			foreach ( $requesting_reservation_dates_obj as $date ) {
+				$requesting_reservation_dates_arr[] = $date->format( ersrv_get_php_date_format() );
+			}
+		}
+
+		// Get the reservation dates of the item already in the cart.
+		$in_cart_item_reserved_dates = ersrv_in_cart_item_reserved_dates( $cart_item_key );
+
+		// Check for mismatching intersecting dates now.
+		$intersecting_dates = array_intersect( $requesting_reservation_dates_arr, $in_cart_item_reserved_dates );
+
+		// If there are intersecting dates, return the error.
+		if ( ! empty( $intersecting_dates ) ) {
+			// Prepare the response.
+			$response = array(
+				'code'          => 'reservation-not-added-to-cart',
+				'toast_message' => sprintf( __( 'Cannot add a duplicate reservation with the same checkin and checkout dates. Please try again.', 'easy-reservations' ), '<a title="' . __( 'View Cart', 'easy-reservations' ) . '" href="' . wc_get_cart_url() . '">', '</a>' ),
+			);
+			wp_send_json_success( $response );
+			wp_die();
+		}
 	}
 }

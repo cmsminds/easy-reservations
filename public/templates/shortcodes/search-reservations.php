@@ -52,7 +52,8 @@ $search_boat_type = ( ! is_null( $search_boat_type ) ) ? $search_boat_type : 0;
 								</div>
 							</div>
 							<div class="col-12 col-md-3 col-lg-3">
-								<select class="ersrv-search-parameter ersrv-reservation-item-type selectpicker form-control Boat-Types mb-3" id="boat-types" data-size="5" data-style="btn-outline-light focus-none" title="Boat Type">
+								<select class="ersrv-search-parameter ersrv-reservation-item-type selectpicker form-control Boat-Types mb-3" id="boat-types" data-size="5" data-style="btn-outline-light focus-none" title="<?php esc_html_e( 'Select Item Type', 'easy-reservations' ); ?>">
+									<option value=""><?php esc_html_e( 'Select Item Type', 'easy-reservations' ); ?></option>
 									<?php if ( ! empty( $reservation_item_types ) && is_array( $reservation_item_types ) ) { ?>
 										<?php foreach ( $reservation_item_types as $item_type ) {
 											$is_selected = ( 0 !== $search_boat_type && $search_boat_type === $item_type->term_id );

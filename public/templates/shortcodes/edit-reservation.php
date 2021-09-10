@@ -140,9 +140,9 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 													</div>
 													<div class="col-12">
 														<div class="d-flex flex-wrap ersrv-edit-reservation-dates-indicators mb-0 pt-2">
-															<div class="ersrv-available-dates-notifier"><span><?php esc_html_e('Available Dates', 'easy-reservations'); ?></span></div>
-															<div class="ersrv-order-reserved-dates-notifier ml-md-3"><span><?php esc_html_e('Order Reserved Dates', 'easy-reservations'); ?></span></div>
-															<div class="ersrv-unavailable-dates-notifier ml-md-3"><span><?php esc_html_e('Unvailable Dates', 'easy-reservations'); ?></span></div>
+															<div class="ersrv-available-dates-notifier"><span><?php esc_html_e( 'Available Dates', 'easy-reservations' ); ?></span></div>
+															<div class="ersrv-order-reserved-dates-notifier ml-md-3"><span><?php esc_html_e( 'Order Reserved Dates', 'easy-reservations' ); ?></span></div>
+															<div class="ersrv-unavailable-dates-notifier ml-md-3"><span><?php esc_html_e( 'Unvailable Dates', 'easy-reservations' ); ?></span></div>
 														</div>
 													</div>
 													<p class="ersrv-reservation-error mt-3" id="checkin-checkout-dates-error-<?php echo esc_attr( $item_id ); ?>"></p>
@@ -198,7 +198,7 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 												<div class="row form-row align-items-center">
 													<div class="col-12 col-md-5 mb-4 mb-md-0">
 														<h4 class="font-Poppins font-size-16 color-black font-weight-bold mb-0">
-															<?php echo sprintf(__('Subtotal: %2$s%1$s%3$s', 'easy-reservations'), wc_price( $item_total ), '<span id="ersrv-edit-reservation-item-subtotal-' . $item_id . '">', '</span>'); ?>
+															<?php echo sprintf( __( 'Subtotal: %2$s%1$s%3$s', 'easy-reservations' ), wc_price( $item_total ), '<span id="ersrv-edit-reservation-item-subtotal-' . $item_id . '">', '</span>' ); ?>
 															<a class="ersrv-split-reservation-cost <?php echo ( 'twentysixteen' === $current_theme ) ? '' : 'text-theme-primary'; ?>" href="javascript:void(0);" data-toggle="modal" data-target="#summaryModal"><?php esc_html_e( 'Know More', 'easy-reservations' ); ?></a>
 														</h4>
 														<div class="ersrv-edit-reservation-item-summary" id="ersrv-edit-reservation-item-summary-<?php echo esc_attr( $item_id ); ?>">

@@ -961,6 +961,9 @@ class Easy_Reservations_Admin {
 		// Update order meta to be a reservation order.
 		update_post_meta( $wc_order->get_id(), 'ersrv_reservation_order', 1 );
 
+		// Block the dates after reservation is successfully filed by the customer.
+		ersrv_block_dates_after_reservation_thankyou( $wc_order );
+
 		/**
 		 * This hook fires after reservation is created as WooCommerce order.
 		 *
@@ -1178,11 +1181,14 @@ class Easy_Reservations_Admin {
 			</div>
 			<?php
 		} else {
+			// Allowed file types.
+			$driving_license_allowed_extensions = ersrv_get_driving_license_allowed_file_types();
+			$allowed_extensions_string          = ( ! empty( $driving_license_allowed_extensions ) && is_array( $driving_license_allowed_extensions ) ) ? implode( ',', $driving_license_allowed_extensions ) : '';
 			?>
 			<div class="ersrv-driving-license-container edit-order">
 				<p><?php esc_html_e( 'There is no driving license uploaded. Please click the button below to upload one such.', 'easy-reservations' ); ?></p>
 				<p>
-					<input type="file" name="reservation-driving-license" id="reservation-driving-license" />
+					<input type="file" accept="<?php echo esc_attr( $allowed_extensions_string ); ?>" name="reservation-driving-license" id="reservation-driving-license" />
 					<button type="button" class="ersrv-upload-license button upload"><?php esc_html_e( 'Upload', 'easy-reservations' ); ?><span class="dashicons dashicons-upload"></span></button>
 				</p>
 			</div>
@@ -1210,9 +1216,10 @@ class Easy_Reservations_Admin {
 					'class'    => array(),
 				),
 				'input' => array(
-					'type' => array(),
-					'name' => array(),
-					'id'   => array(),
+					'type'   => array(),
+					'name'   => array(),
+					'id'     => array(),
+					'accept' => array(),
 				),
 			),
 		);
@@ -1746,5 +1753,15 @@ class Easy_Reservations_Admin {
 		);
 		wp_send_json_success( $response );
 		wp_die();
+	}
+
+	/**
+	 * Delete the reserved dates before the reservation order is permanently deleted.
+	 *
+	 * @param int $post_id Holds the deleting post ID.
+	 */
+	public function ersrv_woocommerce_delete_order_callback( $post_id ) {
+		// Flush out the reserved dates upon order deletion.
+		ersrv_flush_out_reserved_dates( $post_id );
 	}
 }

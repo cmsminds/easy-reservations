@@ -22,6 +22,7 @@ jQuery(document).ready(function ($) {
 	var admin_payable_cost_difference_message        = ERSRV_Edit_Reservation_Script_Vars.admin_payable_cost_difference_message;
 	var trim_zeros_from_price                        = ERSRV_Edit_Reservation_Script_Vars.trim_zeros_from_price;
 	var reservation_blocked_dates_err_msg_per_item   = ERSRV_Edit_Reservation_Script_Vars.reservation_blocked_dates_err_msg_per_item;
+	var update_reservation_confirmation_message      = ERSRV_Edit_Reservation_Script_Vars.update_reservation_confirmation_message;
 
 	// If sidebar is to be removed on reservation single page.
 	$( '#secondary' ).remove();
@@ -164,7 +165,12 @@ jQuery(document).ready(function ($) {
 	 * Update reservation.
 	 */
 	$( document ).on( 'click', '.ersrv-update-reservation button.update', function() {
-		var this_button = $( this );
+		var this_button   = $( this );
+		var broken_loop   = false;
+		var error_message = '';
+
+		// Vacate the error messages.
+		$( '.ersrv-reservation-error' ).html( '' );
 
 		// Check if the changes are validated.
 		$( '.ersrv-edit-reservation-item-card' ).each( function() {
@@ -175,10 +181,17 @@ jQuery(document).ready(function ($) {
 
 			// If it's the error.
 			if ( -1 === is_update_error.is_valid ) {
-				ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, is_update_error.message );
+				broken_loop   = true;
+				error_message = is_update_error.message;
 				return false;
 			}
 		} );
+
+		// See if the loop is broken due to any error.
+		if ( true === broken_loop ) {
+			ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, error_message );
+			return false;
+		}
 
 		// Proceed when everything is fine to update.
 		var order_id             = parseInt( $( '.ersrv-order-id' ).val() ); // Order ID.
@@ -191,6 +204,18 @@ jQuery(document).ready(function ($) {
 			return false;
 		}
 
+		// Take customer's consent for updating the order.
+		var update_reservation_consent = confirm( update_reservation_confirmation_message );
+
+		// Break the flow, if the user denies to update the reservation.
+		if ( false === update_reservation_consent ) {
+			return false;
+		}		
+
+		/**
+		 * Everything is OK.
+		 * Proceed with updating the reservation.
+		 */
 		var order_total         = cost_difference_data.item_order_total; // Order total.
 		var cost_difference_key = cost_difference_data.key; // Cost difference key.
 		var items_data          = []; // Items data.

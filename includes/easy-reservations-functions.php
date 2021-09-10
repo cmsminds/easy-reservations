@@ -549,7 +549,7 @@ if ( ! function_exists( 'ersrv_get_driving_license_allowed_file_types' ) ) {
 	 * @since 1.0.0
 	 */
 	function ersrv_get_driving_license_allowed_file_types() {
-		$file_types = array( 'jpeg', 'jpg', 'pdf', 'png' );
+		$file_types = array( '.jpeg', '.jpg', '.pdf', '.png' );
 
 		/**
 		 * This hook runs on the checkout page and the order edit page.
@@ -2799,5 +2799,219 @@ if ( ! function_exists( 'ersrv_is_amenity_reserved' ) ) {
 		 * @since 1.0.0
 		 */
 		return apply_filters( 'ersrv_is_amenity_reserved', $is_reserved, $amenity_title, $reserved_amenities );
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_flush_out_reserved_dates' ) ) {
+	/**
+	 * Flush out the reserved dates.
+	 *
+	 * @param int $order_id WooCommerce order ID.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	function ersrv_flush_out_reserved_dates( $order_id, $item_id = 0 ) {
+		$wc_order = wc_get_order( $order_id );
+
+		// Return false, in case the order ID is invalid.
+		if ( false === $wc_order ) {
+			return;
+		}
+
+		// See if the item ID is provided, directly call the item ID function to flush out the reserved dates.
+		if ( 0 !== $item_id ) {
+			ersrv_flush_out_reserved_dates_reservation_item( $item_id );
+			return;
+		}
+
+		/**
+		 * If we're here, this means, we're requested to delete the reservation dates for all the items.
+		 * Get the reservation items now.
+		 */
+		$line_items = $wc_order->get_items();
+
+		// Return, if there are no items.
+		if ( empty( $line_items ) || ! is_array( $line_items ) ) {
+			return;
+		}
+
+		// Iterate through the items.
+		foreach ( $line_items as $line_item ) {
+			$item_id    = $line_item->get_id();
+			$product_id = $line_item->get_product_id();
+
+			// Skip, if this is not a reservation item.
+			if ( ! ersrv_product_is_reservation( $product_id ) ) {
+				continue;
+			}
+
+			// Request to flis out the dates now.
+			ersrv_flush_out_reserved_dates_reservation_item( $item_id );
+		}
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_flush_out_reserved_dates_reservation_item' ) ) {
+	/**
+	 * Flush out the reserved dates.
+	 *
+	 * @param int $order_id WooCommerce order ID.
+	 * @return void
+	 * @since 1.0.0
+	 */
+	function ersrv_flush_out_reserved_dates_reservation_item( $item_id = 0 ) {
+		// Return, if the item ID is zero.
+		if ( 0 === $item_id ) {
+			return;
+		}
+
+		// Get the product ID.
+		$product_id = (int) wc_get_order_item_meta( $item_id, '_product_id', true );
+
+		// Check if the product exists.
+		$wc_product = wc_get_product( $product_id );
+
+		// Return, if the product doesn't exist anymore.
+		if ( false === $wc_product ) {
+			return;
+		}
+
+		// Get the item reserved dates.
+		$checkin_date  = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
+		$checkout_date = wc_get_order_item_meta( $item_id, 'Checkout Date', true );
+
+		// Get the dates between the checkin and checkout dates.
+		$reserved_dates_obj = ersrv_get_dates_within_2_dates( $checkin_date, $checkout_date );
+		$reserved_dates_arr = array();
+
+		if ( ! empty( $reserved_dates_obj ) ) {
+			foreach ( $reserved_dates_obj as $date ) {
+				$reserved_dates_arr[] = $date->format( ersrv_get_php_date_format() );
+			}
+		}
+
+		// Get the reserved dates from the database.
+		$product_reserved_dates = get_post_meta( $product_id, '_ersrv_reservation_blockout_dates', true );
+
+		// Return, if there are no dates in the database.
+		if ( empty( $product_reserved_dates ) || ! is_array( $product_reserved_dates ) ) {
+			return;
+		}
+
+		// Iterate through the dates to flush them.
+		foreach ( $product_reserved_dates as $key => $product_reserved_date ) {
+			$date = ( ! empty( $product_reserved_date['date'] ) ) ? $product_reserved_date['date'] : '';
+
+			// Skip, if the date is empty.
+			if ( empty( $date ) ) {
+				continue;
+			}
+
+			// See, if the date is the one of the reserved in this reservation item.
+			if ( in_array( $date, $reserved_dates_arr, true ) ) {
+				unset( $product_reserved_dates[ $key ] );
+			}
+		}
+
+		// If there are no reserved dates remaining, delete the meta index from db.
+		if ( empty( $product_reserved_dates ) ) {
+			delete_post_meta( $product_id, '_ersrv_reservation_blockout_dates' );
+			return;
+		}
+
+		// Reindex the remaining dates.
+		$product_reserved_dates = array_values( $product_reserved_dates );
+
+		// Update the remaining dates in the database.
+		update_post_meta( $product_id, '_ersrv_reservation_blockout_dates', $product_reserved_dates );
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_is_reservation_item_already_in_cart' ) ) {
+	/**
+	 * Check if the reservation item is already in the cart.
+	 *
+	 * @param int $item_id WooCommerce reservation product ID.
+	 * @return boolean|string
+	 * @since 1.0.0
+	 */
+	function ersrv_is_reservation_item_already_in_cart( $item_id ) {
+		// Get cart.
+		$cart = WC()->cart->get_cart();
+
+		if ( empty( $cart ) || ! is_array( $cart ) ) {
+			return false;
+		}
+
+		// Loop in the cart items to check for offer available for each one.
+		foreach ( $cart as $cart_key => $cart_item ) {
+			$product_id = $cart_item['product_id'];
+
+			// If the item ID matches, return the cart item key.
+			if ( $product_id === $item_id ) {
+				return $cart_key;
+			}
+		}
+
+		return false;
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_in_cart_item_reserved_dates' ) ) {
+	/**
+	 * Get the reservation dates of the item already in the cart.
+	 *
+	 * @param int $cart_item_key WooCommerce cart item key.
+	 * @return array
+	 * @since 1.0.0
+	 */
+	function ersrv_in_cart_item_reserved_dates( $cart_item_key ) {
+		// Get cart.
+		$cart = WC()->cart->get_cart();
+
+		if ( empty( $cart ) || ! is_array( $cart ) ) {
+			return array();
+		}
+
+		// Get the cart item reservation data.
+		$cart_item_reservation_data = ( ! empty( $cart[ $cart_item_key ]['reservation_data'] ) ) ? $cart[ $cart_item_key ]['reservation_data'] : array();
+
+		// Return, if the cart item reservation data is blank.
+		if ( empty( $cart_item_reservation_data ) ) {
+			return array();
+		}
+
+		// Checkin and checkout dates.
+		$checkin_date  = ( ! empty( $cart_item_reservation_data['checkin_date'] ) ) ? $cart_item_reservation_data['checkin_date'] : '';
+		$checkout_date = ( ! empty( $cart_item_reservation_data['checkout_date'] ) ) ? $cart_item_reservation_data['checkout_date'] : '';
+
+		// Return blank, if either of the date is empty.
+		if ( empty( $checkin_date ) || empty( $checkout_date ) ) {
+			return array();
+		}
+
+		// Get the reservation dates now.
+		$reservation_dates_obj = ersrv_get_dates_within_2_dates( $checkin_date, $checkout_date );
+		$reservation_dates_arr = array();
+
+		if ( ! empty( $reservation_dates_obj ) ) {
+			foreach ( $reservation_dates_obj as $date ) {
+				$reservation_dates_arr[] = $date->format( ersrv_get_php_date_format() );
+			}
+		}
+
+		return $reservation_dates_arr;
 	}
 }

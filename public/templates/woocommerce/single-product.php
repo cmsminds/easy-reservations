@@ -341,6 +341,7 @@ $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platform
 									</div>
 									<div class="book-items-wrapper pb-2">
 										<select class="selectpicker form-control Boat-Types" id="boat-types" data-size="5" data-style="btn-outline-secondary focus-none" title="<?php esc_html_e( 'Select Item Type', 'easy-reservations' ); ?>">
+											<option value=""><?php esc_html_e( 'Select Item Type', 'easy-reservations' ); ?></option>
 											<?php if ( ! empty( $reservation_item_types ) && is_array( $reservation_item_types ) ) { ?>
 												<?php foreach ( $reservation_item_types as $item_type ) { ?>
 													<option value="<?php echo esc_attr( $item_type->term_id ); ?>"><?php echo esc_html( $item_type->name ); ?></option>

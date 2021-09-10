@@ -176,6 +176,7 @@ class Easy_Reservations {
 		$this->loader->add_action( 'wp_ajax_decline_reservation_cancellation_request', $plugin_admin, 'ersrv_decline_reservation_cancellation_request_callback' );
 		$this->loader->add_action( 'wp_ajax_approve_reservation_cancellation_request', $plugin_admin, 'ersrv_approve_reservation_cancellation_request_callback' );
 		$this->loader->add_action( 'wp_ajax_upload_driving_license', $plugin_admin, 'ersrv_upload_driving_license_callback' );
+		$this->loader->add_action( 'woocommerce_delete_order', $plugin_admin, 'ersrv_woocommerce_delete_order_callback' );
 	}
 
 	/**
@@ -251,6 +252,7 @@ class Easy_Reservations {
 		$this->loader->add_action( 'wp_ajax_search_reservations', $plugin_public, 'ersrv_search_reservations_callback' );
 		$this->loader->add_action( 'wp_ajax_nopriv_search_reservations', $plugin_public, 'ersrv_search_reservations_callback' );
 		$this->loader->add_filter( 'ersrv_display_receipt_button', $plugin_public, 'ersrv_ersrv_display_receipt_button_callback' );
+		$this->loader->add_action( 'ersrv_add_reservation_to_cart_before', $plugin_public, 'ersrv_ersrv_add_reservation_to_cart_before_callback' );
 	}
 
 	/**

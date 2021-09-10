@@ -1288,16 +1288,19 @@ jQuery(document).ready(function ($) {
 					return false;
 				}
 
+				// Unblock the element.
+				unblock_element( add_to_cart_button );
+
 				// If the reservation is added.
 				if ( 'reservation-added-to-cart' === response.data.code ) {
-					// Unblock the element.
-					unblock_element( add_to_cart_button );
-
 					// Show toast.
 					ersrv_show_toast( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
 
 					// Hide the modal.
 					$( '#ersrv-item-quick-view-modal' ).fadeOut( 'slow' );
+				} else if ( 'reservation-not-added-to-cart' === response.data.code ) {
+					// Show toast.
+					ersrv_show_toast( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, response.data.toast_message );
 				}
 			},
 		} );
