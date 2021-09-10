@@ -299,7 +299,7 @@ $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platform
 											<span><?php esc_html_e( 'Instant Booking', 'easy-reservations' ); ?></span>
 										</button>
 										<div class="ersrv-powered-by-cmsminds" role="complementary">
-											<a href="https://cmsminds.com" title="<?php esc_html_e( 'Powered by cmsMinds opens in a new window', 'easy-reservations' ); ?>" target="_blank"><?php esc_html_e( 'Powered by cmsMinds', 'easy-reservations' ); ?></a>
+											<a class="ersrv-cmsminds-logo" href="https://cmsminds.com" title="<?php esc_html_e( 'Powered by cmsMinds opens in a new window', 'easy-reservations' ); ?>" target="_blank"><?php esc_html_e( 'Powered by cmsMinds', 'easy-reservations' ); ?></a>
 										</div>
 									</div>
 									<div class="dropdown-divider my-4 py-2"></div>
