@@ -18,13 +18,15 @@ if ( ! empty( $favourite_items ) && is_array( $favourite_items ) ) {
 	echo '<div class="search-result-inner form-row">';
 	// Iterate through each item to display it.
 	foreach ( $favourite_items as $item_id ) {
-		echo ersrv_get_reservation_item_block_html( $item_id );
+		echo ersrv_get_reservation_item_block_html( $item_id, 'favourite-items-page' );
 	}
 	echo '</div>';
 } else {
+	$search_page_id = ersrv_get_page_id( 'search-reservations' );
+	$search_page    = get_permalink( $search_page_id );
 	?>
 	<div class="woocommerce-message woocommerce-message--info woocommerce-Message woocommerce-Message--info woocommerce-info">
-		<a class="woocommerce-Button button" href="<?php echo esc_url( apply_filters( 'woocommerce_return_to_shop_redirect', wc_get_page_permalink( 'shop' ) ) ); ?>"><?php esc_html_e( 'Browse products', 'woocommerce' ); ?></a>
+		<a class="woocommerce-Button button" href="<?php echo esc_url( $search_page ); ?>"><?php esc_html_e( 'Browse reservations', 'woocommerce' ); ?></a>
 		<?php esc_html_e( 'There are no favourite items.', 'easy-reservations' ); ?>
 	</div>
 	<?php

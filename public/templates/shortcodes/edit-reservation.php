@@ -151,7 +151,7 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 										</div>
 										<div class="form-wrapper">
 											<div class="bookItems mb-3">
-												<label><?php echo sprintf( __( 'Accomodation %2$s[Limit: %1$d]%3$s', 'easy-reservations' ), $accomodation_limit, '<small>', '</small>' ); ?></label>
+												<label><?php echo sprintf( __( 'Accomodation %2$s[Limit: %1$d]%3$s', 'easy-reservations' ), $accomodation_limit, '<small>', '</small>' ); ?><span class="required">*</span></label>
 												<div class="row form-row input-daterange">
 													<div class="col-12 col-md-6">
 														<div class="position-relative">
@@ -183,8 +183,8 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 															$is_checked        = ( true === $is_reserved ) ? 'checked' : '';
 															?>
 															<div class="custom-control custom-switch ersrv-single-amenity-block mr-3" data-cost_type="<?php echo esc_attr( $amenity_cost_type ); ?>" data-cost="<?php echo esc_attr( $amenity_cost ); ?>" data-amenity="<?php echo esc_attr( $amenity_title ); ?>">
-																<input type="checkbox" class="custom-control-input ersrv-new-reservation-single-amenity" id="amenity-<?php echo esc_html( $amenity_slug ); ?>" <?php echo esc_attr( $is_checked ); ?>>
-																<label class="custom-control-label font-size-15" for="amenity-<?php echo esc_html( $amenity_slug ); ?>">
+																<input type="checkbox" class="custom-control-input ersrv-new-reservation-single-amenity" id="amenity-<?php echo esc_html( $amenity_slug . '-' . $item_id ); ?>" <?php echo esc_attr( $is_checked ); ?>>
+																<label class="custom-control-label font-size-15" for="amenity-<?php echo esc_html( $amenity_slug . '-' . $item_id ); ?>">
 																	<span class="d-block font-lato font-weight-bold color-black pb-2"><?php echo esc_attr( $amenity_title ); ?> - <span class="font-lato font-weight-bold color-accent"><?php echo wc_price( $amenity_cost ); ?></span></span>
 																</label>
 															</div>

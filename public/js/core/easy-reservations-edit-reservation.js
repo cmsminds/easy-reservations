@@ -29,6 +29,12 @@ jQuery(document).ready(function ($) {
 	$( '#content-bottom-widgets' ).remove();
 	$( '#primary' ).css( 'width', '100%' );
 
+	// Check if back button is clicked in the browser, reload.
+	var perf_entries = performance.getEntriesByType( 'navigation' );
+	if ( 0 < perf_entries.length && 'back_forward' === perf_entries[0].type ) {
+		location.reload();
+	}
+
 	/**
 	 * Click on the checkin and checkout date to fetch the dates available while editing the reservation.
 	 */

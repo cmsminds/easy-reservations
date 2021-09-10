@@ -582,7 +582,7 @@ if ( ! function_exists( 'ersrv_get_admin_script_vars' ) ) {
 			'ajaxurl'               => admin_url( 'admin-ajax.php' ),
 			'same_as_adult'         => __( 'Same as Adult!', 'easy-reservations' ),
 			'export_reservations'   => __( 'Export Reservations', 'easy-reservations' ),
-			'toast_success_heading' => __( 'Ohhoooo! Success..', 'easy-reservations' ),
+			'toast_success_heading' => __( 'Woohhoooo! Success..', 'easy-reservations' ),
 			'toast_error_heading'   => __( 'Ooops! Error..', 'easy-reservations' ),
 			'toast_notice_heading'  => __( 'Notice.', 'easy-reservations' ),
 		);
@@ -1502,7 +1502,7 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 	 *
 	 * @param int $item_id Reservation item ID.
 	 */
-	function ersrv_get_reservation_item_block_html( $item_id ) {
+	function ersrv_get_reservation_item_block_html( $item_id, $page ) {
 		$user_id             = get_current_user_id();
 		$featured_image_id   = get_post_thumbnail_id( $item_id );
 		$item_featured_image = ersrv_get_attachment_url_from_attachment_id( $featured_image_id );
@@ -1553,7 +1553,7 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 									),
 								)
 							); ?>
-						</span><?php esc_html_e( ' - Per Night', 'easy-reservations' ); ?>
+						</span><?php esc_html_e( ' - per day', 'easy-reservations' ); ?>
 					</div>
 				</div>
 				<div class="card-body">
@@ -1598,8 +1598,12 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 						</div>
 					</div>
 					<div class="btns-group">
-						<a href="<?php echo esc_url( $item_link ); ?>" class="btn btn-accent mr-2"><?php esc_html_e( 'Book Now', 'easy-reservations' ); ?></a>
-						<a href="javascript:void(0);" class="btn btn-primary ersrv-quick-view-item"><?php esc_html_e( 'Quick View', 'easy-reservations' ); ?></a>
+						<?php if ( 'search-reservations-page' === $page ) { ?>
+							<a href="<?php echo esc_url( $item_link ); ?>" class="btn btn-accent mr-2"><?php esc_html_e( 'Book Now', 'easy-reservations' ); ?></a>
+							<a href="javascript:void(0);" class="btn btn-primary ersrv-quick-view-item"><?php esc_html_e( 'Quick View', 'easy-reservations' ); ?></a>
+						<?php } else  { ?>
+							<a href="<?php echo esc_url( $item_link ); ?>" class="btn btn-accent mr-2"><?php esc_html_e( 'View Details', 'easy-reservations' ); ?></a>
+						<?php } ?>
 					</div>
 				</div>
 			</div>

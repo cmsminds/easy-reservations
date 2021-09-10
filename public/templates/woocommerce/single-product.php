@@ -215,7 +215,7 @@ $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platform
 									)
 								);
 								?>
-								<span class="price-info font-size-20 font-lato font-weight-medium color-white">(<?php esc_html_e( 'Per Night', 'easy-reservations' ); ?>)</span>
+								<span class="price-info font-size-20 font-lato font-weight-medium color-white">(<?php esc_html_e( 'per day', 'easy-reservations' ); ?>)</span>
 							</div>
 						</div>
 						<div class="book-tour bgcolor-white rounded-xl text-center">
@@ -334,6 +334,9 @@ $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platform
 								<form action="">
 									<div class="mb-2">
 										<input type="text" class="ersrv-item-search-location form-control ship-icon-field text-left rounded-lg" placeholder="<?php esc_html_e( 'Desired location', 'easy-reservations' ); ?>">
+									</div>
+									<div class="mb-2">
+										<input type="number" class="ersrv-item-search-accomodation form-control ship-icon-field text-left rounded-lg" placeholder="<?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?>">
 									</div>
 									<div class="input-daterange d-flex flex-column flex-fill pb-2">
 										<input id="ersrv-search-checkin" type="text" class="form-control date-control text-left rounded-lg mb-2" placeholder="Check in">

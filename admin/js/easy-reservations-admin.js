@@ -1177,6 +1177,7 @@ jQuery( document ).ready( function( $ ) {
 	$( document ).on( 'change', 'input[name="reservation-driving-license"]', function() {
 		var file = $( this ).val();
 		var ext  = file.split( '.' ).pop();
+		ext      = '.' + ext;
 
 		// Check if this extension is among the extensions allowed.
 		if ( 0 < driving_license_allowed_extensions.length && -1 === $.inArray( ext, driving_license_allowed_extensions ) ) {

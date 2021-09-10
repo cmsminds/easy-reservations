@@ -301,7 +301,7 @@ class Easy_Reservations_Public {
 					'ajaxurl'                                      => admin_url( 'admin-ajax.php' ),
 					'date_format'                                  => ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' ),
 					'woo_currency'                                 => get_woocommerce_currency_symbol(),
-					'toast_success_heading'                        => __( 'Ohhoooo! Success..', 'easy-reservations' ),
+					'toast_success_heading'                        => __( 'Woohhoooo! Success..', 'easy-reservations' ),
 					'toast_error_heading'                          => __( 'Ooops! Error..', 'easy-reservations' ),
 					'toast_notice_heading'                         => __( 'Notice.', 'easy-reservations' ),
 					'reservation_guests_err_msg'                   => __( 'Please provide the count of guests for the reservation.', 'easy-reservations' ),
@@ -972,9 +972,19 @@ class Easy_Reservations_Public {
 		$favourite_items = ( empty( $favourite_items ) || ! is_array( $favourite_items ) ) ? array() : $favourite_items;
 
 		if ( 'mark_fav' === $do_what ) {
+			$myaccount_page_id  = get_option( 'woocommerce_myaccount_page_id' );
+			$myaccount_page_url = ( $myaccount_page_id ) ? get_permalink( $myaccount_page_id ) : '';
+			$fav_items_endpoint = ( ! empty( $myaccount_page_url ) ) ? $myaccount_page_url . 'favourite-reservable-items/' : '';
+
+			// Create the toast message.
+			if ( ! empty( $fav_items_endpoint ) ) {
+				$toast_message = sprintf( __( 'Item has been marked favourite. %1$sView favourites.%2$s', 'easy-reservations' ), '<a href="' . $fav_items_endpoint . '" title="' . __( 'Favourite Items', 'easy-reservations' ) . '">', '</a>' );
+			} else {
+				$toast_message = __( 'Item has been marked favourite.', 'easy-reservations' );
+			}
+
 			// Push in the item now.
 			$favourite_items[] = $item_id;
-			$toast_message     = __( 'Item has been marked favourite.', 'easy-reservations' );
 		} elseif ( 'unmark_fav' === $do_what ) {
 			// Remove the item from favourite list.
 			$item_index = array_search( $item_id, $favourite_items, true );
@@ -1076,7 +1086,7 @@ class Easy_Reservations_Public {
 		// Iterate through the item IDs to generate the HTML.
 		$html = '';
 		foreach ( $reservation_item_ids as $item_id ) {
-			$html .= ersrv_get_reservation_item_block_html( $item_id );
+			$html .= ersrv_get_reservation_item_block_html( $item_id, 'search-reservations-page' );
 		}
 
 		// Send the response.
@@ -1123,8 +1133,6 @@ class Easy_Reservations_Public {
 		 * This hook helps in adding actions before any reservation item is added to the cart.
 		 */
 		do_action( 'ersrv_add_reservation_to_cart_before' );
-
-		die("pool");
 
 		// Prepare an array of all the posted data.
 		$reservation_data = array(
@@ -1513,6 +1521,8 @@ class Easy_Reservations_Public {
 		$max_reservation_period = ( ! empty( $item_details['max_reservation_period'] ) ) ? $item_details['max_reservation_period'] : '';
 		$reserved_dates         = ( ! empty( $item_details['reserved_dates'] ) ) ? $item_details['reserved_dates'] : '';
 		$php_date_format        = ersrv_get_php_date_format();
+		$curr_date              = ersrv_get_current_date( $php_date_format );
+		$next_date              = gmdate( $php_date_format, ( strtotime( 'now' ) + 86400 ) );
 
 		// Prepare the HTML.
 		?>
@@ -1551,7 +1561,7 @@ class Easy_Reservations_Public {
 								)
 							);
 							?>
-							<span class="font-size-20 price-text"><?php esc_html_e( 'Per Night', 'easy-reservations' ); ?></span>
+							<span class="font-size-20 price-text"><?php esc_html_e( 'per day', 'easy-reservations' ); ?></span>
 						</h4>
 					</div>
 					<div class="product-details-values mb-2">
@@ -1559,12 +1569,12 @@ class Easy_Reservations_Public {
 							<div class="values">
 								<div class="row form-row input-daterange">
 									<div class="col-6">
-										<h4 class="font-weight-semibold font-size-20"><?php esc_html_e( 'Check In', 'easy-reservations' ); ?></h4>
-										<div><input type="text" id="ersrv-quick-view-item-checkin-date" class="form-control date-control text-left rounded-lg" placeholder="<?php echo esc_html( $php_date_format ); ?>"></div>
+										<h4 class="font-weight-semibold font-size-20"><?php esc_html_e( 'Checkin', 'easy-reservations' ); ?></h4>
+										<div><input type="text" id="ersrv-quick-view-item-checkin-date" class="form-control date-control text-left rounded-lg" placeholder="<?php echo esc_html( $curr_date ); ?>"></div>
 									</div>
 									<div class="col-6">
-										<h4 class="font-weight-semibold font-size-20"><?php esc_html_e( 'Check Out', 'easy-reservations' ); ?></h4>
-										<div><input type="text" id="ersrv-quick-view-item-checkout-date" class="form-control date-control text-left rounded-lg" placeholder="<?php echo esc_html( $php_date_format ); ?>"></div>
+										<h4 class="font-weight-semibold font-size-20"><?php esc_html_e( 'Checkout', 'easy-reservations' ); ?></h4>
+										<div><input type="text" id="ersrv-quick-view-item-checkout-date" class="form-control date-control text-left rounded-lg" placeholder="<?php echo esc_html( $next_date ); ?>"></div>
 									</div>
 									<label class="ersrv-reservation-error checkin-checkout-dates-error"></label>
 								</div>
@@ -1772,7 +1782,8 @@ class Easy_Reservations_Public {
 		$file_data                 = file_get_contents( $driving_license_file_temp );
 		$filename                  = basename( $driving_license_file_name );
 		$upload_dir                = wp_upload_dir();
-		$file_path                 = ( ! empty( $upload_dir['path'] ) ) ? $upload_dir['path'] . $filename : $upload_dir['basedir'] . $filename;
+		$file_path                 = ( ! empty( $upload_dir['path'] ) ) ? $upload_dir['path'] . '/' . $filename : $upload_dir['basedir'] . '/' . $filename;
+
 		file_put_contents( $file_path, $file_data );
 
 		// Upload it as WP attachment.
@@ -1792,6 +1803,7 @@ class Easy_Reservations_Public {
 
 		// Return with the on click attribute.
 		$attachment_url   = ersrv_get_attachment_url_from_attachment_id( $attach_id );
+
 		$filename         = basename( $attachment_url );
 		$filename         = ( 25 <= strlen( $filename ) ) ? ersrv_shorten_filename( $filename ) : $filename;
 		$view_license_url = "location.href = '{$attachment_url}'";
@@ -2319,7 +2331,7 @@ class Easy_Reservations_Public {
 
 		// Iterate through the qualified reservation items.
 		foreach ( $final_reservation_ids as $reservation_post_id ) {
-			$html .= ersrv_get_reservation_item_block_html( $reservation_post_id );
+			$html .= ersrv_get_reservation_item_block_html( $reservation_post_id, 'search-reservations-page' );
 		}
 
 		// Count of qualifying reservation posts.

@@ -390,7 +390,7 @@ class Easy_Reservations_Settings extends WC_Settings_Page {
 			),
 			array(
 				'title'       => __( 'Reservations Eligibility for Cancellation Until "X" Days', 'easy-reservations' ),
-				'desc'        => __( 'The number of days until which the customers can raise cancel request towwards their reservations. Leaving it blank would mean that customers would be allowed to cancel their reservation anytime.', 'easy-reservations' ),
+				'desc'        => __( 'The number of days until which the customers can raise cancel request towards their reservations. Leaving it blank would mean that customers would be allowed to cancel their reservation anytime.', 'easy-reservations' ),
 				'desc_tip'    => true,
 				'id'          => 'ersrv_cancel_reservation_request_before_days',
 				'placeholder' => __( 'E.g.: 2', 'easy-reservations' ),

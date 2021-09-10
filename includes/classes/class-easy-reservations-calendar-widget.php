@@ -146,7 +146,6 @@ class Easy_Reservations_Calendar_Widget extends WP_Widget {
 	public function form( $instance ) {
 		$title                       = ( ! empty( $instance['title'] ) ) ? $instance['title'] : __( 'New title', 'easy-reservations' );
 		$description                 = ( ! empty( $instance['description'] ) ) ? $instance['description'] : '';
-		$available_dates_bg_color    = ( ! empty( $instance['available_dates_bg_color'] ) ) ? $instance['available_dates_bg_color'] : '';
 		$display_reserve_item_button = ( ! empty( $instance['display_reserve_item_button'] ) ) ? 'yes' : 'no';
 		?>
 		<p>
@@ -156,10 +155,6 @@ class Easy_Reservations_Calendar_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>"><?php esc_html_e( 'Description:', 'easy-reservations' ); ?></label>
 			<textarea class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'description' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'description' ) ); ?>"><?php echo wp_kses_post( $description ); ?></textarea>
-		</p>
-		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'available_dates_bg_color' ) ); ?>"><?php esc_html_e( 'Available Dates Background Color:', 'easy-reservations' ); ?></label>
-			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'available_dates_bg_color' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'available_dates_bg_color' ) ); ?>" type="color" value="<?php echo wp_kses_post( $available_dates_bg_color ); ?>" />
 		</p>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'display_reserve_item_button' ) ); ?>"><?php esc_html_e( 'Display Reserve Item Button:', 'easy-reservations' ); ?></label>

@@ -301,6 +301,7 @@ jQuery(document).ready(function ($) {
 		var location               = ersrv_get_query_string_parameter_value( 'location' );
 		var checkin                = ersrv_get_query_string_parameter_value( 'checkin' );
 		var checkout               = ersrv_get_query_string_parameter_value( 'checkout' );
+		var accomodation           = ersrv_get_query_string_parameter_value( 'accomodation' );
 		var checkin_checkout_dates = [];
 
 		if ( 1 === is_valid_string( checkin ) && 1 === is_valid_string( checkout ) ) {
@@ -316,6 +317,7 @@ jQuery(document).ready(function ($) {
 			action: 'search_reservations',
 			location: ( 1 === is_valid_string( location ) ) ? location : '',
 			type: ( 1 === is_valid_number( type ) ) ? type : '',
+			accomodation: ( 1 === is_valid_number( accomodation ) ) ? accomodation : '',
 			checkin_checkout_dates: checkin_checkout_dates,
 		};
 
@@ -835,6 +837,7 @@ jQuery(document).ready(function ($) {
 		var checkin_date  = $( '#ersrv-search-checkin' ).val();
 		var checkout_date = $( '#ersrv-search-checkout' ).val();
 		var location      = $( '.ersrv-item-search-location' ).val();
+		var accomodation  = $( '.ersrv-item-search-accomodation' ).val();
 		var boat_type     = parseInt( $( '#boat-types' ).val() );
 		var is_error      = false;
 		var error_message = '';
@@ -871,6 +874,11 @@ jQuery(document).ready(function ($) {
 		// Location.
 		if ( 1 === is_valid_string( location ) ) {
 			query_params_array.location = location;
+		}
+
+		// Accomodation.
+		if ( 1 === is_valid_number( accomodation ) ) {
+			query_params_array.accomodation = accomodation;
 		}
 
 		// Boat types.
@@ -1012,6 +1020,7 @@ jQuery(document).ready(function ($) {
 	$( document ).on( 'change', 'input[name="reservation-driving-license"]', function() {
 		var file = $( this ).val();
 		var ext  = file.split( '.' ).pop();
+		ext      = '.' + ext;
 
 		// Check if this extension is among the extensions allowed.
 		if ( 0 < driving_license_allowed_extensions.length && -1 === $.inArray( ext, driving_license_allowed_extensions ) ) {

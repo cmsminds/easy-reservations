@@ -23,18 +23,16 @@ $reservation_item_types = get_terms(
 );
 
 // Query parameters.
-$search_location  = filter_input( INPUT_GET, 'location', FILTER_SANITIZE_STRING );
-$search_location  = ( ! is_null( $search_location ) ) ? $search_location : '';
-$search_checkin   = filter_input( INPUT_GET, 'checkin', FILTER_SANITIZE_STRING );
-$search_checkin   = ( ! is_null( $search_checkin ) ) ? $search_checkin : '';
-$search_checkout  = filter_input( INPUT_GET, 'checkout', FILTER_SANITIZE_STRING );
-$search_checkout  = ( ! is_null( $search_checkout ) ) ? $search_checkout : '';
-$search_price_min = filter_input( INPUT_GET, 'price_min', FILTER_SANITIZE_STRING );
-$search_price_min = ( ! is_null( $search_price_min ) ) ? $search_price_min : '';
-$search_price_max = filter_input( INPUT_GET, 'price_max', FILTER_SANITIZE_STRING );
-$search_price_max = ( ! is_null( $search_price_max ) ) ? $search_price_max : '';
-$search_boat_type = (int) filter_input( INPUT_GET, 'boat_type', FILTER_SANITIZE_NUMBER_INT );
-$search_boat_type = ( ! is_null( $search_boat_type ) ) ? $search_boat_type : 0;
+$search_location      = filter_input( INPUT_GET, 'location', FILTER_SANITIZE_STRING );
+$search_location      = ( ! is_null( $search_location ) ) ? $search_location : '';
+$search_accomodation  = filter_input( INPUT_GET, 'accomodation', FILTER_SANITIZE_STRING );
+$search_accomodation  = ( ! is_null( $search_accomodation ) ) ? $search_accomodation : '';
+$search_checkin       = filter_input( INPUT_GET, 'checkin', FILTER_SANITIZE_STRING );
+$search_checkin       = ( ! is_null( $search_checkin ) ) ? $search_checkin : '';
+$search_checkout      = filter_input( INPUT_GET, 'checkout', FILTER_SANITIZE_STRING );
+$search_checkout      = ( ! is_null( $search_checkout ) ) ? $search_checkout : '';
+$search_boat_type     = (int) filter_input( INPUT_GET, 'boat_type', FILTER_SANITIZE_NUMBER_INT );
+$search_boat_type     = ( ! is_null( $search_boat_type ) ) ? $search_boat_type : 0;
 ?>
 <section class="wrapper search-page" id="wrapper">
 	<div class="banner text-center">
@@ -84,7 +82,7 @@ $search_boat_type = ( ! is_null( $search_boat_type ) ) ? $search_boat_type : 0;
 									<div class="form-row">
 										<div class="col-12 col-md-6">
 											<div class="form-group">
-												<input type="number" value="" class="ersrv-search-parameter ersrv-item-search-accomodation form-control rounded-lg" placeholder="<?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?>">
+												<input type="number" value="<?php echo esc_html( $search_accomodation ); ?>" class="ersrv-search-parameter ersrv-item-search-accomodation form-control rounded-lg" placeholder="<?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?>">
 											</div>
 										</div>
 										<div class="col-12 col-md-6">
