@@ -227,7 +227,7 @@ a.btn:hover,
     background-position: 95%;
 }
 
-.site a:focus:not(.wp-block-button__link):not(.wp-block-file__button):not(.btn-outline-primary):not(.loadmore-btn):not(.btn) {
+.site a:focus:not(.wp-block-button__link):not(.wp-block-file__button):not(.btn-outline-primary):not(.loadmore-btn):not(.btn):not(.ersrv-cmsminds-logo) {
     background: transparent !important;
 }
 
@@ -557,10 +557,6 @@ a.btn:hover,
 .ersrv-edit-reservation-template .ersrv-reservation-error:empty {
     display: none;
 }
-.ersrv-reservation-actions-container .actions .btn {
-    margin: 2px;
-    margin-left: 0px;
-}
 
 
 
@@ -578,3 +574,15 @@ a.btn:hover,
     top: 0px;
     left: 0px;
 } */
+
+/* Chrome, Safari, Edge, Opera */
+.wrapper.search-page .banner .form-wrapper .form-inner input::-webkit-outer-spin-button,
+.wrapper.search-page .banner .form-wrapper .form-inner input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.wrapper.search-page .banner .form-wrapper .form-inner input[type=number] {
+  -moz-appearance: textfield;
+}

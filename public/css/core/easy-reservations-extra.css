@@ -131,6 +131,7 @@
 }
 
 .btn {
+    display: inline-block;
     padding: 8px 16px;
     font-size: 14px;
     line-height: 20px;
@@ -780,4 +781,11 @@
 .woocommerce-cart .product-name .variation *{
     font-size: 14px;
     line-height: 22px;
+}
+.ersrv-reservation-actions-container .actions .btn {
+    box-shadow: none;
+    margin-bottom: 8px !important;
+}
+.woocommerce-table__product-name .wc-item-meta {
+    word-break: break-all;
 }
