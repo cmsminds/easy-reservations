@@ -163,13 +163,14 @@ img {
 
     &:focus,
     &:hover {
-        background-image: url("../../images/planner_active.png");
-        background-blend-mode: luminosity;
+        // background-image: url("../../images/planner_active.png");
+        // background-blend-mode: luminosity;
+        background-blend-mode: difference !important;
     }
 }
 
 .ship-icon-field {
-    background-image: url("../../images/ship-gray.png") !important;
+    background-image: url("../../images/accomodation_gray.png") !important;
     background-position: 90%;
     background-size: 20px;
     background-repeat: no-repeat;
@@ -181,7 +182,19 @@ img {
         background-blend-mode: difference !important;
     }
 }
-
+.ersrv-item-search-location{
+    background-image: url("../../images/mapPin_gray.png") !important;
+    background-position: 90% !important;
+    background-size: 20px !important;
+    background-repeat: no-repeat !important;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    &:focus,
+    &:hover {
+        background-image: url("../../images/mapPin_gray.png") !important;
+        background-blend-mode: difference !important;
+    }
+}
 
 *:focus,
 .focus-none,

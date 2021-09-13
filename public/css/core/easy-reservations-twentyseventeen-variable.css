@@ -579,11 +579,11 @@ img {
 }
 
 .date-control:focus, .date-control:hover {
-  background-image: url("../../images/planner_active.png");
+  background-image: url("../../images/planner_active.png") !important;
 }
 
 .ship-icon-field {
-  background-image: url("../../images/ship-gray.png") !important;
+  background-image: url("../../images/accomodation_gray.png") !important;
   background-position: 90% !important;
   background-size: 20px !important;
   background-repeat: no-repeat !important;
@@ -593,7 +593,21 @@ img {
 }
 
 .ship-icon-field:focus, .ship-icon-field:hover {
-  background-image: url("../../images/ship-green.png") !important;
+  background-image: url("../../images/accomodation_green.png") !important;
+}
+
+.ersrv-item-search-location {
+  background-image: url("../../images/mapPin_gray.png") !important;
+  background-position: 90% !important;
+  background-size: 20px !important;
+  background-repeat: no-repeat !important;
+  cursor: pointer;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+
+.ersrv-item-search-location:focus, .ersrv-item-search-location:hover {
+  background-image: url("../../images/mapPin_green.png") !important;
 }
 
 *:focus,

@@ -613,12 +613,11 @@ img {
 .date-control:focus, .wrapper .sidebar-wrapper .book-tour .details input.date-control:focus,
 .wrapper .sidebar-wrapper .advanced-search .details input.date-control:focus, .date-control:hover, .wrapper .sidebar-wrapper .book-tour .details input.date-control:hover,
 .wrapper .sidebar-wrapper .advanced-search .details input.date-control:hover {
-  background-image: url("../../images/planner_active.png");
-  background-blend-mode: luminosity;
+  background-blend-mode: difference !important;
 }
 
 .ship-icon-field {
-  background-image: url("../../images/ship-gray.png") !important;
+  background-image: url("../../images/accomodation_gray.png") !important;
   background-position: 90%;
   background-size: 20px;
   background-repeat: no-repeat;
@@ -628,6 +627,21 @@ img {
 }
 
 .ship-icon-field:focus, .ship-icon-field:hover {
+  background-blend-mode: difference !important;
+}
+
+.ersrv-item-search-location {
+  background-image: url("../../images/mapPin_gray.png") !important;
+  background-position: 90% !important;
+  background-size: 20px !important;
+  background-repeat: no-repeat !important;
+  cursor: pointer;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+
+.ersrv-item-search-location:focus, .ersrv-item-search-location:hover {
+  background-image: url("../../images/mapPin_gray.png") !important;
   background-blend-mode: difference !important;
 }
 
@@ -1028,11 +1042,6 @@ img {
   min-height: 55px;
 }
 
-.wrapper .sidebar-wrapper .book-tour .details input.date-control,
-.wrapper .sidebar-wrapper .advanced-search .details input.date-control {
-  background-position: 95%;
-}
-
 .wrapper .sidebar-wrapper .book-tour .details input[type=checkbox], .wrapper .sidebar-wrapper .book-tour .details input[type=radio],
 .wrapper .sidebar-wrapper .advanced-search .details input[type=checkbox],
 .wrapper .sidebar-wrapper .advanced-search .details input[type=radio] {
@@ -1174,10 +1183,6 @@ img {
 .wrapper.search-page .banner .form-wrapper .form-inner .btn:hover img, .wrapper.search-page .banner .form-wrapper .form-inner .btn:focus img, .wrapper.search-page .banner .form-wrapper .form-inner .btn:active img {
   -webkit-filter: invert(1);
   filter: invert(1);
-}
-
-.wrapper.search-page .banner .form-wrapper .form-inner .form-group .date-control.ship-icon-field {
-  background-position: 96% !important;
 }
 
 @media only screen and (max-width: 767px) {
