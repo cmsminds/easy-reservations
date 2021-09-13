@@ -524,7 +524,7 @@ class Easy_Reservations_Public {
 		// Search requests.
 		$location     = filter_input( INPUT_POST, 'location', FILTER_SANITIZE_STRING );
 		$type         = filter_input( INPUT_POST, 'type', FILTER_SANITIZE_NUMBER_INT );
-		$accomodation = filter_input( INPUT_POST, 'accomodation', FILTER_SANITIZE_NUMBER_INT );
+		$accomodation = (int) filter_input( INPUT_POST, 'accomodation', FILTER_SANITIZE_NUMBER_INT );
 
 		// If the location is set.
 		if ( ! empty( $location ) ) {
@@ -553,6 +553,7 @@ class Easy_Reservations_Public {
 				'key'     => '_ersrv_accomodation_limit',
 				'value'   => $accomodation,
 				'compare' => '>=',
+				'type'    => 'NUMERIC',
 			);
 		}
 
