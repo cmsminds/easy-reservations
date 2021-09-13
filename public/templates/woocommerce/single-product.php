@@ -333,7 +333,7 @@ $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platform
 							<div class="details text-left">
 								<form action="">
 									<div class="mb-2">
-										<input type="text" class="ersrv-item-search-location form-control ship-icon-field text-left rounded-lg" placeholder="<?php esc_html_e( 'Desired location', 'easy-reservations' ); ?>">
+										<input type="text" class="ersrv-item-search-location form-control text-left rounded-lg" placeholder="<?php esc_html_e( 'Desired location', 'easy-reservations' ); ?>">
 									</div>
 									<div class="mb-2">
 										<input type="number" class="ersrv-item-search-accomodation form-control ship-icon-field text-left rounded-lg" placeholder="<?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?>">

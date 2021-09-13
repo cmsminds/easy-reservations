@@ -82,7 +82,7 @@ $search_boat_type     = ( ! is_null( $search_boat_type ) ) ? $search_boat_type :
 									<div class="form-row">
 										<div class="col-12 col-md-6">
 											<div class="form-group">
-												<input type="number" value="<?php echo esc_html( $search_accomodation ); ?>" class="ersrv-search-parameter ersrv-item-search-accomodation form-control rounded-lg" placeholder="<?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?>">
+												<input type="number" value="<?php echo esc_html( $search_accomodation ); ?>" class="ersrv-search-parameter ersrv-item-search-accomodation form-control rounded-lg ship-icon-field" placeholder="<?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?>">
 											</div>
 										</div>
 										<div class="col-12 col-md-6">
