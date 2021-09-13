@@ -166,12 +166,11 @@ img {
     &:focus,
     &:hover {
         background-image: url("../../images/planner_active_blue.png") !important;
-        background-blend-mode: hard-light ;
     }
 }
 
 .ship-icon-field {
-    background-image: url("../../images/ship-gray.png") !important;
+    background-image: url("../../images/accomodation_gray.png") !important;
     background-position: 90% !important;
     background-size: 20px !important;
     background-repeat: no-repeat !important;
@@ -179,11 +178,21 @@ img {
     transition: 0.3s ease-in-out;
     &:focus,
     &:hover {
-        background-image: url("../../images/ship_blue.png") !important;
-        background-blend-mode: hard-light;
+        background-image: url("../../images/accomodation_blue.png") !important;
     }
 }
-
+.ersrv-item-search-location{
+    background-image: url("../../images/mapPin_gray.png") !important;
+    background-position: 90% !important;
+    background-size: 20px !important;
+    background-repeat: no-repeat !important;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    &:focus,
+    &:hover {
+        background-image: url("../../images/mapPin_blue.png") !important;
+    }
+}
 
 *:focus,
 .focus-none,

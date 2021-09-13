@@ -557,10 +557,6 @@ a.btn:hover,
 .ersrv-edit-reservation-template .ersrv-reservation-error:empty {
     display: none;
 }
-.ersrv-reservation-actions-container .actions .btn {
-    margin: 2px;
-    margin-left: 0px;
-}
 
 
 
