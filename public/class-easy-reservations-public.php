@@ -137,14 +137,23 @@ class Easy_Reservations_Public {
 			'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css',
 		);
 
-		// If it's only the search page.
-		if ( $is_search_page ) {
-			// Enqueue the slick slider style.
+		// Add the UI style only when the widget is active.
+		if ( false !== $this->is_calendar_widget_active ) {
+			// Enqueue the ui datepicker style if not already enqueued.
+			if ( ! wp_style_is( $this->plugin_name . '-jquery-ui-style', 'enqueued' ) ) {
+				wp_enqueue_style(
+					$this->plugin_name . '-jquery-ui-style',
+					ERSRV_PLUGIN_URL . 'public/css/ui/jquery-ui.min.css',
+					array(),
+					filemtime( ERSRV_PLUGIN_PATH . 'public/css/ui/jquery-ui.min.css' )
+				);
+			}
+
 			wp_enqueue_style(
-				$this->plugin_name . '-slick-slider-style',
-				ERSRV_PLUGIN_URL . 'public/css/slick/slick.min.css',
+				$this->plugin_name . '-calendar-widget-style',
+				ERSRV_PLUGIN_URL . 'public/css/widget/calendar/easy-reservations-calendar-widget.css',
 				array(),
-				filemtime( ERSRV_PLUGIN_PATH . 'public/css/slick/slick.min.css' )
+				filemtime( ERSRV_PLUGIN_PATH . 'public/css/widget/calendar/easy-reservations-calendar-widget.css' ),
 			);
 		}
 
@@ -201,26 +210,6 @@ class Easy_Reservations_Public {
 			);
 		}
 
-		// Add the UI style only when the widget is active.
-		if ( false !== $this->is_calendar_widget_active ) {
-			// Enqueue the ui datepicker style if not already enqueued.
-			if ( ! wp_style_is( $this->plugin_name . '-jquery-ui-style', 'enqueued' ) ) {
-				wp_enqueue_style(
-					$this->plugin_name . '-jquery-ui-style',
-					ERSRV_PLUGIN_URL . 'public/css/ui/jquery-ui.min.css',
-					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/css/ui/jquery-ui.min.css' )
-				);
-			}
-
-			wp_enqueue_style(
-				$this->plugin_name . '-calendar-widget-style',
-				ERSRV_PLUGIN_URL . 'public/css/widget/calendar/easy-reservations-calendar-widget.css',
-				array(),
-				filemtime( ERSRV_PLUGIN_PATH . 'public/css/widget/calendar/easy-reservations-calendar-widget.css' ),
-			);
-		}
-
 		// Check, if the extra css file is to be enqueued.
 		if ( $enqueue_extra_css ) {
 			// Enqueue the common public style.
@@ -233,18 +222,6 @@ class Easy_Reservations_Public {
 		}
 
 		/* ---------------------------------------SCRIPTS--------------------------------------- */
-
-		// If it's only the search page.
-		if ( $is_search_page ) {
-			// Enqueue the slick slider script.
-			wp_enqueue_script(
-				$this->plugin_name . '-slick-slider-script',
-				ERSRV_PLUGIN_URL . 'public/js/slick/slick.min.js',
-				array(),
-				filemtime( ERSRV_PLUGIN_PATH . 'public/js/slick/slick.min.js' ),
-				true
-			);
-		}
 
 		// If it's the single reservation page or the search page.
 		if ( $is_reservation_page || $is_search_page || $is_edit_reservation_page ) {
