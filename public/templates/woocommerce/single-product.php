@@ -89,9 +89,13 @@ $social_share_urls = array(
  * @since 1.0.0
  */
 $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platforms', $social_share_urls );
+
+// Banner image.
+$banner_image_id  = get_post_meta( $item_post->ID, 'ersrv_banner_image_id', true );
+$banner_image_url = ersrv_get_attachment_url_from_attachment_id( $banner_image_id );
 ?>
 <section class="wrapper single-reserve-page" id="wrapper" data-item="<?php echo esc_attr( $item_post->ID ); ?>">
-	<div class="banner text-center">
+	<div class="banner text-center" style="background-image: url( '<?php echo $banner_image_url; ?>' );">
 		<div class="container">
 			<div class="details mx-auto font-lato">
 				<div class="page-title mb-3">

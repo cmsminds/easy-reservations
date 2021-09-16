@@ -1643,7 +1643,7 @@ if ( ! function_exists( 'ersrv_get_attachment_url_from_attachment_id' ) ) {
 	 */
 	function ersrv_get_attachment_url_from_attachment_id( $image_id ) {
 
-		return ( empty( $image_id ) ) ? wc_placeholder_img_src() : wp_get_attachment_url( $image_id );
+		return ( empty( $image_id ) ) ? '' : wp_get_attachment_url( $image_id );
 	}
 }
 

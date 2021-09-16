@@ -1043,6 +1043,7 @@ class Easy_Reservations_Admin {
 		// If it's the product page.
 		if ( 'product' === get_post_type( $post_id ) ) {
 			$accomodation_adult_charge = (float) filter_input( INPUT_POST, 'accomodation_adult_charge', FILTER_SANITIZE_STRING );
+			$banner_image_id = filter_input( INPUT_POST, 'banner_image_id', FILTER_SANITIZE_NUMBER_INT );
 
 			// If accomodation adult charge is available.
 			if ( ! empty( $accomodation_adult_charge ) ) {
@@ -1053,6 +1054,15 @@ class Easy_Reservations_Admin {
 				delete_post_meta( $post_id, '_regular_price' );
 				delete_post_meta( $post_id, '_price' );
 			}
+		} elseif ( 'page' === get_post_type( $post_id ) ) {
+			$banner_image_id = filter_input( INPUT_POST, 'banner_image_id', FILTER_SANITIZE_NUMBER_INT );
+		}
+
+		// If we have the banner image.
+		if ( ! empty( $banner_image_id ) ) {
+			update_post_meta( $post_id, 'ersrv_banner_image_id', $banner_image_id );
+		} else {
+			delete_post_meta( $post_id, 'ersrv_banner_image_id' );
 		}
 	}
 
@@ -1121,6 +1131,16 @@ class Easy_Reservations_Admin {
 				}
 			}
 		}
+
+		// Add metabox for custom settings.
+		add_meta_box(
+			'ersrv-banner-image',
+			__( 'Easy Reservations: Custom Settings', 'easy-reservations' ),
+			array( $this, 'ersrv_posts_custom_fields_metabox' ),
+			array( 'page', 'product' ),
+			'normal',
+			'high'
+		);
 	}
 
 	/**
@@ -1271,6 +1291,13 @@ class Easy_Reservations_Admin {
 				);
 			}
 		}
+	}
+
+	/**
+	 * Metabox for managing custom fields, for example, banner image.
+	 */
+	public function ersrv_posts_custom_fields_metabox() {
+		require_once ERSRV_PLUGIN_PATH . 'admin/templates/metaboxes/custom-fields.php';
 	}
 
 	/**

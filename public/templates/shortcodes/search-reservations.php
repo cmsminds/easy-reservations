@@ -9,6 +9,8 @@
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 
+$post_id = get_the_ID();
+
 // Total reservations page.
 $total_reservation_posts_query = ersrv_get_posts( 'product', 1, -1 );
 $total_reservation_posts       = $total_reservation_posts_query->posts;
@@ -33,9 +35,11 @@ $search_checkout      = filter_input( INPUT_GET, 'checkout', FILTER_SANITIZE_STR
 $search_checkout      = ( ! is_null( $search_checkout ) ) ? $search_checkout : '';
 $search_boat_type     = (int) filter_input( INPUT_GET, 'boat_type', FILTER_SANITIZE_NUMBER_INT );
 $search_boat_type     = ( ! is_null( $search_boat_type ) ) ? $search_boat_type : 0;
+$banner_image_id      = get_post_meta( $post_id, 'ersrv_banner_image_id', true );
+$banner_image_url     = ersrv_get_attachment_url_from_attachment_id( $banner_image_id );
 ?>
 <section class="wrapper search-page" id="wrapper">
-	<div class="banner text-center">
+	<div class="banner text-center" style="background-image: url( '<?php echo $banner_image_url; ?>' );">
 		<div class="container">
 			<div class="details mx-auto font-lato">
 				<div class="page-title">
