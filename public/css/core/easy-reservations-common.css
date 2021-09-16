@@ -624,6 +624,8 @@ body:not(.theme-storefront) .wrapper.search-page .banner .form-wrapper .form-inn
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#000000",GradientType=1);
 } */
 
+.ersrv-reservation-template .featured-media,
+.ersrv-reservation-template .single-featured-image-header,
 .ersrv-reservation-template .post-thumbnail{
     display: none !important;
 }
