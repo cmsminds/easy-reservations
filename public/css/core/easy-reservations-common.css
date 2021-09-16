@@ -265,12 +265,16 @@ body:not(.theme-storefront) .wrapper.search-page .banner .form-wrapper .form-inn
         padding: 6px !important;
     }
 }
-
+/* Edit order page  */
 .edit-order-wrapper .section-title {
     font-size: 46px;
     text-align: center;
     margin-bottom: 44px;
     font-weight: 600;
+}
+.edit-order-wrapper .section-title h1,
+.edit-order-wrapper .sub-title p{
+    color: #fff !important;
 }
 
 .edit-order-wrapper .card .form-wrapper .form-control {
@@ -597,9 +601,14 @@ body:not(.theme-storefront) .wrapper.search-page .banner .form-wrapper .form-inn
     z-index: 10;
     padding-top: 40px;
 }
+.edit-order-wrapper.wrapper .banner .details{
+    max-width: 768px;
+    margin-bottom: 0px;
+}
 .edit-order-wrapper .banner{
     position: relative;
     min-height: 370px;
+    padding-bottom: 149px;
 }
 /* .edit-order-wrapper .banner::after{
     content: "";
@@ -614,3 +623,7 @@ body:not(.theme-storefront) .wrapper.search-page .banner .form-wrapper .form-inn
     background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(0,0,0,1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#000000",GradientType=1);
 } */
+
+.ersrv-reservation-template .post-thumbnail{
+    display: none !important;
+}

@@ -53,21 +53,33 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 }
 ?>
 <div class="wrapper edit-order-wrapper pb-5">
-	<div class="banner text-center" style="/* background-image: url( '' ); */"></div>
+	<div class="banner text-center">
+	<div class="container">
+			<div class="details mx-auto font-lato">
+				<div class="page-title">
+					<div class="section-title mb-0">
+						<h1 class="font-Poppins font-size-40 font-weight-semibold color-white"><?php echo wp_kses_post($page_title); ?></h1>
+					</div>
+				</div>
+				<div class="sub-title">
+				<?php
+					if ( $valid_order ) {
+						/**
+						 * This hook executes on edit reservation page.
+						 *
+						 * This filter helps adding some content after the main title.
+						 *
+						 * @param int $order_id WooCommerce order ID.
+						 */
+						do_action( 'ersrv_edit_reservation_after_main_title', $order_id );
+					}
+					?>
+				</div>
+				
+			</div>
+		</div>
+	</div>
 	<div class="edit-inner-page">
-	<div class="section-title"><?php echo wp_kses_post($page_title); ?></div>
-	<?php
-	if ( $valid_order ) {
-		/**
-		 * This hook executes on edit reservation page.
-		 *
-		 * This filter helps adding some content after the main title.
-		 *
-		 * @param int $order_id WooCommerce order ID.
-		 */
-		do_action( 'ersrv_edit_reservation_after_main_title', $order_id );
-	}
-	?>
 	<div class="contents">
 		<div class="container">
 			<?php
