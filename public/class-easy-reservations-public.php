@@ -137,18 +137,51 @@ class Easy_Reservations_Public {
 			'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css',
 		);
 
+		// Add the UI style.
+		if (
+			false !== $this->is_calendar_widget_active ||
+			$is_reservation_page ||
+			$is_search_page ||
+			$is_edit_reservation_page
+		) {
+			wp_enqueue_style(
+				$this->plugin_name . '-jquery-ui-style',
+				ERSRV_PLUGIN_URL . 'public/css/ui/jquery-ui.min.css',
+				array(),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/css/ui/jquery-ui.min.css' )
+			);
+		}
+
+		// Add the bootstrap css.
+		if (
+			$is_reservation_page ||
+			$is_search_page ||
+			$is_edit_reservation_page
+		) {
+			wp_enqueue_style(
+				$this->plugin_name . '-bootstrap-style',
+				ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap.min.css',
+				array(),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap.min.css' )
+			);
+		}
+
+		// Add the bootstrap select css.
+		if (
+			$is_reservation_page ||
+			$is_search_page ||
+			$is_edit_reservation_page
+		) {
+			wp_enqueue_style(
+				$this->plugin_name . '-bootstrap-select-style',
+				ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap-select.min.css',
+				array(),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap-select.min.css' )
+			);
+		}
+
 		// Add the UI style only when the widget is active.
 		if ( false !== $this->is_calendar_widget_active ) {
-			// Enqueue the ui datepicker style if not already enqueued.
-			if ( ! wp_style_is( $this->plugin_name . '-jquery-ui-style', 'enqueued' ) ) {
-				wp_enqueue_style(
-					$this->plugin_name . '-jquery-ui-style',
-					ERSRV_PLUGIN_URL . 'public/css/ui/jquery-ui.min.css',
-					array(),
-					filemtime( ERSRV_PLUGIN_PATH . 'public/css/ui/jquery-ui.min.css' )
-				);
-			}
-
 			wp_enqueue_style(
 				$this->plugin_name . '-calendar-widget-style',
 				ERSRV_PLUGIN_URL . 'public/css/widget/calendar/easy-reservations-calendar-widget.css',
@@ -157,33 +190,12 @@ class Easy_Reservations_Public {
 			);
 		}
 
-		// If it's the single reservation page or the search page.
-		if ( $is_reservation_page || $is_search_page || $is_edit_reservation_page ) {
-			// Enqueue the bootstrap style.
-			wp_enqueue_style(
-				$this->plugin_name . '-bootstrap-style',
-				ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap.min.css',
-				array(),
-				filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap.min.css' )
-			);
-
-			// Enqueue the ui style.
-			wp_enqueue_style(
-				$this->plugin_name . '-jquery-ui-style',
-				ERSRV_PLUGIN_URL . 'public/css/ui/jquery-ui.min.css',
-				array(),
-				filemtime( ERSRV_PLUGIN_PATH . 'public/css/ui/jquery-ui.min.css' )
-			);
-
-			// Enqueue the bootstrap select style.
-			wp_enqueue_style(
-				$this->plugin_name . '-bootstrap-select-style',
-				ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap-select.min.css',
-				array(),
-				filemtime( ERSRV_PLUGIN_PATH . 'public/css/bootstrap/bootstrap-select.min.css' )
-			);
-
-			// Enqueue the public style only when the style url and path are available.
+		// Add the plugin core css.
+		if (
+			$is_reservation_page ||
+			$is_search_page ||
+			$is_edit_reservation_page
+		) {
 			if ( ! empty( $active_style_url ) && ! empty( $active_style_path ) ) {
 				wp_enqueue_style(
 					$this->plugin_name,
