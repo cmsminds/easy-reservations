@@ -2017,12 +2017,17 @@ class Easy_Reservations_Public {
 	 */
 	public function ersrv_body_class_callback( $classes ) {
 		global $post;
-
 		$is_edit_reservation_page = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_edit_reservation' ) );
+		$is_search_page           = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
 
 		// If it's the edit reservation page.
 		if ( $is_edit_reservation_page ) {
-			return array_merge( $classes, array( 'ersrv-edit-reservation-template' ) );
+			return array_merge( $classes, array( 'ersrv-edit-reservation-template', 'ersrv-reservation-template' ) );
+		}
+
+		// If it's the search reservation page.
+		if ( $is_search_page ) {
+			return array_merge( $classes, array( 'ersrv-search-reservations-template', 'ersrv-reservation-template' ) );
 		}
 
 		return $classes;
