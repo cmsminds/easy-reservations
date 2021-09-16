@@ -214,7 +214,7 @@ class Easy_Reservations_Public {
 			}
 
 			wp_enqueue_style(
-				$this->plugin_name,
+				$this->plugin_name . '-calendar-widget-style',
 				ERSRV_PLUGIN_URL . 'public/css/widget/calendar/easy-reservations-calendar-widget.css',
 				array(),
 				filemtime( ERSRV_PLUGIN_PATH . 'public/css/widget/calendar/easy-reservations-calendar-widget.css' ),

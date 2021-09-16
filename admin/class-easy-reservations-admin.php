@@ -26,7 +26,7 @@ class Easy_Reservations_Admin {
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
+	 * @var      string $plugin_name The ID of this plugin.
 	 */
 	private $plugin_name;
 
@@ -35,7 +35,7 @@ class Easy_Reservations_Admin {
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
+	 * @var      string $version The current version of this plugin.
 	 */
 	private $version;
 
@@ -51,9 +51,10 @@ class Easy_Reservations_Admin {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since 1.0.0
 	 * @param string $plugin_name The name of this plugin.
-	 * @param string $version The version of this plugin.
+	 * @param string $version     The version of this plugin.
+	 *
+	 * @since 1.0.0
 	 */
 	public function __construct( $plugin_name, $version ) {
 		$this->plugin_name = $plugin_name;
@@ -159,6 +160,7 @@ class Easy_Reservations_Admin {
 	 * Register a new product type in WooCommerce Products.
 	 *
 	 * @param array $product_types Holds the list of registered product types.
+	 *
 	 * @return array
 	 * @since 1.0.0
 	 */
@@ -180,6 +182,7 @@ class Easy_Reservations_Admin {
 	 * Register product setting tabs in WooCommerce Products.
 	 *
 	 * @param array $tabs Holds the list of registered product settings tabs.
+	 *
 	 * @return array
 	 * @since 1.0.0
 	 */
@@ -193,6 +196,7 @@ class Easy_Reservations_Admin {
 		 * This filter will help in modifying the product type tab title - easy reservations.
 		 *
 		 * @param string $reservation_details_tab_title Holds the product type tab title.
+		 *
 		 * @return string
 		 */
 		$reservation_details_tab_title = apply_filters( 'ersrv_product_type_tab_label', $reservation_details_tab_title );
@@ -220,6 +224,7 @@ class Easy_Reservations_Admin {
 		 * This filter will help in modifying the product type tab title - blockout dates.
 		 *
 		 * @param string $reservation_blockout_dates_tab_title Holds the product type tab title.
+		 *
 		 * @return string
 		 */
 		$reservation_blockout_dates_tab_title = apply_filters( 'ersrv_product_type_tab_label', $reservation_blockout_dates_tab_title );
@@ -294,6 +299,7 @@ class Easy_Reservations_Admin {
 	 * Update product custom meta details.
 	 *
 	 * @param int $post_id Holds the product ID.
+	 *
 	 * @since 1.0.0
 	 */
 	public function ersrv_woocommerce_process_product_meta_callback( $post_id ) {
@@ -449,7 +455,7 @@ class Easy_Reservations_Admin {
 		$from_date = filter_input( INPUT_POST, 'from_date', FILTER_SANITIZE_STRING );
 		$to_date   = filter_input( INPUT_POST, 'to_date', FILTER_SANITIZE_STRING );
 
-		$wc_orders_query = ersrv_get_posts( 'shop_order', 1, -1 );
+		$wc_orders_query = ersrv_get_posts( 'shop_order', 1, - 1 );
 		$wc_order_ids    = $wc_orders_query->posts;
 
 		// Return back, if there are no orders available.
@@ -463,6 +469,7 @@ class Easy_Reservations_Admin {
 		 * This filter helps in managing the array of order ids that are considered for exporting them into various firmats.
 		 *
 		 * @param array $wc_order_ids Array of WooCommerce order IDs.
+		 *
 		 * @return array
 		 * @since 1.0.0
 		 */
@@ -478,6 +485,7 @@ class Easy_Reservations_Admin {
 	 * Download the reservation orders data.
 	 *
 	 * @param array $wc_orders_data Reservation orders export data.
+	 *
 	 * @since 1.0.0
 	 */
 	public function ersrv_download_reservation_orders_csv( $wc_orders_data ) {
@@ -503,6 +511,7 @@ class Easy_Reservations_Admin {
 	 * Admin settings for managing reservations.
 	 *
 	 * @param array $settings Array of WC settings.
+	 *
 	 * @return array
 	 * @since 1.0.0
 	 */
@@ -516,7 +525,8 @@ class Easy_Reservations_Admin {
 	 * Add custom plugin row meta actions.
 	 *
 	 * @param array  $links Holds the links array.
-	 * @param string $file Holds this plugin file.
+	 * @param string $file  Holds this plugin file.
+	 *
 	 * @return array
 	 * @since 1.0.0
 	 */
@@ -638,8 +648,6 @@ class Easy_Reservations_Admin {
 	 * @since 1.0.0
 	 */
 	public function ersrv_admin_menu_callback() {
-		global $reservation_cancellation_requests_menu_page_data;
-
 		// Submenu to add reservation from admin panel.
 		add_submenu_page(
 			'woocommerce',
@@ -651,19 +659,55 @@ class Easy_Reservations_Admin {
 			15
 		);
 
-		// Submenu to list cancellation requests in admin panel.
-		$reservation_cancellation_requests_menu_page_data = add_submenu_page(
+		$reservation_cancellation_requests_hook = add_submenu_page(
 			'woocommerce',
 			__( 'Reservation Cancellation Requests', 'easy-reservations' ),
 			__( 'Reservation Cancellation Requests', 'easy-reservations' ),
 			'manage_options',
-			'reservation-calcellation-requests',
-			array( $this, 'ersrv_reservation_cancellation_requests' ),
-			15
+			'reservation-cancellation-requests',
+			array( $this, 'ersrv_reservation_cancellation_requests' )
 		);
+		include( plugin_dir_path( __FILE__ ) . 'templates/pages/class-easy-reservations-cancellation-requests.php' );
+		add_action( "load-$reservation_cancellation_requests_hook", array( $this, 'ersrv_load_reservation_cancellation_requests_menu_page_screen_options_callback' ) );
+	}
 
-		// Load the screen options.
-		add_action( "load-{$reservation_cancellation_requests_menu_page_data}", array( $this, 'ersrv_load_reservation_cancellation_requests_menu_page_screen_options_callback' ) );
+	public function ersrv_load_reservation_cancellation_requests_menu_page_screen_options_callback() {
+		global $reservation_cancellation_requests_menu_page_data;
+		$option = 'per_page';
+		$args   = array(
+			'label'   => __( 'Requests Per Page', 'easy-reservations' ),
+			'default' => 10,
+			'option'  => 'ersrv_cancellation_requests_per_page',
+		);
+		add_screen_option( $option, $args );
+		$reservation_cancellation_requests_menu_page_data = new Easy_Reservations_Cancellation_Requests();
+	}
+
+	/**
+	 * Reservation cancellation requests template from at panel.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_reservation_cancellation_requests() {
+		global $reservation_cancellation_requests_menu_page_data;
+		$reservation_cancellation_requests_menu_page_data->prepare_items();
+		?>
+		<div class="wrap">
+			<h2><?php esc_html_e( 'Reservation Cancellation Requests', 'easy-reservations' ); ?></h2>
+			<p><?php esc_html_e( 'Following is the list of all the reservation cancellation requests.', 'easy-reservations' ); ?></p>
+			<div id="nds-wp-list-table-demo">
+				<div id="nds-post-body">
+					<form id="nds-user-list-form" method="get">
+						<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+						<?php
+						$reservation_cancellation_requests_menu_page_data->search_box( __( 'Search Requests', 'easy-reservations' ), 'search-reservation-cancellation-requests' );
+						$reservation_cancellation_requests_menu_page_data->display();
+						?>
+					</form>
+				</div>
+			</div>
+		</div>
+		<?php
 	}
 
 	/**
@@ -676,55 +720,11 @@ class Easy_Reservations_Admin {
 	}
 
 	/**
-	 * Reservation cancellation requests template from at panel.
-	 *
-	 * @since 1.0.0
-	 */
-	public function ersrv_reservation_cancellation_requests() {
-		?>
-		<div class="wrap">
-			<h2><?php esc_html_e( 'Reservation Cancellation Requests', 'easy-reservations' ); ?></h2>
-			<p><?php esc_html_e( 'Following is the list of all the reservation cancellation requests.', 'easy-reservations' ); ?></p>
-			<form id="ersrv-reservation-cancellation-requests-form" method="GET">
-				<?php
-				require_once ERSRV_PLUGIN_PATH . 'admin/templates/pages/class-easy-reservations-cancellation-requests.php';
-				$requests_obj = new Easy_Reservations_Cancellation_Requests();
-				$requests_obj->prepare_items();
-				$requests_obj->search_box( __( 'Search Requests', 'easy-reservations' ), 'search' );
-				$requests_obj->display();
-				?>
-			</form>
-		</div>
-		<?php
-	}
-
-	/**
-	 * Screen options template.
-	 *
-	 * @since 1.0.0
-	 */
-	public function ersrv_load_reservation_cancellation_requests_menu_page_screen_options_callback() {
-		global $reservation_cancellation_requests_menu_page_data;
-		$per_page_option = 'per_page';
-		$args            = array(
-			'label'   => __( 'Requests Per Page', 'easy-reservations' ),
-			'default' => 10,
-			'option'  => 'ersrv_cancellation_requests_per_page',
-		);
-
-		add_screen_option( $per_page_option, $args );
-
-		// Initiate the class.
-		require_once ERSRV_PLUGIN_PATH . 'admin/templates/pages/class-easy-reservations-cancellation-requests.php';
-		new Easy_Reservations_Cancellation_Requests();
-	}
-
-	/**
 	 * Set the screen options values.
 	 *
 	 * @param boolean $status The value to save instead of the option value.
 	 * @param string  $option Screen option slug.
-	 * @param string  $value Screen option new value.
+	 * @param string  $value  Screen option new value.
 	 */
 	public function ersrv_set_screen_option_callback( $status, $option, $value ) {
 
@@ -995,6 +995,7 @@ class Easy_Reservations_Admin {
 	 * Get the states from country code.
 	 *
 	 * @param string $country_code Holds the country code.
+	 *
 	 * @return array
 	 * @since 1.0.0
 	 */
@@ -1035,6 +1036,7 @@ class Easy_Reservations_Admin {
 	 * Update reservation item meta details.
 	 *
 	 * @param int $post_id WordPress Post ID.
+	 *
 	 * @since 1.0.0
 	 */
 	public function ersrv_save_post_callback( $post_id ) {
@@ -1133,8 +1135,12 @@ class Easy_Reservations_Admin {
 		?>
 		<div class="ersrv-calendar-invites-container">
 			<p><?php esc_html_e( 'Click on the buttons below to email the calendar invites to the customer\'s billing email address.', 'easy-reservations' ); ?></p>
-			<p><button type="button" class="button add-to-ical"><?php esc_html_e( 'Email iCalendar Invite', 'easy-reservations' ); ?></button></p>
-			<p><button type="button" class="button add-to-gcal"><?php esc_html_e( 'Email Google Calendar Invite', 'easy-reservations' ); ?></button></p>
+			<p>
+				<button type="button" class="button add-to-ical"><?php esc_html_e( 'Email iCalendar Invite', 'easy-reservations' ); ?></button>
+			</p>
+			<p>
+				<button type="button" class="button add-to-gcal"><?php esc_html_e( 'Email Google Calendar Invite', 'easy-reservations' ); ?></button>
+			</p>
 		</div>
 		<?php
 
@@ -1175,8 +1181,10 @@ class Easy_Reservations_Admin {
 			<div class="ersrv-driving-license-container edit-order">
 				<p><?php esc_html_e( 'Click on the buttons below to download & view customer\'s driving license.', 'easy-reservations' ); ?></p>
 				<p>
-					<a href="<?php echo esc_url( $license_url ); ?>" class="button download" download><?php esc_html_e( 'Download', 'easy-reservations' ); ?><span class="dashicons dashicons-download"></span></a>
-					<a href="<?php echo esc_url( $license_url ); ?>" rel="noopener noreferrer" class="button view" target="_blank"><?php esc_html_e( 'View', 'easy-reservations' ); ?><span class="dashicons dashicons-visibility"></span></a>
+					<a href="<?php echo esc_url( $license_url ); ?>" class="button download" download><?php esc_html_e( 'Download', 'easy-reservations' ); ?><span
+								class="dashicons dashicons-download"></span></a>
+					<a href="<?php echo esc_url( $license_url ); ?>" rel="noopener noreferrer" class="button view"
+					   target="_blank"><?php esc_html_e( 'View', 'easy-reservations' ); ?><span class="dashicons dashicons-visibility"></span></a>
 				</p>
 			</div>
 			<?php
@@ -1189,7 +1197,8 @@ class Easy_Reservations_Admin {
 				<p><?php esc_html_e( 'There is no driving license uploaded. Please click the button below to upload one such.', 'easy-reservations' ); ?></p>
 				<p>
 					<input type="file" accept="<?php echo esc_attr( $allowed_extensions_string ); ?>" name="reservation-driving-license" id="reservation-driving-license" />
-					<button type="button" class="ersrv-upload-license button upload"><?php esc_html_e( 'Upload', 'easy-reservations' ); ?><span class="dashicons dashicons-upload"></span></button>
+					<button type="button" class="ersrv-upload-license button upload"><?php esc_html_e( 'Upload', 'easy-reservations' ); ?><span
+								class="dashicons dashicons-upload"></span></button>
 				</p>
 			</div>
 			<?php
@@ -1199,23 +1208,23 @@ class Easy_Reservations_Admin {
 		echo wp_kses(
 			ob_get_clean(),
 			array(
-				'div'  => array(
+				'div'    => array(
 					'class' => array(),
 				),
-				'span' => array(
+				'span'   => array(
 					'class' => array(),
 				),
-				'p'    => array(),
-				'a'    => array(
+				'p'      => array(),
+				'a'      => array(
 					'href'     => array(),
 					'class'    => array(),
 					'download' => array(),
 				),
-				'button'    => array(
-					'type'     => array(),
-					'class'    => array(),
+				'button' => array(
+					'type'  => array(),
+					'class' => array(),
 				),
-				'input' => array(
+				'input'  => array(
 					'type'   => array(),
 					'name'   => array(),
 					'id'     => array(),
@@ -1228,8 +1237,9 @@ class Easy_Reservations_Admin {
 	/**
 	 * Metabox to show the cost dofference after any reservation is updated by the customer.
 	 *
-	 * @param WP_Post $post WordPress post object.
+	 * @param WP_Post $post         WordPress post object.
 	 * @param array   $metabox_data Metabox arguments.
+	 *
 	 * @since 1.0.0
 	 */
 	public function ersrv_updated_reservation_order_cost_difference( $post, $metabox_data ) {
@@ -1239,7 +1249,7 @@ class Easy_Reservations_Admin {
 		if ( ! empty( $cost_difference ) ) {
 			if ( 'cost_difference_customer_payable' === $cost_difference_key ) {
 				echo wp_kses(
-					/* translators: 1: %s: strong tag open, 2: %s: strong tag closed, 3: %s: cost difference */
+				/* translators: 1: %s: strong tag open, 2: %s: strong tag closed, 3: %s: cost difference */
 					sprintf( __( 'The customer needs to pay %1$s%3$s%2$s before onboarding.', 'easy-reservations' ), '<strong>', '</strong>', wc_price( $cost_difference ) ),
 					array(
 						'strong' => array(),
@@ -1250,7 +1260,7 @@ class Easy_Reservations_Admin {
 				);
 			} elseif ( 'cost_difference_admin_payable' === $cost_difference_key ) {
 				echo wp_kses(
-					/* translators: 1: %s: strong tag open, 2: %s: strong tag closed, 3: %s: cost difference */
+				/* translators: 1: %s: strong tag open, 2: %s: strong tag closed, 3: %s: cost difference */
 					sprintf( __( 'The admin shall refund %1$s%3$s%2$s after the reservation is complete.', 'easy-reservations' ), '<strong>', '</strong>', wc_price( $cost_difference ) ),
 					array(
 						'strong' => array(),
@@ -1266,8 +1276,9 @@ class Easy_Reservations_Admin {
 	/**
 	 * Hook the receipt option in order preview modal box.
 	 *
-	 * @param array  $actions Holds the actions array.
+	 * @param array  $actions  Holds the actions array.
 	 * @param object $wc_order Holds the WooCommerce order object.
+	 *
 	 * @return array
 	 * @since 1.0.0
 	 */
@@ -1306,8 +1317,9 @@ class Easy_Reservations_Admin {
 	/**
 	 * Hook the receipt option in order listing page in admin.
 	 *
-	 * @param array  $actions Holds the actions array.
+	 * @param array  $actions  Holds the actions array.
 	 * @param object $wc_order Holds the WooCommerce order object.
+	 *
 	 * @return array
 	 * @since 1.0.0
 	 */
@@ -1357,6 +1369,7 @@ class Easy_Reservations_Admin {
 	 * Generate the button on order edit page.
 	 *
 	 * @param int $order_id Holds the order ID.
+	 *
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -1384,7 +1397,8 @@ class Easy_Reservations_Admin {
 		ob_start();
 		?>
 		<li class="wide ersrv-edit-order-actions">
-			<a class="button" href="<?php echo esc_url( ersrv_download_reservation_receipt_url( $order_id ) ); ?>"><?php echo esc_html( ersrv_get_plugin_settings( 'ersrv_easy_reservations_receipt_button_text' ) ); ?></a>
+			<a class="button"
+			   href="<?php echo esc_url( ersrv_download_reservation_receipt_url( $order_id ) ); ?>"><?php echo esc_html( ersrv_get_plugin_settings( 'ersrv_easy_reservations_receipt_button_text' ) ); ?></a>
 		</li>
 		<?php
 		echo wp_kses_post( ob_get_clean() );
@@ -1394,6 +1408,7 @@ class Easy_Reservations_Admin {
 	 * Actions to be performed when order is marked as completed.
 	 *
 	 * @param int $order_id Holds the order ID.
+	 *
 	 * @since 1.0.0
 	 */
 	public function ersrv_woocommerce_order_status_completed_callback( $order_id ) {
@@ -1404,6 +1419,7 @@ class Easy_Reservations_Admin {
 	 * Actions to be performed when order is marked as prcessing.
 	 *
 	 * @param int $order_id Holds the order ID.
+	 *
 	 * @since 1.0.0
 	 */
 	public function ersrv_woocommerce_order_status_processing_callback( $order_id ) {
@@ -1414,6 +1430,7 @@ class Easy_Reservations_Admin {
 	 * Actions to be performed when order is marked as refunded.
 	 *
 	 * @param int $order_id Holds the order ID.
+	 *
 	 * @since 1.0.0
 	 */
 	public function ersrv_woocommerce_order_status_refunded_callback( $order_id ) {
@@ -1424,6 +1441,7 @@ class Easy_Reservations_Admin {
 	 * Actions to be performed when order is marked as on-hold.
 	 *
 	 * @param int $order_id Holds the order ID.
+	 *
 	 * @since 1.0.0
 	 */
 	public function ersrv_woocommerce_order_status_on_hold_callback( $order_id ) {
@@ -1434,6 +1452,7 @@ class Easy_Reservations_Admin {
 	 * Actions to be performed when order is marked as pending payment.
 	 *
 	 * @param int $order_id Holds the order ID.
+	 *
 	 * @since 1.0.0
 	 */
 	public function ersrv_woocommerce_order_status_pending_callback( $order_id ) {
@@ -1444,6 +1463,7 @@ class Easy_Reservations_Admin {
 	 * Actions to be performed when order is marked as cancelled.
 	 *
 	 * @param int $order_id Holds the order ID.
+	 *
 	 * @since 1.0.0
 	 */
 	public function ersrv_woocommerce_order_status_cancelled_callback( $order_id ) {
@@ -1454,7 +1474,8 @@ class Easy_Reservations_Admin {
 	 * Display post states for the pages generated by this plugin.
 	 *
 	 * @param array   $post_states Post states array.
-	 * @param WP_Post $post Post object.
+	 * @param WP_Post $post        Post object.
+	 *
 	 * @return array
 	 * @since 1.0.0
 	 */
@@ -1474,13 +1495,14 @@ class Easy_Reservations_Admin {
 	 * Update the blocked dates format for all the reservation items when the option is updated.
 	 *
 	 * @param array $option Holds the WooCommerce setting data.
+	 *
 	 * @since 1.0.0
 	 */
 	public function ersrv_woocommerce_update_option_callback( $option ) {
 		// Check for the datepicker date format option ID.
 		if ( ! empty( $option['id'] ) && 'ersrv_datepicker_date_format' === $option['id'] ) {
 			// Change the date format of the reserved dates of all the reservation items.
-			$reservation_items_query = ersrv_get_posts( 'product', 1, -1 );
+			$reservation_items_query = ersrv_get_posts( 'product', 1, - 1 );
 			$reservation_items       = $reservation_items_query->posts;
 
 			// Return, if there are no reservation items.
@@ -1613,6 +1635,7 @@ class Easy_Reservations_Admin {
 		 * An email is sent to the customer at this action.
 		 *
 		 * @param int $line_item_id WooCommerce order line item id.
+		 *
 		 * @since 1.0.0
 		 */
 		do_action( 'ersrv_after_reservation_cancellation_request_deleted', $line_item_id );
@@ -1654,6 +1677,7 @@ class Easy_Reservations_Admin {
 		 * An email is sent to the customer at this action.
 		 *
 		 * @param int $line_item_id WooCommerce order line item id.
+		 *
 		 * @since 1.0.0
 		 */
 		do_action( 'ersrv_after_reservation_cancellation_request_declined', $line_item_id );
@@ -1695,6 +1719,7 @@ class Easy_Reservations_Admin {
 		 * An email is sent to the customer at this action.
 		 *
 		 * @param int $line_item_id WooCommerce order line item id.
+		 *
 		 * @since 1.0.0
 		 */
 		do_action( 'ersrv_after_reservation_cancellation_request_approved', $line_item_id );
@@ -1738,7 +1763,7 @@ class Easy_Reservations_Admin {
 			'post_mime_type' => $wp_filetype['type'],
 			'post_title'     => sanitize_file_name( $filename ),
 			'post_content'   => '',
-			'post_status'    => 'inherit'
+			'post_status'    => 'inherit',
 		);
 		$attach_id   = wp_insert_attachment( $attachment, $file_path );
 
@@ -1748,8 +1773,8 @@ class Easy_Reservations_Admin {
 
 		// Prepare the response.
 		$response = array(
-			'code'              => 'driving-license-uploaded',
-			'toast_message'     => __( 'Driving license is uploaded successfully. Reloading...', 'easy-reservations' ),
+			'code'          => 'driving-license-uploaded',
+			'toast_message' => __( 'Driving license is uploaded successfully. Reloading...', 'easy-reservations' ),
 		);
 		wp_send_json_success( $response );
 		wp_die();

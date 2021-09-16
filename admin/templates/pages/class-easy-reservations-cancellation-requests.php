@@ -2,8 +2,8 @@
 /**
  * This file is used for rendering the saved cancellation requests for reservations.
  *
- * @since   1.0.0
- * @package Easy_Reservations
+ * @since      1.0.0
+ * @package    Easy_Reservations
  * @subpackage Easy_Reservations/admin/templates/pages
  */
 
@@ -21,6 +21,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
  * Class that will list all the cancellation requests for the reservations.
  */
 class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
+
 	/**
 	 * Set up a constructor that references the parent constructor.
 	 * We use the parent reference to set some default configs.
@@ -28,91 +29,32 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	public function __construct() {
 		global $status, $page;
 
-		// Set parent defaults.
-		parent::__construct(
-			array(
-				'singular' => 'reservation_cancellation_request',
-				'plural'   => 'reservation_cancellation_requests',
-				'ajax'     => true,
-			)
-		);
+		parent::__construct( array(
+			'singular' => __( 'reservation-cancellation record', 'easy-reservations' ),
+			'plural'   => __( 'reservation-cancellation records', 'easy-reservations' ),
+			'ajax'     => false,
+		) );
+
+		add_action( 'admin_head', array( $this, 'ersrv_admin_header_callback' ) );
 	}
 
 	/**
-	 * Prepare the items for the table to process
-	 *
-	 * @return void
+	 * Check for the current page in admin header.
 	 */
-	public function prepare_items() {
-		$user_id                = get_current_user_id();
-		$current_screen         = get_current_screen();
-		$per_page_screen_option = $current_screen->get_option( 'per_page', 'option' );
-		$columns                = $this->get_columns();
-		$hidden                 = $this->get_hidden_columns();
-		$sortable               = $this->get_sortable_columns();
-		$data                   = $this->table_data();
-		$per_page               = get_user_meta( $user_id, $per_page_screen_option, true );
-		$per_page               = ( ! empty( $per_page ) ) ? $per_page : 10;
-		$current_page           = $this->get_pagenum();
-		$total_items            = ( ! empty( $data ) ) ? count( $data ) : 0;
+	public function ersrv_admin_header_callback() {
+		$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
 
-		$this->set_pagination_args(
-			array(
-				'total_items' => $total_items,
-				'per_page'    => $per_page,
-			)
-		);
-
-		// Slice the data array for pagination.
-		if ( ! empty( $data ) ) {
-			$data = array_slice( $data, ( ( $current_page - 1 ) * $per_page ), $per_page );
+		// Return, if it's not the cancellation requests page.
+		if ( is_null( $page ) || 'reservation-cancellation-requests' !== $page ) {
+			return;
 		}
-
-		$this->_column_headers = array( $columns, $hidden, $sortable );
-		$this->process_bulk_action(); // Process the bulk action.
-		$this->items = $data;
 	}
 
 	/**
-	 * Override the parent columns method. Defines the columns to use in your listing table
-	 *
-	 * @return array
+	 * Text to be displayed when no items are found.
 	 */
-	public function get_columns() {
-		$columns = array(
-			'cb'                  => '<input type="checkbox" />',
-			'item'                => __( 'Item', 'easy-reservations' ),
-			'date_time'           => __( 'DateTime', 'easy-reservations' ),
-			'item_subtotal'       => __( 'Item Subtotal', 'easy-reservations' ),
-			'order_id'            => __( 'Order', 'easy-reservations' ),
-			'order_status'        => __( 'Order Status', 'easy-reservations' ),
-			'cancellation_status' => __( 'Cancellation Status', 'easy-reservations' ),
-		);
-
-		return $columns;
-	}
-
-	/**
-	 * Return the sortable columns.
-	 *
-	 * @return array
-	 */
-	public function get_sortable_columns() {
-		$sortable_columns = array(
-			'date_time' => array( 'date_time', false ),
-		);
-
-		return $sortable_columns;
-	}
-
-	/**
-	 * Define which columns are hidden
-	 *
-	 * @return array
-	 */
-	public function get_hidden_columns() {
-
-		return array();
+	public function no_items() {
+		esc_html_e( 'No cancellation requests found.', 'easy-reservations' );
 	}
 
 	/**
@@ -122,9 +64,10 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	 */
 	private function table_data() {
 		global $wpdb;
+		$data                        = array();
 		$wc_order_items_meta_table   = "{$wpdb->prefix}woocommerce_order_itemmeta";
 		$cancellation_requests_query = "SELECT `order_item_id` FROM `{$wc_order_items_meta_table}` WHERE `meta_key` = 'ersrv_cancellation_request'";
-		$cancellation_requests       = $wpdb->get_results( $cancellation_requests_query ); 
+		$cancellation_requests       = $wpdb->get_results( $cancellation_requests_query );
 
 		// Return blank data, if there is no cancellation request.
 		if ( empty( $cancellation_requests ) || ! is_array( $cancellation_requests ) ) {
@@ -136,6 +79,9 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 			$line_item_id = $cancellation_request_item_id->order_item_id;
 			$order_id     = wc_get_order_id_by_order_item_id( $line_item_id );
 			$wc_order     = wc_get_order( $order_id );
+
+			// Checkbox column.
+			$temp['cb'] = '<input type="checkbox" />';
 
 			// Get the date time of cancellation request.
 			$cancellation_request_datetime = wc_get_order_item_meta( $line_item_id, 'ersrv_cancellation_request_time', true );
@@ -176,29 +122,9 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	}
 
 	/**
-	 * Message to be displayed when there are no items
-	 *
-	 * @since 3.1.0
-	 */
-	public function no_items() {
-		$no_items_message = __( 'There are no cancellation requests yet!', 'easy-reservations' );
-
-		/**
-		 * This filter runs on the admin listing page of cancellation requests.
-		 *
-		 * This filter helps modifying the message that is displayed when there are no cancellation requests.
-		 *
-		 * @param string $no_items_message No items available message.
-		 * @return string
-		 * @since 1.0.0
-		 */
-		echo esc_html( apply_filters( 'ersrv_no_cancellation_requests_found_message', $no_items_message ) );
-	}
-
-	/**
 	 * Define what data to show on each column of the table
 	 *
-	 * @param array  $item Data.
+	 * @param array  $item        Data.
 	 * @param string $column_name - Current column name.
 	 *
 	 * @return mixed
@@ -215,6 +141,127 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 
 			default:
 				return '--';
+		}
+	}
+
+	/**
+	 * Return the sortable columns.
+	 *
+	 * @return array
+	 */
+	public function get_sortable_columns() {
+		$sortable_columns = array(
+			'date_time' => array( 'date_time', false ),
+		);
+
+		return $sortable_columns;
+	}
+
+	/**
+	 * Override the parent columns method. Defines the columns to use in your listing table
+	 *
+	 * @return array
+	 */
+	public function get_columns() {
+		$columns = array(
+			'cb'                  => '<input type="checkbox" />',
+			'item'                => __( 'Item', 'easy-reservations' ),
+			'date_time'           => __( 'DateTime', 'easy-reservations' ),
+			'item_subtotal'       => __( 'Item Subtotal', 'easy-reservations' ),
+			'order_id'            => __( 'Order', 'easy-reservations' ),
+			'order_status'        => __( 'Order Status', 'easy-reservations' ),
+			'cancellation_status' => __( 'Cancellation Status', 'easy-reservations' ),
+		);
+
+		return $columns;
+	}
+
+	/**
+	 * The bulk actions array.
+	 *
+	 * @return array
+	 */
+	public function get_bulk_actions() {
+		return array();
+		$actions = array(
+			'bulk_approve_requests' => __( 'Approve', 'easy-reservations' ),
+			'bulk_decline_requests' => __( 'Decline', 'easy-reservations' ),
+			'bulk_delete_requests'  => __( 'Delete', 'easy-reservations' ),
+		);
+
+		return $actions;
+	}
+
+
+	/**
+	 * Prepare the items for the table to process
+	 *
+	 * @return void
+	 */
+	public function prepare_items() {
+		// check if a search was performed.
+		$searched_keyword = isset( $_REQUEST['s'] ) ? wp_unslash( trim( $_REQUEST['s'] ) ) : '';
+
+		$this->_column_headers = $this->get_column_info();
+
+		// Fetch table data
+		$data = $this->table_data();
+
+		// check for individual row actions
+//		$bulk_action = $this->current_action();
+//		if ( ! empty( $bulk_action ) ) {
+//			// check and process any actions such as bulk actions.
+//			$data = $this->process_bulk_action( $data, $bulk_action );
+//		}
+
+		// Filter the table data in case of a search
+		if ( $searched_keyword ) {
+			$data = $this->filter_table_data( $data, $searched_keyword );
+		}
+
+		$per_page     = $this->get_items_per_page( 'ersrv_cancellation_requests_per_page', 20 );
+		$current_page = $this->get_pagenum();
+
+		$found_data = array_slice( $data, ( ( $current_page - 1 ) * $per_page ), $per_page );
+
+		$total_items = count( $data );
+		$this->set_pagination_args( array(
+			'total_items' => $total_items,
+			'per_page'    => $per_page,
+			'total_pages' => ceil( $total_items / $per_page ),
+		) );
+
+		$this->items = $found_data;
+	}
+
+	/**
+	 * Filter the table data for search.
+	 *
+	 * @param array  $table_data List table data.
+	 * @param string $search_key Search keyword.
+	 *
+	 * @return array
+	 */
+	public function filter_table_data( $table_data, $search_key ) {
+		$filtered_table_data = array_values(
+			array_filter( $table_data, function ( $row ) use ( $search_key ) {
+				foreach ( $row as $row_val ) {
+					if ( stripos( $row_val, $search_key ) !== false ) {
+						return true;
+					}
+				}
+			} ) );
+
+		return $filtered_table_data;
+	}
+
+	/**
+	 * The callback where the bulk actions are processed.
+	 */
+	public function process_bulk_action() {
+		// Detect if the delete action was triggered.
+		if ( 'bulk_delete_requests' === $this->current_action() ) {
+			wp_die( 'Items deleted (or they would be if we had items to delete)!' );
 		}
 	}
 
@@ -245,45 +292,5 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 			'<div class="ersrv-cancellation-request-actions" data-item="' . $item_id . '">',
 			'</div>'
 		);
-	}
-
-	/**
-	 * The checkbox column.
-	 *
-	 * @param array $item Item data.
-	 * @return string
-	 */
-	public function column_cb( $item ) {
-		$item_id = ( ! empty( $item['item_id'] ) ) ? $item['item_id'] : '';
-		return sprintf(
-			'<input type="checkbox" name="%1$s[]" value="%1$s" />',
-			$this->_args['singular'],
-			$item_id
-		);
-	}
-
-	/**
-	 * The bulk actions array.
-	 *
-	 * @return array
-	 */
-	public function get_bulk_actions() {
-		$actions = array(
-			'bulk_approve_requests' => __( 'Approve', 'easy-reservations' ),
-			'bulk_decline_requests' => __( 'Decline', 'easy-reservations' ),
-			'bulk_delete_requests'  => __( 'Delete', 'easy-reservations' ),
-		);
-
-		return $actions;
-	}
-
-	/**
-	 * The callback where the bulk actions are processed.
-	 */
-	public function process_bulk_action() {
-		// Detect if the delete action was triggered.
-		if ( 'bulk_delete_requests' === $this->current_action() ) {
-			wp_die( 'Items deleted (or they would be if we had items to delete)!' );
-		}
 	}
 }
