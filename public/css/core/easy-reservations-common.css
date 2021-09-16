@@ -223,7 +223,7 @@ a.btn:hover,
     margin-bottom: 10px !important;
 }
 
-.wrapper.search-page .banner .form-wrapper .form-inner input.date-control:not(.ship-icon-field) {
+body:not(.theme-storefront) .wrapper.search-page .banner .form-wrapper .form-inner input.date-control:not(.ship-icon-field) {
     background-position: 95%;
 }
 
@@ -577,12 +577,15 @@ a.btn:hover,
 
 /* Chrome, Safari, Edge, Opera */
 .wrapper.search-page .banner .form-wrapper .form-inner input::-webkit-outer-spin-button,
-.wrapper.search-page .banner .form-wrapper .form-inner input::-webkit-inner-spin-button {
+.wrapper.search-page .banner .form-wrapper .form-inner input::-webkit-inner-spin-button,
+.ersrv-item-search-accomodation::-webkit-outer-spin-button,
+.ersrv-item-search-accomodation::-webkit-inner-spin-button{
   -webkit-appearance: none;
   margin: 0;
 }
 
 /* Firefox */
-.wrapper.search-page .banner .form-wrapper .form-inner input[type=number] {
+.wrapper.search-page .banner .form-wrapper .form-inner input[type=number],
+.ersrv-item-search-accomodation{
   -moz-appearance: textfield;
 }

@@ -277,7 +277,7 @@
 
                     &.date-control {
                         @extend .date-control;
-                        background-position: 95%;
+                        // background-position: 95%;
                     }
                     &[type=checkbox], &[type=radio]{
                         min-height: auto;
@@ -395,7 +395,7 @@
                     }
                     .form-group {
                         .date-control.ship-icon-field {
-                            background-position: 96% !important;
+                            // background-position: 96% !important;
                             @include mobile() {
                                 background-position: 90% !important;
                             }
