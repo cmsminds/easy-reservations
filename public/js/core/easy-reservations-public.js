@@ -549,6 +549,7 @@ jQuery(document).ready(function ($) {
 	 * Close the modal when clicked outside the window.
 	 */
 	$( 'body' ).click( function( evt ) {
+		console.log( 'evt.target', evt.target.id );
 		if ( 'ersrv-item-quick-view-modal' === evt.target.id ) {
 			$( '.ersrv-modal' ).fadeOut( 'slow' );
 		}

@@ -1613,7 +1613,7 @@ class Easy_Reservations_Public {
 							<input type="hidden" id="quick-view-security-subtotal" value="<?php echo esc_html( $security_amount ); ?>" />
 							<h4 class="font-size-20 font-weight-semibold"><?php esc_html_e( 'Subtotal', 'easy-reservations' ); ?></h4>
 							<label class="font-size-16"><?php echo sprintf( __( 'This will add %1$s to the cart.', 'easy-reservations' ), '<a href="javascript:void(0);" class="text-decoration-none ersrv-split-reservation-cost is-modal"><span class="font-lato font-weight-bold color-accent ersrv-quick-view-item-subtotal ersrv-cost">--</span></a>' ); ?></label>
-							<div class="ersrv-reservation-details-item-summary">
+							<div class="ersrv-reservation-details-item-summary" id="ersrv-split-reservation-cost-content">
 								<div class="ersrv-reservation-details-item-summary-wrapper p-3">
 									<table class="table table-borderless">
 										<tbody>
