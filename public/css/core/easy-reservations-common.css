@@ -589,3 +589,28 @@ body:not(.theme-storefront) .wrapper.search-page .banner .form-wrapper .form-inn
 .ersrv-item-search-accomodation{
   -moz-appearance: textfield;
 }
+
+/* EDIT order page  */
+.edit-order-wrapper.wrapper .edit-inner-page {
+    /* margin-top: -200px; */
+    position: relative;
+    z-index: 10;
+    padding-top: 40px;
+}
+.edit-order-wrapper .banner{
+    position: relative;
+    min-height: 370px;
+}
+/* .edit-order-wrapper .banner::after{
+    content: "";
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    background: rgb(255,255,255);
+    background: -moz-linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(0,0,0,1) 100%);
+    background: -webkit-linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(0,0,0,1) 100%);
+    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(0,0,0,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#000000",GradientType=1);
+} */

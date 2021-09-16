@@ -466,13 +466,13 @@
 	border-radius: 100%;
 }
 .theme-twentysixteen .button{
-	background-color: var(--theme-twentysixteen-accent-700);
-	color: #fff;
+	background-color: var(--theme-twentysixteen-accent-700) !important;
+	color: #fff !important;
 }
 .theme-twentysixteen .button:hover{
 	color: #000;
-	background-color: var(--theme-twentysixteen-accent-300);
-	border-color: var(--theme-twentysixteen-accent-700);
+	background-color: var(--theme-twentysixteen-accent-300) !important;
+	border-color: var(--theme-twentysixteen-accent-700) !important;
 }
 /*-------------------- end here ----------------------------*/
 /* for twentytwenty Theme */
@@ -618,7 +618,7 @@ a{
     -ms-user-select: none;
     user-select: none;
     background-color: transparent;
-    border: 1px solid transparent;
+    /* border: 1px solid transparent; */
     padding: .375rem .75rem;
     font-size: 1rem;
     line-height: 1.5;
@@ -635,4 +635,10 @@ a{
 }
 .ersrv-book-item-from-widget .mt-2{
 	margin-top: .5rem!important;
+}
+.ersrv-reservation-widget-container .bootstrap-select .btn:hover .filter-option .filter-option-inner .filter-option-inner-inner,
+.ersrv-reservation-widget-container .bootstrap-select .btn:focus .filter-option .filter-option-inner .filter-option-inner-inner{
+    color: #212529;
+    /* background-color: #e2e6ea;
+    border-color: #dae0e5; */
 }
