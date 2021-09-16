@@ -53,6 +53,8 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 }
 ?>
 <div class="wrapper edit-order-wrapper pb-5">
+	<div class="banner text-center" style="/* background-image: url( '' ); */"></div>
+	<div class="edit-inner-page">
 	<div class="section-title"><?php echo wp_kses_post($page_title); ?></div>
 	<?php
 	if ( $valid_order ) {
@@ -351,5 +353,6 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 			}
 			?>
 		</div>
+	</div>
 	</div>
 </div>
