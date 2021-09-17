@@ -175,9 +175,16 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 										// Get the filename.
 										$image_filename = basename( $gallery_image_url );
 
-										// Last image custom class.
-										$last_gallery_image_custom_class = ( $gallery_images_last_index === $index ) ? 'gallery-last-image-overlay' : '';
-										$last_gallery_image_custom_text  = ( $gallery_images_last_index === $index ) ? sprintf( __( 'See all %1$d images', 'easy-reservations' ), count( $gallery_image_ids ) ) : '';
+										/**
+										 * Last image custom class.
+										 * And, this should work only when the images are more than 5.
+										 */
+										$last_gallery_image_custom_class = '';
+										$last_gallery_image_custom_text  = '';
+										if ( 5 < count( $gallery_image_ids ) ) {
+											$last_gallery_image_custom_class = ( $gallery_images_last_index === $index ) ? 'gallery-last-image-overlay' : '';
+											$last_gallery_image_custom_text  = ( $gallery_images_last_index === $index ) ? sprintf( __( 'See all %1$d images', 'easy-reservations' ), count( $gallery_image_ids ) ) : '';
+										}
 										?>
 										<div data-text="<?php echo esc_html( $last_gallery_image_custom_text ); ?>" class="masonry-grid__item gallery-image-item <?php echo esc_attr( $last_gallery_image_custom_class ); ?>">
 											<img src="<?php echo esc_url( $gallery_image_url ); ?>" alt="<?php echo esc_attr( $image_filename ); ?>" />

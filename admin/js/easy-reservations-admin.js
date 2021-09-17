@@ -402,7 +402,7 @@ jQuery( document ).ready( function( $ ) {
 		}
 
 		// Validate the postcode.
-		if ( -1 === is_valid_string( postcode ) ) {
+		if ( '' === postcode ) {
 			$( '.ersrv-form-field-error.postcode-error' ).text( reservation_customer_postcode_err_msg );
 			register_user = false;
 		}
