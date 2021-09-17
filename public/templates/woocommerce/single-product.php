@@ -174,6 +174,7 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 										?>
 										<img src="<?php echo esc_url( $gallery_image_url ); ?>" alt="<?php echo esc_attr( $image_filename ); ?>" class="masonry-grid__item gallery-image-item" />
 									<?php } ?>
+									<img src="https://reservation-plugin.demo.cmsminds.com/wp-content/uploads/2021/09/Banner-BryantBoats.jpeg" alt="" class="masonry-grid__item gallery-image-item" />
 								</div>
 							<?php } ?>
 						</div>
