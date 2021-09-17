@@ -563,22 +563,6 @@ body:not(.theme-storefront) .wrapper.search-page .banner .form-wrapper .form-inn
 }
 
 
-
-
-/* Experimental */
-/* body::after {
-    position: fixed;
-    z-index: 99999;
-    height: 100%;
-    width: 100%;
-    background: rgba(0,0,0,.125);
-    content: "";
-    display: inline-block;
-    pointer-events: none;
-    top: 0px;
-    left: 0px;
-} */
-
 /* Chrome, Safari, Edge, Opera */
 .wrapper.search-page .banner .form-wrapper .form-inner input::-webkit-outer-spin-button,
 .wrapper.search-page .banner .form-wrapper .form-inner input::-webkit-inner-spin-button,
@@ -596,7 +580,6 @@ body:not(.theme-storefront) .wrapper.search-page .banner .form-wrapper .form-inn
 
 /* EDIT order page  */
 .edit-order-wrapper.wrapper .edit-inner-page {
-    /* margin-top: -200px; */
     position: relative;
     z-index: 10;
     padding-top: 40px;
@@ -610,22 +593,39 @@ body:not(.theme-storefront) .wrapper.search-page .banner .form-wrapper .form-inn
     min-height: 370px;
     padding-bottom: 149px;
 }
-/* .edit-order-wrapper .banner::after{
-    content: "";
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    height: 100%;
-    width: 100%;
-    background: rgb(255,255,255);
-    background: -moz-linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(0,0,0,1) 100%);
-    background: -webkit-linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(0,0,0,1) 100%);
-    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(0,0,0,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#000000",GradientType=1);
-} */
-
 .ersrv-reservation-template .featured-media,
 .ersrv-reservation-template .single-featured-image-header,
 .ersrv-reservation-template .post-thumbnail{
     display: none !important;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*--------------------- Experimental -------------------------------- */
+/* body::after {
+    position: fixed;
+    z-index: 99999;
+    height: 100%;
+    width: 100%;
+    background: rgba(0,0,0,.125);
+    content: "";
+    display: inline-block;
+    pointer-events: none;
+    top: 0px;
+    left: 0px;
+} */
