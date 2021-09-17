@@ -263,13 +263,28 @@ class Easy_Reservations_Public {
 				filemtime( ERSRV_PLUGIN_PATH . 'public/js/ui/jquery-ui.min.js' ),
 				true
 			);
+		}
+		
+		// Include the core JS file.
+		if (
+			$is_reservation_page ||
+			$is_search_page ||
+			$is_edit_reservation_page ||
+			is_checkout() ||
+			$is_view_order_endpoint
+		) {
+			self::ersrv_enqueue_plugin_core_js( $this->plugin_name );
+		}
 
-			// Custom public script.
-			self::ersrv_enqueue_plugin_core_js( $this->plugin_name );
-		} elseif ( is_checkout() ) {
-			self::ersrv_enqueue_plugin_core_js( $this->plugin_name );
-		} elseif ( $is_view_order_endpoint ) {
-			self::ersrv_enqueue_plugin_core_js( $this->plugin_name );
+		// Include the lightbox jquery.
+		if ( $is_reservation_page ) {
+			wp_enqueue_script(
+				$this->plugin_name . '-lightbox',
+				ERSRV_PLUGIN_URL . 'public/js/lightbox/lightbox.js',
+				array( 'jquery' ),
+				filemtime( ERSRV_PLUGIN_PATH . 'public/js/lightbox/lightbox.js' ),
+				true
+			);
 		}
 
 		// Add a custom separate JS for edit reservation page.

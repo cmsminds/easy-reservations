@@ -181,12 +181,15 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 										 */
 										$last_gallery_image_custom_class = '';
 										$last_gallery_image_custom_text  = '';
-										if ( 5 < count( $gallery_image_ids ) ) {
-											$last_gallery_image_custom_class = ( $gallery_images_last_index === $index ) ? 'gallery-last-image-overlay' : '';
-											$last_gallery_image_custom_text  = ( $gallery_images_last_index === $index ) ? sprintf( __( 'See all %1$d images', 'easy-reservations' ), count( $gallery_image_ids ) ) : '';
+										if ( 5 < count( $gallery_image_ids ) && 4 === $index ) {
+											$last_gallery_image_custom_class = 'gallery-last-image-overlay';
+											$last_gallery_image_custom_text  = sprintf( __( '+%1$d images', 'easy-reservations' ), ( count( $gallery_image_ids ) - 5 ) );
 										}
+
+										// Hide the images after 5 images.
+										$display_none_image_class = ( 4 < $index ) ? 'd-none' : '';
 										?>
-										<div data-text="<?php echo esc_html( $last_gallery_image_custom_text ); ?>" class="masonry-grid__item gallery-image-item <?php echo esc_attr( $last_gallery_image_custom_class ); ?>">
+										<div data-text="<?php echo esc_html( $last_gallery_image_custom_text ); ?>" class="masonry-grid__item gallery-image-item <?php echo esc_attr( "{$last_gallery_image_custom_class} {$display_none_image_class}" ); ?>">
 											<img src="<?php echo esc_url( $gallery_image_url ); ?>" alt="<?php echo esc_attr( $image_filename ); ?>" />
 										</div>
 									<?php } ?>
@@ -414,7 +417,7 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 			</div>
 		</div>
 	</div>
-	<!-- light box HTML -->
+	<!-- LIGHTBOX -->
 	<div class="lightbox">
 		<div class="title"></div>
 		<div class="filter"></div>
@@ -422,74 +425,6 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 		<div class="arrowl"></div>
 		<div class="close"></div>
 	</div>
-<script>
-    jQuery(window).load(function($) {
-
-        jQuery(".masonry-grid img").click(function() {
-            jQuery(".lightbox").fadeIn(300);
-            jQuery(".lightbox").append("<img src='" + jQuery(this).attr("src") + "' alt='" + jQuery(this).attr("alt") + "' />");
-            jQuery(".filter").css("background-image", "url(" + jQuery(this).attr("src") + ")");
-            /*jQuery(".title").append("<h1>" + jQuery(this).attr("alt") + "</h1>");*/
-            jQuery("html").css("overflow", "hidden");
-            if (jQuery(this).is(":last-child")) {
-                jQuery(".arrowr").css("display", "none");
-                jQuery(".arrowl").css("display", "block");
-            } else if (jQuery(this).is(":first-child")) {
-                jQuery(".arrowr").css("display", "block");
-                jQuery(".arrowl").css("display", "none");
-            } else {
-                jQuery(".arrowr").css("display", "block");
-                jQuery(".arrowl").css("display", "block");
-            }
-        });
-
-        jQuery(".close").click(function() {
-            jQuery(".lightbox").fadeOut(300);
-            jQuery("h1").remove();
-            jQuery(".lightbox img").remove();
-            jQuery("html").css("overflow", "auto");
-        });
-
-        jQuery(document).keyup(function(e) {
-            if (e.keyCode == 27) {
-                jQuery(".lightbox").fadeOut(300);
-                jQuery(".lightbox img").remove();
-                jQuery("html").css("overflow", "auto");
-            }
-        });
-
-        jQuery(".arrowr").click(function() {
-            var imgSrc = jQuery(".lightbox img").attr("src");
-            var search = jQuery(".masonry-grid").find("img[src$='" + imgSrc + "']");
-            var newImage = search.next().attr("src");
-            /*jQuery(".lightbox img").attr("src", search.next());*/
-            jQuery(".lightbox img").attr("src", newImage);
-            jQuery(".filter").css("background-image", "url(" + newImage + ")");
-
-            if (!search.next().is(":last-child")) {
-                jQuery(".arrowl").css("display", "block");
-            } else {
-                jQuery(".arrowr").css("display", "none");
-            }
-        });
-
-        jQuery(".arrowl").click(function() {
-            var imgSrc = jQuery(".lightbox img").attr("src");
-            var search = jQuery(".masonry-grid").find("img[src$='" + imgSrc + "']");
-            var newImage = search.prev().attr("src");
-            /*jQuery(".lightbox img").attr("src", search.next());*/
-            jQuery(".lightbox img").attr("src", newImage);
-            jQuery(".filter").css("background-image", "url(" + newImage + ")");
-
-            if (!search.prev().is(":first-child")) {
-                jQuery(".arrowr").css("display", "block");
-            } else {
-                jQuery(".arrowl").css("display", "none");
-            }
-        });
-
-    });
-</script>
 </section>
 <?php
 get_footer();
