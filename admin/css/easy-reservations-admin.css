@@ -545,3 +545,9 @@ ul.wc-tabs li.reservation_blockout_dates_tab a::before {
 .button[class^="ersrv-"]::before{
 	vertical-align: middle;
 }
+a.button.wc-action-button.wc-action-button-ersrv-reservation-edit.ersrv-reservation-edit::after {
+    content: "\f464";
+}
+.ersrv-edit-order-actions h4 {
+    margin-top: 0px;
+}
