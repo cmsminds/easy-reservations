@@ -144,6 +144,31 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 							</div>
 						</div>
 					</div>
+					<div class="ship-gallery info-box">
+						<a class="section-title font-Poppins font-size-24 font-weight-bold d-block color-black text-decoration-none" data-toggle="collapse" href="#ship-gallery-collapse" role="button" aria-expanded="true" aria-controls="ship-gallery-collapse">
+							<span class=""><?php esc_html_e( 'Ship Gallery', 'easy-reservations' ); ?></span>
+						</a>
+						<div class="collapse show" id="ship-gallery-collapse">
+							<div class="dropdown-divider"></div>
+							<div class="product-preview">
+								<div class="product-preview-main">
+									<img src="<?php echo esc_url( $featured_image_src ); ?>" alt="featured-image" class="product-preview-image" /> 
+								</div>
+								<!-- GALLERY IMAGES -->
+								<div id="preview-list" class="product-preview-menu mw-100">
+									<?php if ( ! empty( $gallery_image_ids ) && is_array( $gallery_image_ids ) ) { ?>
+										<?php foreach ( $gallery_image_ids as $image_id ) {
+											$image_src = ersrv_get_attachment_url_from_attachment_id( $image_id );
+											?>
+											<div class="product-preview-thumb">
+												<img src="<?php echo esc_url( $image_src ); ?>" alt="gallery-image" class="product-preview-thumb-image" />
+											</div>
+										<?php } ?>
+									<?php } ?>
+								</div>
+							</div>
+						</div>
+					</div>
 					<div class="ship-description info-box">
 						<a class="section-title font-Poppins font-size-24 font-weight-bold d-block color-black text-decoration-none" data-toggle="collapse" href="#ship-description-collapse" role="button" aria-expanded="true" aria-controls="ship-description-collapse">
 							<span class=""><?php esc_html_e( 'Ship Description', 'easy-reservations' ); ?></span>
