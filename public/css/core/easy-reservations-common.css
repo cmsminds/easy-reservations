@@ -737,7 +737,9 @@ body:not(.theme-storefront)
   /* Misc */
   margin-bottom: 1rem;
 }
-
+.masonry-grid  img{
+    cursor: pointer;
+}
 .lightbox {
   position: fixed;
   width: 100%;
@@ -848,6 +850,28 @@ body:not(.theme-storefront)
   position: absolute;
   top: 0;
   left: 0;
+}
+.gallery-last-image-overlay{
+    position: relative;
+}
+.gallery-last-image-overlay::after{
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 9;
+    width: 100%;
+    cursor: pointer;
+    height: 100%;
+    background-color: rgba(72,72,72,0.5);
+    text-transform: capitalize;
+    font-size: 1.2rem;
+    color: #fff;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
 }
 
 /*--------------------- Experimental -------------------------------- */
