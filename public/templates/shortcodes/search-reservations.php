@@ -37,6 +37,7 @@ $search_boat_type     = (int) filter_input( INPUT_GET, 'boat_type', FILTER_SANIT
 $search_boat_type     = ( ! is_null( $search_boat_type ) ) ? $search_boat_type : 0;
 $banner_image_id      = get_post_meta( $post_id, 'ersrv_banner_image_id', true );
 $banner_image_url     = ersrv_get_attachment_url_from_attachment_id( $banner_image_id );
+$banner_image_url     = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV_PLUGIN_URL . 'public/images/search-banner-image.jpg';
 ?>
 <section class="wrapper search-page" id="wrapper">
 	<div class="banner text-center" style="background-image: url( '<?php echo $banner_image_url; ?>' );">

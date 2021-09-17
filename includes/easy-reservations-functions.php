@@ -639,7 +639,6 @@ if ( ! function_exists( 'ersrv_get_admin_script_vars' ) ) {
 
 		// Add the custom message to the array on cancellation requests page.
 		if ( ! is_null( $page ) && 'reservation-calcellation-requests' === $page ) {
-			$vars['delete_reservation_cancellation_cnf_message']  = __( 'Click OK to confirm cancellation request deletion. This action won\'t be undone.', 'easy-reservations' );
 			$vars['decline_reservation_cancellation_cnf_message'] = __( 'Click OK to confirm cancellation request declination. This action won\'t be undone.', 'easy-reservations' );
 			$vars['approve_reservation_cancellation_cnf_message'] = __( 'Click OK to confirm cancellation request approval. This action won\'t be undone.', 'easy-reservations' );
 		}

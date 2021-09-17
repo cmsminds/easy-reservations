@@ -10,6 +10,8 @@
 
 defined('ABSPATH') || exit; // Exit if accessed directly.
 
+$post_id = get_the_ID();
+
 // Requested query arguments.
 $action      = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
 $order_id    = (int) filter_input( INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT );
@@ -51,9 +53,13 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 		}
 	}
 }
+
+$banner_image_id  = get_post_meta( $post_id, 'ersrv_banner_image_id', true );
+$banner_image_url = ersrv_get_attachment_url_from_attachment_id( $banner_image_id );
+$banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV_PLUGIN_URL . 'public/images/banner-bg.jpg';
 ?>
 <div class="wrapper edit-order-wrapper pb-5">
-	<div class="banner text-center">
+	<div class="banner text-center" style="background-image: url( '<?php echo $banner_image_url; ?>' );">
 	<div class="container">
 			<div class="details mx-auto font-lato">
 				<div class="page-title">
@@ -62,7 +68,7 @@ if ( ! is_null( $order_id ) && ! is_null( $action ) ) {
 					</div>
 				</div>
 				<div class="sub-title">
-				<?php
+					<?php
 					if ( $valid_order ) {
 						/**
 						 * This hook executes on edit reservation page.

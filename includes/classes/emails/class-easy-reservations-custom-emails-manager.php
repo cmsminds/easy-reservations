@@ -30,7 +30,6 @@ class Easy_Reservations_Custom_Email_Manager {
 		add_action( 'ersrv_email_after_reservation_cancellation_request', array( &$this, 'ersrv_ersrv_email_after_reservation_cancellation_request_callback' ), 10, 2 );
 		add_action( 'ersrv_after_reservation_cancellation_request_approved', array( &$this, 'ersrv_ersrv_after_reservation_cancellation_request_approved_callback' ) );
 		add_action( 'ersrv_after_reservation_cancellation_request_declined', array( &$this, 'ersrv_ersrv_after_reservation_cancellation_request_declined_callback' ) );
-		add_action( 'ersrv_after_reservation_cancellation_request_deleted', array( &$this, 'ersrv_ersrv_after_reservation_cancellation_request_deleted_callback' ) );
 		add_action( 'ersrv_after_blocking_reservation_dates', array( $this, 'ersrv_ersrv_after_blocking_reservation_dates_callback' ), 20, 2 );
 		add_action( 'ersrv_update_reservation', array( $this, 'ersrv_ersrv_update_reservation_callback' ), 10, 2 );
 		add_filter( 'woocommerce_email_classes', array( &$this, 'ersrv_woocommerce_email_classes_callback' ) );
@@ -133,25 +132,6 @@ class Easy_Reservations_Custom_Email_Manager {
 	}
 
 	/**
-	 * Send notification for the reservation cancellation request deletion to the customer.
-	 *
-	 * @param object $line_item_id WooCommerce line item id.
-	 * @since 1.0.0
-	 */
-	public function ersrv_ersrv_after_reservation_cancellation_request_deleted_callback( $line_item_id ) {
-		new WC_Emails();
-		/**
-		 * This hook fires when there is cancellation request deletion for any reservation.
-		 *
-		 * This hook is helpful in managing actions while sending emails.
-		 *
-		 * @param int $line_item_id WooCommerce line item id.
-		 * @since 1.0.0 
-		 */
-		do_action( 'ersrv_send_reservation_cancellation_request_deleted_notification', $line_item_id );
-	}
-
-	/**
 	 * Send notificaiton for the rental agreement signature to the customer.
 	 *
 	 * @param int      $order_id WooCommerce order id.
@@ -228,10 +208,6 @@ class Easy_Reservations_Custom_Email_Manager {
 		// Reservation cancellation request email.
 		require_once 'class-reservation-cancellation-request-email.php'; // Require the class file.
 		$email_classes['Reservation_Cancellation_Request_Email'] = new Reservation_Cancellation_Request_Email(); // Put in the classes into existing classes.
-
-		// Reservation cancellation request deleted email.
-		require_once 'class-reservation-cancellation-request-deleted-email.php'; // Require the class file.
-		$email_classes['Reservation_Cancellation_Request_Deleted_Email'] = new Reservation_Cancellation_Request_Deleted_Email(); // Put in the classes into existing classes.
 
 		// Reservation cancellation request declined email.
 		require_once 'class-reservation-cancellation-request-declined-email.php'; // Require the class file.

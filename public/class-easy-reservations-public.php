@@ -2022,13 +2022,28 @@ class Easy_Reservations_Public {
 
 		// If it's the edit reservation page.
 		if ( $is_edit_reservation_page ) {
-			return array_merge( $classes, array( 'ersrv-edit-reservation-template', 'ersrv-reservation-template' ) );
+			$classes = array_merge( $classes, array( 'ersrv-edit-reservation-template', 'ersrv-reservation-template' ) );
+
+			// Remove the no-sidebar class.
+			$no_sidebar_class_index = array_search( 'no-sidebar', $classes, true );
+			if ( false !== $no_sidebar_class_index ) {
+				unset( $classes[ $no_sidebar_class_index ] );
+			}
 		}
 
 		// If it's the search reservation page.
 		if ( $is_search_page ) {
-			return array_merge( $classes, array( 'ersrv-search-reservations-template', 'ersrv-reservation-template' ) );
+			$classes = array_merge( $classes, array( 'ersrv-search-reservations-template', 'ersrv-reservation-template' ) );
+
+			// Remove the no-sidebar class.
+			$no_sidebar_class_index = array_search( 'no-sidebar', $classes, true );
+			if ( false !== $no_sidebar_class_index ) {
+				unset( $classes[ $no_sidebar_class_index ] );
+			}
 		}
+
+		// Rearrange the class indexes.
+		$classes = array_values( $classes );
 
 		return $classes;
 	}

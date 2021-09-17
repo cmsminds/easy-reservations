@@ -186,7 +186,6 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 		$actions = array(
 			'bulk_approve_requests' => __( 'Approve', 'easy-reservations' ),
 			'bulk_decline_requests' => __( 'Decline', 'easy-reservations' ),
-			'bulk_delete_requests'  => __( 'Delete', 'easy-reservations' ),
 		);
 
 		return $actions;
@@ -279,8 +278,6 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 			'approve_request' => sprintf( __( '%1$sApprove%2$s', 'easy-reservations' ), '<a href="javascript:void(0);" class="approve-request" title="' . esc_html__( 'Approve this cancellation request.', 'easy-reservations' ) . '">', '</a>' ),
 			/* translators: 1: %s: anchor tag open, 2: %s: anchor tag closed */
 			'decline_request' => sprintf( __( '%1$sDecline%2$s', 'easy-reservations' ), '<a href="javascript:void(0);" class="decline" title="' . esc_html__( 'Decline this cancellation request.', 'easy-reservations' ) . '">', '</a>' ),
-			/* translators: 1: %s: anchor tag open, 2: %s: anchor tag closed */
-			'delete'          => sprintf( __( '%1$sDelete%2$s', 'easy-reservations' ), '<a href="javascript:void(0);" class="delete" title="' . esc_html__( 'Delete this cancellation request.', 'easy-reservations' ) . '">', '</a>' ),
 		);
 
 		// Return the title contents.
