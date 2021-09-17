@@ -776,7 +776,7 @@ body:not(.theme-storefront)
     transform: translate(-50%, -50%) rotateY(180deg);
   }*/
 
-[class^="arrow"] {
+.lightbox [class^="arrow"] {
   height: 200px;
   width: 50px;
   background: rgba(0, 0, 0, 0.4);
@@ -786,7 +786,7 @@ body:not(.theme-storefront)
   cursor: pointer;
 }
 
-[class^="arrow"]:after {
+.lightbox [class^="arrow"]:after {
   content: "";
   position: absolute;
   top: 50%;
@@ -796,25 +796,25 @@ body:not(.theme-storefront)
   height: 15px;
 }
 
-.arrowr {
+.lightbox .arrowr {
   right: 0;
 }
 
-.arrowr:after {
+.lightbox .arrowr:after {
   border-right: 1px solid white;
   border-bottom: 1px solid white;
 }
 
-.arrowl {
+.lightbox .arrowl {
   left: 0;
 }
 
-.arrowl:after {
+.lightbox .arrowl:after {
   border-left: 1px solid white;
   border-top: 1px solid white;
 }
 
-.close {
+.lightbox .close {
   position: absolute;
   right: 0;
   width: 50px;
@@ -824,8 +824,8 @@ body:not(.theme-storefront)
   cursor: pointer;
 }
 
-.close:after,
-.close:before {
+.lightbox .close:after,
+.lightbox .close:before {
   content: "";
   position: absolute;
   top: 50%;
@@ -835,11 +835,11 @@ body:not(.theme-storefront)
   background: #e74c3c;
 }
 
-.close:after {
+.lightbox .close:after {
   transform: translate(-50%, -50%) rotate(-45deg);
 }
 
-.close:before {
+.lightbox .close:before {
   transform: translate(-50%, -50%) rotate(45deg);
 }
 
@@ -864,7 +864,6 @@ body:not(.theme-storefront)
     cursor: pointer;
     height: 100%;
     background-color: rgba(72,72,72,0.5);
-    text-transform: capitalize;
     font-size: 1.2rem;
     color: #fff;
     font-weight: 600;
