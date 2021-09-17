@@ -159,9 +159,12 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 							<?php echo wp_kses_post( $item_post->post_content ); ?>
 
 							<!-- GALLERY IMAGES -->
-							<?php if ( ! empty( $gallery_image_ids ) && ! empty( $gallery_image_ids ) ) { ?>
+							<?php if ( ! empty( $gallery_image_ids ) && ! empty( $gallery_image_ids ) ) {
+								// Get the last index of the array.
+								$gallery_images_last_index = count( $gallery_image_ids ) - 1;
+								?>
 								<div class="masonry-grid gallery-images">
-									<?php foreach ( $gallery_image_ids as $image_id ) {
+									<?php foreach ( $gallery_image_ids as $index => $image_id ) {
 										$gallery_image_url = ersrv_get_attachment_url_from_attachment_id( $image_id );
 
 										// Continue, if the gallery image doesn't exist anymore.
@@ -171,10 +174,13 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 
 										// Get the filename.
 										$image_filename = basename( $gallery_image_url );
+
+										// Last image custom class.
+										$last_gallery_image_custom_class = ( $gallery_images_last_index === $index ) ? 'gallery-last-image-overlay' : '';
+										$last_gallery_image_custom_text  = ( $gallery_images_last_index === $index ) ? sprintf( __( 'See all %1$d images', 'easy-reservations' ), count( $gallery_image_ids ) ) : '';
 										?>
-										<img src="<?php echo esc_url( $gallery_image_url ); ?>" alt="<?php echo esc_attr( $image_filename ); ?>" class="masonry-grid__item gallery-image-item" />
+										<img data-text="<?php echo esc_html( $last_gallery_image_custom_text ); ?>" src="<?php echo esc_url( $gallery_image_url ); ?>" alt="<?php echo esc_attr( $image_filename ); ?>" class="masonry-grid__item gallery-image-item <?php echo esc_attr( $last_gallery_image_custom_class ); ?>" />
 									<?php } ?>
-									<img src="https://reservation-plugin.demo.cmsminds.com/wp-content/uploads/2021/09/Banner-BryantBoats.jpeg" alt="" data-text="Hello World" class="gallery-last-image-overlay masonry-grid__item gallery-image-item" />
 								</div>
 							<?php } ?>
 						</div>
@@ -275,14 +281,14 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 												$amenity_cost      = ( ! empty( $amenity_data['cost'] ) ) ? (float) $amenity_data['cost'] : 0.00;
 												$amenity_slug      = ( ! empty( $amenity_title ) ) ? sanitize_title( $amenity_title ) : '';
 												$amenity_cost_type = ( ! empty( $amenity_data['cost_type'] ) ) ? $amenity_data['cost_type'] : 'one_time';
+												$cost_type_text    = ( 'one_time' === $amenity_cost_type ) ? __( 'Single Fee', 'easy-reservations' ) : __( 'Per Day', 'easy-reservations' );
 												?>
 												<div class="custom-control custom-switch ersrv-single-amenity-block" data-cost_type="<?php echo esc_attr( $amenity_cost_type ); ?>" data-cost="<?php echo esc_attr( $amenity_cost ); ?>" data-amenity="<?php echo esc_attr( $amenity_title ); ?>">
 													<input type="checkbox" class="custom-control-input ersrv-new-reservation-single-amenity" id="amenity-<?php echo esc_html( $amenity_slug ); ?>">
-													<label class="custom-control-label font-size-15" for="amenity-<?php echo esc_html($amenity_slug); ?>">
-														<span class="d-block font-lato font-weight-bold color-black pb-2"><?php echo esc_html($amenity_title); ?> </span>
-														<span><span class="font-lato font-weight-bold color-accent"><?php echo wc_price($amenity_cost); ?></span> | <span class="font-lato font-weight-normal color-black-500">Single Fee </span></span>
+													<label class="custom-control-label font-size-15" for="amenity-<?php echo esc_html( $amenity_slug ); ?>">
+														<span class="d-block font-lato font-weight-bold color-black pb-2"><?php echo esc_html( $amenity_title ); ?> </span>
+														<span><span class="font-lato font-weight-bold color-accent"><?php echo wc_price( $amenity_cost ); ?></span> | <span class="font-lato font-weight-normal color-black-500"><?php echo esc_html( $cost_type_text ); ?></span></span>
 													</label>
-
 												</div>
 											<?php } ?>
 										</div>
