@@ -144,30 +144,6 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 							</div>
 						</div>
 					</div>
-					<!-- <div class="ship-gallery info-box">
-						<a class="section-title font-Poppins font-size-24 font-weight-bold d-block color-black text-decoration-none" data-toggle="collapse" href="#ship-gallery-collapse" role="button" aria-expanded="true" aria-controls="ship-gallery-collapse">
-							<span class=""><?php //esc_html_e( 'Ship Gallery', 'easy-reservations' ); ?></span>
-						</a>
-						<div class="collapse show" id="ship-gallery-collapse">
-							<div class="dropdown-divider"></div>
-							<div class="product-preview">
-								<div class="product-preview-main">
-									<img src="<?php echo esc_url( $featured_image_src ); ?>" alt="featured-image" class="product-preview-image" /> 
-								</div>
-								<div id="preview-list" class="product-preview-menu mw-100">
-									<?php if ( ! empty( $gallery_image_ids ) && is_array( $gallery_image_ids ) ) { ?>
-										<?php foreach ( $gallery_image_ids as $image_id ) {
-											$image_src = ersrv_get_attachment_url_from_attachment_id( $image_id );
-											?>
-											<div class="product-preview-thumb">
-												<img src="<?php echo esc_url( $image_src ); ?>" alt="gallery-image" class="product-preview-thumb-image" />
-											</div>
-										<?php } ?>
-									<?php } ?>
-								</div>
-							</div>
-						</div>
-					</div> -->
 					<div class="ship-description info-box">
 						<a class="section-title font-Poppins font-size-24 font-weight-bold d-block color-black text-decoration-none" data-toggle="collapse" href="#ship-description-collapse" role="button" aria-expanded="true" aria-controls="ship-description-collapse">
 							<span class=""><?php esc_html_e( 'Ship Description', 'easy-reservations' ); ?></span>
@@ -175,6 +151,7 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 						<div class="collapse show" id="ship-description-collapse">
 							<div class="dropdown-divider"></div>
 							<?php echo wp_kses_post( $item_post->post_content ); ?>
+							<div class="dropdown-divider"></div>
 							<div class="masonry-grid gallery-images">
 								<!--Item -->
 								<img src="https://source.unsplash.com/random?var-0" alt="" class="masonry-grid__item gallery-image-item" />
@@ -183,18 +160,6 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 								<img src="https://source.unsplash.com/random?var-3" alt="" class="masonry-grid__item gallery-image-item" />
 								<img src="https://source.unsplash.com/random?var-4" alt="" class="masonry-grid__item gallery-image-item" />
 								<img src="https://source.unsplash.com/random?ver-5" alt="" class="masonry-grid__item gallery-image-item" />
-								<!-- <div >
-								</div>
-								<div class="masonry-grid__item gallery-image-item">
-								</div>
-								<div class="masonry-grid__item gallery-image-item">
-								</div>
-								<div class="masonry-grid__item gallery-image-item">
-								</div>
-								<div class="masonry-grid__item gallery-image-item">
-								</div>
-								<div class="masonry-grid__item gallery-image-item">
-								</div> -->
 							</div>
 						</div>
 					</div>
@@ -297,9 +262,11 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 												?>
 												<div class="custom-control custom-switch ersrv-single-amenity-block" data-cost_type="<?php echo esc_attr( $amenity_cost_type ); ?>" data-cost="<?php echo esc_attr( $amenity_cost ); ?>" data-amenity="<?php echo esc_attr( $amenity_title ); ?>">
 													<input type="checkbox" class="custom-control-input ersrv-new-reservation-single-amenity" id="amenity-<?php echo esc_html( $amenity_slug ); ?>">
-													<label class="custom-control-label font-size-15" for="amenity-<?php echo esc_html( $amenity_slug ); ?>">
-														<span class="d-block font-lato font-weight-bold color-black pb-2"><?php echo esc_html( $amenity_title ); ?> - <span class="font-lato font-weight-bold color-accent"><?php echo wc_price( $amenity_cost ); ?></span></span>
+													<label class="custom-control-label font-size-15" for="amenity-<?php echo esc_html($amenity_slug); ?>">
+														<span class="d-block font-lato font-weight-bold color-black pb-2"><?php echo esc_html($amenity_title); ?> </span>
+														<span><span class="font-lato font-weight-bold color-accent"><?php echo wc_price($amenity_cost); ?></span> | <span class="font-lato font-weight-normal color-black-500">Single Fee </span></span>
 													</label>
+
 												</div>
 											<?php } ?>
 										</div>
@@ -417,81 +384,81 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 		</div>
 	</div>
 	<!-- light box HTML -->
-	<div class="lightbox">
-		<div class="title"></div>
-		<div class="filter"></div>
-		<div class="arrowr"></div>
-		<div class="arrowl"></div>
-		<div class="close"></div>
-	</div>
-	<script>
-		jQuery(window).load(function($) {
+<div class="lightbox">
+    <div class="title"></div>
+    <div class="filter"></div>
+    <div class="arrowr"></div>
+    <div class="arrowl"></div>
+    <div class="close"></div>
+</div>
+<script>
+    jQuery(window).load(function($) {
 
-			jQuery(".masonry-grid img").click(function() {
-				jQuery(".lightbox").fadeIn(300);
-				jQuery(".lightbox").append("<img src='" + jQuery(this).attr("src") + "' alt='" + jQuery(this).attr("alt") + "' />");
-				jQuery(".filter").css("background-image", "url(" + jQuery(this).attr("src") + ")");
-				/*jQuery(".title").append("<h1>" + jQuery(this).attr("alt") + "</h1>");*/
-				jQuery("html").css("overflow", "hidden");
-				if (jQuery(this).is(":last-child")) {
-					jQuery(".arrowr").css("display", "none");
-					jQuery(".arrowl").css("display", "block");
-				} else if (jQuery(this).is(":first-child")) {
-					jQuery(".arrowr").css("display", "block");
-					jQuery(".arrowl").css("display", "none");
-				} else {
-					jQuery(".arrowr").css("display", "block");
-					jQuery(".arrowl").css("display", "block");
-				}
-			});
+        jQuery(".masonry-grid img").click(function() {
+            jQuery(".lightbox").fadeIn(300);
+            jQuery(".lightbox").append("<img src='" + jQuery(this).attr("src") + "' alt='" + jQuery(this).attr("alt") + "' />");
+            jQuery(".filter").css("background-image", "url(" + jQuery(this).attr("src") + ")");
+            /*jQuery(".title").append("<h1>" + jQuery(this).attr("alt") + "</h1>");*/
+            jQuery("html").css("overflow", "hidden");
+            if (jQuery(this).is(":last-child")) {
+                jQuery(".arrowr").css("display", "none");
+                jQuery(".arrowl").css("display", "block");
+            } else if (jQuery(this).is(":first-child")) {
+                jQuery(".arrowr").css("display", "block");
+                jQuery(".arrowl").css("display", "none");
+            } else {
+                jQuery(".arrowr").css("display", "block");
+                jQuery(".arrowl").css("display", "block");
+            }
+        });
 
-			jQuery(".close").click(function() {
-				jQuery(".lightbox").fadeOut(300);
-				jQuery("h1").remove();
-				jQuery(".lightbox img").remove();
-				jQuery("html").css("overflow", "auto");
-			});
+        jQuery(".close").click(function() {
+            jQuery(".lightbox").fadeOut(300);
+            jQuery("h1").remove();
+            jQuery(".lightbox img").remove();
+            jQuery("html").css("overflow", "auto");
+        });
 
-			jQuery(document).keyup(function(e) {
-				if (e.keyCode == 27) {
-					jQuery(".lightbox").fadeOut(300);
-					jQuery(".lightbox img").remove();
-					jQuery("html").css("overflow", "auto");
-				}
-			});
+        jQuery(document).keyup(function(e) {
+            if (e.keyCode == 27) {
+                jQuery(".lightbox").fadeOut(300);
+                jQuery(".lightbox img").remove();
+                jQuery("html").css("overflow", "auto");
+            }
+        });
 
-			jQuery(".arrowr").click(function() {
-				var imgSrc = jQuery(".lightbox img").attr("src");
-				var search = jQuery(".masonry-grid").find("img[src$='" + imgSrc + "']");
-				var newImage = search.next().attr("src");
-				/*jQuery(".lightbox img").attr("src", search.next());*/
-				jQuery(".lightbox img").attr("src", newImage);
-				jQuery(".filter").css("background-image", "url(" + newImage + ")");
+        jQuery(".arrowr").click(function() {
+            var imgSrc = jQuery(".lightbox img").attr("src");
+            var search = jQuery(".masonry-grid").find("img[src$='" + imgSrc + "']");
+            var newImage = search.next().attr("src");
+            /*jQuery(".lightbox img").attr("src", search.next());*/
+            jQuery(".lightbox img").attr("src", newImage);
+            jQuery(".filter").css("background-image", "url(" + newImage + ")");
 
-				if (!search.next().is(":last-child")) {
-					jQuery(".arrowl").css("display", "block");
-				} else {
-					jQuery(".arrowr").css("display", "none");
-				}
-			});
+            if (!search.next().is(":last-child")) {
+                jQuery(".arrowl").css("display", "block");
+            } else {
+                jQuery(".arrowr").css("display", "none");
+            }
+        });
 
-			jQuery(".arrowl").click(function() {
-				var imgSrc = jQuery(".lightbox img").attr("src");
-				var search = jQuery(".masonry-grid").find("img[src$='" + imgSrc + "']");
-				var newImage = search.prev().attr("src");
-				/*jQuery(".lightbox img").attr("src", search.next());*/
-				jQuery(".lightbox img").attr("src", newImage);
-				jQuery(".filter").css("background-image", "url(" + newImage + ")");
+        jQuery(".arrowl").click(function() {
+            var imgSrc = jQuery(".lightbox img").attr("src");
+            var search = jQuery(".masonry-grid").find("img[src$='" + imgSrc + "']");
+            var newImage = search.prev().attr("src");
+            /*jQuery(".lightbox img").attr("src", search.next());*/
+            jQuery(".lightbox img").attr("src", newImage);
+            jQuery(".filter").css("background-image", "url(" + newImage + ")");
 
-				if (!search.prev().is(":first-child")) {
-					jQuery(".arrowr").css("display", "block");
-				} else {
-					jQuery(".arrowl").css("display", "none");
-				}
-			});
+            if (!search.prev().is(":first-child")) {
+                jQuery(".arrowr").css("display", "block");
+            } else {
+                jQuery(".arrowl").css("display", "none");
+            }
+        });
 
-		});
-	</script>
+    });
+</script>
 </section>
 <?php
 get_footer();

@@ -746,13 +746,14 @@ body:not(.theme-storefront)
   display: none;
   background: #7f8c8d;
   perspective: 1000;
+  z-index: 999999;
 }
 
 .filter {
   position: absolute;
   width: 100%;
   height: 100%;
-  filter: blur(20px);
+  filter: blur(5px);
   opacity: 0.5;
   background-position: center;
   background-size: cover;
@@ -840,7 +841,7 @@ body:not(.theme-storefront)
   transform: translate(-50%, -50%) rotate(45deg);
 }
 
-.title {
+.lightbox .title {
   font-size: 20px;
   color: #000;
   z-index: 1000;
