@@ -599,7 +599,7 @@ jQuery(document).ready(function ($) {
 
 		// Accomodation.
 		var adult_count = parseInt( $( '#ersrv-edit-reservation-item-adult-count-' + item_id ).val() );
-		adult_count     = ( -1 === is_valid_number( adult_count ) ) ? 1 : adult_count;
+		adult_count     = ( -1 === is_valid_number( adult_count ) ) ? 0 : adult_count;
 		var kids_count  = parseInt( $( '#ersrv-edit-reservation-item-kid-count-' + item_id ).val() );
 		kids_count      = ( -1 === is_valid_number( kids_count ) ) ? 0 : kids_count;
 

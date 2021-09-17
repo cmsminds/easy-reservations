@@ -1359,6 +1359,23 @@ class Easy_Reservations_Admin {
 			return $actions;
 		}
 
+		// Display the edit action.
+		if ( is_admin() ) {
+			$edit_reservation_page_id          = ersrv_get_page_id( 'edit-reservation' );
+			$edit_reservation_page_url         = get_permalink( $edit_reservation_page_id );
+			$query_params                      = array(
+				'action' => 'edit-reservation',
+				'id'     => $order_id,
+			);
+			$actions['ersrv-reservation-edit'] = array(
+				'url'    => add_query_arg( $query_params, $edit_reservation_page_url ),
+				'name'   => '',
+				'title'  => sprintf( __( 'Edit Reservation #%1$d', 'easy-reservations' ), $order_id ),
+				'action' => 'ersrv-reservation-edit',
+			);
+		}
+
+
 		// Check if the order status is allowed for receipts.
 		$display_order_receipt = ersrv_should_display_receipt_button( $order_id );
 
@@ -1415,19 +1432,29 @@ class Easy_Reservations_Admin {
 		// Check if the order status is allowed for receipts.
 		$display_order_receipt = ersrv_should_display_receipt_button( $order_id );
 
-		// Return the actions if the receipt button should not be displayed.
-		if ( false === $display_order_receipt ) {
-			return;
-		}
-
 		// Generate the button.
 		ob_start();
 		?>
 		<li class="wide ersrv-edit-order-actions">
-			<a class="button"
-			   href="<?php echo esc_url( ersrv_download_reservation_receipt_url( $order_id ) ); ?>"><?php echo esc_html( ersrv_get_plugin_settings( 'ersrv_easy_reservations_receipt_button_text' ) ); ?></a>
+			<h4><?php esc_html_e( 'Easy Reservations:', 'easy-reservations' ); ?></h4>
+		<?php
+			// Return the actions if the receipt button should not be displayed.
+			if ( false !== $display_order_receipt ) {
+				?><a class="button" href="<?php echo esc_url( ersrv_download_reservation_receipt_url( $order_id ) ); ?>"><?php echo esc_html( ersrv_get_plugin_settings( 'ersrv_easy_reservations_receipt_button_text' ) ); ?></a><?php
+			}
+
+			// Add the edit button now.
+			$edit_reservation_page_id          = ersrv_get_page_id( 'edit-reservation' );
+			$edit_reservation_page_url         = get_permalink( $edit_reservation_page_id );
+			$query_params                      = array(
+				'action' => 'edit-reservation',
+				'id'     => $order_id,
+			);
+			?>
+			<a class="button" title="<?php esc_html_e( 'Edit Reservation', 'easy-reservations' ); ?>" href="<?php echo esc_url( add_query_arg( $query_params, $edit_reservation_page_url ) ); ?>"><?php esc_html_e( 'Edit Reservation', 'easy-reservations' ); ?></a>
 		</li>
 		<?php
+
 		echo wp_kses_post( ob_get_clean() );
 	}
 

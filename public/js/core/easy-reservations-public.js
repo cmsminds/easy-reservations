@@ -1495,7 +1495,7 @@ jQuery(document).ready(function ($) {
 
 		// Accomodation.
 		var adult_count = parseInt( $( '#adult-accomodation-count' ).val() );
-		adult_count     = ( -1 === is_valid_number( adult_count ) ) ? 1 : adult_count;
+		adult_count     = ( -1 === is_valid_number( adult_count ) ) ? 0 : adult_count;
 		var kids_count  = parseInt( $( '#kid-accomodation-count' ).val() );
 		kids_count      = ( -1 === is_valid_number( kids_count ) ) ? 0 : kids_count;
 
@@ -1559,7 +1559,7 @@ jQuery(document).ready(function ($) {
 
 		// Accomodation.
 		var adult_count = parseInt( $( '#quick-view-adult-accomodation-count' ).val() );
-		adult_count     = ( -1 === is_valid_number( adult_count ) ) ? 1 : adult_count;
+		adult_count     = ( -1 === is_valid_number( adult_count ) ) ? 0 : adult_count;
 		var kids_count  = parseInt( $( '#quick-view-kid-accomodation-count' ).val() );
 		kids_count      = ( -1 === is_valid_number( kids_count ) ) ? 0 : kids_count;
 
