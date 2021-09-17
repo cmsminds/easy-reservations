@@ -1248,7 +1248,7 @@ jQuery( document ).ready( function( $ ) {
 	 *
 	 * @param {string} $data
 	 */
-	 function is_valid_string( data ) {
+	function is_valid_string( data ) {
 		if ( '' === data || undefined === data || ! isNaN( data ) || 0 === data ) {
 			return -1;
 		} else {
@@ -1274,7 +1274,7 @@ jQuery( document ).ready( function( $ ) {
 	 *
 	 * @param {string} element
 	 */
-	 function block_element( element ) {
+	function block_element( element ) {
 		element.addClass( 'non-clickable' );
 	}
 
