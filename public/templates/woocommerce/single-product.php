@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 get_header();
 
 $item_post    = get_post( get_the_ID() );
+$wc_item      = wc_get_product();
 $item_details = ersrv_get_item_details( $item_post->ID );
 
 // Cost details.
@@ -94,6 +95,11 @@ $social_share_urls = apply_filters( 'ersrv_reservation_item_socia_share_platform
 $banner_image_id  = get_post_meta( $item_post->ID, 'ersrv_banner_image_id', true );
 $banner_image_url = ersrv_get_attachment_url_from_attachment_id( $banner_image_id );
 $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV_PLUGIN_URL . 'public/images/banner-bg.jpg';
+
+// Gallery images.
+$featured_image_id = $wc_item->get_image_id();
+$gallery_image_ids = $wc_item->get_gallery_image_ids();
+$gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $featured_image_id ), $gallery_image_ids ) : array( $featured_image_id );
 ?>
 <section class="wrapper single-reserve-page" id="wrapper" data-item="<?php echo esc_attr( $item_post->ID ); ?>">
 	<div class="banner text-center" style="background-image: url( '<?php echo $banner_image_url; ?>' );">
@@ -103,22 +109,22 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 					<h1 class="font-Poppins font-size-40 font-weight-semibold color-white"><?php echo wp_kses_post( $item_post->post_title ); ?></h1>
 				</div>
 				<div class="review d-flex justify-content-center align-items-center color-white mb-3 font-size-17 font-weight-normal">
-					<img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/stars.png' ); ?>" alt="stars">
+					<img src="<?php echo esc_url ( ERSRV_PLUGIN_URL . 'public/images/stars.png' ); ?>" alt="stars">
 					<span class="ml-2">(1 review)</span>
 				</div>
 				<div class="boat-options d-flex justify-content-center align-items-center color-white font-size-16 flex-column flex-md-row">
 					<?php if ( ! empty( $type_str ) ) { ?>
 						<div class="d-flex align-items-center first mb-2 mb-md-0 mr-3 pr-1">
-							<img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/Ship-icon.png' ); ?>" alt="">
+							<img src="<?php echo esc_url ( ERSRV_PLUGIN_URL . 'public/images/Ship-icon.png' ); ?>" alt="">
 							<span class="ml-2 font-weight-medium"><?php echo wp_kses_post( $type_str ); ?></span>
 						</div>
 					<?php } ?>
 					<div class="d-flex align-items-center second mb-2 mb-md-0 mr-3 pr-1">
-						<img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/user-icon.png' ); ?>" alt="">
+						<img src="<?php echo esc_url ( ERSRV_PLUGIN_URL . 'public/images/user-icon.png' ); ?>" alt="">
 						<span class="ml-2 font-weight-medium">With Capitanicon</span>
 					</div>
 					<div class="d-flex align-items-center third mb-2 mb-md-0">
-						<img src="<?php echo esc_url (ERSRV_PLUGIN_URL . 'public/images/3d-box.png' ); ?>" alt="">
+						<img src="<?php echo esc_url ( ERSRV_PLUGIN_URL . 'public/images/3d-box.png' ); ?>" alt="">
 						<span class="ml-2 font-weight-medium">4</span>
 					</div>
 				</div>
@@ -151,16 +157,25 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 						<div class="collapse show" id="ship-description-collapse">
 							<div class="dropdown-divider"></div>
 							<?php echo wp_kses_post( $item_post->post_content ); ?>
-							<div class="dropdown-divider"></div>
-							<div class="masonry-grid gallery-images">
-								<!--Item -->
-								<img src="https://source.unsplash.com/random?var-0" alt="" class="masonry-grid__item gallery-image-item" />
-								<img src="https://source.unsplash.com/random?var-1" alt="" class="masonry-grid__item gallery-image-item" />
-								<img src="https://source.unsplash.com/random?var-2" alt="" class="masonry-grid__item gallery-image-item" />
-								<img src="https://source.unsplash.com/random?var-3" alt="" class="masonry-grid__item gallery-image-item" />
-								<img src="https://source.unsplash.com/random?var-4" alt="" class="masonry-grid__item gallery-image-item" />
-								<img src="https://source.unsplash.com/random?ver-5" alt="" class="masonry-grid__item gallery-image-item" />
-							</div>
+
+							<!-- GALLERY IMAGES -->
+							<?php if ( ! empty( $gallery_image_ids ) && ! empty( $gallery_image_ids ) ) { ?>
+								<div class="masonry-grid gallery-images">
+									<?php foreach ( $gallery_image_ids as $image_id ) {
+										$gallery_image_url = ersrv_get_attachment_url_from_attachment_id( $image_id );
+
+										// Continue, if the gallery image doesn't exist anymore.
+										if ( empty( $gallery_image_url ) ) {
+											continue;
+										}
+
+										// Get the filename.
+										$image_filename = basename( $gallery_image_url );
+										?>
+										<img src="<?php echo esc_url( $gallery_image_url ); ?>" alt="<?php echo esc_attr( $image_filename ); ?>" class="masonry-grid__item gallery-image-item" />
+									<?php } ?>
+								</div>
+							<?php } ?>
 						</div>
 					</div>
 					<div class="price-details info-box">
