@@ -179,7 +179,9 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 										$last_gallery_image_custom_class = ( $gallery_images_last_index === $index ) ? 'gallery-last-image-overlay' : '';
 										$last_gallery_image_custom_text  = ( $gallery_images_last_index === $index ) ? sprintf( __( 'See all %1$d images', 'easy-reservations' ), count( $gallery_image_ids ) ) : '';
 										?>
-										<img data-text="<?php echo esc_html( $last_gallery_image_custom_text ); ?>" src="<?php echo esc_url( $gallery_image_url ); ?>" alt="<?php echo esc_attr( $image_filename ); ?>" class="masonry-grid__item gallery-image-item <?php echo esc_attr( $last_gallery_image_custom_class ); ?>" />
+										<div data-text="<?php echo esc_html( $last_gallery_image_custom_text ); ?>" class="masonry-grid__item gallery-image-item <?php echo esc_attr( $last_gallery_image_custom_class ); ?>">
+											<img src="<?php echo esc_url( $gallery_image_url ); ?>" alt="<?php echo esc_attr( $image_filename ); ?>" />
+										</div>
 									<?php } ?>
 								</div>
 							<?php } ?>
@@ -406,13 +408,13 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 		</div>
 	</div>
 	<!-- light box HTML -->
-<div class="lightbox">
-    <div class="title"></div>
-    <div class="filter"></div>
-    <div class="arrowr"></div>
-    <div class="arrowl"></div>
-    <div class="close"></div>
-</div>
+	<div class="lightbox">
+		<div class="title"></div>
+		<div class="filter"></div>
+		<div class="arrowr"></div>
+		<div class="arrowl"></div>
+		<div class="close"></div>
+	</div>
 <script>
     jQuery(window).load(function($) {
 
