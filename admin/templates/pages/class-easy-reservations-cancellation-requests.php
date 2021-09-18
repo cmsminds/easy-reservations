@@ -132,6 +132,7 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	 */
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
+			case 'cb':
 			case 'date_time':
 			case 'item':
 			case 'item_subtotal':
@@ -183,11 +184,19 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	 * @return array
 	 */
 	public function get_bulk_actions() {
-		return array();
 		$actions = array(
-			'bulk_approve_requests' => __( 'Approve', 'easy-reservations' ),
-			'bulk_decline_requests' => __( 'Decline', 'easy-reservations' ),
+			'approve' => __( 'Approve', 'easy-reservations' ),
+			'decline' => __( 'Decline', 'easy-reservations' ),
 		);
+		/**
+		 * The hook to manage the bulk actions.
+		 * Displayed on the cancellation requests page.
+		 *
+		 * @param array $actions Holds the actions.
+		 * @return array
+		 * @since 1.0.0
+		 */
+		$actions = apply_filters( 'ersrv_cancellation_requests_bulk_actions', $actions );
 
 		return $actions;
 	}
@@ -199,20 +208,21 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	 * @return void
 	 */
 	public function prepare_items() {
-		// check if a search was performed.
-		$searched_keyword = isset( $_REQUEST['s'] ) ? wp_unslash( trim( $_REQUEST['s'] ) ) : '';
+		// Check if a search was performed.
+		$searched_keyword = filter_input( INPUT_GET, 's', FILTER_SANITIZE_STRING );
+		$searched_keyword = ( ! is_null( $searched_keyword ) ) ? wp_unslash( trim( $searched_keyword ) ) : '';
 
+		// Column headers.
 		$this->_column_headers = $this->get_column_info();
 
 		// Fetch table data
 		$data = $this->table_data();
 
-		// check for individual row actions
-//		$bulk_action = $this->current_action();
-//		if ( ! empty( $bulk_action ) ) {
-//			// check and process any actions such as bulk actions.
-//			$data = $this->process_bulk_action( $data, $bulk_action );
-//		}
+		// Check for bulk action.
+		$bulk_action = $this->current_action();
+		if ( false !== $bulk_action ) {
+			$this->process_bulk_action( $data, $bulk_action );
+		}
 
 		// Filter the table data in case of a search
 		if ( $searched_keyword ) {
@@ -222,8 +232,10 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 		$per_page     = $this->get_items_per_page( 'ersrv_cancellation_requests_per_page', 20 );
 		$current_page = $this->get_pagenum();
 
+		// Slice the data based on pagination.
 		$found_data = array_slice( $data, ( ( $current_page - 1 ) * $per_page ), $per_page );
 
+		// Set the pagination data.
 		$total_items = count( $data );
 		$this->set_pagination_args( array(
 			'total_items' => $total_items,
@@ -258,10 +270,49 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	/**
 	 * The callback where the bulk actions are processed.
 	 */
-	public function process_bulk_action() {
-		// Detect if the delete action was triggered.
-		if ( 'bulk_delete_requests' === $this->current_action() ) {
-			wp_die( 'Items deleted (or they would be if we had items to delete)!' );
+	public function process_bulk_action( $data, $bulk_action ) {
+		$posted_array   = filter_input_array( INPUT_GET );
+		$selected_items = ( ! empty( $posted_array['bulk_selected_item'] ) ) ? $posted_array['bulk_selected_item'] : array();
+
+		// If there is no item selected.
+		if ( empty( $selected_items ) || ! is_array( $selected_items ) ) {
+			?>
+			<div class="error">
+				<p><?php echo wp_kses_post( __( 'There is no or invalid item selected to proceed with the bulk action.', 'easy-reservations' ) ); ?></p>
+			</div>
+			<?php
+		} else {
+			// Iterate through the selected items.
+			foreach ( $selected_items as $selected_item ) {
+				$splitted_selected_item = explode( '|', $selected_item );
+				$line_item_id           = ( ! empty( $splitted_selected_item[0] ) ) ? $splitted_selected_item[0] : '';
+				$order_id               = ( ! empty( $splitted_selected_item[1] ) ) ? $splitted_selected_item[1] : '';
+
+				// Skip, if the line item ID or the order ID is unavailable.
+				if ( empty( $line_item_id ) || empty( $order_id ) ) {
+					continue;
+				}
+
+				// If the approve action is requested.
+				if ( 'approve' === $bulk_action ) {
+					ersrv_approve_reservation_cancellation_request( $order_id, $line_item_id );
+				} elseif ( 'decline' === $bulk_action ) {
+					ersrv_decline_reservation_cancellation_request( $line_item_id );
+				}
+
+				/**
+				 * This hook executes on the cancellation requests page.
+				 *
+				 * This hook helps in processing the custom bulk actions.
+				 *
+				 * @param array  $data Table data.
+				 * @param string $bulk_action Bulk action name.
+				 * @param int    $order_id WooCommerce order ID.
+				 * @param int    $line_item_id WooCommerce order line item ID.
+				 * @since 1.0.0
+				 */
+				do_action( 'ersrv_processed_reservation_cancellation_requests_bulk_action', $data, $bulk_action, $order_id, $line_item_id );
+			}
 		}
 	}
 
@@ -291,6 +342,23 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 			$this->row_actions( $actions ),
 			'<div class="ersrv-cancellation-request-actions" data-item="' . $item_id . '" data-order="' . $order_id . '">',
 			'</div>'
+		);
+	}
+
+	/**
+	 * The column item to have row actions.
+	 *
+	 * @param array $item Item data.
+	 * @return string
+	 */
+	function column_cb( $item ) {
+		$item_id  = ( ! empty( $item['item_id'] ) ) ? $item['item_id'] : '';
+		$order_id = ( ! empty( $item['order_id'] ) ) ? $item['order_id'] : '';
+
+		return sprintf(
+			'<input type="checkbox" name="%1$s" value="%2$s" />',
+			'bulk_selected_item[]',
+			"{$item_id}|{$order_id}"
 		);
 	}
 }

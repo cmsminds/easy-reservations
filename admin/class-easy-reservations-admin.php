@@ -691,6 +691,10 @@ class Easy_Reservations_Admin {
 	public function ersrv_reservation_cancellation_requests() {
 		global $reservation_cancellation_requests_menu_page_data;
 		$reservation_cancellation_requests_menu_page_data->prepare_items();
+
+		// Current page.
+		$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
+		$page = ( ! is_null( $page ) ) ? $page : '';
 		?>
 		<div class="wrap">
 			<h2><?php esc_html_e( 'Reservation Cancellation Requests', 'easy-reservations' ); ?></h2>
@@ -698,7 +702,7 @@ class Easy_Reservations_Admin {
 			<div id="nds-wp-list-table-demo">
 				<div id="nds-post-body">
 					<form id="nds-user-list-form" method="get">
-						<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+						<input type="hidden" name="page" value="<?php echo esc_html( $page ); ?>" />
 						<?php
 						$reservation_cancellation_requests_menu_page_data->search_box( __( 'Search Requests', 'easy-reservations' ), 'search-reservation-cancellation-requests' );
 						$reservation_cancellation_requests_menu_page_data->display();
@@ -1677,20 +1681,8 @@ class Easy_Reservations_Admin {
 		// Posted data.
 		$line_item_id = (int) filter_input( INPUT_POST, 'line_item_id', FILTER_SANITIZE_NUMBER_INT );
 
-		// Update the request.
-		wc_update_order_item_meta( $item_id, 'ersrv_cancellation_request_status', 'declined' );
-
-		/**
-		 * This action runs on the admin listing page of reservation cancellation requests.
-		 *
-		 * This hook help adding custom actions after the reservation cancellation request has been declined.
-		 * An email is sent to the customer at this action.
-		 *
-		 * @param int $line_item_id WooCommerce order line item id.
-		 *
-		 * @since 1.0.0
-		 */
-		do_action( 'ersrv_after_reservation_cancellation_request_declined', $line_item_id );
+		// Shoot the declinal request now.
+		ersrv_decline_reservation_cancellation_request( $line_item_id );
 
 		// Send the response.
 		$response = array(
@@ -1720,23 +1712,8 @@ class Easy_Reservations_Admin {
 		$line_item_id = (int) filter_input( INPUT_POST, 'line_item_id', FILTER_SANITIZE_NUMBER_INT );
 		$order_id     = (int) filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT );
 
-		// Flush out the dates.
-		ersrv_flush_out_reserved_dates( $order_id, $line_item_id );
-
-		// Update the request.
-		wc_update_order_item_meta( $line_item_id, 'ersrv_cancellation_request_status', 'approved' );
-
-		/**
-		 * This action runs on the admin listing page of reservation cancellation requests.
-		 *
-		 * This hook help adding custom actions after the reservation cancellation request has been approved.
-		 * An email is sent to the customer at this action.
-		 *
-		 * @param int $line_item_id WooCommerce order line item id.
-		 *
-		 * @since 1.0.0
-		 */
-		do_action( 'ersrv_after_reservation_cancellation_request_approved', $line_item_id );
+		// Shoot the approval request now.
+		ersrv_approve_reservation_cancellation_request( $order_id, $line_item_id );
 
 		// Send the response.
 		$response = array(

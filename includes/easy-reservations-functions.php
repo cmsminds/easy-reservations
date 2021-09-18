@@ -3031,3 +3031,63 @@ if ( ! function_exists( 'ersrv_in_cart_item_reserved_dates' ) ) {
 		return $reservation_dates_arr;
 	}
 }
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_approve_reservation_cancellation_request' ) ) {
+	/**
+	 * Approve the reservation cancellation request.
+	 *
+	 * @param int $order_id WooCommerce order ID.
+	 * @param int $line_item_id WooCommerce order line item ID.
+	 * @since 1.0.0
+	 */
+	function ersrv_approve_reservation_cancellation_request( $order_id, $line_item_id ) {
+		// Flush out the dates.
+		ersrv_flush_out_reserved_dates( $order_id, $line_item_id );
+
+		// Update the request.
+		wc_update_order_item_meta( $line_item_id, 'ersrv_cancellation_request_status', 'approved' );
+
+		/**
+		 * This action runs on the admin listing page of reservation cancellation requests.
+		 *
+		 * This hook help adding custom actions after the reservation cancellation request has been approved.
+		 * An email is sent to the customer at this action.
+		 *
+		 * @param int $line_item_id WooCommerce order line item id.
+		 *
+		 * @since 1.0.0
+		 */
+		do_action( 'ersrv_after_reservation_cancellation_request_approved', $line_item_id );
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_decline_reservation_cancellation_request' ) ) {
+	/**
+	 * Decline the reservation cancellation request.
+	 *
+	 * @param int $line_item_id WooCommerce order line item ID.
+	 * @since 1.0.0
+	 */
+	function ersrv_decline_reservation_cancellation_request( $line_item_id ) {
+		// Update the request.
+		wc_update_order_item_meta( $item_id, 'ersrv_cancellation_request_status', 'declined' );
+
+		/**
+		 * This action runs on the admin listing page of reservation cancellation requests.
+		 *
+		 * This hook help adding custom actions after the reservation cancellation request has been declined.
+		 * An email is sent to the customer at this action.
+		 *
+		 * @param int $line_item_id WooCommerce order line item id.
+		 *
+		 * @since 1.0.0
+		 */
+		do_action( 'ersrv_after_reservation_cancellation_request_declined', $line_item_id );
+	}
+}
