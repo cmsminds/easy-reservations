@@ -832,15 +832,30 @@ class Easy_Reservations_Public {
 			return;
 		}
 
-		// Get the WooCommerce order ID.
-		$order_id = $wc_order->get_id();
-
-		// Should the calendar buttons be added.
-		$is_reservation_order = ersrv_order_is_reservation( $wc_order );
+		$order_id             = $wc_order->get_id(); // Get the WooCommerce order ID.
+		$is_reservation_order = ersrv_order_is_reservation( $wc_order ); // Should the calendar buttons be added.
 
 		// Return, if the order is not reservation.
 		if ( ! $is_reservation_order ) {
 			return;
+		}
+
+		$future_reservations_order_items = array(); // Future reservation items in the order.
+		$date_today                      = gmdate( ersrv_get_php_date_format() );
+
+		// Get the items and their checkin dates.
+		$line_items = $wc_order->get_items();
+		if ( ! empty( $line_items ) && is_array( $line_items ) ) {
+			foreach ( $line_items as $line_item ) {
+				$line_item_id          = $line_item->get_id();
+				$checkin_date          = wc_get_order_item_meta( $line_item_id, 'Checkin Date', true );
+				$days_difference_count = ersrv_get_days_count_until_checkin( $checkin_date );
+
+				// Count the item, if there are days more than 0.
+				if ( 0 < $days_difference_count ) {
+					$future_reservations_order_items[] = $line_item_id;
+				}
+			}
 		}
 
 		// Print the cost difference if it's there, so the customer knows about the payment.
@@ -852,9 +867,11 @@ class Easy_Reservations_Public {
 			<h2 class="woocommerce-column__title"><?php esc_html_e( 'Easy Reservations: Actions', 'easy-reservations' ); ?></h2>
 			<div class="actions">
 				<?php
-				ersrv_print_calendar_buttons( $order_id, $wc_order ); // Print the calendar button.
-				ersrv_print_receipt_button( $order_id, $wc_order ); // Print the receipt button.
-				ersrv_print_edit_reservation_button( $order_id, $wc_order ); // Print the edit reservation button.
+				if ( ! empty( $future_reservations_order_items ) ) {
+					ersrv_print_calendar_buttons( $order_id, $wc_order ); // Print the calendar button.
+					ersrv_print_receipt_button( $order_id, $wc_order ); // Print the receipt button.
+					ersrv_print_edit_reservation_button( $order_id, $wc_order ); // Print the edit reservation button.
+				}
 				?>
 			</div>
 		</div>

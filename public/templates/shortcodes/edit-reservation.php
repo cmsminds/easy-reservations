@@ -90,6 +90,8 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 		<div class="container">
 			<?php
 			if ( $valid_order ) {
+				$editable_items = array();
+				// Iterate thorugh the items now.
 				foreach ( $line_items as $line_item ) {
 					$item_id      = $line_item->get_id();
 					$product_id   = $line_item->get_product_id();
@@ -100,12 +102,24 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 						continue;
 					}
 
+					// Checkin date.
+					$checkin_date = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
+
+					// Check if the checkin date has passed.
+					$days_difference_count = ersrv_get_days_count_until_checkin( $checkin_date );
+
+					// Skip, if the checkin date is today some somedate in the past.
+					if ( 0 >= $days_difference_count ) {
+						continue;
+					} else {
+						$editable_items[] = $item_id;
+					}
+
 					// Product image.
 					$product_image_id  = get_post_thumbnail_id( $product_id );
 					$product_image_url = ersrv_get_attachment_url_from_attachment_id( $product_image_id );
 
 					// Get the other reservation details.
-					$checkin_date       = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
 					$checkout_date      = wc_get_order_item_meta( $item_id, 'Checkout Date', true );
 					$adult_count        = wc_get_order_item_meta( $item_id, 'Adult Count', true );
 					$adult_subtotal     = wc_get_order_item_meta( $item_id, 'Adult Subtotal', true );
@@ -336,20 +350,27 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 				<?php } ?>
 
 				<!-- UPDATE RESERVATION -->
-				<div class="group-update-btn d-flex align-items-center justify-content-center ersrv-update-reservation flex-wrap">
-					<input type="hidden" class="ersrv-edit-reservation-order-total" value="<?php echo esc_html( $order_total ); ?>" />
-					<input type="hidden" class="ersrv-edit-reservation-non-reservation-items-total" value="<?php echo esc_html( $non_reservation_items_total ); ?>" />
-					<input type="hidden" class="ersrv-order-id" value="<?php echo esc_attr( $order_id ); ?>" />
-					<div>
-						<p class="font-lato font-size-16 color-black mb-3 text-center ersrv-cost-difference-text"></p>
+				<?php if ( ! empty( $editable_items ) ) { ?>
+					<div class="group-update-btn d-flex align-items-center justify-content-center ersrv-update-reservation flex-wrap">
+						<input type="hidden" class="ersrv-edit-reservation-order-total" value="<?php echo esc_html( $order_total ); ?>" />
+						<input type="hidden" class="ersrv-edit-reservation-non-reservation-items-total" value="<?php echo esc_html( $non_reservation_items_total ); ?>" />
+						<input type="hidden" class="ersrv-order-id" value="<?php echo esc_attr( $order_id ); ?>" />
+						<div>
+							<p class="font-lato font-size-16 color-black mb-3 text-center ersrv-cost-difference-text"></p>
+						</div>
+						<div class="ml-auto mr-3">
+							<button class="btn btn-secondary cancel" onclick="<?php echo esc_attr( $cancel_reservation ); ?>"><?php esc_html_e( 'Cancel', 'easy-reservations' ); ?></button>
+						</div>
+						<div class="">
+							<button class="btn btn-accent update"><?php esc_html_e( 'Update Reservation', 'easy-reservations' ); ?></button>
+						</div>
 					</div>
-					<div class="ml-auto mr-3">
-						<button class="btn btn-secondary cancel" onclick="<?php echo esc_attr( $cancel_reservation ); ?>"><?php esc_html_e( 'Cancel', 'easy-reservations' ); ?></button>
+				<?php } else { ?>
+					<div class="woocommerce-message woocommerce-message--info woocommerce-Message woocommerce-Message--info woocommerce-info">
+						<a class="woocommerce-Button button" href="<?php echo esc_url( $view_order_link ); ?>"><?php esc_html_e( 'Back', 'easy-reservations' ); ?></a>
+						<?php esc_html_e( 'No reservation item to edit.', 'easy-reservations' ); ?>
 					</div>
-					<div class="">
-						<button class="btn btn-accent update"><?php esc_html_e( 'Update Reservation', 'easy-reservations' ); ?></button>
-					</div>
-				</div>
+				<?php } ?>
 			<?php
 			} else {
 				if ( ! empty( $is_updated ) && '1' === $is_updated ) {

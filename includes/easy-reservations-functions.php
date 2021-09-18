@@ -2505,8 +2505,10 @@ if ( ! function_exists( 'ersrv_print_edit_reservation_button' ) ) {
 			return;
 		}
 
+		// Check for the reservation item dates.
+
 		$is_updated                = get_post_meta( $order_id, 'ersrv_reservation_update', true );
-		$updated_button_class      = ( ! empty( $is_updated ) && '1' === $is_updated ) ? 'non-clickable' : '';
+		$disabled_button_class     = ( ! empty( $is_updated ) && '1' === $is_updated ) ? 'non-clickable' : '';
 		$button_text               = ersrv_get_plugin_settings( 'ersrv_edit_reservation_button_text' );
 		$edit_reservation_page_id  = ersrv_get_page_id( 'edit-reservation' );
 		$edit_reservation_page_url = get_permalink( $edit_reservation_page_id );
@@ -2522,7 +2524,7 @@ if ( ! function_exists( 'ersrv_print_edit_reservation_button' ) ) {
 			?><div class="ersrv-edit-reservation-container"><?php
 		}
 		?>
-			<a href="<?php echo esc_url( $edit_reservation_page_url ); ?>" class="btn btn-accent <?php echo esc_attr( $updated_button_class ); ?>" title="<?php echo esc_html( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></a>
+			<a href="<?php echo esc_url( $edit_reservation_page_url ); ?>" class="btn btn-accent <?php echo esc_attr( $disabled_button_class ); ?>" title="<?php echo esc_html( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></a>
 		</div>
 		<?php
 	}
@@ -2548,11 +2550,28 @@ if ( ! function_exists( 'ersrv_reservation_eligible_for_cancellation' ) ) {
 		}
 
 		// Get the checkin date.
-		$checkin_date = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
-		$date_today   = gmdate( ersrv_get_php_date_format() );
+		$checkin_date          = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
+		$days_difference_count = ersrv_get_days_count_until_checkin( $checkin_date );
 
+		if ( $days_difference_count <= $eligibility_days ) {
+			return false;
+		}
+
+		return true;
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_days_count_until_checkin' ) ) {
+	/**
+	 * Get the number of days from today until the checkin date
+	 */
+	function ersrv_get_days_count_until_checkin( $checkin_date, $date_from = '' ) {
 		// Get the days yet to the reservation.
-		$dates_range = ersrv_get_dates_within_2_dates( $date_today, $checkin_date, true );
+		$date_from   = ( empty( $date_from ) ) ? gmdate( ersrv_get_php_date_format() ) : $date_from;
+		$dates_range = ersrv_get_dates_within_2_dates( $date_from, $checkin_date, true );
 		$dates       = array();
 
 		// Iterate through the dates.
@@ -2563,13 +2582,7 @@ if ( ! function_exists( 'ersrv_reservation_eligible_for_cancellation' ) ) {
 		}
 		
 		// Dates count.
-		$days_difference_count = count( $dates );
-
-		if ( $days_difference_count <= $eligibility_days ) {
-			return false;
-		}
-
-		return true;
+		return count( $dates );
 	}
 }
 
