@@ -108,10 +108,10 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 				<div class="page-title mb-3">
 					<h1 class="font-Poppins font-size-40 font-weight-semibold color-white"><?php echo wp_kses_post( $item_post->post_title ); ?></h1>
 				</div>
-				<div class="review d-flex justify-content-center align-items-center color-white mb-3 font-size-17 font-weight-normal">
-					<img src="<?php echo esc_url ( ERSRV_PLUGIN_URL . 'public/images/stars.png' ); ?>" alt="stars">
+				<!-- <div class="review d-flex justify-content-center align-items-center color-white mb-3 font-size-17 font-weight-normal">
+					<img src="<?php // echo esc_url ( ERSRV_PLUGIN_URL . 'public/images/stars.png' ); ?>" alt="stars">
 					<span class="ml-2">(1 review)</span>
-				</div>
+				</div> -->
 				<div class="boat-options d-flex justify-content-center align-items-center color-white font-size-16 flex-column flex-md-row">
 					<?php if ( ! empty( $type_str ) ) { ?>
 						<div class="d-flex align-items-center first mb-2 mb-md-0 mr-3 pr-1">
@@ -137,7 +137,7 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 				<div class="col-12 col-lg-7 col-xl-8">
 					<div class="ship-features info-box">
 						<h3 class="section-title font-Poppins font-size-24 font-weight-bold d-block color-black text-decoration-none show-on-load">
-							<span class=""><?php esc_html_e( 'Ship Features', 'easy-reservations' ); ?></span>
+							<span class=""><?php esc_html_e( 'Availability', 'easy-reservations' ); ?></span>
 						</h3>
 						<div class="ship-inner-features show show-on-load" id="ship-features-collapse">
 							<div class="dropdown-divider"></div>
@@ -152,7 +152,7 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 					</div>
 					<div class="ship-description info-box">
 						<a class="section-title font-Poppins font-size-24 font-weight-bold d-block color-black text-decoration-none" data-toggle="collapse" href="#ship-description-collapse" role="button" aria-expanded="true" aria-controls="ship-description-collapse">
-							<span class=""><?php esc_html_e( 'Ship Description', 'easy-reservations' ); ?></span>
+							<span class=""><?php esc_html_e( 'Description', 'easy-reservations' ); ?></span>
 						</a>
 						<div class="collapse show" id="ship-description-collapse">
 							<div class="dropdown-divider"></div>
@@ -199,7 +199,7 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 					</div>
 					<div class="price-details info-box">
 						<a class="section-title font-Poppins font-size-24 font-weight-bold d-block color-black text-decoration-none" data-toggle="collapse" href="#price-details-collapse" role="button" aria-expanded="false" aria-controls="price-details-collapse">
-							<span class=""><?php esc_html_e( 'Price Details', 'easy-reservations' ); ?></span>
+							<span class=""><?php esc_html_e( 'Pricing', 'easy-reservations' ); ?></span>
 						</a>
 						<div class="collapse" id="price-details-collapse">
 							<div class="dropdown-divider"></div>
@@ -209,7 +209,7 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 					</div>
 					<div class="ship-location info-box">
 						<a class="section-title font-Poppins font-size-24 font-weight-bold d-block color-black text-decoration-none" data-toggle="collapse" href="#ship-location-collapse" role="button" aria-expanded="false" aria-controls="ship-location-collapse">
-							<span class=""><?php esc_html_e( 'Ship Location', 'easy-reservations' ); ?></span>
+							<span class=""><?php esc_html_e( 'Location', 'easy-reservations' ); ?></span>
 						</a>
 						<div class="collapse" id="ship-location-collapse">
 							<div class="dropdown-divider"></div>
@@ -222,7 +222,7 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 					</div>
 					<div class="ship-details info-box">
 						<a class="section-title font-Poppins font-size-24 font-weight-bold d-block color-black text-decoration-none" data-toggle="collapse" href="#ship-details-collapse" role="button" aria-expanded="false" aria-controls="ship-details-collapse">
-							<span class=""><?php esc_html_e( 'Ship Details', 'easy-reservations' ); ?></span>
+							<span class=""><?php esc_html_e( 'Other Details', 'easy-reservations' ); ?></span>
 						</a>
 						<div class="collapse" id="ship-details-collapse">
 							<div class="dropdown-divider"></div>
@@ -394,8 +394,8 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 										<input id="ersrv-search-checkout" type="text" class="form-control date-control text-left rounded-lg" placeholder="Check out">
 									</div>
 									<div class="book-items-wrapper pb-2">
-										<select class="selectpicker form-control Boat-Types" id="boat-types" data-size="5" data-style="btn-outline-secondary focus-none" title="<?php esc_html_e( 'Select Item Type', 'easy-reservations' ); ?>">
-											<option value=""><?php esc_html_e( 'Select Item Type', 'easy-reservations' ); ?></option>
+										<select class="selectpicker form-control Boat-Types" id="boat-types" data-size="5" data-style="btn-outline-secondary focus-none" title="<?php esc_html_e( 'Item Type', 'easy-reservations' ); ?>">
+											<option value=""><?php esc_html_e( 'Item Type', 'easy-reservations' ); ?></option>
 											<?php if ( ! empty( $reservation_item_types ) && is_array( $reservation_item_types ) ) { ?>
 												<?php foreach ( $reservation_item_types as $item_type ) { ?>
 													<option value="<?php echo esc_attr( $item_type->term_id ); ?>"><?php echo esc_html( $item_type->name ); ?></option>

@@ -869,9 +869,10 @@ class Easy_Reservations_Public {
 				<?php
 				if ( ! empty( $future_reservations_order_items ) ) {
 					ersrv_print_calendar_buttons( $order_id, $wc_order ); // Print the calendar button.
-					ersrv_print_receipt_button( $order_id, $wc_order ); // Print the receipt button.
 					ersrv_print_edit_reservation_button( $order_id, $wc_order ); // Print the edit reservation button.
 				}
+
+				ersrv_print_receipt_button( $order_id, $wc_order ); // Print the receipt button.
 				?>
 			</div>
 		</div>
@@ -1626,11 +1627,15 @@ class Easy_Reservations_Public {
 											$amenity_cost      = ( ! empty( $amenity_data['cost'] ) ) ? $amenity_data['cost'] : 0.00;
 											$amenity_slug      = ( ! empty( $amenity_title ) ) ? sanitize_title( $amenity_title ) : '';
 											$amenity_cost_type = ( ! empty( $amenity_data['cost_type'] ) ) ? $amenity_data['cost_type'] : 'one_time';
+											$cost_type_text    = ( 'one_time' === $amenity_cost_type ) ? __( 'Single Fee', 'easy-reservations' ) : __( 'Per Day', 'easy-reservations' );
 											?>
 											<div class="col-6">
 												<div class="custom-control custom-switch ersrv-single-amenity-block" data-cost_type="<?php echo esc_attr( $amenity_cost_type ); ?>" data-cost="<?php echo esc_attr( $amenity_cost ); ?>" data-amenity="<?php echo esc_attr( $amenity_title ); ?>">
 													<input type="checkbox" class="ersrv-quick-view-reservation-single-amenity custom-control-input" id="amenity-<?php echo esc_html( $amenity_slug ); ?>">
-													<label class="custom-control-label" for="amenity-<?php echo esc_html( $amenity_slug ); ?>"><?php echo esc_html( $amenity_title ); ?> - <span class="font-lato font-weight-bold color-accent"><?php echo wc_price( $amenity_cost ); ?></span></label>
+													<label class="custom-control-label font-size-15" for="amenity-<?php echo esc_html( $amenity_slug ); ?>">
+														<span class="d-block font-lato font-weight-bold color-black pb-2"><?php echo esc_html( $amenity_title ); ?> </span>
+														<span><span class="font-lato font-weight-bold color-accent"><?php echo wc_price( $amenity_cost ); ?></span> | <span class="font-lato font-weight-normal color-black-500"><?php echo esc_html( $cost_type_text ); ?></span></span>
+													</label>
 												</div>
 											</div>
 										<?php } ?>

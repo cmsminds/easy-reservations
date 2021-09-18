@@ -1084,6 +1084,11 @@ jQuery(document).ready(function ($) {
 					unblock_element( view_license_button ); // Unblock the view button as well.
 					$( '.ersrv-uploaded-checkout-license-file' ).html( response.data.view_license_html );
 					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message ); // Show toast.
+
+					// Reset the file input type.
+					var driving_license = $( 'input[name="reservation-driving-license"]' );
+					driving_license.wrap( '<form>' ).closest( 'form' ).get(0).reset();
+					driving_license.unwrap();
 				}
 			},
 		} );
