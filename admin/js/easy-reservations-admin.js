@@ -1077,6 +1077,7 @@ jQuery( document ).ready( function( $ ) {
 	$( document ).on( 'click', '.ersrv-cancellation-request-actions .approve-request', function() {
 		var this_button  = $( this );
 		var line_item_id = this_button.parents( '.ersrv-cancellation-request-actions' ).data( 'item' );
+		var order_id     = this_button.parents( '.ersrv-cancellation-request-actions' ).data( 'order' );
 		var confirmation = confirm( approve_reservation_cancellation_cnf_message );
 
 		// Return false, if the line item is invalid.
@@ -1100,6 +1101,7 @@ jQuery( document ).ready( function( $ ) {
 			data: {
 				action: 'approve_reservation_cancellation_request',
 				line_item_id: line_item_id,
+				order_id: order_id,
 			},
 			success: function ( response ) {
 				// Check for invalid ajax request.

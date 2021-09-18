@@ -638,7 +638,7 @@ if ( ! function_exists( 'ersrv_get_admin_script_vars' ) ) {
 		}
 
 		// Add the custom message to the array on cancellation requests page.
-		if ( ! is_null( $page ) && 'reservation-calcellation-requests' === $page ) {
+		if ( ! is_null( $page ) && 'reservation-cancellation-requests' === $page ) {
 			$vars['decline_reservation_cancellation_cnf_message'] = __( 'Click OK to confirm cancellation request declination. This action won\'t be undone.', 'easy-reservations' );
 			$vars['approve_reservation_cancellation_cnf_message'] = __( 'Click OK to confirm cancellation request approval. This action won\'t be undone.', 'easy-reservations' );
 		}
@@ -1486,8 +1486,8 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 			$body        = 'Hello, please find the attached receipt.';
 			wp_mail( $customer_email, $subject, $body, $headers, $attachments );
 		} else {
-			$pdf->Output( $pdf_file_title, 'I' ); // View PDF.
-			// $pdf->Output( $pdf_file_title, 'D' ); // View PDF.
+			// $pdf->Output( $pdf_file_title, 'I' ); // View PDF.
+			$pdf->Output( $pdf_file_title, 'D' ); // View PDF.
 		}
 	}
 }

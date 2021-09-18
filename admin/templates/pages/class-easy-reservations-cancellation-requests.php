@@ -102,7 +102,8 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 			$customer_first_name = get_post_meta( $order_id, '_billing_first_name', true );
 			$customer_last_name  = get_post_meta( $order_id, '_billing_last_name', true );
 			$order_string        = "#{$order_id} {$customer_first_name} {$customer_last_name}";
-			$temp['order_id']    = '<a href="' . get_edit_post_link( $order_id ) . '" title="' . $order_string . '">' . $order_string . '</a>';
+			$temp['order']       = '<a href="' . get_edit_post_link( $order_id ) . '" title="' . $order_string . '">' . $order_string . '</a>';
+			$temp['order_id']    = $order_id;
 
 			// Get the order status.
 			$order_status         = $wc_order->get_status();
@@ -134,7 +135,7 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 			case 'date_time':
 			case 'item':
 			case 'item_subtotal':
-			case 'order_id':
+			case 'order':
 			case 'order_status':
 			case 'cancellation_status':
 				return $item[ $column_name ];
@@ -168,7 +169,7 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 			'item'                => __( 'Item', 'easy-reservations' ),
 			'date_time'           => __( 'DateTime', 'easy-reservations' ),
 			'item_subtotal'       => __( 'Item Subtotal', 'easy-reservations' ),
-			'order_id'            => __( 'Order', 'easy-reservations' ),
+			'order'               => __( 'Order', 'easy-reservations' ),
 			'order_status'        => __( 'Order Status', 'easy-reservations' ),
 			'cancellation_status' => __( 'Cancellation Status', 'easy-reservations' ),
 		);
@@ -271,7 +272,9 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_item( $item ) {
-		$item_id = ( ! empty( $item['item_id'] ) ) ? $item['item_id'] : '';
+		$item_id  = ( ! empty( $item['item_id'] ) ) ? $item['item_id'] : '';
+		$order_id = ( ! empty( $item['order_id'] ) ) ? $item['order_id'] : '';
+
 		// Build row actions.
 		$actions = array(
 			/* translators: 1: %s: anchor tag open, 2: %s: anchor tag closed */
@@ -286,7 +289,7 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 			'%1$s%3$s%2$s%4$s',
 			$item['item'],
 			$this->row_actions( $actions ),
-			'<div class="ersrv-cancellation-request-actions" data-item="' . $item_id . '">',
+			'<div class="ersrv-cancellation-request-actions" data-item="' . $item_id . '" data-order="' . $order_id . '">',
 			'</div>'
 		);
 	}

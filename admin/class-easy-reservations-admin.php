@@ -1696,7 +1696,7 @@ class Easy_Reservations_Admin {
 		$response = array(
 			'code'          => 'reservation-cancellation-request-declined',
 			/* translators: 1: %s: anchor tag open, 2: %s: anchor tag closed */
-			'toast_message' => sprintf( __( 'Reservation cancellation request declined. Click %1$shere%2$s to refresh the page.', 'easy-reservations' ), '<a href="' . admin_url( 'admin.php?page=reservation-calcellation-requests' ) . '">', '</a>' ),
+			'toast_message' => sprintf( __( 'Reservation cancellation request declined. Click %1$shere%2$s to refresh the page.', 'easy-reservations' ), '<a href="' . admin_url( 'admin.php?page=reservation-cancellation-requests' ) . '">', '</a>' ),
 		);
 		wp_send_json_success( $response );
 		wp_die();
@@ -1718,9 +1718,13 @@ class Easy_Reservations_Admin {
 
 		// Posted data.
 		$line_item_id = (int) filter_input( INPUT_POST, 'line_item_id', FILTER_SANITIZE_NUMBER_INT );
+		$order_id     = (int) filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT );
+
+		// Flush out the dates.
+		ersrv_flush_out_reserved_dates( $order_id, $line_item_id );
 
 		// Update the request.
-		wc_update_order_item_meta( $item_id, 'ersrv_cancellation_request_status', 'approved' );
+		wc_update_order_item_meta( $line_item_id, 'ersrv_cancellation_request_status', 'approved' );
 
 		/**
 		 * This action runs on the admin listing page of reservation cancellation requests.
@@ -1738,7 +1742,7 @@ class Easy_Reservations_Admin {
 		$response = array(
 			'code'          => 'reservation-cancellation-request-approved',
 			/* translators: 1: %s: anchor tag open, 2: %s: anchor tag closed */
-			'toast_message' => sprintf( __( 'Reservation cancellation request approved. Click %1$shere%2$s to refresh the page.', 'easy-reservations' ), '<a href="' . admin_url( 'admin.php?page=reservation-calcellation-requests' ) . '">', '</a>' ),
+			'toast_message' => sprintf( __( 'Reservation cancellation request approved. Click %1$shere%2$s to refresh the page.', 'easy-reservations' ), '<a href="' . admin_url( 'admin.php?page=reservation-cancellation-requests' ) . '">', '</a>' ),
 		);
 		wp_send_json_success( $response );
 		wp_die();

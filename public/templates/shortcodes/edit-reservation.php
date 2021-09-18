@@ -102,6 +102,14 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 						continue;
 					}
 
+					// Check if the cancellation request is not raised.
+					$cancellation_request_status = wc_get_order_item_meta( $item_id, 'ersrv_cancellation_request_status', true );
+
+					// Skip, if the cancellation request is either pending or approved.
+					if ( 'pending' === $cancellation_request_status || 'approved' === $cancellation_request_status ) {
+						continue;
+					}
+
 					// Checkin date.
 					$checkin_date = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
 
