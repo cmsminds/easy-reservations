@@ -349,6 +349,10 @@ class Easy_Reservations_Admin {
 		$amenities                 = array();
 		$blockout_dates            = ( $posted_array['blockout_date'] ) ? $posted_array['blockout_date'] : array();
 		$blockout_dates_messages   = ( $posted_array['blockout_date_message'] ) ? $posted_array['blockout_date_message'] : array();
+		$has_captain               = filter_input( INPUT_POST, 'has_captain', FILTER_SANITIZE_STRING );
+		$has_captain               = ( ! empty( $has_captain ) && 'yes' === $has_captain ) ? 'yes' : 'no';
+		$has_captain_text          = filter_input( INPUT_POST, 'has_captain_text', FILTER_SANITIZE_STRING );
+		$captain_id                = (int) filter_input( INPUT_POST, 'reservation_item_captain', FILTER_SANITIZE_NUMBER_INT );
 
 		// Prepare the amenities array.
 		if ( ! empty( $amenities_titles ) && is_array( $amenities_titles ) ) {
@@ -436,6 +440,27 @@ class Easy_Reservations_Admin {
 			update_post_meta( $post_id, '_ersrv_promotion_text', $promotion_text );
 		} else {
 			delete_post_meta( $post_id, '_ersrv_promotion_text' );
+		}
+
+		// If the reservation item comes with a captain.
+		if ( ! empty( $has_captain ) && 'yes' === $has_captain ) {
+			update_post_meta( $post_id, '_ersrv_has_captain', $has_captain );
+		} else {
+			delete_post_meta( $post_id, '_ersrv_has_captain' );
+		}
+
+		// Captain text.
+		if ( ! empty( $has_captain_text ) ) {
+			update_post_meta( $post_id, '_ersrv_has_captain_text', $has_captain_text );
+		} else {
+			delete_post_meta( $post_id, '_ersrv_has_captain_text' );
+		}
+
+		// Captain user ID.
+		if ( ! empty( $captain_id ) ) {
+			update_post_meta( $post_id, '_ersrv_item_captain', $captain_id );
+		} else {
+			delete_post_meta( $post_id, '_ersrv_item_captain' );
 		}
 	}
 

@@ -466,6 +466,9 @@ class Easy_Reservations_Public {
 				ersrv_download_reservation_receipt_callback( $order_id );
 			}
 		}
+
+		// Register custom user roles.
+		ersrv_add_custom_user_roles();
 	}
 
 	/**

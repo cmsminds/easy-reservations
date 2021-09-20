@@ -39,6 +39,15 @@ $accomodation_limit = ( ! empty( $item_details['accomodation_limit'] ) ) ? $item
 $min_reservation_period = ( ! empty( $item_details['min_reservation_period'] ) ) ? $item_details['min_reservation_period'] : '';
 $max_reservation_period = ( ! empty( $item_details['max_reservation_period'] ) ) ? $item_details['max_reservation_period'] : '';
 
+// Captain details.
+$has_captain      = ( ! empty( $item_details['has_captain'] ) ) ? $item_details['has_captain'] : 'no';
+$has_captain_text = ( ! empty( $item_details['has_captain_text'] ) ) ? $item_details['has_captain_text'] : '';
+$captain_id       = ( ! empty( $item_details['captain_id'] ) ) ? $item_details['captain_id'] : '';
+
+// Total reservations.
+$total_reservations      = ( ! empty( $item_details['total_reservations'] ) ) ? $item_details['total_reservations'] : 0;
+$total_reservations_icon = ( ! empty( $item_details['total_reservations_icon'] ) ) ? $item_details['total_reservations_icon'] : '';
+
 // Reservation Item Type.
 $types    = wp_get_object_terms( $item_post->ID, 'reservation-item-type' );
 $type_str = '';
@@ -108,25 +117,44 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 				<div class="page-title mb-3">
 					<h1 class="font-Poppins font-size-40 font-weight-semibold color-white"><?php echo wp_kses_post( $item_post->post_title ); ?></h1>
 				</div>
-				<!-- <div class="review d-flex justify-content-center align-items-center color-white mb-3 font-size-17 font-weight-normal">
-					<img src="<?php // echo esc_url ( ERSRV_PLUGIN_URL . 'public/images/stars.png' ); ?>" alt="stars">
-					<span class="ml-2">(1 review)</span>
-				</div> -->
+				<?php
+				/**
+				 * This hook executes on the reservation details page.
+				 *
+				 * This hook helps in displaying custom content under the item title.
+				 *
+				 * @param int $item_post->ID Reservation item ID.
+				 */
+				do_action( 'ersrv_after_reservation_item_title', $item_post->ID );
+				?>
 				<div class="boat-options d-flex justify-content-center align-items-center color-white font-size-16 flex-column flex-md-row">
+					<!-- ITEM TYPES -->
 					<?php if ( ! empty( $type_str ) ) { ?>
 						<div class="d-flex align-items-center first mb-2 mb-md-0 mr-3 pr-1">
 							<img src="<?php echo esc_url ( ERSRV_PLUGIN_URL . 'public/images/Ship-icon.png' ); ?>" alt="">
 							<span class="ml-2 font-weight-medium"><?php echo wp_kses_post( $type_str ); ?></span>
 						</div>
 					<?php } ?>
-					<div class="d-flex align-items-center second mb-2 mb-md-0 mr-3 pr-1">
-						<img src="<?php echo esc_url ( ERSRV_PLUGIN_URL . 'public/images/user-icon.png' ); ?>" alt="">
-						<span class="ml-2 font-weight-medium">With Capitanicon</span>
-					</div>
-					<div class="d-flex align-items-center third mb-2 mb-md-0">
-						<img src="<?php echo esc_url ( ERSRV_PLUGIN_URL . 'public/images/3d-box.png' ); ?>" alt="">
-						<span class="ml-2 font-weight-medium">4</span>
-					</div>
+
+					<!-- ITEM CAPTAIN -->
+					<?php if ( ! empty( $has_captain ) && 'yes' === $has_captain ) { ?>
+						<div class="d-flex align-items-center second mb-2 mb-md-0 mr-3 pr-1">
+							<img src="<?php echo esc_url ( ERSRV_PLUGIN_URL . 'public/images/user-icon.png' ); ?>" alt="">
+							<?php if ( ! empty( $has_captain_text ) ) { ?>
+								<span class="ml-2 font-weight-medium"><?php echo esc_html( $has_captain_text ); ?></span>
+							<?php } ?>
+						</div>
+					<?php } ?>
+
+					<!-- PREVIOUS RESERVATIONS -->
+					<?php if ( ! empty( $total_reservations ) && 0 !== $total_reservations ) { ?>
+						<div class="d-flex align-items-center third mb-2 mb-md-0">
+							<?php if ( ! empty( $total_reservations_icon ) ) { ?>
+								<img src="<?php echo esc_url ( $total_reservations_icon ); ?>" alt="">
+							<?php } ?>
+							<span class="ml-2 font-weight-medium"><?php echo esc_html( $total_reservations ); ?></span>
+						</div>
+					<?php } ?>
 				</div>
 			</div>
 		</div>
@@ -181,13 +209,13 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 										 */
 										$last_gallery_image_custom_class = '';
 										$last_gallery_image_custom_text  = '';
-										if ( 5 < count( $gallery_image_ids ) && 4 === $index ) {
+										if ( 6 < count( $gallery_image_ids ) && 5 === $index ) {
 											$last_gallery_image_custom_class = 'gallery-last-image-overlay';
-											$last_gallery_image_custom_text  = sprintf( __( '+%1$d images', 'easy-reservations' ), ( count( $gallery_image_ids ) - 5 ) );
+											$last_gallery_image_custom_text  = sprintf( __( '+%1$d images', 'easy-reservations' ), ( count( $gallery_image_ids ) - 6 ) );
 										}
 
-										// Hide the images after 5 images.
-										$display_none_image_class = ( 4 < $index ) ? 'd-none' : '';
+										// Hide the images after 6 images.
+										$display_none_image_class = ( 5 < $index ) ? 'd-none' : '';
 										?>
 										<div data-text="<?php echo esc_html( $last_gallery_image_custom_text ); ?>" class="gallery-image-item <?php echo esc_attr( "{$last_gallery_image_custom_class} {$display_none_image_class}" ); ?>">
 											<img src="<?php echo esc_url( $gallery_image_url ); ?>" alt="<?php echo esc_attr( $image_filename ); ?>" />
