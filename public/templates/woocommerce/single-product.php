@@ -155,7 +155,7 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 							<span class=""><?php esc_html_e( 'Description', 'easy-reservations' ); ?></span>
 						</a>
 						<div class="collapse show" id="ship-description-collapse">
-							<div class="dropdown-divider"></div>
+							<div class="dropdown-divider mb-5"></div>
 							<?php echo wp_kses_post( $item_post->post_content ); ?>
 
 							<!-- GALLERY IMAGES -->
@@ -163,7 +163,7 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 								// Get the last index of the array.
 								$gallery_images_last_index = count( $gallery_image_ids ) - 1;
 								?>
-								<div class="masonry-grid gallery-images">
+								<div class="gallery-images">
 									<?php foreach ( $gallery_image_ids as $index => $image_id ) {
 										$gallery_image_url = ersrv_get_attachment_url_from_attachment_id( $image_id );
 
@@ -189,7 +189,7 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 										// Hide the images after 5 images.
 										$display_none_image_class = ( 4 < $index ) ? 'd-none' : '';
 										?>
-										<div data-text="<?php echo esc_html( $last_gallery_image_custom_text ); ?>" class="masonry-grid__item gallery-image-item <?php echo esc_attr( "{$last_gallery_image_custom_class} {$display_none_image_class}" ); ?>">
+										<div data-text="<?php echo esc_html( $last_gallery_image_custom_text ); ?>" class="gallery-image-item <?php echo esc_attr( "{$last_gallery_image_custom_class} {$display_none_image_class}" ); ?>">
 											<img src="<?php echo esc_url( $gallery_image_url ); ?>" alt="<?php echo esc_attr( $image_filename ); ?>" />
 										</div>
 									<?php } ?>
