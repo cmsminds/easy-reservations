@@ -590,7 +590,7 @@ body:not(.theme-storefront)
 
 .ersrv-reservation-cost-details-active::after {
   position: fixed !important;
-  z-index: 9;
+  z-index: 9 !important;
   height: 100% !important;
   width: 100% !important;
   background: rgba(0, 0, 0, 0.25) !important;
@@ -700,7 +700,7 @@ body:not(.theme-storefront)
 /* EDIT order page  */
 .edit-order-wrapper.wrapper .edit-inner-page {
   position: relative;
-  z-index: 10;
+  /* z-index: 10; */
   padding-top: 40px;
 }
 .edit-order-wrapper.wrapper .banner .details {
