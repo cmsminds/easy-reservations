@@ -551,3 +551,6 @@ a.button.wc-action-button.wc-action-button-ersrv-reservation-edit.ersrv-reservat
 .ersrv-edit-order-actions h4 {
     margin-top: 0px;
 }
+.reservation_captain_settings_options a::before{
+	content: "\f12e" !important;
+}

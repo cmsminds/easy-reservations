@@ -774,6 +774,9 @@ body:not(.theme-storefront)
       "fifth"
       "seeall";
   }
+  .ui-datepicker td{
+    padding: 0px !important;
+  }
 }
 
 .lightbox {
