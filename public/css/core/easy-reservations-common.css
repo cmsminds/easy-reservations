@@ -730,39 +730,51 @@ body:not(.theme-storefront)
     "four fifth seeall";
 }
 .gallery-images,
-.gallery-images > div{
+.gallery-images > div {
   margin-bottom: 0px !important;
 }
-.gallery-images > div:nth-child(1){ grid-area: first; }
+.gallery-images > div:nth-child(1) {
+  grid-area: first;
+}
 
-.gallery-images > div:nth-child(2){ grid-area: second; }
+.gallery-images > div:nth-child(2) {
+  grid-area: second;
+}
 
-.gallery-images > div:nth-child(3){ grid-area: third; }
+.gallery-images > div:nth-child(3) {
+  grid-area: third;
+}
 
-.gallery-images > div:nth-child(4){ grid-area: four; }
+.gallery-images > div:nth-child(4) {
+  grid-area: four;
+}
 
-.gallery-images > div:nth-child(5){ grid-area: fifth; }
+.gallery-images > div:nth-child(5) {
+  grid-area: fifth;
+}
 
-.gallery-images > div:nth-child(6){ grid-area: seeall; }
+.gallery-images > div:nth-child(6) {
+  grid-area: seeall;
+}
 .gallery-images img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   cursor: pointer;
 }
-@media(max-width:991px){
+@media (max-width: 991px) {
   .gallery-images {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     grid-template-areas:
-    "first first"
-    "first first"
-    "second third"
-    "four fifth "
-    "seeall seeall";
+      "first first"
+      "first first"
+      "second third"
+      "four fifth "
+      "seeall seeall";
   }
 }
-@media(max-width:767px){
+@media (max-width: 767px) {
   .gallery-images {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
@@ -774,7 +786,7 @@ body:not(.theme-storefront)
       "fifth"
       "seeall";
   }
-  .ui-datepicker td{
+  .ui-datepicker td {
     padding: 0px !important;
   }
 }
@@ -890,28 +902,27 @@ body:not(.theme-storefront)
   top: 0;
   left: 0;
 }
-.gallery-last-image-overlay{
-    position: relative;
+.gallery-last-image-overlay {
+  position: relative;
 }
-.gallery-last-image-overlay::after{
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 9;
-    width: 100%;
-    cursor: pointer;
-    height: 100%;
-    background-color: rgba(72,72,72,0.5);
-    font-size: 1.2rem;
-    color: #fff;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
+.gallery-last-image-overlay::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 9;
+  width: 100%;
+  cursor: pointer;
+  height: 100%;
+  background-color: rgba(72, 72, 72, 0.5);
+  font-size: 1.2rem;
+  color: #fff;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
 }
-
 /*--------------------- Experimental -------------------------------- */
 /* body::after {
     position: fixed;
