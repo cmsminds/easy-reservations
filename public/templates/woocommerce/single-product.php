@@ -155,9 +155,9 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 							<span class=""><?php esc_html_e( 'Description', 'easy-reservations' ); ?></span>
 						</a>
 						<div class="collapse show" id="ship-description-collapse">
-							<div class="dropdown-divider mb-5"></div>
+							<div class="dropdown-divider"></div>
 							<?php echo wp_kses_post( $item_post->post_content ); ?>
-
+							<div class="dropdown-divider"></div>
 							<!-- GALLERY IMAGES -->
 							<?php if ( ! empty( $gallery_image_ids ) && ! empty( $gallery_image_ids ) ) {
 								// Get the last index of the array.

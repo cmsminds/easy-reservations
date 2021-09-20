@@ -750,6 +750,31 @@ body:not(.theme-storefront)
   object-fit: cover;
   cursor: pointer;
 }
+@media(max-width:991px){
+  .gallery-images {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+    "first first"
+    "first first"
+    "second third"
+    "four fifth "
+    "seeall seeall";
+  }
+}
+@media(max-width:767px){
+  .gallery-images {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas:
+      "first"
+      "second"
+      "third"
+      "four"
+      "fifth"
+      "seeall";
+  }
+}
 
 .lightbox {
   position: fixed;
