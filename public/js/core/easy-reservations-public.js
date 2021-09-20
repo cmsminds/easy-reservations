@@ -1246,6 +1246,13 @@ jQuery(document).ready(function ($) {
 	} );
 
 	/**
+	 * Prevent negative values in accomodation input boxes.
+	 */
+	$( document ).on( 'keyup', '.ersrv-accomodation-count', function() {
+		$( this ).val( Math.abs( $( this ).val() ) );
+	} );
+
+	/**
 	 * Submit the search AJAX.
 	 */
 	function ersrv_submit_search_reservations( args ) {

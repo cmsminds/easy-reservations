@@ -1611,10 +1611,10 @@ class Easy_Reservations_Public {
 							<div class="values">
 								<div class="row form-row">
 									<div class="col-6">
-										<input type="number" id="quick-view-adult-accomodation-count" class="form-contol" placeholder="<?php esc_html_e( 'No. of Adults', 'easy-reservations' ); ?>" />
+										<input type="number" id="quick-view-adult-accomodation-count" class="ersrv-accomodation-count form-contol" placeholder="<?php esc_html_e( 'No. of Adults', 'easy-reservations' ); ?>" />
 									</div>
 									<div class="col-6">
-										<input type="number" id="quick-view-kid-accomodation-count" class="form-contol" placeholder="<?php esc_html_e( 'No. of Kids', 'easy-reservations' ); ?>" />
+										<input type="number" id="quick-view-kid-accomodation-count" class="ersrv-accomodation-count form-contol" placeholder="<?php esc_html_e( 'No. of Kids', 'easy-reservations' ); ?>" />
 									</div>
 									<label class="ersrv-reservation-error accomodation-error"></label>
 								</div>

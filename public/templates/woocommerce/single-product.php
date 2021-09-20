@@ -277,6 +277,16 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 							</div>
 						</div>
 					</div>
+					<?php
+					/**
+					 * This hook runs on the reservation item details page after all the details on the left side.
+					 *
+					 * This hook helps adding any custom information on the reservation details page.
+					 *
+					 * @param int $item_post->ID Item ID.
+					 */
+					do_action( 'ersrv_after_item_details', $item_post->ID );
+					?>
 				</div>
 				<div class="col-12 col-lg-5 col-xl-4">
 					<div class="sidebar-wrapper">
@@ -309,8 +319,8 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 									</div>
 									<div class="book-items-wrapper mb-4 pb-3">
 										<label for="book-items" class="font-Poppins font-size-16 color-black"><?php echo esc_html( sprintf( __( 'Guests (Limit: %1$d)', 'easy-reservations' ), $accomodation_limit ) ); ?><span class="required">*</span></label>
-										<input id="adult-accomodation-count" placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" type="number" class="form-control mb-3" />
-										<input id="kid-accomodation-count" placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" type="number" class="form-control" />
+										<input id="adult-accomodation-count" placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" type="number" class="ersrv-accomodation-count form-control mb-3" />
+										<input id="kid-accomodation-count" placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" type="number" class="ersrv-accomodation-count form-control" />
 										<p class="ersrv-reservation-error accomodation-error"></p>
 									</div>
 									<?php if ( ! empty( $amenities ) && is_array( $amenities ) ) { ?>

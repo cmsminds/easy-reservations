@@ -3090,7 +3090,9 @@ if ( ! function_exists( 'ersrv_decline_reservation_cancellation_request' ) ) {
 	 */
 	function ersrv_decline_reservation_cancellation_request( $line_item_id ) {
 		// Update the request.
-		wc_update_order_item_meta( $item_id, 'ersrv_cancellation_request_status', 'declined' );
+		wc_delete_order_item_meta( $line_item_id, 'ersrv_cancellation_request' );
+		wc_delete_order_item_meta( $line_item_id, 'ersrv_cancellation_request_time' );
+		wc_delete_order_item_meta( $line_item_id, 'ersrv_cancellation_request_status' );
 
 		/**
 		 * This action runs on the admin listing page of reservation cancellation requests.
