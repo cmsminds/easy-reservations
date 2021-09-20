@@ -14,7 +14,7 @@ $phone             = filter_input( INPUT_POST, 'phone', FILTER_SANITIZE_STRING )
 $subject           = filter_input( INPUT_POST, 'subject', FILTER_SANITIZE_STRING );
 $message           = filter_input( INPUT_POST, 'message', FILTER_SANITIZE_STRING );
 $opening_paragraph = sprintf( __( 'There has been a contact request for the item: %1$s. The details of the item are as follows:', 'easy-reservations' ), get_the_title( $item_id ) );
-do_action( 'woocommerce_email_header' );
+do_action( 'woocommerce_email_header', $email_heading );
 ?>
 <table cellspacing="0" cellpadding="6" style="width: 100%; border: 1px solid #eee;" bordercolor="#eee">
 	<tbody>
