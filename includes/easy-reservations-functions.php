@@ -1695,20 +1695,34 @@ if ( ! function_exists( 'ersrv_get_item_details' ) ) {
 
 		// Put the details in an array.
 		$item_details = array(
-			'accomodation_limit'     => $accomodation_limit,
-			'reserved_dates'         => $reserved_dates,
-			'min_reservation_period' => get_post_meta( $item_id, '_ersrv_reservation_min_period', true ),
-			'max_reservation_period' => get_post_meta( $item_id, '_ersrv_reservation_max_period', true ),
-			'amenities'              => $amenities,
-			'amenity_html'           => $amenity_html,
-			'adult_charge'           => get_post_meta( $item_id, '_ersrv_accomodation_adult_charge', true ),
-			'kid_charge'             => get_post_meta( $item_id, '_ersrv_accomodation_kid_charge', true ),
-			'security_amount'        => get_post_meta( $item_id, '_ersrv_security_amt', true ),
-			'location'               => get_post_meta( $item_id, '_ersrv_item_location', true ),
-			'currency'               => get_woocommerce_currency_symbol(),
+			'accomodation_limit'      => $accomodation_limit,
+			'reserved_dates'          => $reserved_dates,
+			'min_reservation_period'  => get_post_meta( $item_id, '_ersrv_reservation_min_period', true ),
+			'max_reservation_period'  => get_post_meta( $item_id, '_ersrv_reservation_max_period', true ),
+			'amenities'               => $amenities,
+			'amenity_html'            => $amenity_html,
+			'adult_charge'            => get_post_meta( $item_id, '_ersrv_accomodation_adult_charge', true ),
+			'kid_charge'              => get_post_meta( $item_id, '_ersrv_accomodation_kid_charge', true ),
+			'security_amount'         => get_post_meta( $item_id, '_ersrv_security_amt', true ),
+			'location'                => get_post_meta( $item_id, '_ersrv_item_location', true ),
+			'currency'                => get_woocommerce_currency_symbol(),
+			'has_captain'             => get_post_meta( $item_id, '_ersrv_has_captain', true ),
+			'has_captain_text'        => get_post_meta( $item_id, '_ersrv_has_captain_text', true ),
+			'captain_id'              => get_post_meta( $item_id, '_ersrv_item_captain', true ),
+			'total_reservations'      => get_post_meta( $item_id, 'total_sales', true ),
+			'total_reservations_icon' => ERSRV_PLUGIN_URL . 'public/images/3d-box.png',
 		);
 
-		return $item_details;
+		/**
+		 * This hooks runs when the item details are demanded.
+		 *
+		 * This hook helps modify the reservation item details.
+		 *
+		 * @param array $item_details Reservation item details.
+		 * @param int   $item_id Reservation item ID.
+		 * @return array
+		 */
+		return apply_filters( 'ersrv_reservation_item_details', $item_details, $item_id );
 	}
 }
 
@@ -3089,5 +3103,58 @@ if ( ! function_exists( 'ersrv_decline_reservation_cancellation_request' ) ) {
 		 * @since 1.0.0
 		 */
 		do_action( 'ersrv_after_reservation_cancellation_request_declined', $line_item_id );
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_add_custom_user_roles' ) ) {
+	/**
+	 * Register custom user roles.
+	 *
+	 * @since 1.0.0
+	 */
+	function ersrv_add_custom_user_roles() {
+		$custom_user_roles = array(
+			'reservation_item_captain' => array(
+				'display_name' => __( 'Captain', 'easy-reservations' ),
+				'capabilities' => array(
+					'read' => true,
+				),
+			),
+		);
+		/**
+		 * This hook runs on WordPress init.
+		 *
+		 * This hook helps in managing the custom user roles.
+		 *
+		 * @param array $custom_user_roles Custom user roles.
+		 * @return array
+		 * @since 1.0.0
+		 */
+		$custom_user_roles = apply_filters( 'ersrv_custom_user_roles', $custom_user_roles );
+
+		// Return, if the user roles array is empty.
+		if ( empty( $custom_user_roles ) || ! is_array( $custom_user_roles ) ) {
+			return;
+		}
+
+		// Iterate through the user roles.
+		foreach ( $custom_user_roles as $role_name => $role_data ) {
+			$role_exists = $GLOBALS['wp_roles']->is_role( $role_name );
+
+			// Skip, if the role already exists.
+			if ( $role_exists ) {
+				continue;
+			}
+
+			// Role data.
+			$display_name = ( ! empty( $role_data['display_name'] ) ) ? $role_data['display_name'] : $role_name;
+			$capabilities = ( ! empty( $role_data['capabilities'] ) ) ? $role_data['capabilities'] : array( 'read' => true );
+
+			// Add the role now.
+			add_role( $role_name, $display_name, $capabilities );
+		}
 	}
 }

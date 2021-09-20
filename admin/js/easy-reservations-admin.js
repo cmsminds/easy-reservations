@@ -940,6 +940,19 @@ jQuery( document ).ready( function( $ ) {
 	} );
 
 	/**
+	 * Captain selection mandatory.
+	 */
+	$( document ).on( 'click', '#has_captain', function() {
+		var has_captain = $( this ).is( ':checked' );
+		$( '#reservation_item_captain' ).prop( 'required', false );
+
+		// Make the captain selection mandatory if checked.
+		if ( has_captain ) {
+			$( '#reservation_item_captain' ).prop( 'required', true );
+		}
+	} );
+
+	/**
 	 * Add the reservation to google calendar.
 	 */
 	$( document ).on( 'click', '.add-to-gcal', function () {
