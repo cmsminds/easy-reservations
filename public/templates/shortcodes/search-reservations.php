@@ -49,12 +49,12 @@ $banner_image_url     = ( ! empty( $banner_image_url ) ) ? $banner_image_url : E
 				<div class="form-wrapper ersrv-form-wrapper">
 					<form action="#" class="form-inner">
 						<div class="form-row">
-							<div class="col-12 col-md-3 col-lg-3">
+							<div class="col-12 col-md-6 col-lg-3">
 								<div class="form-group">
 									<input type="text" value="<?php echo esc_html( $search_location ); ?>" class="ersrv-search-parameter ersrv-item-search-location form-control date-control ship-icon-field text-left rounded-lg" placeholder="<?php esc_html_e( 'Desired location', 'easy-reservations' ); ?>">
 								</div>
 							</div>
-							<div class="col-12 col-md-3 col-lg-3">
+							<div class="col-12 col-md-6 col-lg-3">
 								<select class="ersrv-search-parameter ersrv-reservation-item-type selectpicker form-control Boat-Types mb-3" id="boat-types" data-size="5" data-style="btn-outline-light focus-none" title="<?php esc_html_e( 'Item Type', 'easy-reservations' ); ?>">
 									<option value=""><?php esc_html_e( 'Item Type', 'easy-reservations' ); ?></option>
 									<?php if ( ! empty( $reservation_item_types ) && is_array( $reservation_item_types ) ) { ?>
@@ -66,7 +66,7 @@ $banner_image_url     = ( ! empty( $banner_image_url ) ) ? $banner_image_url : E
 									<?php } ?>
 								</select>
 							</div>
-							<div class="col-12 col-md-6 col-lg-6">
+							<div class="col-12 col-md-12 col-lg-6">
 								<div class="input-daterange">
 									<div class="form-row">
 										<div class="col-12 col-md-6">
@@ -80,9 +80,9 @@ $banner_image_url     = ( ! empty( $banner_image_url ) ) ? $banner_image_url : E
 							</div>
 						</div>
 						<div class="form-row">
-							<div class="col-12 col-md-5 col-lg-6">
+							<div class="col-12 col-md-12 col-lg-6">
 							</div>
-							<div class="col-12 col-md-7 col-lg-6">
+							<div class="col-12 col-md-12 col-lg-6">
 								<div class="input-daterange">
 									<div class="form-row">
 										<div class="col-12 col-md-6">

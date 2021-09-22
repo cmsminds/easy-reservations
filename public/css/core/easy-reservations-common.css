@@ -1,13 +1,9 @@
 body:not(.archive):not(.tax-reservation-item-type) .site,
-body:not(.archive):not(.post-type-archive):not(.post-type-archive-product)
-  .site,
+body:not(.archive):not(.post-type-archive):not(.post-type-archive-product) .site,
 .theme-twentynineteen .site-content .site-main .page .entry-content,
 .theme-twentytwenty #site-content .wrapper,
-.theme-twentytwentyone:not(.archive):not(.post-type-archive):not(.post-type-archive-product)
-  .site-content
-  > .content-area
-  > #main
-  .wrapper {
+.theme-twentytwentyone:not(.archive):not(.post-type-archive):not(.post-type-archive-product) .site-content > .content-area > #main .wrapper,
+.theme-twentysixteen .site-content .content-area .page .entry-content{
   margin: 0px;
 }
 
@@ -386,7 +382,7 @@ body:not(.theme-storefront)
   }
 
   .details .form-wrapper .form-row .col-12:not(:last-child) {
-    margin-bottom: 1rem;
+    margin-bottom: 0rem;
   }
 }
 
@@ -773,6 +769,12 @@ body:not(.theme-storefront)
       "four fifth "
       "seeall seeall";
   }
+  .quick-view-modal .product-button{
+    font-size: 16px;
+  }
+  .col-preview{
+    padding: 50px 15px;
+  }
 }
 @media (max-width: 767px) {
   .gallery-images {
@@ -786,7 +788,7 @@ body:not(.theme-storefront)
       "fifth"
       "seeall";
   }
-  .ui-datepicker td {
+  .ui-datepicker:not(#ui-datepicker-div) td {
     padding: 0px !important;
   }
 }
@@ -922,6 +924,11 @@ body:not(.theme-storefront)
   align-items: center;
   justify-content: center;
   pointer-events: none;
+}
+@media(min-width:992px) and (max-width:1024px){
+  .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn{
+    padding: 8px 12px;
+  }
 }
 /*--------------------- Experimental -------------------------------- */
 /* body::after {

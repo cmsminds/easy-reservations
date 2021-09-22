@@ -789,3 +789,12 @@
 .woocommerce-table__product-name .wc-item-meta {
     word-break: break-all;
 }
+@media(max-width:767px){
+    .ersrv-driving-license .woocommerce-input-wrapper {
+        width: calc(100% - 85px);
+        float: left;
+    }
+    .ersrv-driving-license .btn {
+        padding:8px 12px;
+    }
+}
