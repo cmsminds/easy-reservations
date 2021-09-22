@@ -227,7 +227,7 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 															?>
 															<div class="custom-control custom-switch ersrv-single-amenity-block mr-3" data-cost_type="<?php echo esc_attr( $amenity_cost_type ); ?>" data-cost="<?php echo esc_attr( $amenity_cost ); ?>" data-amenity="<?php echo esc_attr( $amenity_title ); ?>">
 																<input type="checkbox" class="custom-control-input ersrv-new-reservation-single-amenity" id="amenity-<?php echo esc_html( $amenity_slug . '-' . $item_id ); ?>" <?php echo esc_attr( $is_checked ); ?>>
-																<label class="custom-control-label font-size-15" for="amenity-<?php echo esc_html( $amenity_slug ); ?>">
+																<label class="custom-control-label font-size-15" for="amenity-<?php echo esc_html( $amenity_slug . '-' . $item_id ); ?>">
 																	<span class="d-block font-lato font-weight-bold color-black pb-2"><?php echo esc_html( $amenity_title ); ?> </span>
 																	<span><span class="font-lato font-weight-bold color-accent"><?php echo wc_price( $amenity_cost ); ?></span> | <span class="font-lato font-weight-normal color-black-500"><?php echo esc_html( $cost_type_text ); ?></span></span>
 																</label>

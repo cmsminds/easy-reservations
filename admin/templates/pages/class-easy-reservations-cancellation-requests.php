@@ -323,8 +323,9 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_item( $item ) {
-		$item_id  = ( ! empty( $item['item_id'] ) ) ? $item['item_id'] : '';
-		$order_id = ( ! empty( $item['order_id'] ) ) ? $item['order_id'] : '';
+		$item_id        = ( ! empty( $item['item_id'] ) ) ? $item['item_id'] : '';
+		$order_id       = ( ! empty( $item['order_id'] ) ) ? $item['order_id'] : '';
+		$current_status = ( ! empty( $item['cancellation_status'] ) ) ? $item['cancellation_status'] : '';
 
 		// Build row actions.
 		$actions = array(
@@ -333,6 +334,11 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 			/* translators: 1: %s: anchor tag open, 2: %s: anchor tag closed */
 			'decline_request' => sprintf( __( '%1$sDecline%2$s', 'easy-reservations' ), '<a href="javascript:void(0);" class="decline" title="' . esc_html__( 'Decline this cancellation request.', 'easy-reservations' ) . '">', '</a>' ),
 		);
+
+		// If the current status is approved.
+		if ( 'Approved' === $current_status ) {
+			unset( $actions['approve_request'] );
+		}
 
 		// Return the title contents.
 		/* translators: 1: %s: item name, 2: %s: row actions, 3: %s: div tag open, 4: %s: div tag closed */

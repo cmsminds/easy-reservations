@@ -1868,30 +1868,32 @@ class Easy_Reservations_Public {
 		// Check if there are reservation items in the cart.
 		$is_reservation_in_cart = ersrv_is_reservation_in_cart();
 
+		// Return if there are no reservation items in the cart.
+		if ( false === $is_reservation_in_cart ) {
+			return;
+		}
+
 		// Return error if driving license is not uploaded.
 		if ( ! empty( $allowed_to_upload_license ) && 'yes' === $allowed_to_upload_license ) {
-			// If the reservation item is in the cart.
-			if ( true === $is_reservation_in_cart ) {
-				// Get the attachment ID, if already uploaded.
-				$attachment_id = WC()->session->get( 'reservation_driving_license_attachment_id' );
+			// Get the attachment ID, if already uploaded.
+			$attachment_id = WC()->session->get( 'reservation_driving_license_attachment_id' );
 
-				// Throw the error if the attachment is either null or empty.
-				if ( empty( $attachment_id ) || is_null( $attachment_id ) ) {
-					$error_message = sprintf( __( 'Since you\'re doing a reservation, we require you to upload a valid driving license. Click %1$shere%2$s to upload.', 'easy-reservations' ), '<a class="scroll-to-driving-license" href="#">', '</a>' );
-					/**
-					 * This filter fires on checkout page.
-					 *
-					 * This filter helps in modifying the checkout error that is thrown in case the driving license file is not provided.
-					 *
-					 * @param string $error_message Error message.
-					 * @return string
-					 * @since 1.0.0
-					 */
-					$error_message = apply_filters( 'ersrv_driving_license_validation_checkout_error', $error_message );
+			// Throw the error if the attachment is either null or empty.
+			if ( empty( $attachment_id ) || is_null( $attachment_id ) ) {
+				$error_message = sprintf( __( 'Since you\'re doing a reservation, we require you to upload a valid driving license. Click %1$shere%2$s to upload.', 'easy-reservations' ), '<a class="scroll-to-driving-license" href="#">', '</a>' );
+				/**
+				 * This filter fires on checkout page.
+				 *
+				 * This filter helps in modifying the checkout error that is thrown in case the driving license file is not provided.
+				 *
+				 * @param string $error_message Error message.
+				 * @return string
+				 * @since 1.0.0
+				 */
+				$error_message = apply_filters( 'ersrv_driving_license_validation_checkout_error', $error_message );
 
-					// Shoot the error now.
-					wc_add_notice( $error_message, 'error' );
-				}
+				// Shoot the error now.
+				wc_add_notice( $error_message, 'error' );
 			}
 		}
 	}
