@@ -244,7 +244,7 @@ class Easy_Reservations_Admin {
 		);
 
 		// Reservation captain settings tab.
-		$reservation_captain_settings_tab_title = __( 'Captain', 'easy-reservations' );
+		// $reservation_captain_settings_tab_title = __( 'Captain', 'easy-reservations' );
 
 		/**
 		 * This hook fires in admin panel on the item settings page.
@@ -255,21 +255,21 @@ class Easy_Reservations_Admin {
 		 *
 		 * @return string
 		 */
-		$reservation_captain_settings_tab_title = apply_filters( 'ersrv_product_captain_settings_tab_label', $reservation_captain_settings_tab_title );
+		// $reservation_captain_settings_tab_title = apply_filters( 'ersrv_product_captain_settings_tab_label', $reservation_captain_settings_tab_title );
 
 		// Add the new tab - reservation blockout dates.
-		$tabs['reservation_captain_settings'] = array(
-			'label'    => $reservation_captain_settings_tab_title,
-			'target'   => 'reservation_captain_settings_product_options',
-			'class'    => array(
-				"show_if_{$this->custom_product_type}",
-				'hide_if_simple',
-				'hide_if_grouped',
-				'hide_if_external',
-				'hide_if_variable',
-			),
-			'priority' => 69,
-		);
+		// $tabs['reservation_captain_settings'] = array(
+		// 	'label'    => $reservation_captain_settings_tab_title,
+		// 	'target'   => 'reservation_captain_settings_product_options',
+		// 	'class'    => array(
+		// 		"show_if_{$this->custom_product_type}",
+		// 		'hide_if_simple',
+		// 		'hide_if_grouped',
+		// 		'hide_if_external',
+		// 		'hide_if_variable',
+		// 	),
+		// 	'priority' => 69,
+		// );
 
 		// Hide the general tab.
 		if ( ! empty( $tabs['general'] ) ) {
@@ -323,7 +323,7 @@ class Easy_Reservations_Admin {
 		require_once ERSRV_PLUGIN_PATH . 'admin/templates/settings/reservation-blockout-dates.php';
 
 		// Reservation captain settings.
-		require_once ERSRV_PLUGIN_PATH . 'admin/templates/settings/reservation-captain-settings.php';
+		// require_once ERSRV_PLUGIN_PATH . 'admin/templates/settings/reservation-captain-settings.php';
 	}
 
 	/**

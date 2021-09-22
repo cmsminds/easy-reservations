@@ -1766,6 +1766,10 @@ class Easy_Reservations_Public {
 		$view_license_url   = ( ! is_null( $attachment_id ) ) ? "location.href = '{$attachment_url}'" : '';
 		$view_license_class = ( ! is_null( $attachment_id ) ) ? '' : 'non-clickable';
 
+		// Get the max upload file size.
+		$max_upload_size = wp_max_upload_size();
+		$max_upload_size = ( ! $max_upload_size ) ? 0 : $max_upload_size;
+
 		// Prepare the HTML now.
 		ob_start();
 		?>
@@ -1777,6 +1781,7 @@ class Easy_Reservations_Public {
 				</span>
 				<button type="button" class="upload btn btn-accent"><span class="sr-only"><?php esc_html_e( 'Upload', 'easy-reservations' ); ?></span><span class="fa fa-upload"></span></button>
 				<button type="button" onclick="<?php echo esc_attr( $view_license_url ); ?>" class="view btn btn-accent <?php echo esc_attr( $view_license_class ); ?>"><span class="sr-only"><?php esc_html_e( 'View', 'easy-reservations' ); ?></span><span class="fa fa-eye"></span></button>
+				<span class="ersrv-upload-filesize-notice"><?php echo esc_html( sprintf( __( 'Maximum upload file size: %1$s.', 'easy-reservations' ), size_format( $max_upload_size ) ) ); ?></span>
 				<div class="ersrv-uploaded-checkout-license-file">
 				<?php if ( ! is_null( $attachment_id ) ) {
 					$filename = basename( $attachment_url );
@@ -1894,6 +1899,65 @@ class Easy_Reservations_Public {
 
 				// Shoot the error now.
 				wc_add_notice( $error_message, 'error' );
+			}
+		}
+
+		// Validate the checkin and checkout dates of the reservation items.
+		$cart_items = WC()->cart->get_cart();
+		if ( ! empty( $cart_items ) && is_array( $cart_items ) ) {
+			// Iterate through the cart items.
+			foreach ( $cart_items as $cart_item ) {
+				$reservation_data = ( ! empty( $cart_item['reservation_data'] ) ) ? $cart_item['reservation_data'] : false;
+
+				// Skip, if there is non-reservation product in te cart.
+				if ( false === $reservation_data ) {
+					continue;
+				}
+
+				// Get the checkin and checkout dates.
+				$checkin_date  = ( ! empty( $reservation_data['checkin_date'] ) ) ? $reservation_data['checkin_date'] : false;
+				$checkout_date = ( ! empty( $reservation_data['checkout_date'] ) ) ? $reservation_data['checkout_date'] : false;
+				$item_id       = ( ! empty( $reservation_data['item_id'] ) ) ? $reservation_data['item_id'] : false;
+
+				// Skip, if either of the date is unavailable.
+				if ( false === $item_id || false === $checkin_date || false === $checkout_date ) {
+					continue;
+				}
+
+				// Get the cart reserved dates.
+				$requesting_reservation_dates_obj = ersrv_get_dates_within_2_dates( $checkin_date, $checkout_date );
+				$requesting_reservation_dates_arr = array();
+
+				if ( ! empty( $requesting_reservation_dates_obj ) ) {
+					foreach ( $requesting_reservation_dates_obj as $date ) {
+						$requesting_reservation_dates_arr[] = $date->format( ersrv_get_php_date_format() );
+					}
+				}
+
+				// Get the item reserved dates.
+				$item_reserved_dates_arr = get_post_meta( $item_id, '_ersrv_reservation_blockout_dates', true );
+				$item_reserved_dates     = array_column( $item_reserved_dates_arr, 'date' );
+
+				// Get the intersecting dates.
+				$intersecting_dates = array_intersect( $item_reserved_dates, $requesting_reservation_dates_arr );
+
+				// Throw error if the dates match.
+				if ( ! empty( $intersecting_dates ) ) {
+					$error_message = sprintf( __( 'You cannot proceed with the reservation of %2$s%1$s%3$s as the dates %2$s%4$s%3$s are already reserved.', 'easy-reservations' ), get_the_title( $item_id ), '<strong>', '</strong>', implode( ', ', $intersecting_dates ) );
+					/**
+					 * This filter fires on checkout page.
+					 *
+					 * This filter helps in modifying the checkout error that is thrown in case the reservation dates mismatch.
+					 *
+					 * @param string $error_message Error message.
+					 * @return string
+					 * @since 1.0.0
+					 */
+					$error_message = apply_filters( 'ersrv_reservation_dates_mismatch_validation_checkout_error', $error_message );
+
+					// Shoot the error now.
+					wc_add_notice( $error_message, 'error' );
+				}
 			}
 		}
 	}
