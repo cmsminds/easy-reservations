@@ -1774,8 +1774,8 @@ class Easy_Reservations_Public {
 		ob_start();
 		?>
 		<div class="woocommerce-additional-fields__field-wrapper">
-			<p class="form-row ersrv-driving-license" id="ersrv_driving_license_field">
-				<label for="reservation-driving-license" class=""><?php esc_html_e( 'Driving License', 'easy-reservations' ); ?> <span class="required">*</span></label>
+			<div class="form-row ersrv-driving-license" id="ersrv_driving_license_field">
+				<label for="reservation-driving-license"><?php esc_html_e( 'Driving License', 'easy-reservations' ); ?> <span class="required">*</span></label>
 				<span class="ersrv-upload-filesize-notice"><?php echo esc_html( sprintf( __( 'Maximum upload file size: %1$s.', 'easy-reservations' ), size_format( $max_upload_size ) ) ); ?></span>
 				<div class="ersrv-driving-license-file-upload-wrapper">
 					<span class="woocommerce-input-wrapper">
@@ -1792,7 +1792,7 @@ class Easy_Reservations_Public {
 					<span><?php echo sprintf( __( 'Uploaded: %2$s%1$s%3$s', 'easy-reservations' ), $filename, '<a target="_blank" href="' . $attachment_url . '">', '</a>' ); ?></span>
 				<?php } ?>
 				</div>
-			</p>
+			</div>
 		</div>
 		<?php
 
