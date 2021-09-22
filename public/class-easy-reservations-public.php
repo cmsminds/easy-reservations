@@ -1776,12 +1776,14 @@ class Easy_Reservations_Public {
 		<div class="woocommerce-additional-fields__field-wrapper">
 			<p class="form-row ersrv-driving-license" id="ersrv_driving_license_field">
 				<label for="reservation-driving-license" class=""><?php esc_html_e( 'Driving License', 'easy-reservations' ); ?> <span class="required">*</span></label>
-				<span class="woocommerce-input-wrapper">
-					<input type="file" accept="<?php echo esc_attr( $allowed_extensions_string ); ?>" name="reservation-driving-license" id="reservation-driving-license" />
-				</span>
-				<button type="button" class="upload btn btn-accent"><span class="sr-only"><?php esc_html_e( 'Upload', 'easy-reservations' ); ?></span><span class="fa fa-upload"></span></button>
-				<button type="button" onclick="<?php echo esc_attr( $view_license_url ); ?>" class="view btn btn-accent <?php echo esc_attr( $view_license_class ); ?>"><span class="sr-only"><?php esc_html_e( 'View', 'easy-reservations' ); ?></span><span class="fa fa-eye"></span></button>
 				<span class="ersrv-upload-filesize-notice"><?php echo esc_html( sprintf( __( 'Maximum upload file size: %1$s.', 'easy-reservations' ), size_format( $max_upload_size ) ) ); ?></span>
+				<div class="ersrv-driving-license-file-upload-wrapper">
+					<span class="woocommerce-input-wrapper">
+						<input type="file" accept="<?php echo esc_attr( $allowed_extensions_string ); ?>" name="reservation-driving-license" id="reservation-driving-license" />
+					</span>
+					<button type="button" class="upload btn btn-accent"><span class="sr-only"><?php esc_html_e( 'Upload', 'easy-reservations' ); ?></span><span class="fa fa-upload"></span></button>
+					<button type="button" onclick="<?php echo esc_attr( $view_license_url ); ?>" class="view btn btn-accent <?php echo esc_attr( $view_license_class ); ?>"><span class="sr-only"><?php esc_html_e( 'View', 'easy-reservations' ); ?></span><span class="fa fa-eye"></span></button>
+				</div>
 				<div class="ersrv-uploaded-checkout-license-file">
 				<?php if ( ! is_null( $attachment_id ) ) {
 					$filename = basename( $attachment_url );
