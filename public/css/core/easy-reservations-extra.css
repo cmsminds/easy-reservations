@@ -794,7 +794,9 @@
     padding-bottom: 12px;
     display: inline-block;
 }
-
+.ersrv-driving-license .btn {
+    padding:4px 8px;
+}
 @media(max-width:767px){
     .ersrv-driving-license .woocommerce-input-wrapper {
         width: calc(100% - 85px);
