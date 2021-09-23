@@ -1776,6 +1776,7 @@ class Easy_Reservations_Public {
 					$filename = ( 25 <= strlen( $filename ) ) ? ersrv_shorten_filename( $filename ) : $filename;
 					?>
 					<span><?php echo sprintf( __( 'Uploaded: %2$s%1$s%3$s', 'easy-reservations' ), $filename, '<a target="_blank" href="' . $attachment_url . '">', '</a>' ); ?></span>
+					<button type="button" data-file="<?php echo esc_attr( $attachment_id ); ?>" class="remove btn btn-accent"><span class="sr-only">Remove</span><span class="fa fa-trash"></span></button>
 				<?php } ?>
 				</div>
 			</div>
@@ -1835,6 +1836,7 @@ class Easy_Reservations_Public {
 		ob_start();
 		?>
 		<span><?php echo sprintf( __( 'Uploaded: %2$s%1$s%3$s', 'easy-reservations' ), $filename, '<a target="_blank" href="' . $attachment_url . '">', '</a>' ); ?></span>
+		<button type="button" data-file="<?php echo esc_attr( $attachment_id ); ?>" class="remove btn btn-accent"><span class="sr-only">Remove</span><span class="fa fa-trash"></span></button>
 		<?php
 		$view_license_html = ob_get_clean();
 
@@ -1844,6 +1846,38 @@ class Easy_Reservations_Public {
 			'view_license_url'  => $view_license_url,
 			'view_license_html' => $view_license_html,
 			'toast_message'     => __( 'Driving license is uploaded successfully. Place order to get this attached with your order.', 'easy-reservations' ),
+		);
+		wp_send_json_success( $response );
+		wp_die();
+	}
+
+	/**
+	 * AJAX to remove the driving license file on checkout.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_remove_uploaded_driving_license_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+		// Exit, if the action mismatches.
+		if ( empty( $action ) || 'remove_uploaded_driving_license' !== $action ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Posted data.
+		$file_id = filter_input( INPUT_POST, 'file_id', FILTER_SANITIZE_NUMBER_INT );
+
+		// Delete the attachment file.
+		wp_delete_attachment( $file_id, true );
+
+		// Unset the session as well.
+		$attachment_id = WC()->session->__unset( 'reservation_driving_license_attachment_id' );
+
+		// Return the response.
+		$response = array(
+			'code'          => 'driving-license-removed',
+			'toast_message' => __( 'Driving license is deleted successfully.', 'easy-reservations' ),
 		);
 		wp_send_json_success( $response );
 		wp_die();

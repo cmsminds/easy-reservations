@@ -109,6 +109,11 @@ class Rental_Agreement_Email extends WC_Email {
 		// Order view URL.
 		$item_object->order_view_url = $wc_order->get_view_order_url();
 
+		// Customer billing data.
+		$item_object->customer = array(
+			'billing_email' => $wc_order->get_billing_email(),
+		);
+
 		// Admin email.
 		$item_object->admin_email = get_option( 'admin_email' );
 
@@ -176,6 +181,16 @@ class Rental_Agreement_Email extends WC_Email {
 	}
 
 	/**
+	 * Get the email recipient.
+	 *
+	 * @return string
+	 */
+	public function get_recipient() {
+		$customer_email = ( ! empty( $this->object->customer['billing_email'] ) ) ? $this->object->customer['billing_email'] : '';
+		return apply_filters( 'woocommerce_email_recipient_' . $this->id, $customer_email, $this->object );
+	}
+
+	/**
 	 * Get the email main heading line.
 	 *
 	 * @return string
@@ -217,12 +232,6 @@ class Rental_Agreement_Email extends WC_Email {
 				'type'    => 'checkbox',
 				'label'   => __( 'Enable this email notification', 'easy-reservations' ),
 				'default' => 'yes'
-			),
-			'recipient' => array(
-				'title'       => __( 'Recipient', 'easy-reservations' ),
-				'type'        => 'text',
-				'description' => sprintf( __( 'Enter recipients (comma separated) for this email. Defaults to %s', 'easy-reservations' ), get_option( 'admin_email' ) ),
-				'default'     => get_option( 'admin_email' )
 			),
 			'subject' => array(
 				'title'       => __( 'Subject', 'easy-reservations' ),
