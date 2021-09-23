@@ -1958,7 +1958,7 @@ class Easy_Reservations_Public {
 
 				// Get the item reserved dates.
 				$item_reserved_dates_arr = get_post_meta( $item_id, '_ersrv_reservation_blockout_dates', true );
-				$item_reserved_dates     = array_column( $item_reserved_dates_arr, 'date' );
+				$item_reserved_dates     = ( ! empty( $item_reserved_dates_arr ) && is_array( $item_reserved_dates_arr ) ) ? array_column( $item_reserved_dates_arr, 'date' ) : array();
 
 				// Get the intersecting dates.
 				$intersecting_dates = array_intersect( $item_reserved_dates, $requesting_reservation_dates_arr );
