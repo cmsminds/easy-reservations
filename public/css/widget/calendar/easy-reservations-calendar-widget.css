@@ -642,3 +642,13 @@ a{
     /* background-color: #e2e6ea;
     border-color: #dae0e5; */
 }
+.woocommerce table.my_account_orders .button:not(:last-child){
+    margin-bottom: 5px;
+}
+.woocommerce table.my_account_orders .button{
+	white-space: normal;
+	line-height: normal;
+}
+.woocommerce table.my_account_orders .woocommerce-orders-table__header.woocommerce-orders-table__header-order-number{
+	width: 60px;
+}
