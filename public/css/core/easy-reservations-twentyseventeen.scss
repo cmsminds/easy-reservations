@@ -882,3 +882,6 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
 .quick-close{
     background-color: $accent;
 }
+.dropdown.bootstrap-select.form-control.Boat-Types button.btn.dropdown-toggle {
+    right: 0px;
+}

@@ -1375,7 +1375,6 @@ img {
 
 #ui-datepicker-div .ui-datepicker-calendar tbody tr td.ui-state-highlight,
 #ui-datepicker-div .ui-datepicker-calendar tbody tr td a.ui-state-highlight {
-  color: #d1e4dd;
   background-color: #cbefd9;
   border-radius: 100%;
 }
