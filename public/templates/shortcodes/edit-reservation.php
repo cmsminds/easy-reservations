@@ -10,7 +10,9 @@
 
 defined('ABSPATH') || exit; // Exit if accessed directly.
 
-$post_id = get_the_ID();
+// WooCommerce customer account page.
+$my_account = wc_get_page_permalink( 'myaccount' );
+$post_id    = get_the_ID();
 
 // Requested query arguments.
 $action      = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
@@ -223,10 +225,11 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 															$amenity_cost_type = ( ! empty( $amenity_data['cost_type'] ) ) ? $amenity_data['cost_type'] : 'one_time';
 															$is_reserved       = ersrv_is_amenity_reserved( $amenity_title, $reserved_amenities );
 															$is_checked        = ( true === $is_reserved ) ? 'checked' : '';
-															$cost_type_text    = ( 'one_time' === $amenity_cost_type ) ? __( 'Single Fee', 'easy-reservations' ) : __( 'Per Day', 'easy-reservations' );
+															$old_value         = ( 'checked' === $is_checked ) ? 'checked' : 'unchecked';
+															$cost_type_text    = ( 'one_time' === $amenity_cost_type ) ? ersrv_get_amenity_single_fee_text() : ersrv_get_amenity_daily_fee_text();
 															?>
 															<div class="custom-control custom-switch ersrv-single-amenity-block mr-3" data-cost_type="<?php echo esc_attr( $amenity_cost_type ); ?>" data-cost="<?php echo esc_attr( $amenity_cost ); ?>" data-amenity="<?php echo esc_attr( $amenity_title ); ?>">
-																<input type="checkbox" class="custom-control-input ersrv-new-reservation-single-amenity" id="amenity-<?php echo esc_html( $amenity_slug . '-' . $item_id ); ?>" <?php echo esc_attr( $is_checked ); ?>>
+																<input type="checkbox" class="custom-control-input ersrv-new-reservation-single-amenity" id="amenity-<?php echo esc_html( $amenity_slug . '-' . $item_id ); ?>" <?php echo esc_attr( $is_checked ); ?> data-oldval="<?php echo esc_attr( $old_value ); ?>">
 																<label class="custom-control-label font-size-15" for="amenity-<?php echo esc_html( $amenity_slug . '-' . $item_id ); ?>">
 																	<span class="d-block font-lato font-weight-bold color-black pb-2"><?php echo esc_html( $amenity_title ); ?> </span>
 																	<span><span class="font-lato font-weight-bold color-accent"><?php echo wc_price( $amenity_cost ); ?></span> | <span class="font-lato font-weight-normal color-black-500"><?php echo esc_html( $cost_type_text ); ?></span></span>
@@ -391,7 +394,6 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 					</div>
 					<?php
 				} else {
-					$my_account = wc_get_page_permalink( 'myaccount' );
 					?>
 					<div class="woocommerce-message woocommerce-message--info woocommerce-Message woocommerce-Message--info woocommerce-info">
 						<a class="woocommerce-Button button" href="<?php echo esc_url( $my_account ); ?>"><?php esc_html_e( 'My Account', 'easy-reservations' ); ?></a>

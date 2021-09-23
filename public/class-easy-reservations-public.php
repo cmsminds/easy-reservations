@@ -638,20 +638,6 @@ class Easy_Reservations_Public {
 	 * @since 1.0.0
 	 */
 	public function ersrv_wp_head_callback() {
-		// Add the style to active calendar dates only when the widget is active.
-		if ( false !== $this->is_calendar_widget_active ) {
-			$calendar_widget_base_id = ersrv_get_calendar_widget_base_id(); // Calendar widget base id.
-			$widget_settings         = ersrv_get_widget_settings( $calendar_widget_base_id );
-			$active_date_bg_color    = ( ! empty( $widget_settings['available_dates_bg_color'] ) ) ? $widget_settings['available_dates_bg_color'] : '#000';
-			?>
-			<style>
-				.ersrv-date-active {
-					background-color: <?php echo esc_attr( $active_date_bg_color ); ?>;
-					color: #fff;
-				}
-			</style>
-			<?php
-		}
 	}
 
 	/**
@@ -1587,7 +1573,7 @@ class Easy_Reservations_Public {
 								)
 							);
 							?>
-							<span class="font-size-20 price-text"><?php esc_html_e( 'per day', 'easy-reservations' ); ?></span>
+							<span class="font-size-20 price-text"><?php echo esc_html( ersrv_get_reservation_item_cost_type_text() ); ?></span>
 						</h4>
 					</div>
 					<div class="product-details-values mb-2">
@@ -1630,7 +1616,7 @@ class Easy_Reservations_Public {
 											$amenity_cost      = ( ! empty( $amenity_data['cost'] ) ) ? $amenity_data['cost'] : 0.00;
 											$amenity_slug      = ( ! empty( $amenity_title ) ) ? sanitize_title( $amenity_title ) : '';
 											$amenity_cost_type = ( ! empty( $amenity_data['cost_type'] ) ) ? $amenity_data['cost_type'] : 'one_time';
-											$cost_type_text    = ( 'one_time' === $amenity_cost_type ) ? __( 'Single Fee', 'easy-reservations' ) : __( 'Per Day', 'easy-reservations' );
+											$cost_type_text    = ( 'one_time' === $amenity_cost_type ) ? ersrv_get_amenity_single_fee_text() : ersrv_get_amenity_daily_fee_text();
 											?>
 											<div class="col-6">
 												<div class="custom-control custom-switch ersrv-single-amenity-block mb-2" data-cost_type="<?php echo esc_attr( $amenity_cost_type ); ?>" data-cost="<?php echo esc_attr( $amenity_cost ); ?>" data-amenity="<?php echo esc_attr( $amenity_title ); ?>">
@@ -2523,6 +2509,25 @@ class Easy_Reservations_Public {
 			);
 			wp_send_json_success( $response );
 			wp_die();
+		}
+	}
+
+	/**
+	 * Prevent the access to the edit reservation page.
+	 */
+	public function ersrv_wp_callback() {
+		global $post;
+
+		// Prevent the site visitors from accessing the edit reservation page.
+		if ( ! is_user_logged_in() ) {
+			$is_edit_reservation_page = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_edit_reservation' ) );
+
+			// if it's the edit reservation page.
+			if ( $is_edit_reservation_page ) {
+				$my_account = wc_get_page_permalink( 'myaccount' );
+				wp_safe_redirect( $my_account );
+				exit(0);
+			}
 		}
 	}
 }
