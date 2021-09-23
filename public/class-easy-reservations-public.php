@@ -535,7 +535,7 @@ class Easy_Reservations_Public {
 
 		// If the location is set.
 		if ( ! empty( $location ) ) {
-			$args['meta_query']['relation'] = 'OR';
+			$args['meta_query']['relation'] = 'AND';
 			$args['meta_query'][]           = array(
 				'key'     => '_ersrv_item_location',
 				'value'   => $location,
@@ -555,7 +555,7 @@ class Easy_Reservations_Public {
 
 		// If the accomodation is set.
 		if ( ! empty( $accomodation ) ) {
-			$args['meta_query']['relation'] = 'OR';
+			$args['meta_query']['relation'] = 'AND';
 			$args['meta_query'][]           = array(
 				'key'     => '_ersrv_accomodation_limit',
 				'value'   => $accomodation,
@@ -1532,9 +1532,6 @@ class Easy_Reservations_Public {
 		$min_reservation_period = ( ! empty( $item_details['min_reservation_period'] ) ) ? $item_details['min_reservation_period'] : '';
 		$max_reservation_period = ( ! empty( $item_details['max_reservation_period'] ) ) ? $item_details['max_reservation_period'] : '';
 		$reserved_dates         = ( ! empty( $item_details['reserved_dates'] ) ) ? $item_details['reserved_dates'] : '';
-		$php_date_format        = ersrv_get_php_date_format();
-		$curr_date              = ersrv_get_current_date( $php_date_format );
-		$next_date              = gmdate( $php_date_format, ( strtotime( 'now' ) + 86400 ) );
 
 		// Prepare the HTML.
 		?>
@@ -1582,11 +1579,11 @@ class Easy_Reservations_Public {
 								<div class="row form-row input-daterange">
 									<div class="col-6">
 										<h4 class="font-weight-semibold font-size-20"><?php esc_html_e( 'Checkin', 'easy-reservations' ); ?></h4>
-										<div><input type="text" id="ersrv-quick-view-item-checkin-date" class="form-control date-control text-left rounded-lg" placeholder="<?php echo esc_html( $curr_date ); ?>"></div>
+										<div><input type="text" id="ersrv-quick-view-item-checkin-date" class="form-control date-control text-left rounded-lg" placeholder="<?php esc_html_e( 'Checkin', 'easy-reservations' ); ?>"></div>
 									</div>
 									<div class="col-6">
 										<h4 class="font-weight-semibold font-size-20"><?php esc_html_e( 'Checkout', 'easy-reservations' ); ?></h4>
-										<div><input type="text" id="ersrv-quick-view-item-checkout-date" class="form-control date-control text-left rounded-lg" placeholder="<?php echo esc_html( $next_date ); ?>"></div>
+										<div><input type="text" id="ersrv-quick-view-item-checkout-date" class="form-control date-control text-left rounded-lg" placeholder="<?php esc_html_e( 'Checkout', 'easy-reservations' ); ?>"></div>
 									</div>
 									<label class="ersrv-reservation-error checkin-checkout-dates-error"></label>
 								</div>
@@ -1597,10 +1594,10 @@ class Easy_Reservations_Public {
 							<div class="values">
 								<div class="row form-row">
 									<div class="col-6">
-										<input type="number" id="quick-view-adult-accomodation-count" class="ersrv-accomodation-count form-contol" placeholder="<?php esc_html_e( 'No. of Adults', 'easy-reservations' ); ?>" />
+										<input type="number" id="quick-view-adult-accomodation-count" class="ersrv-accomodation-count form-contol" placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" />
 									</div>
 									<div class="col-6">
-										<input type="number" id="quick-view-kid-accomodation-count" class="ersrv-accomodation-count form-contol" placeholder="<?php esc_html_e( 'No. of Kids', 'easy-reservations' ); ?>" />
+										<input type="number" id="quick-view-kid-accomodation-count" class="ersrv-accomodation-count form-contol" placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" />
 									</div>
 									<label class="ersrv-reservation-error accomodation-error"></label>
 								</div>

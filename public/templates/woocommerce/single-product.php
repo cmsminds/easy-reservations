@@ -60,11 +60,6 @@ if ( ! empty( $types ) && is_array( $types ) ) {
 	$type_str = implode( ', ', $type_links );
 }
 
-// Current date.
-$php_date_format = ersrv_get_php_date_format();
-$curr_date       = ersrv_get_current_date( $php_date_format );
-$next_date       = gmdate( $php_date_format, ( strtotime( 'now' ) + 86400 ) );
-
 // Reservation item types.
 $reservation_item_types = get_terms(
 	array(
@@ -312,9 +307,9 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 							<div class="details text-left">
 								<form action="">
 									<div class="input-daterange d-flex flex-column flex-fill mb-3 pb-2">
-										<input placeholder="E.g.: <?php echo esc_html( $curr_date ); ?>" type="text" id="ersrv-single-reservation-checkin-datepicker" class="form-control date-control text-left rounded-lg">
+										<input placeholder="<?php esc_html_e( 'Checkin', 'easy-reservations' ); ?>" type="text" id="ersrv-single-reservation-checkin-datepicker" class="form-control date-control text-left rounded-lg">
 										<div class="input-group-addon font-Poppins font-size-18 font-weight-light color-black-400 py-2 my-1 text-center"><?php esc_html_e( 'to', 'easy-reservations' ); ?></div>
-										<input placeholder="E.g.: <?php echo esc_html( $next_date ); ?>" type="text" id="ersrv-single-reservation-checkout-datepicker" class="form-control date-control text-left rounded-lg">
+										<input placeholder="<?php esc_html_e( 'Checkout', 'easy-reservations' ); ?>" type="text" id="ersrv-single-reservation-checkout-datepicker" class="form-control date-control text-left rounded-lg">
 										<p class="ersrv-reservation-error checkin-checkout-dates-error"></p>
 									</div>
 									<div class="book-items-wrapper mb-4 pb-3">
@@ -428,12 +423,12 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 										<input type="number" class="ersrv-item-search-accomodation form-control ship-icon-field text-left rounded-lg" placeholder="<?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?>">
 									</div>
 									<div class="input-daterange d-flex flex-column flex-fill pb-2">
-										<input id="ersrv-search-checkin" type="text" class="form-control date-control text-left rounded-lg mb-2" placeholder="Check in">
-										<input id="ersrv-search-checkout" type="text" class="form-control date-control text-left rounded-lg" placeholder="Check out">
+										<input id="ersrv-search-checkin" type="text" class="form-control date-control text-left rounded-lg mb-2" placeholder="<?php esc_html_e( 'Checkin', 'easy-reservations' ); ?>">
+										<input id="ersrv-search-checkout" type="text" class="form-control date-control text-left rounded-lg" placeholder="<?php esc_html_e( 'Checkout', 'easy-reservations' ); ?>">
 									</div>
 									<div class="book-items-wrapper pb-2">
-										<select class="selectpicker form-control Boat-Types" id="boat-types" data-size="5" data-style="btn-outline-secondary focus-none" title="<?php esc_html_e( 'Item Type', 'easy-reservations' ); ?>">
-											<option value=""><?php esc_html_e( 'Item Type', 'easy-reservations' ); ?></option>
+										<select class="selectpicker form-control Boat-Types" id="boat-types" data-size="5" data-style="btn-outline-secondary focus-none" title="<?php esc_html_e( 'Item type', 'easy-reservations' ); ?>">
+											<option value=""><?php esc_html_e( 'Item type', 'easy-reservations' ); ?></option>
 											<?php if ( ! empty( $reservation_item_types ) && is_array( $reservation_item_types ) ) { ?>
 												<?php foreach ( $reservation_item_types as $item_type ) { ?>
 													<option value="<?php echo esc_attr( $item_type->term_id ); ?>"><?php echo esc_html( $item_type->name ); ?></option>
