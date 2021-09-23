@@ -1497,21 +1497,12 @@ class Easy_Reservations_Admin {
 		?>
 		<li class="wide ersrv-edit-order-actions">
 			<h4><?php esc_html_e( 'Easy Reservations:', 'easy-reservations' ); ?></h4>
-		<?php
+			<?php
 			// Return the actions if the receipt button should not be displayed.
 			if ( false !== $display_order_receipt ) {
 				?><a class="button" href="<?php echo esc_url( ersrv_download_reservation_receipt_url( $order_id ) ); ?>"><?php echo esc_html( ersrv_get_plugin_settings( 'ersrv_easy_reservations_receipt_button_text' ) ); ?></a><?php
 			}
-
-			// Add the edit button now.
-			$edit_reservation_page_id          = ersrv_get_page_id( 'edit-reservation' );
-			$edit_reservation_page_url         = get_permalink( $edit_reservation_page_id );
-			$query_params                      = array(
-				'action' => 'edit-reservation',
-				'id'     => $order_id,
-			);
 			?>
-			<a class="button" title="<?php esc_html_e( 'Edit Reservation', 'easy-reservations' ); ?>" href="<?php echo esc_url( add_query_arg( $query_params, $edit_reservation_page_url ) ); ?>"><?php esc_html_e( 'Edit Reservation', 'easy-reservations' ); ?></a>
 		</li>
 		<?php
 
@@ -1835,5 +1826,22 @@ class Easy_Reservations_Admin {
 	public function ersrv_woocommerce_delete_order_callback( $post_id ) {
 		// Flush out the reserved dates upon order deletion.
 		ersrv_flush_out_reserved_dates( $post_id );
+	}
+
+	/**
+	 * Add custom action to the bulk actions row.
+	 *
+	 * @param WC_Order $wc_order WooCommerce order object.
+	 */
+	public function ersrv_woocommerce_order_item_add_action_buttons_callback( $wc_order ) {
+		// Add the edit button now.
+		$edit_reservation_page_url = get_permalink( ersrv_get_page_id( 'edit-reservation' ) );
+		$query_params              = array(
+			'action' => 'edit-reservation',
+			'id'     => $wc_order->get_id(),
+		);
+		?>
+		<a class="button" title="<?php esc_html_e( 'Edit Reservation', 'easy-reservations' ); ?>" href="<?php echo esc_url( add_query_arg( $query_params, $edit_reservation_page_url ) ); ?>"><?php esc_html_e( 'Edit Reservation', 'easy-reservations' ); ?></a>
+		<?php
 	}
 }

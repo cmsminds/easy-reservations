@@ -176,6 +176,7 @@ class Easy_Reservations {
 		$this->loader->add_action( 'wp_ajax_approve_reservation_cancellation_request', $plugin_admin, 'ersrv_approve_reservation_cancellation_request_callback' );
 		$this->loader->add_action( 'wp_ajax_upload_driving_license', $plugin_admin, 'ersrv_upload_driving_license_callback' );
 		$this->loader->add_action( 'woocommerce_delete_order', $plugin_admin, 'ersrv_woocommerce_delete_order_callback' );
+		$this->loader->add_action( 'woocommerce_order_item_add_action_buttons', $plugin_admin, 'ersrv_woocommerce_order_item_add_action_buttons_callback', 20 );
 	}
 
 	/**
@@ -253,6 +254,8 @@ class Easy_Reservations {
 		$this->loader->add_filter( 'ersrv_display_receipt_button', $plugin_public, 'ersrv_ersrv_display_receipt_button_callback' );
 		$this->loader->add_action( 'ersrv_add_reservation_to_cart_before', $plugin_public, 'ersrv_ersrv_add_reservation_to_cart_before_callback' );
 		$this->loader->add_action( 'wp', $plugin_public, 'ersrv_wp_callback' );
+		$this->loader->add_action( 'wp_ajax_remove_uploaded_driving_license', $plugin_public, 'ersrv_remove_uploaded_driving_license_callback' );
+		$this->loader->add_action( 'wp_ajax_nopriv_remove_uploaded_driving_license', $plugin_public, 'ersrv_remove_uploaded_driving_license_callback' );
 	}
 
 	/**

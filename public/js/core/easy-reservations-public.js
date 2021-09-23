@@ -1095,6 +1095,48 @@ jQuery(document).ready(function ($) {
 	} );
 
 	/**
+	 * Remove the uploaded license file.
+	 */
+	$( document ).on( 'click', '.ersrv-uploaded-checkout-license-file button.remove', function() {
+		var this_button = $( this );
+		var file_id     = parseInt( this_button.data( 'file' ) );
+
+		// Return, if the file ID is not available.
+		if ( -1 === is_valid_number( file_id ) ) {
+			return false;
+		}
+
+		// Block the element.
+		block_element( this_button );
+
+		// Shoot the AJAX to delete the uploaded driving license file.
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'remove_uploaded_driving_license',
+				file_id: file_id,
+			},
+			success: function ( response ) {
+				// Return, if the response is not proper.
+				if ( 0 === response ) {
+					console.warn( 'easy-reservations: invalid ajax call' );
+					return false;
+				}
+
+				// If the reservation is added.
+				if ( 'driving-license-removed' === response.data.code ) {
+					unblock_element( this_button ); // Unblock the element.
+					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message ); // Show toast.
+					$( '.ersrv-uploaded-checkout-license-file' ).html( '' ); // Remove the html.
+					block_element( $( '.ersrv-driving-license button.view' ) ); // Block the upload button.
+				}
+			},
+		} );
+	} );
+
+	/**
 	 * Scroll the user to driving license, in case of error.
 	 */
 	$( document ).on( 'click', '.scroll-to-driving-license', function( evt ) {

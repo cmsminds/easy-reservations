@@ -211,6 +211,16 @@ class Update_Reservation_Email extends WC_Email {
 	}
 
 	/**
+	 * Get the email recipient.
+	 *
+	 * @return string
+	 */
+	public function get_recipient() {
+		$customer_email = ( ! empty( $this->object->customer['billing_email'] ) ) ? $this->object->customer['billing_email'] : '';
+		return apply_filters( 'woocommerce_email_recipient_' . $this->id, $customer_email, $this->object );
+	}
+
+	/**
 	 * Get the email main heading line.
 	 *
 	 * @return string
@@ -232,12 +242,6 @@ class Update_Reservation_Email extends WC_Email {
 				'type'    => 'checkbox',
 				'label'   => __( 'Enable this email notification', 'easy-reservations' ),
 				'default' => 'yes'
-			),
-			'recipient' => array(
-				'title'       => __( 'Recipient', 'easy-reservations' ),
-				'type'        => 'text',
-				'description' => sprintf( __( 'Enter recipients (comma separated) for this email. Defaults to %s', 'easy-reservations' ), get_option( 'admin_email' ) ),
-				'default'     => get_option( 'admin_email' )
 			),
 			'subject' => array(
 				'title'       => __( 'Subject', 'easy-reservations' ),

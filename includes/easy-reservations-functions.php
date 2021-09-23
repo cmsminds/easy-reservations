@@ -3172,7 +3172,7 @@ if ( ! function_exists( 'ersrv_get_amenity_single_fee_text' ) ) {
 	 * @since 1.0.0
 	 */
 	function ersrv_get_amenity_single_fee_text() {
-		$single_fee_text = __( 'single fee', 'easy-reservations' );
+		$single_fee_text = __( 'one time cost', 'easy-reservations' );
 		/**
 		 * This filter runs on the public end on the reservation pages.
 		 *
@@ -3197,7 +3197,7 @@ if ( ! function_exists( 'ersrv_get_amenity_daily_fee_text' ) ) {
 	 * @since 1.0.0
 	 */
 	function ersrv_get_amenity_daily_fee_text() {
-		$daily_fee_text = __( 'per day', 'easy-reservations' );
+		$daily_fee_text = __( 'per day cost', 'easy-reservations' );
 		/**
 		 * This filter runs on the public end on the reservation pages.
 		 *
