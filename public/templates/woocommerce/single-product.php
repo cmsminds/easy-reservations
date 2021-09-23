@@ -302,7 +302,7 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 									)
 								);
 								?>
-								<span class="price-info font-size-20 font-lato font-weight-medium color-white">(<?php esc_html_e( 'per day', 'easy-reservations' ); ?>)</span>
+								<span class="price-info font-size-20 font-lato font-weight-medium color-white">(<?php echo esc_html( ersrv_get_reservation_item_cost_type_text() ); ?>)</span>
 							</div>
 						</div>
 						<div class="book-tour bgcolor-white rounded-xl text-center">
@@ -331,7 +331,7 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 												$amenity_cost      = ( ! empty( $amenity_data['cost'] ) ) ? (float) $amenity_data['cost'] : 0.00;
 												$amenity_slug      = ( ! empty( $amenity_title ) ) ? sanitize_title( $amenity_title ) : '';
 												$amenity_cost_type = ( ! empty( $amenity_data['cost_type'] ) ) ? $amenity_data['cost_type'] : 'one_time';
-												$cost_type_text    = ( 'one_time' === $amenity_cost_type ) ? __( 'Single Fee', 'easy-reservations' ) : __( 'Per Day', 'easy-reservations' );
+												$cost_type_text    = ( 'one_time' === $amenity_cost_type ) ? ersrv_get_amenity_single_fee_text() : ersrv_get_amenity_daily_fee_text();
 												?>
 												<div class="custom-control custom-switch ersrv-single-amenity-block mb-2" data-cost_type="<?php echo esc_attr( $amenity_cost_type ); ?>" data-cost="<?php echo esc_attr( $amenity_cost ); ?>" data-amenity="<?php echo esc_attr( $amenity_title ); ?>">
 													<input type="checkbox" class="custom-control-input ersrv-new-reservation-single-amenity" id="amenity-<?php echo esc_html( $amenity_slug ); ?>">

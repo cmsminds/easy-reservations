@@ -3160,3 +3160,78 @@ if ( ! function_exists( 'ersrv_add_custom_user_roles' ) ) {
 		}
 	}
 }
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_amenity_single_fee_text' ) ) {
+	/**
+	 * Amenity - single fee text.
+	 *
+	 * @return string
+	 * @since 1.0.0
+	 */
+	function ersrv_get_amenity_single_fee_text() {
+		$single_fee_text = __( 'single fee', 'easy-reservations' );
+		/**
+		 * This filter runs on the public end on the reservation pages.
+		 *
+		 * This hook helps in modifying the single fee text for the amenities cost type.
+		 *
+		 * @param string $single_fee_text Amenity single fee text.
+		 * @return string
+		 * @since 1.0.0
+		 */
+		return apply_filters( 'ersrv_amenity_single_fee_text', $single_fee_text );
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_amenity_daily_fee_text' ) ) {
+	/**
+	 * Amenity - daily fee text.
+	 *
+	 * @return string
+	 * @since 1.0.0
+	 */
+	function ersrv_get_amenity_daily_fee_text() {
+		$daily_fee_text = __( 'per day', 'easy-reservations' );
+		/**
+		 * This filter runs on the public end on the reservation pages.
+		 *
+		 * This hook helps in modifying the daily fee text for the amenities cost type.
+		 *
+		 * @param string $daily_fee_text Amenity daily fee text.
+		 * @return string
+		 * @since 1.0.0
+		 */
+		return apply_filters( 'ersrv_amenity_daily_fee_text', $daily_fee_text );
+	}
+}
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_get_reservation_item_cost_type_text' ) ) {
+	/**
+	 * Amenity - daily fee text.
+	 *
+	 * @return string
+	 * @since 1.0.0
+	 */
+	function ersrv_get_reservation_item_cost_type_text() {
+		$text = __( 'per day', 'easy-reservations' );
+		/**
+		 * This filter runs on the public end on the reservation pages.
+		 *
+		 * This hook helps in modifying the reservation item fee text.
+		 *
+		 * @param string $text Amenity daily fee text.
+		 * @return string
+		 * @since 1.0.0
+		 */
+		return apply_filters( 'ersrv_reservation_item_cost_type_text', $text );
+	}
+}

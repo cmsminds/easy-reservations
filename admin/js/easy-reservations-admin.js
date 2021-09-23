@@ -1074,11 +1074,9 @@ jQuery( document ).ready( function( $ ) {
 				}
 
 				if ( 'reservation-cancellation-request-declined' === response.data.code ) {
-					// Unblock the element.
-					unblock_element( this_button.parents( 'tr' ) );
-
-					// Show the notification.
-					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
+					unblock_element( this_button.parents( 'tr' ) ); // Unblock the element.
+					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message ); // Show the notification.
+					location.reload(); // Reload.
 				}
 			},
 		} );
@@ -1124,11 +1122,9 @@ jQuery( document ).ready( function( $ ) {
 				}
 
 				if ( 'reservation-cancellation-request-approved' === response.data.code ) {
-					// Unblock the element.
-					unblock_element( this_button.parents( 'tr' ) );
-
-					// Show the notification.
-					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
+					unblock_element( this_button.parents( 'tr' ) ); // Unblock the element.
+					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message ); // Show the notification.
+					location.reload(); // Reload.
 				}
 			},
 		} );

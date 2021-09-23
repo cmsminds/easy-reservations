@@ -335,9 +335,9 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 			'decline_request' => sprintf( __( '%1$sDecline%2$s', 'easy-reservations' ), '<a href="javascript:void(0);" class="decline" title="' . esc_html__( 'Decline this cancellation request.', 'easy-reservations' ) . '">', '</a>' ),
 		);
 
-		// If the current status is approved.
+		// If the current status is approved, no further action needed.
 		if ( 'Approved' === $current_status ) {
-			unset( $actions['approve_request'] );
+			$actions = array();
 		}
 
 		// Return the title contents.

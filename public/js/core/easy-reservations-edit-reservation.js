@@ -199,13 +199,32 @@ jQuery(document).ready(function ($) {
 			return false;
 		}
 
-		// Proceed when everything is fine to update.
+		// Check the cost difference.
 		var order_id             = parseInt( $( '.ersrv-order-id' ).val() ); // Order ID.
 		var cost_difference_data = ersrv_calculate_reservation_cost_difference(); // Cost difference.
 		var cost_difference      = ( 1 === is_valid_number( cost_difference_data.amount ) ) ? cost_difference_data.amount : 0;
 
+		/**
+		 * Verify any change in the values now.
+		 * This is because if there are changes in the reservation with no cost difference, the reservation should be updated.
+		 *
+		 * Iterate through the cards to check the changed values.
+		 */
+		var changed_reservation_value = false;
+		$( '.ersrv-edit-reservation-item-card' ).each( function() {
+			var this_card       = $( this );
+			var item_id         = parseInt( this_card.data( 'itemid' ) );
+			var is_item_updated = ersrv_is_reservation_value_changed( item_id );
+
+			// If it's the error.
+			if ( 1 === is_item_updated ) {
+				changed_reservation_value = true;
+				return false;
+			}
+		} );
+
 		// If there is no cost difference, the order cannot be updated.
-		if ( 0 === cost_difference ) {
+		if ( 0 === cost_difference && false === changed_reservation_value ) {
 			ersrv_show_notification( 'bg-warning', 'fa-exclamation-circle', toast_notice_heading, cannot_update_reservation_no_change_done );
 			return false;
 		}
@@ -216,7 +235,7 @@ jQuery(document).ready(function ($) {
 		// Break the flow, if the user denies to update the reservation.
 		if ( false === update_reservation_consent ) {
 			return false;
-		}		
+		}
 
 		/**
 		 * Everything is OK.
@@ -809,5 +828,67 @@ jQuery(document).ready(function ($) {
 			is_valid: 1,
 			message: '',
 		};
+	}
+
+	/**
+	 * Check if the reservation values are changed.
+	 *
+	 * @param {number} item_id
+	 * @returns {number}
+	 */
+	function ersrv_is_reservation_value_changed( item_id ) {
+		// Check if there is a change in checkin date.
+		var current_checkin_date  = $( '#ersrv-edit-reservation-item-checkin-date-' + item_id ).val();
+		var old_checkin_date      = $( '#ersrv-edit-reservation-item-checkin-date-' + item_id ).data( 'oldval' );
+		if ( current_checkin_date !== old_checkin_date ) {
+			return 1;
+		}
+
+		// Check if there is a change in checkout date.
+		var current_checkout_date  = $( '#ersrv-edit-reservation-item-checkout-date-' + item_id ).val();
+		var old_checkout_date      = $( '#ersrv-edit-reservation-item-checkout-date-' + item_id ).data( 'oldval' );
+		if ( current_checkout_date !== old_checkout_date ) {
+			return 1;
+		}
+
+		// Check if there is a change in adult count.
+		var current_adult_count = parseInt( $( '#ersrv-edit-reservation-item-adult-count-' + item_id ).val() );
+		current_adult_count     = ( -1 !== is_valid_number( current_adult_count ) ) ? current_adult_count : 0;
+		var old_adult_count     = parseInt( $( '#ersrv-edit-reservation-item-adult-count-' + item_id ).data( 'oldval' ) );
+		if ( current_adult_count !== old_adult_count ) {
+			return 1;
+		}
+
+		// Check if there is a change in kids count.
+		var current_kid_count = parseInt( $( '#ersrv-edit-reservation-item-kid-count-' + item_id ).val() );
+		current_kid_count     = ( -1 !== is_valid_number( current_kid_count ) ) ? current_kid_count : 0;
+		var old_kid_count     = parseInt( $( '#ersrv-edit-reservation-item-kid-count-' + item_id ).data( 'oldval' ) );
+		if ( current_kid_count !== old_kid_count ) {
+			return 1;
+		}
+
+		// Check if there is a change in the amenities.
+		var amenities_altered = false;
+
+		// Iterate through the amenities to get their current values.
+		$( '.ersrv-single-amenity-block' ).each( function() {
+			var this_amenity = $( this );
+			var amenity_checkbox      = this_amenity.find( 'input[type="checkbox"]' );
+			var amenity_current_value = amenity_checkbox.is( ':checked' );
+			amenity_current_value     = ( true === amenity_current_value ) ? 'checked' : 'unchecked';
+			var amenity_old_value     = amenity_checkbox.data( 'oldval' );
+
+			// If the amenity is changed.
+			if ( amenity_current_value !== amenity_old_value ) {
+				amenities_altered = true;
+				return false;
+			}
+		} );
+		if ( true === amenities_altered ) {
+			return 1;
+		}
+
+		// If nothing is changed, return -1;
+		return -1;
 	}
 } );
