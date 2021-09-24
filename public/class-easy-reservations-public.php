@@ -1532,6 +1532,7 @@ class Easy_Reservations_Public {
 		$min_reservation_period = ( ! empty( $item_details['min_reservation_period'] ) ) ? $item_details['min_reservation_period'] : '';
 		$max_reservation_period = ( ! empty( $item_details['max_reservation_period'] ) ) ? $item_details['max_reservation_period'] : '';
 		$reserved_dates         = ( ! empty( $item_details['reserved_dates'] ) ) ? $item_details['reserved_dates'] : '';
+		$unavailable_weekdays   = ( ! empty( $item_details['unavailable_weekdays'] ) ) ? $item_details['unavailable_weekdays'] : array();
 
 		// Prepare the HTML.
 		?>
@@ -1685,9 +1686,10 @@ class Easy_Reservations_Public {
 
 		// Prepare the response.
 		$response = array(
-			'code'           => 'quick-view-modal-fetched',
-			'html'           => $html,
-			'reserved_dates' => $reserved_dates,
+			'code'                 => 'quick-view-modal-fetched',
+			'html'                 => $html,
+			'reserved_dates'       => $reserved_dates,
+			'unavailable_weekdays' => $unavailable_weekdays,
 		);
 		wp_send_json_success( $response );
 		wp_die();
@@ -2263,11 +2265,16 @@ class Easy_Reservations_Public {
 			$reserved_dates = array_values( $reserved_dates );
 		}
 
+		// Unavailable weekdays.
+		$unavailable_weekdays = get_post_meta( $product_id, '_ersrv_item_unavailable_weekdays', true );
+		$unavailable_weekdays = ( ! empty( $unavailable_weekdays ) && is_array( $unavailable_weekdays ) ) ? $unavailable_weekdays : array();
+
 		// Return the AJAX response.
 		$response = array(
 			'code'                 => 'datepicker-initiated',
 			'reserved_dates'       => $reserved_dates,
 			'order_reserved_dates' => $order_reserved_dates,
+			'unavailable_weekdays' => $unavailable_weekdays,
 		);
 		wp_send_json_success( $response );
 		wp_die();

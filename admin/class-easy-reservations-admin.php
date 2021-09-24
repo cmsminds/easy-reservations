@@ -353,6 +353,7 @@ class Easy_Reservations_Admin {
 		$has_captain               = ( ! empty( $has_captain ) && 'yes' === $has_captain ) ? 'yes' : 'no';
 		$has_captain_text          = filter_input( INPUT_POST, 'has_captain_text', FILTER_SANITIZE_STRING );
 		$captain_id                = (int) filter_input( INPUT_POST, 'reservation_item_captain', FILTER_SANITIZE_NUMBER_INT );
+		$unavailable_weekdays      = ( $posted_array['reservation_item_weekdays_unavailability'] ) ? $posted_array['reservation_item_weekdays_unavailability'] : array();
 
 		// Prepare the amenities array.
 		if ( ! empty( $amenities_titles ) && is_array( $amenities_titles ) ) {
@@ -461,6 +462,13 @@ class Easy_Reservations_Admin {
 			update_post_meta( $post_id, '_ersrv_item_captain', $captain_id );
 		} else {
 			delete_post_meta( $post_id, '_ersrv_item_captain' );
+		}
+
+		// Unavailable weekdays.
+		if ( ! empty( $unavailable_weekdays ) ) {
+			update_post_meta( $post_id, '_ersrv_item_unavailable_weekdays', $unavailable_weekdays );
+		} else {
+			delete_post_meta( $post_id, '_ersrv_item_unavailable_weekdays' );
 		}
 	}
 

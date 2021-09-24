@@ -62,9 +62,10 @@ jQuery(document).ready(function ($) {
 
 	// If it's the product page.
 	if ( 'yes' === is_product ) {
-		var reserved_dates  = reservation_item_details.reserved_dates;
-		var today_formatted = ersrv_get_formatted_date( new Date() );
-		var blocked_dates   = [];
+		var reserved_dates       = reservation_item_details.reserved_dates;
+		var unavailable_weekdays = reservation_item_details.unavailable_weekdays;
+		var today_formatted      = ersrv_get_formatted_date( new Date() );
+		var blocked_dates        = [];
 
 		// Prepare the blocked out dates in a separate array.
 		if ( 0 < reserved_dates.length ) {
@@ -91,12 +92,23 @@ jQuery(document).ready(function ($) {
 
 					// If the loop date is a blocked date.
 					if ( 0 < key.length ) {
-						date_class = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+						date_class   = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+						date_enabled = false;
 					} else {
 						date_class = 'ersrv-date-active';
 					}
+
+					// Check for the unavailable weekdays.
+					if ( 0 < unavailable_weekdays.length ) {
+						var weekday = date.getDay().toString();
+						if ( -1 !== $.inArray( weekday, unavailable_weekdays ) ) {
+							date_class   = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+							date_enabled = false;
+						}
+					}
 				} else {
-					date_class = 'ersrv-date-disabled';
+					date_enabled = false;
+					date_class   = 'ersrv-date-disabled';
 				}
 
 				// Return the datepicker day object.
@@ -125,12 +137,23 @@ jQuery(document).ready(function ($) {
 
 					// If the loop date is a blocked date.
 					if ( 0 < key.length ) {
-						date_class = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+						date_class   = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+						date_enabled = false;
 					} else {
 						date_class = 'ersrv-date-active';
 					}
+
+					// Check for the unavailable weekdays.
+					if ( 0 < unavailable_weekdays.length ) {
+						var weekday = date.getDay().toString();
+						if ( -1 !== $.inArray( weekday, unavailable_weekdays ) ) {
+							date_class   = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+							date_enabled = false;
+						}
+					}
 				} else {
-					date_class = 'ersrv-date-disabled';
+					date_enabled = false;
+					date_class   = 'ersrv-date-disabled';
 				}
 
 				// Return the datepicker day object.
@@ -468,10 +491,11 @@ jQuery(document).ready(function ($) {
 					$( '#ersrv-item-quick-view-modal' ).fadeIn( 'slow' );
 
 					// Checkin and checkout datepicker.
-					var reserved_dates        = response.data.reserved_dates;
-					quick_view_reserved_dates = reserved_dates;
-					var today_formatted       = ersrv_get_formatted_date( new Date() );
-					var blocked_dates         = [];
+					var reserved_dates                  = response.data.reserved_dates;
+					var quick_view_unavailable_weekdays = response.data.unavailable_weekdays;
+					quick_view_reserved_dates           = reserved_dates;
+					var today_formatted                 = ersrv_get_formatted_date( new Date() );
+					var blocked_dates                   = [];
 
 					// Prepare the blocked out dates in a separate array.
 					if ( 0 < reserved_dates.length ) {
@@ -501,6 +525,15 @@ jQuery(document).ready(function ($) {
 									date_class = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
 								} else {
 									date_class = 'ersrv-date-active';
+								}
+
+								// Check for the unavailable weekdays.
+								if ( 0 < quick_view_unavailable_weekdays.length ) {
+									var weekday = date.getDay().toString();
+									if ( -1 !== $.inArray( weekday, quick_view_unavailable_weekdays ) ) {
+										date_class   = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+										date_enabled = false;
+									}
 								}
 							} else {
 								date_class = 'ersrv-date-disabled';
@@ -1292,6 +1325,60 @@ jQuery(document).ready(function ($) {
 	 */
 	$( document ).on( 'keyup', '.ersrv-accomodation-count', function() {
 		$( this ).val( Math.abs( $( this ).val() ) );
+	} );
+
+	/**
+	 * Close the summary box if the click was made outside it.
+	 */
+	document.addEventListener( 'click', function( event ) {
+		// For the reservation details page.
+		var reservation_summary_container = document.getElementsByClassName( 'ersrv-reservation-details-item-summary' )[0];
+		var reservation_summary_link      = document.getElementsByClassName( 'ersrv-reservation-item-subtotal' )[0];
+		if ( undefined !== reservation_summary_link && reservation_summary_link !== event.target ) {
+			if (
+				undefined !== reservation_summary_container &&
+				reservation_summary_container !== event.target &&
+				! reservation_summary_container.contains( event.target )
+			) {
+				// Check if the summary modal is open.
+				if ( $( '.ersrv-reservation-details-item-summary' ).hasClass( 'show' ) ) {
+					$( '.ersrv-reservation-details-item-summary' ).removeClass( 'show' );
+					$( 'body' ).removeClass( 'ersrv-reservation-cost-details-active' );
+				}
+			}
+		}
+
+		// For the quick view modal.
+		var quick_view_reservation_summary_link = document.getElementsByClassName( 'ersrv-quick-view-item-subtotal' )[0];
+		if ( undefined !== quick_view_reservation_summary_link && quick_view_reservation_summary_link !== event.target ) {
+			if (
+				undefined !== reservation_summary_container &&
+				reservation_summary_container !== event.target &&
+				! reservation_summary_container.contains( event.target )
+			) {
+				// Check if the summary modal is open.
+				if ( $( '.ersrv-reservation-details-item-summary' ).hasClass( 'show' ) ) {
+					$( '.ersrv-reservation-details-item-summary' ).removeClass( 'show' );
+				}
+			}
+		}
+
+		// For the edit reservation item summary.
+		var edit_reservation_summary_container = document.getElementsByClassName( 'ersrv-edit-reservation-item-summary' )[0];
+		var edit_reservation_summary_link      = document.getElementsByClassName( 'ersrv-split-reservation-cost' )[0];
+		if ( undefined !== edit_reservation_summary_link && edit_reservation_summary_link !== event.target ) {
+			if (
+				undefined !== edit_reservation_summary_container &&
+				edit_reservation_summary_container !== event.target &&
+				! edit_reservation_summary_container.contains( event.target )
+			) {
+				// Check if the summary modal is open.
+				if ( $( '.ersrv-edit-reservation-item-summary' ).hasClass( 'show' ) ) {
+					$( '.ersrv-edit-reservation-item-summary' ).removeClass( 'show' );
+					$( 'body' ).removeClass( 'ersrv-reservation-cost-details-active' );
+				}
+			}
+		}
 	} );
 
 	/**

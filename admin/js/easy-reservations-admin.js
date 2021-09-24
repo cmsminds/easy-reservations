@@ -585,8 +585,9 @@ jQuery( document ).ready( function( $ ) {
 					$( '#accomodation-limit' ).val( accomodation_limit );
 					$( '.ersrv-new-reservation-limit-text' ).text( accomodation_limit_text.replace( '--', accomodation_limit ) );
 
-					var blocked_dates   = item_details.reserved_dates;
-					var today_formatted = ersrv_get_formatted_date( new Date() );
+					var blocked_dates        = item_details.reserved_dates;
+					var unavailable_weekdays = item_details.unavailable_weekdays;
+					var today_formatted      = ersrv_get_formatted_date( new Date() );
 
 					// Prepare the blocked out dates in a separate array.
 					if ( 0 < blocked_dates.length ) {
@@ -632,12 +633,23 @@ jQuery( document ).ready( function( $ ) {
 			
 								// If the loop date is a blocked date.
 								if ( 0 < key.length ) {
-									date_class = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+									date_class   = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+									date_enabled = false;
 								} else {
 									date_class = 'ersrv-date-active';
 								}
+
+								// Check for the unavailable weekdays.
+								if ( 0 < unavailable_weekdays.length ) {
+									var weekday = date.getDay().toString();
+									if ( -1 !== $.inArray( weekday, unavailable_weekdays ) ) {
+										date_class   = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+										date_enabled = false;
+									}
+								}
 							} else {
-								date_class = 'ersrv-date-disabled';
+								date_class   = 'ersrv-date-disabled';
+								date_enabled = false;
 							}
 			
 							// Return the datepicker day object.
