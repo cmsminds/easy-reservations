@@ -1678,4 +1678,8 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
 .quick-close {
   background-color: #3ab166;
 }
+
+.dropdown.bootstrap-select.form-control.Boat-Types button.btn.dropdown-toggle {
+  right: 0px;
+}
 /*# sourceMappingURL=easy-reservations-twentyseventeen.css.map */
