@@ -661,4 +661,11 @@ a{
 	.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline{
 		width: 310px;
 	}
+	.theme-twentytwentyone .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td span,
+	.theme-twentytwentyone .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a,
+	.theme-twentytwentyone .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a,
+	.theme-twentytwentyone .ui-datepicker-calendar .ui-state-disabled *, 
+	.theme-twentytwentyone .ui-datepicker-calendar .ersrv-date-disabled *{
+		padding: 12px 8px !important;
+	}
 }
