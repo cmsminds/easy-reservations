@@ -12,6 +12,15 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 $product_type_slug = ersrv_get_custom_product_type_slug();
 $product_id        = (int) filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
 $blockedout_dates  = get_post_meta( $product_id, '_ersrv_reservation_blockout_dates', true );
+$weekdays          = array(
+	__( 'Sunday', 'easy-reservations' ),
+	__( 'Monday', 'easy-reservations' ),
+	__( 'Tuesday', 'easy-reservations' ),
+	__( 'Wednesday', 'easy-reservations' ),
+	__( 'Thursday', 'easy-reservations' ),
+	__( 'Friday', 'easy-reservations' ),
+	__( 'Saturday', 'easy-reservations' ),
+);
 ?>
 <div id="reservation_blockout_dates_product_options" class="panel woocommerce_options_panel">
 	<div class="options_group reservations-blockout-dates">
@@ -50,7 +59,28 @@ $blockedout_dates  = get_post_meta( $product_id, '_ersrv_reservation_blockout_da
 			}
 			?>
 		</div>
+
+		<h4 class="reservation-tab-setting-heading"><?php esc_html_e( 'Weekdays Unavailability', 'easy-reservations' ); ?></h4>
 		<?php
+
+		// Weekdays unavailability selection.
+		woocommerce_wp_select(
+			array(
+				'id'          => 'reservation_item_weekdays_unavailability',
+				'name'        => 'reservation_item_weekdays_unavailability[]',
+				'label'       => __( 'Weekdays Unavailability', 'easy-reservations' ),
+				'class'       => 'select wc-enhanced-select',
+				'options'     => $weekdays,
+				'value'       => get_post_meta( $post->ID, '_ersrv_item_unavailable_weekdays', true ),
+				'style'       => 'width: 90%',
+				'desc_tip'    => true,
+				'description' => __( 'This sets the unavailable weekdays of this reservation item.', 'easy-reservations' ),
+				'custom_attributes' => array(
+					'multiple' => 'multiple',
+				),
+			)
+		);
+
 		/**
 		 * Hook that fires after the blockout dates item settings.
 		 *

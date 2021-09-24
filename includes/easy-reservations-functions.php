@@ -1693,6 +1693,10 @@ if ( ! function_exists( 'ersrv_get_item_details' ) ) {
 		}
 		$amenity_html = ob_get_clean();
 
+		// Unavailable weekdays.
+		$unavailable_weekdays = get_post_meta( $item_id, '_ersrv_item_unavailable_weekdays', true );
+		$unavailable_weekdays = ( ! empty( $unavailable_weekdays ) && is_array( $unavailable_weekdays ) ) ? $unavailable_weekdays : array();
+
 		// Put the details in an array.
 		$item_details = array(
 			'accomodation_limit'      => $accomodation_limit,
@@ -1711,6 +1715,7 @@ if ( ! function_exists( 'ersrv_get_item_details' ) ) {
 			'captain_id'              => get_post_meta( $item_id, '_ersrv_item_captain', true ),
 			'total_reservations'      => get_post_meta( $item_id, 'total_sales', true ),
 			'total_reservations_icon' => ERSRV_PLUGIN_URL . 'public/images/3d-box.png',
+			'unavailable_weekdays'    => $unavailable_weekdays,
 		);
 
 		/**

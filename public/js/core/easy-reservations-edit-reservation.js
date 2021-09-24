@@ -83,6 +83,7 @@ jQuery(document).ready(function ($) {
 					// Reserved dates in response.
 					var reserved_dates       = response.data.reserved_dates;
 					var order_reserved_dates = response.data.order_reserved_dates;
+					var unavailable_weekdays = response.data.unavailable_weekdays;
 					var today_formatted      = ersrv_get_formatted_date( new Date() );
 					var blocked_dates        = [];
 
@@ -122,14 +123,25 @@ jQuery(document).ready(function ($) {
 			
 								// If the loop date is a blocked date.
 								if ( 0 < reserved_key.length ) {
-									date_class = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+									date_class   = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+									date_enabled = false;
 								} else if ( 0 < order_reserved_key.length ) {
 									date_class = 'ersrv-order-reserved-date';
 								} else {
 									date_class = 'ersrv-date-active';
 								}
+
+								// Check for the unavailable weekdays.
+								if ( 0 < unavailable_weekdays.length ) {
+									var weekday = date.getDay().toString();
+									if ( -1 !== $.inArray( weekday, unavailable_weekdays ) ) {
+										date_class   = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+										date_enabled = false;
+									}
+								}
 							} else {
-								date_class = 'ersrv-date-disabled';
+								date_enabled = false;
+								date_class   = 'ersrv-date-disabled';
 							}
 			
 							// Return the datepicker day object.
