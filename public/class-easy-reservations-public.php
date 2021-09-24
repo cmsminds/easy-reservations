@@ -2010,9 +2010,14 @@ class Easy_Reservations_Public {
 	 * @param WC_Order $wc_order WooCommerce order.
 	 * @since 1.0.0
 	 */
-	public function ersrv_woocommerce_order_item_meta_end_callback( $item_id, $item, $wc_order ) {
+	public function ersrv_woocommerce_order_item_meta_end_callback( $item_id, $item, $wc_order, $plain_text ) {
 		// Return, if this is order received endpoint.
 		if ( is_wc_endpoint_url( 'order-received' ) ) {
+			return;
+		}
+
+		// Return, if this is called from email.
+		if ( false !== $plain_text ) {
 			return;
 		}
 

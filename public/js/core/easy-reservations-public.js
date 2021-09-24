@@ -1330,11 +1330,18 @@ jQuery(document).ready(function ($) {
 	/**
 	 * Close the summary box if the click was made outside it.
 	 */
-	document.addEventListener( 'click', function( event ) {
+	/*document.addEventListener( 'click', function( event ) {
 		// For the reservation details page.
 		var reservation_summary_container = document.getElementsByClassName( 'ersrv-reservation-details-item-summary' )[0];
 		var reservation_summary_link      = document.getElementsByClassName( 'ersrv-reservation-item-subtotal' )[0];
-		if ( undefined !== reservation_summary_link && reservation_summary_link !== event.target ) {
+		var wc_price_span                 = document.getElementsByClassName( 'woocommerce-Price-amount' )[0];
+		var wc_price_currency_span        = document.getElementsByClassName( 'woocommerce-Price-currencySymbol' )[0];
+
+		if (
+			( undefined !== reservation_summary_link && reservation_summary_link === event.target ) ||
+			( undefined !== wc_price_span && wc_price_span === event.target ) ||
+			( undefined !== wc_price_currency_span && wc_price_currency_span === event.target )
+		) {
 			if (
 				undefined !== reservation_summary_container &&
 				reservation_summary_container !== event.target &&
@@ -1379,7 +1386,7 @@ jQuery(document).ready(function ($) {
 				}
 			}
 		}
-	} );
+	} );*/
 
 	/**
 	 * Submit the search AJAX.
