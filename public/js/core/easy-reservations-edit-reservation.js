@@ -81,9 +81,14 @@ jQuery(document).ready(function ($) {
 					unblock_element( this_input.parents( '.input-daterange' ) );
 
 					// Reserved dates in response.
-					var reserved_dates       = response.data.reserved_dates;
-					var order_reserved_dates = response.data.order_reserved_dates;
-					var unavailable_weekdays = response.data.unavailable_weekdays;
+					var reserved_dates           = response.data.reserved_dates;
+					var order_reserved_dates     = response.data.order_reserved_dates;
+					var unavailable_weekdays     = response.data.unavailable_weekdays;
+					var unavailable_weekdays_arr = [];
+					$.map( unavailable_weekdays, function( val ) {
+						unavailable_weekdays_arr.push( parseInt( val ) );
+					} );
+
 					var today_formatted      = ersrv_get_formatted_date( new Date() );
 					var blocked_dates        = [];
 
@@ -95,8 +100,10 @@ jQuery(document).ready(function ($) {
 					}
 
 					// Store the blocked dates in hidden field.
-					var blocked_dates_json = JSON.stringify( blocked_dates );
+					var blocked_dates_json        = JSON.stringify( blocked_dates );
+					var unavailable_weekdays_json = JSON.stringify( unavailable_weekdays_arr );
 					$( '#blocked-dates-' + item_id ).val( blocked_dates_json );
+					$( '#unavailable-weekdays-' + item_id ).val( unavailable_weekdays_json );
 
 					// Initiate the datepicker now.
 					$( '#ersrv-edit-reservation-item-checkin-date-' + item_id + ', #ersrv-edit-reservation-item-checkout-date-' + item_id ).datepicker( {
@@ -132,9 +139,9 @@ jQuery(document).ready(function ($) {
 								}
 
 								// Check for the unavailable weekdays.
-								if ( 0 < unavailable_weekdays.length ) {
-									var weekday = date.getDay().toString();
-									if ( -1 !== $.inArray( weekday, unavailable_weekdays ) ) {
+								if ( 0 < unavailable_weekdays_arr.length ) {
+									var weekday = date.getDay();
+									if ( -1 !== $.inArray( weekday, unavailable_weekdays_arr ) ) {
 										date_class   = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
 										date_enabled = false;
 									}
@@ -799,25 +806,34 @@ jQuery(document).ready(function ($) {
 				$( '.ersrv-reservation-error#checkin-checkout-dates-error-' + item_id ).text( reservation_greater_reservation_days_err_msg.replace( 'XX', max_reservation ) );
 			} else {
 				// Iterate through the reservation dates to collect the readable dates.
-				var readable_reservation_dates = [];
+				var readable_reservation_dates    = [];
+				var readable_reservation_weekdays = [];
 				for ( var i in new_reservation_dates ) {
 					readable_reservation_dates.push( ersrv_get_formatted_date( new_reservation_dates[i] ) );
+					readable_reservation_weekdays.push( new_reservation_dates[i].getDay() );
 				}
 
 				// Check here, if the dates selected by the customer contains dates that are already reserved.
-				var reserved_dates = $( '#blocked-dates-' + item_id ).val();
+				var reserved_dates       = $( '#blocked-dates-' + item_id ).val();
+				var unavailable_weekdays = $( '#unavailable-weekdays-' + item_id ).val();
 
 				// If there are reserved dates.
 				if ( '' !== reserved_dates ) {
-					reserved_dates     = JSON.parse( reserved_dates );
+					reserved_dates       = JSON.parse( reserved_dates );
+					unavailable_weekdays = JSON.parse( unavailable_weekdays );
 
 					// Get the intersecting dates.
 					var intersecting_dates = $.grep( readable_reservation_dates, function( element ) {
 						return -1 !== $.inArray( element, reserved_dates );
 					} );
 
+					// If there are common weekdays that the reservation item is unavailable.
+					var intersecting_weekdays = $.grep( readable_reservation_weekdays, function( element ) {
+						return $.inArray( element, unavailable_weekdays ) !== -1;
+					} );
+
 					// So, if there are intersecting dates, then there is an error.
-					if ( 0 < intersecting_dates.length ) {
+					if ( 0 < intersecting_dates.length || 0 < intersecting_weekdays.length ) {
 						return {
 							is_valid: -1,
 							message: reservation_blocked_dates_err_msg_per_item.replace( 'XX', item_name ),

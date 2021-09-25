@@ -351,6 +351,7 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 														<input type="hidden" id="security-amount-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $security_amount ); ?>" />
 														<input type="hidden" id="datepicker-initiated-<?php echo esc_attr( $item_id ); ?>" value="-1" />
 														<input type="hidden" id="blocked-dates-<?php echo esc_attr( $item_id ); ?>" value="" />
+														<input type="hidden" id="unavailable-weekdays-<?php echo esc_attr( $item_id ); ?>" value="" />
 													</div>
 												</div>
 											</div>

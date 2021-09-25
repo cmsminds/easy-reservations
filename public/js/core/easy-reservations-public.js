@@ -34,7 +34,8 @@ jQuery(document).ready(function ($) {
 	var trim_zeros_from_price                        = ERSRV_Public_Script_Vars.trim_zeros_from_price;   
 
 	// Custom vars.
-	var quick_view_reserved_dates = [];
+	var quick_view_reserved_dates       = [];
+	var quick_view_unavailable_weekdays = [];
 
 	// If sidebar is to be removed on reservation single page.
 	if ( 'yes' === is_product || 'yes' === is_search_page || 'yes' === is_checkout ) {
@@ -62,10 +63,15 @@ jQuery(document).ready(function ($) {
 
 	// If it's the product page.
 	if ( 'yes' === is_product ) {
-		var reserved_dates       = reservation_item_details.reserved_dates;
-		var unavailable_weekdays = reservation_item_details.unavailable_weekdays;
-		var today_formatted      = ersrv_get_formatted_date( new Date() );
-		var blocked_dates        = [];
+		var reserved_dates           = reservation_item_details.reserved_dates;
+		var unavailable_weekdays     = reservation_item_details.unavailable_weekdays;
+		var unavailable_weekdays_arr = [];
+		$.map( unavailable_weekdays, function( val ) {
+			unavailable_weekdays_arr.push( parseInt( val ) );
+		} );
+
+		var today_formatted = ersrv_get_formatted_date( new Date() );
+		var blocked_dates   = [];
 
 		// Prepare the blocked out dates in a separate array.
 		if ( 0 < reserved_dates.length ) {
@@ -99,9 +105,9 @@ jQuery(document).ready(function ($) {
 					}
 
 					// Check for the unavailable weekdays.
-					if ( 0 < unavailable_weekdays.length ) {
-						var weekday = date.getDay().toString();
-						if ( -1 !== $.inArray( weekday, unavailable_weekdays ) ) {
+					if ( 0 < unavailable_weekdays_arr.length ) {
+						var weekday = date.getDay();
+						if ( -1 !== $.inArray( weekday, unavailable_weekdays_arr ) ) {
 							date_class   = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
 							date_enabled = false;
 						}
@@ -144,9 +150,9 @@ jQuery(document).ready(function ($) {
 					}
 
 					// Check for the unavailable weekdays.
-					if ( 0 < unavailable_weekdays.length ) {
-						var weekday = date.getDay().toString();
-						if ( -1 !== $.inArray( weekday, unavailable_weekdays ) ) {
+					if ( 0 < unavailable_weekdays_arr.length ) {
+						var weekday = date.getDay();
+						if ( -1 !== $.inArray( weekday, unavailable_weekdays_arr ) ) {
 							date_class   = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
 							date_enabled = false;
 						}
@@ -263,11 +269,8 @@ jQuery(document).ready(function ($) {
 				}
 
 				if ( 'google-calendar-email-sent' === response.data.code ) {
-					// Unblock the element.
-					unblock_element( this_button );
-
-					// Show the notification.
-					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
+					unblock_element( this_button ); // Unblock the element.
+					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message ); // Show the notification.
 				}
 			},
 		} );
@@ -491,11 +494,17 @@ jQuery(document).ready(function ($) {
 					$( '#ersrv-item-quick-view-modal' ).fadeIn( 'slow' );
 
 					// Checkin and checkout datepicker.
-					var reserved_dates                  = response.data.reserved_dates;
-					var quick_view_unavailable_weekdays = response.data.unavailable_weekdays;
-					quick_view_reserved_dates           = reserved_dates;
-					var today_formatted                 = ersrv_get_formatted_date( new Date() );
-					var blocked_dates                   = [];
+					var reserved_dates           = response.data.reserved_dates;
+					var unavailable_weekdays     = response.data.unavailable_weekdays;
+					var unavailable_weekdays_arr = [];
+					$.map( unavailable_weekdays, function( val ) {
+						unavailable_weekdays_arr.push( parseInt( val ) );
+					} );
+
+					quick_view_reserved_dates       = reserved_dates;
+					quick_view_unavailable_weekdays = unavailable_weekdays_arr;
+					var today_formatted             = ersrv_get_formatted_date( new Date() );
+					var blocked_dates               = [];
 
 					// Prepare the blocked out dates in a separate array.
 					if ( 0 < reserved_dates.length ) {
@@ -528,9 +537,9 @@ jQuery(document).ready(function ($) {
 								}
 
 								// Check for the unavailable weekdays.
-								if ( 0 < quick_view_unavailable_weekdays.length ) {
-									var weekday = date.getDay().toString();
-									if ( -1 !== $.inArray( weekday, quick_view_unavailable_weekdays ) ) {
+								if ( 0 < unavailable_weekdays_arr.length ) {
+									var weekday = date.getDay();
+									if ( -1 !== $.inArray( weekday, unavailable_weekdays_arr ) ) {
 										date_class   = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
 										date_enabled = false;
 									}
@@ -646,14 +655,21 @@ jQuery(document).ready(function ($) {
 				$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_greater_reservation_days_err_msg.replace( 'XX', max_reservation_period ) );
 			} else {
 				// Iterate through the reservation dates to collect the readable dates.
-				var readable_reservation_dates = [];
+				var readable_reservation_dates    = [];
+				var readable_reservation_weekdays = [];
 				for ( var i in reservation_dates ) {
 					var reservation_date_formatted = ersrv_get_formatted_date( reservation_dates[i] );
 					readable_reservation_dates.push( reservation_date_formatted );
+					readable_reservation_weekdays.push( reservation_dates[i].getDay() );
 				}
 
 				// Check here, if the dates selected by the customer contains dates that are already reserved.
-				var reserved_dates = reservation_item_details.reserved_dates;
+				var reserved_dates           = reservation_item_details.reserved_dates;
+				var unavailable_weekdays     = reservation_item_details.unavailable_weekdays;
+				var unavailable_weekdays_arr = [];
+				$.map( unavailable_weekdays, function( val ) {
+					unavailable_weekdays_arr.push( parseInt( val ) );
+				} );
 				var blocked_dates  = [];
 
 				// Prepare the blocked out dates in a separate array.
@@ -668,8 +684,13 @@ jQuery(document).ready(function ($) {
 					return $.inArray( element, blocked_dates ) !== -1;
 				} );
 
+				// If there are common weekdays that the reservation item is unavailable.
+				var common_weekdays = $.grep( readable_reservation_weekdays, function( element ) {
+					return $.inArray( element, unavailable_weekdays_arr ) !== -1;
+				} );
+
 				// If there are common dates.
-				if ( 0 < common_dates.length ) {
+				if ( 0 < common_dates.length || 0 < common_weekdays.length ) {
 					process_reservation = false;
 					$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_blocked_dates_err_msg );
 				}
@@ -781,10 +802,13 @@ jQuery(document).ready(function ($) {
 				$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_greater_reservation_days_err_msg.replace( 'XX', max_reservation_period ) );
 			} else {
 				// Iterate through the reservation dates to collect the readable dates.
-				var readable_reservation_dates = [];
+				var readable_reservation_dates    = [];
+				var readable_reservation_weekdays = [];
+
 				for ( var i in reservation_dates ) {
 					var reservation_date_formatted = ersrv_get_formatted_date( reservation_dates[i] );
 					readable_reservation_dates.push( reservation_date_formatted );
+					readable_reservation_weekdays.push( reservation_dates[i].getDay() );
 				}
 
 				// Check here, if the dates selected by the customer contains dates that are already reserved.
@@ -802,8 +826,13 @@ jQuery(document).ready(function ($) {
 					return $.inArray( element, blocked_dates ) !== -1;
 				} );
 
+				// If there are common weekdays that the reservation item is unavailable.
+				var common_weekdays = $.grep( readable_reservation_weekdays, function( element ) {
+					return $.inArray( element, quick_view_unavailable_weekdays ) !== -1;
+				} );
+
 				// If there are common dates.
-				if ( 0 < common_dates.length ) {
+				if ( 0 < common_dates.length || 0 < common_weekdays.length ) {
 					process_reservation = false;
 					$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_blocked_dates_err_msg );
 				}
@@ -1221,14 +1250,9 @@ jQuery(document).ready(function ($) {
 
 				// If the reservation is added.
 				if ( 'cancellation-request-saved' === response.data.code ) {
-					// Unblock the element.
-					unblock_element( parent_div );
-
-					// Block the button.
-					block_element( this_button );
-
-					// Show toast.
-					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message );
+					unblock_element( parent_div ); // Unblock the element.
+					block_element( this_button ); // Block the button.
+					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message ); // Show toast.
 				}
 			},
 		} );
