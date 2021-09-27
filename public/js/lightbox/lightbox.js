@@ -5,7 +5,7 @@ jQuery( document ).ready( function( $ ) {
 	/**
 	 * When the image is clicked.
 	 */
-	$( document ).on( 'click', '.masonry-grid img', function() {
+	$( document ).on( 'click', '.gallery-image-item img', function() {
 		var current_img     = $( this );
 		var current_img_div = current_img.parent( 'div' );
 		var current_img_src = current_img.attr( 'src' );
@@ -58,7 +58,7 @@ jQuery( document ).ready( function( $ ) {
 		var current_image_src = $( '.lightbox img' ).attr( 'src' );
 
 		// Search this image in the grid.
-		var grid_image_div_ele = $( '.masonry-grid' ).find( 'img[src="' + current_image_src + '"]' ).parent( 'div' );
+		var grid_image_div_ele = $( '.gallery-image-item' ).find( 'img[src="' + current_image_src + '"]' ).parent( 'div' );
 		var new_image_src      = grid_image_div_ele.next().find( 'img' ).attr( 'src' );
 
 		// Set the new image as the current display.
@@ -82,7 +82,7 @@ jQuery( document ).ready( function( $ ) {
 		var current_image_src = $( '.lightbox img' ).attr( 'src' );
 
 		// Search this image in the grid.
-		var grid_image_div_ele = $( '.masonry-grid' ).find( 'img[src="' + current_image_src + '"]' ).parent( 'div' );
+		var grid_image_div_ele = $( '.gallery-image-item' ).find( 'img[src="' + current_image_src + '"]' ).parent( 'div' );
 		var new_image_src      = grid_image_div_ele.prev().find( 'img' ).attr( 'src' );
 
 		// Set the new image as the current display.
