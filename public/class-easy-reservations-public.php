@@ -241,7 +241,7 @@ class Easy_Reservations_Public {
 			wp_enqueue_script(
 				$this->plugin_name . '-bootstrap-bundle-script',
 				ERSRV_PLUGIN_URL . 'public/js/bootstrap/bootstrap.bundle.min.js',
-				array(),
+				array( 'jquery' ),
 				filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap/bootstrap.bundle.min.js' ),
 				true
 			);
@@ -250,7 +250,7 @@ class Easy_Reservations_Public {
 			wp_enqueue_script(
 				$this->plugin_name . '-bootstrap-select-script',
 				ERSRV_PLUGIN_URL . 'public/js/bootstrap/bootstrap-select.min.js',
-				array(),
+				array( 'jquery' ),
 				filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap/bootstrap-select.min.js' ),
 				true
 			);
