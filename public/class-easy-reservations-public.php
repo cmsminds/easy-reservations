@@ -354,6 +354,7 @@ class Easy_Reservations_Public {
 			// If it's the search page.
 			if ( $is_search_page ) {
 				wp_dequeue_script( 'boostrap' );
+				wp_dequeue_style( 'boostrap' );
 			}
 		}
 	}
