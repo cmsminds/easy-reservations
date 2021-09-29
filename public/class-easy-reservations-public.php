@@ -153,11 +153,7 @@ class Easy_Reservations_Public {
 		}
 
 		// Add the bootstrap css.
-		if (
-			$is_reservation_page ||
-			$is_search_page ||
-			$is_edit_reservation_page
-		) {
+		if ( $is_reservation_page || $is_search_page || $is_edit_reservation_page ) {
 			wp_enqueue_style(
 				$this->plugin_name . '-bootstrap-style',
 				ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap.min.css',
@@ -167,11 +163,7 @@ class Easy_Reservations_Public {
 		}
 
 		// Add the bootstrap select css.
-		if (
-			$is_reservation_page ||
-			$is_search_page ||
-			$is_edit_reservation_page
-		) {
+		if ( $is_reservation_page || $is_search_page || $is_edit_reservation_page ) {
 			wp_enqueue_style(
 				$this->plugin_name . '-bootstrap-select-style',
 				ERSRV_PLUGIN_URL . 'public/css/bootstrap/bootstrap-select.min.css',
@@ -191,11 +183,7 @@ class Easy_Reservations_Public {
 		}
 
 		// Add the plugin core css.
-		if (
-			$is_reservation_page ||
-			$is_search_page ||
-			$is_edit_reservation_page
-		) {
+		if ( $is_reservation_page || $is_search_page || $is_edit_reservation_page ) {
 			if ( ! empty( $active_style_url ) && ! empty( $active_style_path ) ) {
 				wp_enqueue_style(
 					$this->plugin_name,
@@ -359,6 +347,14 @@ class Easy_Reservations_Public {
 					'date_format'   => ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' ),
 				)
 			);
+		}
+
+		// Dequeue the bootstrap js file.
+		if ( 'easy-storefront' === $current_theme || 'new-york-business' === $current_theme ) {
+			// If it's the search page.
+			if ( $is_search_page ) {
+				wp_dequeue_script( 'boostrap' );
+			}
 		}
 	}
 
