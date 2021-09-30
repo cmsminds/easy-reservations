@@ -352,7 +352,7 @@ class Easy_Reservations_Public {
 		// Dequeue the bootstrap js file.
 		if ( 'easy-storefront' === $current_theme || 'new-york-business' === $current_theme ) {
 			// If it's the search page.
-			if ( $is_search_page ) {
+			if ( $is_search_page || $is_reservation_page ) {
 				wp_dequeue_script( 'boostrap' );
 				wp_dequeue_style( 'boostrap' );
 			}
