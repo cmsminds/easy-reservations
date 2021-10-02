@@ -2422,14 +2422,21 @@ class Easy_Reservations_Public {
 		// Check through the requested checkin and checkout dates.
 		$posted_array           = filter_input_array( INPUT_POST );
 		$checkin_checkout_dates = ( ! empty( $posted_array['checkin_checkout_dates'] ) ) ? $posted_array['checkin_checkout_dates'] : array();
+		$reservation_weekdays   = ( ! empty( $posted_array['reservation_weekdays'] ) ) ? $posted_array['reservation_weekdays'] : array();
+
 		if ( ! empty( $checkin_checkout_dates ) && is_array( $checkin_checkout_dates ) ) {
 			$final_reservation_ids = array();
 			// Iterate through the found items to check if the requested checkin and checkout dates don't overlap.
 			foreach ( $reservation_post_ids as $reservation_post_id ) {
-				$item_reserved_dates = get_post_meta( $reservation_post_id, '_ersrv_reservation_blockout_dates', true );
+				$item_reserved_dates  = get_post_meta( $reservation_post_id, '_ersrv_reservation_blockout_dates', true );
+				$unavailable_weekdays = get_post_meta( $reservation_post_id, '_ersrv_item_unavailable_weekdays', true );
+
+				// Check for no reserved date and all available weekdays.
+				$no_reserved_dates = ( empty( $item_reserved_dates ) || ! is_array( $item_reserved_dates ) );
+				$available_allweek = ( empty( $unavailable_weekdays ) || ! is_array( $unavailable_weekdays ) );
 
 				// If there is no reserved date, this item qualifies to the search result.
-				if ( empty( $item_reserved_dates ) || ! is_array( $item_reserved_dates ) ) {
+				if ( $no_reserved_dates && $available_allweek ) {
 					$final_reservation_ids[] = $reservation_post_id;
 					continue;
 				}
@@ -2450,10 +2457,23 @@ class Easy_Reservations_Public {
 				}
 
 				// Find the intersecting dates between the requested dates and the already reserved ones.
-				$intersecting_dates = array_intersect( $checkin_checkout_dates, $reserved_dates );
+				$intersecting_dates       = array_intersect( $checkin_checkout_dates, $reserved_dates );
+				$intersecting_weekdays    = array_intersect( $reservation_weekdays, $unavailable_weekdays );
+				$qualified_search_queries = ( empty( $intersecting_dates ) && empty( $intersecting_weekdays ) );
+				/**
+				 * This filter executes during the search query.
+				 *
+				 * This filter helps in modifying the decision whether any reservation item qualified the search queries.
+				 *
+				 * @param boolean $qualified_search_queries Whether qualified by search queries.
+				 * @param int     $reservation_post_id Reservation post ID.
+				 * @return boolean
+				 * @since 1.0.0
+				 */
+				$qualified_search_queries = apply_filters( 'ersrv_reservation_item_qualified_search_parameters', $qualified_search_queries, $reservation_post_id );
 
 				// If there is no intersecting date, the item qualifies for the result.
-				if ( empty( $intersecting_dates ) ) {
+				if ( $qualified_search_queries ) {
 					$final_reservation_ids[] = $reservation_post_id;
 				}
 			}

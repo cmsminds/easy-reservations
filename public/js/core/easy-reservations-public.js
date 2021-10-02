@@ -329,12 +329,14 @@ jQuery(document).ready(function ($) {
 		var checkout               = ersrv_get_query_string_parameter_value( 'checkout' );
 		var accomodation           = ersrv_get_query_string_parameter_value( 'accomodation' );
 		var checkin_checkout_dates = [];
+		var reservation_weekdays   = [];
 
 		if ( 1 === is_valid_string( checkin ) && 1 === is_valid_string( checkout ) ) {
 			// Get the dates array between the checkin and checkout dates.
 			var checkin_checkout_dates_obj = ersrv_get_dates_between_2_dates( checkin, checkout );
 			for ( var m in checkin_checkout_dates_obj ) {
 				checkin_checkout_dates.push( ersrv_get_formatted_date( checkin_checkout_dates_obj[m] ) );
+				reservation_weekdays.push( checkin_checkout_dates_obj[m].getDay() );
 			}
 		}
 
@@ -345,6 +347,7 @@ jQuery(document).ready(function ($) {
 			type: ( 1 === is_valid_number( type ) ) ? type : '',
 			accomodation: ( 1 === is_valid_number( accomodation ) ) ? accomodation : '',
 			checkin_checkout_dates: checkin_checkout_dates,
+			reservation_weekdays: reservation_weekdays,
 		};
 
 		// Submit the ajax search now.
@@ -1287,6 +1290,7 @@ jQuery(document).ready(function ($) {
 		var checkout               = $( '#ersrv-search-checkout' ).val();
 		var accomodation           = parseInt( $( '.ersrv-item-search-accomodation' ).val() );
 		var checkin_checkout_dates = [];
+		var reservation_weekdays   = [];
 		var is_error               = false;
 		var error_message          = '';
 
@@ -1309,6 +1313,7 @@ jQuery(document).ready(function ($) {
 		var checkin_checkout_dates_obj = ersrv_get_dates_between_2_dates( checkin, checkout );
 		for ( var i in checkin_checkout_dates_obj ) {
 			checkin_checkout_dates.push( ersrv_get_formatted_date( checkin_checkout_dates_obj[i] ) );
+			reservation_weekdays.push( checkin_checkout_dates_obj[i].getDay() );
 		}
 
 		// Block the wrapper.
@@ -1320,6 +1325,7 @@ jQuery(document).ready(function ($) {
 			location: location,
 			type: type,
 			checkin_checkout_dates: checkin_checkout_dates,
+			reservation_weekdays: reservation_weekdays,
 			accomodation: accomodation,
 		};
 
