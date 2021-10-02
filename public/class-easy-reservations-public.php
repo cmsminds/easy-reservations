@@ -1523,6 +1523,7 @@ class Easy_Reservations_Public {
 		$item                   = wc_get_product( $item_id );
 		$featured_image_id      = $item->get_image_id();
 		$featured_image_src     = ersrv_get_attachment_url_from_attachment_id( $featured_image_id );
+		$featured_image_src     = ( empty( $featured_image_src ) ) ? wc_placeholder_img_src() : $featured_image_src;
 		$gallery_image_ids      = $item->get_gallery_image_ids();
 		$gallery_image_ids      = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $featured_image_id ), $gallery_image_ids ) : array( $featured_image_id );
 		$item_permalink         = get_permalink( $item_id );

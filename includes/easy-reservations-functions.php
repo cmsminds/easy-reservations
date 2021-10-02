@@ -1505,6 +1505,7 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 		$user_id             = get_current_user_id();
 		$featured_image_id   = get_post_thumbnail_id( $item_id );
 		$item_featured_image = ersrv_get_attachment_url_from_attachment_id( $featured_image_id );
+		$item_featured_image = ( empty( $item_featured_image ) ) ? wc_placeholder_img_src() : $item_featured_image;
 		$item_link           = get_permalink( $item_id );
 		$item_details        = ersrv_get_item_details( $item_id );
 		$adult_charge        = ( ! empty( $item_details['adult_charge'] ) ) ? $item_details['adult_charge'] : 0;
@@ -2495,7 +2496,7 @@ if ( ! function_exists( 'ersrv_print_reservation_cancel_button' ) ) {
 		 * @return string
 		 * @since 1.0.0
 		 */
-		$tooltip_text      = apply_filters( 'ersrv_reservation_cancellation_request_button_tooltip_text', $tooltip_text, $already_requested );
+		$tooltip_text = apply_filters( 'ersrv_reservation_cancellation_request_button_tooltip_text', $tooltip_text, $already_requested );
 		?>
 		<div data-tooltip="<?php echo esc_html( $tooltip_text ); ?>" class="tooltip ersrv-reservation-cancellation-container" data-order="<?php echo esc_attr( $order_id ); ?>" data-item="<?php echo esc_attr( $item_id ); ?>">
 			<button type="button" class="btn btn-accent <?php echo ( ! empty( $already_requested ) ) ? 'non-clickable' : ''; ?>" title="<?php echo esc_html( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></a>
