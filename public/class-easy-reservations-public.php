@@ -117,6 +117,7 @@ class Easy_Reservations_Public {
 		$enqueue_extra_css        = false;
 		$is_fav_items_endpoint    = isset( $wp_query->query_vars[ $this->favourite_reservation_items_endpoint_slug ] );
 		$is_view_order_endpoint   = isset( $wp_query->query_vars[ 'view-order' ] );
+		$is_track_order_page      = is_page( 'track-my-order' );
 
 		// Conditions to enqueue the extra css file.
 		if (
@@ -183,7 +184,11 @@ class Easy_Reservations_Public {
 		}
 
 		// Add the plugin core css.
-		if ( $is_reservation_page || $is_search_page || $is_edit_reservation_page ) {
+		if (
+			$is_reservation_page ||
+			$is_search_page ||
+			$is_edit_reservation_page
+		) {
 			if ( ! empty( $active_style_url ) && ! empty( $active_style_path ) ) {
 				wp_enqueue_style(
 					$this->plugin_name,
@@ -259,7 +264,8 @@ class Easy_Reservations_Public {
 			$is_search_page ||
 			$is_edit_reservation_page ||
 			is_checkout() ||
-			$is_view_order_endpoint
+			$is_view_order_endpoint ||
+			$is_track_order_page
 		) {
 			self::ersrv_enqueue_plugin_core_js( $this->plugin_name );
 		}
