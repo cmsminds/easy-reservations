@@ -1551,6 +1551,7 @@ class Easy_Reservations_Public {
 						<?php if ( ! empty( $gallery_image_ids ) && is_array( $gallery_image_ids ) ) { ?>
 							<?php foreach ( $gallery_image_ids as $image_id ) {
 								$image_src = ersrv_get_attachment_url_from_attachment_id( $image_id );
+								$image_src = ( empty( $image_src ) ) ? wc_placeholder_img_src() : $image_src;
 								?>
 								<div class="product-preview-thumb">
 									<img src="<?php echo esc_url( $image_src ); ?>" alt="gallery-image" class="product-preview-thumb-image">
