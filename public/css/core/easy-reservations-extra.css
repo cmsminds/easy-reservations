@@ -235,6 +235,7 @@
 /* .theme-storefront  */
 .theme-storefront .btn-accent {
     color: #fff !important;
+    background-color: #96588a !important;
     border-color: #96588a !important;
 }
 
