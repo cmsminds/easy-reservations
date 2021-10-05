@@ -1127,7 +1127,7 @@ class Easy_Reservations_Admin {
 				}
 
 				// Manage the stock data.
-				delete_post_meta( $post_id, '_stock' );
+				update_post_meta( $post_id, '_stock', 99999 );
 				update_post_meta( $post_id, '_stock_status', 'instock' );
 			}
 		} elseif ( 'page' === get_post_type( $post_id ) ) {
