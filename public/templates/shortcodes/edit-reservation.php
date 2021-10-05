@@ -200,13 +200,13 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 													<div class="col-12 col-md-6">
 														<div class="position-relative">
 															<label for="ersrv-edit-reservation-item-adult-count-<?php echo esc_attr( $item_id ); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Adults', 'easy-reservations' ); ?></label>
-															<div><input id="ersrv-edit-reservation-item-adult-count-<?php echo esc_attr( $item_id ); ?>" placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" type="number" min="1" class="ersrv-accomodation-count ersrv-edit-reservation-item-value ersrv-edit-reservation-item-adult-count form-control rounded-lg" value="<?php echo esc_html($adult_count); ?>" data-oldval="<?php echo esc_html($adult_count); ?>" /></div>
+															<div><input id="ersrv-edit-reservation-item-adult-count-<?php echo esc_attr( $item_id ); ?>" placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" type="number" min="1" class="ersrv-accomodation-count ersrv-edit-reservation-item-value ersrv-edit-reservation-item-adult-count form-control rounded-lg" value="<?php echo esc_html( $adult_count ); ?>" data-oldval="<?php echo esc_html( $adult_count ); ?>" /></div>
 														</div>
 													</div>
 													<div class="col-12 col-md-6">
 														<div class="position-relative">
 															<label for="ersrv-edit-reservation-item-kid-count-<?php echo esc_attr( $item_id ); ?>" class="ersrv-accomodation-count font-Poppins font-size-16 color-black"><?php esc_html_e( 'Kid(s)', 'easy-reservations' ); ?></label>
-															<div><input id="ersrv-edit-reservation-item-kid-count-<?php echo esc_attr( $item_id ); ?>" placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" type="number" min="1" class="ersrv-accomodation-count ersrv-edit-reservation-item-value ersrv-edit-reservation-item-kid-count form-control rounded-lg" value="<?php echo esc_html($kid_count); ?>" data-oldval="<?php echo esc_html($kid_count); ?>" /></div>
+															<div><input id="ersrv-edit-reservation-item-kid-count-<?php echo esc_attr( $item_id ); ?>" placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" type="number" min="0" class="ersrv-accomodation-count ersrv-edit-reservation-item-value ersrv-edit-reservation-item-kid-count form-control rounded-lg" value="<?php echo esc_html( $kid_count ); ?>" data-oldval="<?php echo esc_html( $kid_count ); ?>" /></div>
 														</div>
 													</div>
 													<p class="ersrv-reservation-error" id="guests-error-<?php echo esc_attr( $item_id ); ?>"></p>

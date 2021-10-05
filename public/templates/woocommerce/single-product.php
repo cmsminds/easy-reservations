@@ -314,8 +314,8 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 									</div>
 									<div class="book-items-wrapper mb-4 pb-3">
 										<label for="book-items" class="font-Poppins font-size-16 color-black"><?php echo esc_html( sprintf( __( 'Guests (Limit: %1$d)', 'easy-reservations' ), $accomodation_limit ) ); ?><span class="required">*</span></label>
-										<input id="adult-accomodation-count" placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" type="number" class="ersrv-accomodation-count form-control mb-3" />
-										<input id="kid-accomodation-count" placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" type="number" class="ersrv-accomodation-count form-control" />
+										<input min="1" id="adult-accomodation-count" placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" type="number" class="ersrv-accomodation-count form-control mb-3" />
+										<input min="0" id="kid-accomodation-count" placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" type="number" class="ersrv-accomodation-count form-control" />
 										<p class="ersrv-reservation-error accomodation-error"></p>
 									</div>
 									<?php if ( ! empty( $amenities ) && is_array( $amenities ) ) { ?>
