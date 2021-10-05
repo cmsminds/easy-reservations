@@ -1110,17 +1110,25 @@ class Easy_Reservations_Admin {
 	public function ersrv_save_post_callback( $post_id ) {
 		// If it's the product page.
 		if ( 'product' === get_post_type( $post_id ) ) {
+			$wc_product                = wc_get_product( $post_id );
 			$accomodation_adult_charge = (float) filter_input( INPUT_POST, 'accomodation_adult_charge', FILTER_SANITIZE_STRING );
-			$banner_image_id = filter_input( INPUT_POST, 'banner_image_id', FILTER_SANITIZE_NUMBER_INT );
+			$banner_image_id           = filter_input( INPUT_POST, 'banner_image_id', FILTER_SANITIZE_NUMBER_INT );
 
-			// If accomodation adult charge is available.
-			if ( ! empty( $accomodation_adult_charge ) ) {
-				update_post_meta( $post_id, '_regular_price', $accomodation_adult_charge );
-				delete_post_meta( $post_id, '_sale_price' );
-				update_post_meta( $post_id, '_price', $accomodation_adult_charge );
-			} else {
-				delete_post_meta( $post_id, '_regular_price' );
-				delete_post_meta( $post_id, '_price' );
+			// Check if the updating product is of reservation type.
+			if ( $this->custom_product_type === $wc_product->get_type() ) {
+				// If accomodation adult charge is available.
+				if ( ! empty( $accomodation_adult_charge ) ) {
+					update_post_meta( $post_id, '_regular_price', $accomodation_adult_charge );
+					delete_post_meta( $post_id, '_sale_price' );
+					update_post_meta( $post_id, '_price', $accomodation_adult_charge );
+				} else {
+					delete_post_meta( $post_id, '_regular_price' );
+					delete_post_meta( $post_id, '_price' );
+				}
+
+				// Manage the stock data.
+				delete_post_meta( $post_id, '_stock' );
+				update_post_meta( $post_id, '_stock_status', 'instock' );
 			}
 		} elseif ( 'page' === get_post_type( $post_id ) ) {
 			$banner_image_id = filter_input( INPUT_POST, 'banner_image_id', FILTER_SANITIZE_NUMBER_INT );
