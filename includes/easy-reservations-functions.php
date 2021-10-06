@@ -1698,12 +1698,24 @@ if ( ! function_exists( 'ersrv_get_item_details' ) ) {
 		$unavailable_weekdays = get_post_meta( $item_id, '_ersrv_item_unavailable_weekdays', true );
 		$unavailable_weekdays = ( ! empty( $unavailable_weekdays ) && is_array( $unavailable_weekdays ) ) ? $unavailable_weekdays : array();
 
+		// Reservation period restrictions.
+		$min_reservation = get_post_meta( $item_id, '_ersrv_reservation_min_period', true );
+		$max_reservation = get_post_meta( $item_id, '_ersrv_reservation_max_period', true );
+
+		// Generate the booking period restrictions.
+		if ( ! empty( $min_reservation ) && ! empty( $max_reservation ) ) {
+			$reservation_period_str = sprintf( __( 'Booking for min. %1$s to %2$s days.', 'easy-reservations' ), $min_reservation, $max_reservation );
+		} elseif ( ! empty( $min_reservation ) ) {
+			$reservation_period_str = sprintf( __( 'Booking for min. %1$s days.', 'easy-reservations' ), $min_reservation );
+		}
+
 		// Put the details in an array.
 		$item_details = array(
 			'accomodation_limit'      => $accomodation_limit,
 			'reserved_dates'          => $reserved_dates,
-			'min_reservation_period'  => get_post_meta( $item_id, '_ersrv_reservation_min_period', true ),
-			'max_reservation_period'  => get_post_meta( $item_id, '_ersrv_reservation_max_period', true ),
+			'min_reservation_period'  => $min_reservation,
+			'max_reservation_period'  => $max_reservation,
+			'reservation_period_str'  => $reservation_period_str,
 			'amenities'               => $amenities,
 			'amenity_html'            => $amenity_html,
 			'adult_charge'            => get_post_meta( $item_id, '_ersrv_accomodation_adult_charge', true ),

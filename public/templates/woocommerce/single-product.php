@@ -38,6 +38,7 @@ $accomodation_limit = ( ! empty( $item_details['accomodation_limit'] ) ) ? $item
 // Reservation Limits.
 $min_reservation_period = ( ! empty( $item_details['min_reservation_period'] ) ) ? $item_details['min_reservation_period'] : '';
 $max_reservation_period = ( ! empty( $item_details['max_reservation_period'] ) ) ? $item_details['max_reservation_period'] : '';
+$reservation_period_str = ( ! empty( $item_details['reservation_period_str'] ) ) ? $item_details['reservation_period_str'] : '';
 
 // Captain details.
 $has_captain      = ( ! empty( $item_details['has_captain'] ) ) ? $item_details['has_captain'] : 'no';
@@ -243,35 +244,6 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 							<?php } ?>
 						</div>
 					</div>
-					<div class="ship-details info-box">
-						<a class="section-title font-Poppins font-size-24 font-weight-bold d-block color-black text-decoration-none" data-toggle="collapse" href="#ship-details-collapse" role="button" aria-expanded="false" aria-controls="ship-details-collapse">
-							<span class=""><?php esc_html_e( 'Other Details', 'easy-reservations' ); ?></span>
-						</a>
-						<div class="collapse" id="ship-details-collapse">
-							<div class="dropdown-divider"></div>
-							<div class="security-amount">
-								<h4><?php esc_html_e( 'Security', 'easy-reservations' ); ?></h4>
-								<p><?php echo wp_kses(
-									wc_price( $security_amount ),
-									array(
-										'span' => array(
-											'class' => array(),
-										),
-									)
-								); ?></p>
-							</div>
-							<div class="reservation-limits">
-								<h4><?php esc_html_e( 'Reservation Limits', 'easy-reservations' ); ?></h4>
-								<?php if ( ! empty( $min_reservation_period ) ) { ?>
-									<p><?php echo sprintf( __( 'Minimum: %1$d days', 'easy-reservations' ), $min_reservation_period ); ?></p>
-								<?php } ?>
-
-								<?php if ( ! empty( $max_reservation_period ) ) { ?>
-									<p><?php echo sprintf( __( 'Maximum: %1$d days', 'easy-reservations' ), $max_reservation_period ); ?></p>
-								<?php } ?>
-							</div>
-						</div>
-					</div>
 					<?php
 					/**
 					 * This hook runs on the reservation item details page after all the details on the left side.
@@ -303,6 +275,7 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 						<div class="book-tour bgcolor-white rounded-xl text-center">
 							<div class="title mb-4">
 								<h3 class="font-Poppins font-size-24 font-weight-bold color-black"><?php esc_html_e( 'Book The Tour', 'easy-reservations' ); ?></h3>
+								<span><?php echo wp_kses_post( $reservation_period_str ); ?></span>
 							</div>
 							<div class="details text-left">
 								<form action="">
@@ -339,9 +312,10 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 										</div>
 									<?php } ?>
 									<div class="calc-wrapper mb-3">
-										<h4 class="font-Poppins font-size-16 color-black font-weight-bold mb-0">
-											<?php echo sprintf( __( 'Subtotal: %1$s', 'easy-reservations' ), '<a class="text-decoration-none ersrv-split-reservation-cost" href="javascript:void(0);"><span class="ersrv-reservation-item-subtotal ersrv-cost">--</span></a>' ); ?>
-										</h4>
+										<!-- SECURITY AMOUNT -->
+										<h4 class="ersrv-item-details-security-amount font-Poppins font-size-16 color-black font-weight-bold mb-0"><?php echo sprintf( __( 'Security: %1$s', 'easy-reservations' ), wc_price( $security_amount ) ); ?>
+										<!-- RESERVATION ITEM SUBTOTAL -->
+										<h4 class="ersrv-item-details-reservation-subtotal-amount font-Poppins font-size-16 color-black font-weight-bold mb-0"><?php echo sprintf( __( 'Subtotal: %1$s', 'easy-reservations' ), '<a class="text-decoration-none ersrv-split-reservation-cost" href="javascript:void(0);"><span class="ersrv-reservation-item-subtotal ersrv-cost">--</span></a>' ); ?></h4>
 										<div class="ersrv-reservation-details-item-summary">
 											<div class="ersrv-reservation-details-item-summary-wrapper p-3">
 												<table class="table table-borderless">
