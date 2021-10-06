@@ -89,9 +89,8 @@ jQuery(document).ready(function ($) {
 						unavailable_weekdays_arr.push( parseInt( val ) );
 					} );
 
-					var date_today      = new Date();  
-					var today_formatted = ersrv_get_formatted_date( date_today );
-					var blocked_dates   = [];
+					var date_today    = new Date();
+					var blocked_dates = [];
 
 					// Prepare the blocked out dates in a separate array.
 					if ( 0 < reserved_dates.length ) {
@@ -112,6 +111,7 @@ jQuery(document).ready(function ($) {
 							var loop_date_formatted = ersrv_get_formatted_date( date );
 							var date_enabled        = true;
 							var date_class          = '';
+							var date_message        = '';
 			
 							// If not the past date.
 							if ( date_today <= date ) {
@@ -131,8 +131,9 @@ jQuery(document).ready(function ($) {
 			
 								// If the loop date is a blocked date.
 								if ( 0 < reserved_key.length ) {
-									date_class   = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
-									date_enabled = false;
+									var index    = reserved_key[0];
+									date_message = reserved_dates[ index ].message;
+									date_class   = 'ersrv-date-disabled';
 								} else if ( 0 < order_reserved_key.length ) {
 									date_class = 'ersrv-order-reserved-date';
 								} else {
@@ -143,17 +144,15 @@ jQuery(document).ready(function ($) {
 								if ( 0 < unavailable_weekdays_arr.length ) {
 									var weekday = date.getDay();
 									if ( -1 !== $.inArray( weekday, unavailable_weekdays_arr ) ) {
-										date_class   = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
-										date_enabled = false;
+										date_class = 'ersrv-date-disabled';
 									}
 								}
 							} else {
-								date_enabled = false;
-								date_class   = 'ersrv-date-disabled';
+								date_class = 'ersrv-date-disabled';
 							}
 			
 							// Return the datepicker day object.
-							return [ date_enabled, date_class ];
+							return [ date_enabled, date_class, date_message ];
 						},
 						onSelect: function ( selected_date, instance ) {
 							if ( 'ersrv-edit-reservation-item-checkin-date-' + item_id === instance.id ) {

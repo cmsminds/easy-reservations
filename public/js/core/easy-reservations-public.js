@@ -64,15 +64,15 @@ jQuery(document).ready(function ($) {
 	// If it's the product page.
 	if ( 'yes' === is_product ) {
 		var reserved_dates           = reservation_item_details.reserved_dates;
+		console.log( 'reserved_dates', reserved_dates );
 		var unavailable_weekdays     = reservation_item_details.unavailable_weekdays;
 		var unavailable_weekdays_arr = [];
 		$.map( unavailable_weekdays, function( val ) {
 			unavailable_weekdays_arr.push( parseInt( val ) );
 		} );
 
-		var date_today      = new Date();
-		var today_formatted = ersrv_get_formatted_date( date_today );
-		var blocked_dates   = [];
+		var date_today    = new Date();
+		var blocked_dates = [];
 
 		// Prepare the blocked out dates in a separate array.
 		if ( 0 < reserved_dates.length ) {
@@ -87,6 +87,7 @@ jQuery(document).ready(function ($) {
 				var loop_date_formatted = ersrv_get_formatted_date( date );
 				var date_enabled        = true;
 				var date_class          = '';
+				var date_message        = '';
 
 				// If not the past date.
 				if ( date_today <= date ) {
@@ -97,12 +98,11 @@ jQuery(document).ready(function ($) {
 						}
 					} );
 
-					// console.log( loop_date_formatted, key.length );
-
 					// If the loop date is a blocked date.
 					if ( 0 < key.length ) {
-						date_class   = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
-						date_enabled = false;
+						var index    = key[0];
+						date_message = reserved_dates[ index ].message;
+						date_class   = 'ersrv-date-disabled';
 					} else {
 						date_class = 'ersrv-date-active';
 					}
@@ -111,17 +111,15 @@ jQuery(document).ready(function ($) {
 					if ( 0 < unavailable_weekdays_arr.length ) {
 						var weekday = date.getDay();
 						if ( -1 !== $.inArray( weekday, unavailable_weekdays_arr ) ) {
-							date_class   = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
-							date_enabled = false;
+							date_class   = 'ersrv-date-disabled';
 						}
 					}
 				} else {
-					date_enabled = false;
 					date_class   = 'ersrv-date-disabled';
 				}
 
 				// Return the datepicker day object.
-				return [ date_enabled, date_class ];
+				return [ date_enabled, date_class, date_message ];
 			},
 			numberOfMonths: 2,
 			dateFormat: date_format,
@@ -134,6 +132,7 @@ jQuery(document).ready(function ($) {
 				var loop_date_formatted = ersrv_get_formatted_date( date );
 				var date_enabled        = true;
 				var date_class          = '';
+				var date_message        = '';
 
 				// If not the past date.
 				if ( date_today <= date ) {
@@ -146,8 +145,9 @@ jQuery(document).ready(function ($) {
 
 					// If the loop date is a blocked date.
 					if ( 0 < key.length ) {
-						date_class   = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
-						date_enabled = false;
+						var index    = key[0];
+						date_message = reserved_dates[ index ].message;
+						date_class   = 'ersrv-date-disabled';
 					} else {
 						date_class = 'ersrv-date-active';
 					}
@@ -156,17 +156,15 @@ jQuery(document).ready(function ($) {
 					if ( 0 < unavailable_weekdays_arr.length ) {
 						var weekday = date.getDay();
 						if ( -1 !== $.inArray( weekday, unavailable_weekdays_arr ) ) {
-							date_class   = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
-							date_enabled = false;
+							date_class = 'ersrv-date-disabled';
 						}
 					}
 				} else {
-					date_enabled = false;
-					date_class   = 'ersrv-date-disabled';
+					date_class = 'ersrv-date-disabled';
 				}
 
 				// Return the datepicker day object.
-				return [ date_enabled, date_class ];
+				return [ date_enabled, date_class, date_message ];
 			},
 			onSelect: function ( selected_date, instance ) {
 				if ( 'ersrv-single-reservation-checkin-datepicker' === instance.id ) {
@@ -510,7 +508,6 @@ jQuery(document).ready(function ($) {
 					quick_view_reserved_dates       = reserved_dates;
 					quick_view_unavailable_weekdays = unavailable_weekdays_arr;
 					var date_today                  = new Date();
-					var today_formatted             = ersrv_get_formatted_date( date_today );
 					var blocked_dates               = [];
 
 					// Prepare the blocked out dates in a separate array.
@@ -526,6 +523,7 @@ jQuery(document).ready(function ($) {
 							var loop_date_formatted = ersrv_get_formatted_date( date );
 							var date_enabled        = true;
 							var date_class          = '';
+							var date_message        = '';
 
 							// If not the past date.
 							if ( date_today <= date ) {
@@ -538,7 +536,9 @@ jQuery(document).ready(function ($) {
 
 								// If the loop date is a blocked date.
 								if ( 0 < key.length ) {
-									date_class = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+									var index    = key[0];
+									date_message = reserved_dates[ index ].message;
+									date_class   = 'ersrv-date-disabled';
 								} else {
 									date_class = 'ersrv-date-active';
 								}
@@ -547,7 +547,7 @@ jQuery(document).ready(function ($) {
 								if ( 0 < unavailable_weekdays_arr.length ) {
 									var weekday = date.getDay();
 									if ( -1 !== $.inArray( weekday, unavailable_weekdays_arr ) ) {
-										date_class   = 'ui-datepicker-unselectable ui-state-disabled ersrv-date-disabled';
+										date_class   = 'ersrv-date-disabled';
 										date_enabled = false;
 									}
 								}
@@ -556,7 +556,7 @@ jQuery(document).ready(function ($) {
 							}
 
 							// Return the datepicker day object.
-							return [ date_enabled, date_class ];
+							return [ date_enabled, date_class, date_message ];
 						},
 						onSelect: function ( selected_date, instance ) {
 							if ( 'ersrv-quick-view-item-checkin-date' === instance.id ) {
