@@ -89,8 +89,9 @@ jQuery(document).ready(function ($) {
 						unavailable_weekdays_arr.push( parseInt( val ) );
 					} );
 
-					var today_formatted      = ersrv_get_formatted_date( new Date() );
-					var blocked_dates        = [];
+					var date_today      = new Date();  
+					var today_formatted = ersrv_get_formatted_date( date_today );
+					var blocked_dates   = [];
 
 					// Prepare the blocked out dates in a separate array.
 					if ( 0 < reserved_dates.length ) {
@@ -113,7 +114,7 @@ jQuery(document).ready(function ($) {
 							var date_class          = '';
 			
 							// If not the past date.
-							if ( today_formatted <= loop_date_formatted ) {
+							if ( date_today <= date ) {
 								// Add custom class to the active dates of the current month.
 								var reserved_key = $.map( blocked_dates, function( val, i ) {
 									if ( val === loop_date_formatted ) {

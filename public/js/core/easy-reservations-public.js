@@ -70,7 +70,8 @@ jQuery(document).ready(function ($) {
 			unavailable_weekdays_arr.push( parseInt( val ) );
 		} );
 
-		var today_formatted = ersrv_get_formatted_date( new Date() );
+		var date_today      = new Date();
+		var today_formatted = ersrv_get_formatted_date( date_today );
 		var blocked_dates   = [];
 
 		// Prepare the blocked out dates in a separate array.
@@ -88,13 +89,15 @@ jQuery(document).ready(function ($) {
 				var date_class          = '';
 
 				// If not the past date.
-				if ( today_formatted <= loop_date_formatted ) {
+				if ( date_today <= date ) {
 					// Add custom class to the active dates of the current month.
 					var key = $.map( blocked_dates, function( val, i ) {
 						if ( val === loop_date_formatted ) {
 							return i;
 						}
 					} );
+
+					// console.log( loop_date_formatted, key.length );
 
 					// If the loop date is a blocked date.
 					if ( 0 < key.length ) {
@@ -133,7 +136,7 @@ jQuery(document).ready(function ($) {
 				var date_class          = '';
 
 				// If not the past date.
-				if ( today_formatted <= loop_date_formatted ) {
+				if ( date_today <= date ) {
 					// Add custom class to the active dates of the current month.
 					var key = $.map( blocked_dates, function( val, i ) {
 						if ( val === loop_date_formatted ) {
@@ -506,7 +509,8 @@ jQuery(document).ready(function ($) {
 
 					quick_view_reserved_dates       = reserved_dates;
 					quick_view_unavailable_weekdays = unavailable_weekdays_arr;
-					var today_formatted             = ersrv_get_formatted_date( new Date() );
+					var date_today                  = new Date();
+					var today_formatted             = ersrv_get_formatted_date( date_today );
 					var blocked_dates               = [];
 
 					// Prepare the blocked out dates in a separate array.
@@ -524,7 +528,7 @@ jQuery(document).ready(function ($) {
 							var date_class          = '';
 
 							// If not the past date.
-							if ( today_formatted <= loop_date_formatted ) {
+							if ( date_today <= date ) {
 								// Add custom class to the active dates of the current month.
 								var key = $.map( blocked_dates, function( val, i ) {
 									if ( val === loop_date_formatted ) {
