@@ -64,7 +64,6 @@ jQuery(document).ready(function ($) {
 	// If it's the product page.
 	if ( 'yes' === is_product ) {
 		var reserved_dates           = reservation_item_details.reserved_dates;
-		console.log( 'reserved_dates', reserved_dates );
 		var unavailable_weekdays     = reservation_item_details.unavailable_weekdays;
 		var unavailable_weekdays_arr = [];
 		$.map( unavailable_weekdays, function( val ) {
@@ -265,7 +264,7 @@ jQuery(document).ready(function ($) {
 			success: function ( response ) {
 				// Check for invalid ajax request.
 				if ( 0 === response ) {
-					console.log( 'easy reservations: invalid ajax request' );
+					console.warn( 'easy reservations: invalid ajax request' );
 					return false;
 				}
 
@@ -305,7 +304,7 @@ jQuery(document).ready(function ($) {
 			success: function ( response ) {
 				// Check for invalid ajax request.
 				if ( 0 === response ) {
-					console.log( 'easy reservations: invalid ajax request' );
+					console.warn( 'easy reservations: invalid ajax request' );
 					return false;
 				}
 
@@ -377,7 +376,7 @@ jQuery(document).ready(function ($) {
 				success: function ( response ) {
 					// Check for invalid ajax request.
 					if ( 0 === response ) {
-						console.log( 'easy reservations: invalid ajax request' );
+						console.warn( 'easy reservations: invalid ajax request' );
 						return false;
 					}
 
@@ -414,7 +413,7 @@ jQuery(document).ready(function ($) {
 
 		// Exit, if the item id is not a valid number.
 		if ( -1 === is_valid_number( item_id ) ) {
-			console.log( 'easy reservations: invalid item id, cannot mark item as favourite' );
+			console.warn( 'easy reservations: invalid item id, cannot mark item as favourite' );
 			return false;
 		}
 
@@ -434,7 +433,7 @@ jQuery(document).ready(function ($) {
 			success: function ( response ) {
 				// Check for invalid ajax request.
 				if ( 0 === response ) {
-					console.log( 'easy reservations: invalid ajax request' );
+					console.warn( 'easy reservations: invalid ajax request' );
 					return false;
 				} else if ( 'item-favourite-done' === response.data.code ) { // If items are found.
 					// Unblock the element.
@@ -485,7 +484,7 @@ jQuery(document).ready(function ($) {
 			success: function ( response ) {
 				// Check for invalid ajax request.
 				if ( 0 === response ) {
-					console.log( 'easy reservations: invalid ajax request' );
+					console.warn( 'easy reservations: invalid ajax request' );
 					return false;
 				} else if ( 'quick-view-modal-fetched' === response.data.code ) { // If items are found.
 					// Unblock the element.
@@ -1435,7 +1434,7 @@ jQuery(document).ready(function ($) {
 			success: function ( response ) {
 				// Check for invalid ajax request.
 				if ( 0 === response ) {
-					console.log( 'easy reservations: invalid ajax request' );
+					console.warn( 'easy reservations: invalid ajax request' );
 					return false;
 				}
 				
