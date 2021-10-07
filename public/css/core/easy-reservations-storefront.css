@@ -967,13 +967,14 @@ img {
 
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-disabled.ersrv-date-disabled,
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ui-state-disabled.ersrv-date-disabled {
+  color: #8a8f9c;
   background-color: #e0e0e0;
   border-radius: 100%;
 }
 
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-highlight,
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ui-state-highlight {
-  color: #000;
+  color: #8a8f9c;
 }
 
 @media only screen and (max-width: 767px) {

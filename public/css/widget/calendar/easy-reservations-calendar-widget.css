@@ -322,10 +322,10 @@
 	background-color: var(--theme-storefront-accent);
 	border-radius: 100%;
 }
-.theme-storefront .ui-datepicker-calendar .ui-state-disabled *, 
-.theme-storefront .ui-datepicker-calendar .ersrv-date-disabled * {
-    color: #000;
-    background-color: #e0e0e0;
+.theme-storefront .ersrv-reservation-widget-container .ui-datepicker-calendar .ui-state-disabled *, 
+.theme-storefront .ersrv-reservation-widget-container .ui-datepicker-calendar .ersrv-date-disabled * {
+    /* color: #000; */
+    /* background-color: #9b9999; */
     border-radius: 100%;
 }
 /*-------------------- end here ----------------------------*/

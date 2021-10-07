@@ -1642,6 +1642,10 @@ class Easy_Reservations_Public {
 							<input type="hidden" id="quick-view-kid-subtotal" value="" />
 							<input type="hidden" id="quick-view-amenities-subtotal" value="" />
 							<input type="hidden" id="quick-view-security-subtotal" value="<?php echo esc_html( $security_amount ); ?>" />
+							<!--  -->
+							<h4 class="ersrv-item-details-security-amount font-Poppins font-size-16 color-black font-weight-bold mb-3">Security: <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">$</span>100</bdi></span>
+						</h4>
+						<!--  -->
 							<h4 class="font-size-20 font-weight-semibold"><?php esc_html_e( 'Subtotal', 'easy-reservations' ); ?></h4>
 							<label class="font-size-16"><?php echo sprintf( __( 'This will add %1$s to the cart.', 'easy-reservations' ), '<a href="javascript:void(0);" class="text-decoration-none ersrv-split-reservation-cost is-modal"><span class="font-lato font-weight-bold color-accent ersrv-quick-view-item-subtotal ersrv-cost">--</span></a>' ); ?></label>
 							<div class="ersrv-reservation-details-item-summary" id="ersrv-split-reservation-cost-content">
