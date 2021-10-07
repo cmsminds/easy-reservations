@@ -94,7 +94,7 @@ $on_click_reset       = "location.href = '{$search_page_url}'";
 											</div>
 										</div>
 										<div class="col-12 col-md-4">
-											<button type="button" class="ersrv-submit-reservation-search btn btn-primary btn-block font-lato font-size-18 font-weight-bold">
+											<button type="button" class="mb-2 mb-md-0 ersrv-submit-reservation-search btn btn-primary btn-block font-lato font-size-18 font-weight-bold">
 												<span class="mr-3"><img src="<?php echo esc_url( ERSRV_PLUGIN_URL . 'public/images/Search.png' ); ?>" alt="Search"></span>
 												<span><?php esc_html_e( 'Search', 'easy-reservations' ); ?></span>
 											</button>

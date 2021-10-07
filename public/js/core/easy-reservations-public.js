@@ -628,25 +628,30 @@ jQuery(document).ready(function ($) {
 		if ( -1 === is_valid_number( adult_count ) && -1 === is_valid_number( kid_count ) ) {
 			process_reservation = false;
 			$( '.ersrv-reservation-error.accomodation-error' ).text( reservation_guests_err_msg );
-			// $('html, body').animate({scrollTop:$('#div_id').position().top}, 'slow');
+			$( 'html, body' ).animate( { scrollTop: $( '.ersrv-single-reservation-item-accomodation' ).offset().top }, 'slow' );
 		} else if ( -1 === is_valid_number( adult_count ) && -1 !== is_valid_number( kid_count ) ) {
 			process_reservation = false;
 			$( '.ersrv-reservation-error.accomodation-error' ).text( reservation_only_kids_guests_err_msg );
+			$( 'html, body' ).animate( { scrollTop: $( '.ersrv-single-reservation-item-accomodation' ).offset().top }, 'slow' );
 		} else if ( accomodation_limit < guests ) {
 			process_reservation = false;
 			$( '.ersrv-reservation-error.accomodation-error' ).text( reservation_guests_count_exceeded_err_msg );
+			$( 'html, body' ).animate( { scrollTop: $( '.ersrv-single-reservation-item-accomodation' ).offset().top }, 'slow' );
 		}
 
 		// If the checkin and checkout dates are not available.
 		if ( '' === checkin_date && '' === checkout_date ) {
 			process_reservation = false;
 			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_checkin_checkout_missing_err_msg );
+			$( 'html, body' ).animate( { scrollTop: $( '.ersrv-single-reservation-item-checkin-checkout' ).offset().top }, 'slow' );
 		} else if ( '' === checkin_date ) {
 			process_reservation = false;
 			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_checkin_missing_err_msg );
+			$( 'html, body' ).animate( { scrollTop: $( '.ersrv-single-reservation-item-checkin-checkout' ).offset().top }, 'slow' );
 		} else if ( '' === checkout_date ) {
 			process_reservation = false;
 			$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_checkout_missing_err_msg );
+			$( 'html, body' ).animate( { scrollTop: $( '.ersrv-single-reservation-item-checkin-checkout' ).offset().top }, 'slow' );
 		} else {
 			/**
 			 * If the reservation period is more than allowed.
@@ -700,6 +705,7 @@ jQuery(document).ready(function ($) {
 				if ( 0 < common_dates.length || 0 < common_weekdays.length ) {
 					process_reservation = false;
 					$( '.ersrv-reservation-error.checkin-checkout-dates-error' ).text( reservation_blocked_dates_err_msg );
+					$( 'html, body' ).animate( { scrollTop: $( '.ersrv-single-reservation-item-checkin-checkout' ).offset().top }, 'slow' );
 				}
 			}
 		}
@@ -768,6 +774,7 @@ jQuery(document).ready(function ($) {
 		var amenities              = [];
 		var min_reservation_period = parseInt( $( '#quick-view-min-reservation-period' ).val() );
 		var max_reservation_period = parseInt( $( '#quick-view-max-reservation-period' ).val() );
+		var modal_container        = $( '#ersrv-item-quick-view-modal' );
 
 		// Vacate the error message.
 		$( '.ersrv-reservation-error' ).text( '' );
