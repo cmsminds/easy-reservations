@@ -973,3 +973,18 @@ body:not(.theme-storefront)
 .ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled{
   background-color: transparent !important;
 }
+.inputs-with-label {
+  position: relative;
+}
+
+.inputs-with-label label {
+  position: absolute;
+  top: 16px;
+  right: 5px;
+  margin: auto 0px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.inputs-with-label input {
+  padding-right: 100px;
+}

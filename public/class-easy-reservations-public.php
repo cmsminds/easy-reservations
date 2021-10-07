@@ -1601,9 +1601,11 @@ class Easy_Reservations_Public {
 								<div class="row form-row">
 									<div class="col-6">
 										<input type="number" id="quick-view-adult-accomodation-count" class="ersrv-accomodation-count form-contol" placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" min="1" />
+										<label for="quick-view-adult-accomodation-count" class="">Per adult: <span>$50</span></label>
 									</div>
 									<div class="col-6">
 										<input type="number" id="quick-view-kid-accomodation-count" class="ersrv-accomodation-count form-contol" placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" min="0" />
+										<label for="quick-view-kid-accomodation-count" class="">Per Kids: <span>$25</span></label>
 									</div>
 									<label class="ersrv-reservation-error accomodation-error"></label>
 								</div>
