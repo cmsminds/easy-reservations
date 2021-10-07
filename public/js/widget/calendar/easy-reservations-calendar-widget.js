@@ -56,7 +56,8 @@ jQuery( document ).ready( function( $ ) {
 
 				// Dates to disable. These are actually unavailability dates.
 				var blocked_dates   = response.data.dates;
-				var today_formatted = ersrv_get_formatted_date( new Date() );
+				var date_today      = new Date();
+				var today_formatted = ersrv_get_formatted_date( date_today );
 				var reserved_dates  = [];
 
 				// Prepare the blocked out dates in a separate array.
@@ -75,7 +76,7 @@ jQuery( document ).ready( function( $ ) {
 						var date_class          = '';
 
 						// If not the past date.
-						if ( today_formatted <= loop_date_formatted ) {
+						if ( date_today <= date ) {
 							// Add custom class to the active dates of the current month.
 							var key = $.map( reserved_dates, function( val, i ) {
 								if ( val === loop_date_formatted ) {
