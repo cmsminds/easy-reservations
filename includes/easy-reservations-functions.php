@@ -1560,9 +1560,20 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 					<h3 class="card-title">
 						<a href="<?php echo esc_url( $item_link ); ?>"><?php echo wp_kses_post( get_the_title( $item_id ) ); ?></a>
 					</h3>
-					<div class="review-stars mb-3">
-						<img src="<?php echo esc_url ( ERSRV_PLUGIN_URL . 'public/images/stars.png' ); ?>" alt="stars">
-					</div>
+
+					<?php
+					/**
+					 * This hook runs anywhere the reservation block html is displayed.
+					 *
+					 * This hook helps adding any html after the title is displayed.
+					 *
+					 * @param int    $item_id Reservation item ID.
+					 * @param string $page Page.
+					 * @since 1.0.0
+					 */
+					do_action( 'ersrv_single_reservation_block_after_title', $item_id, $page );
+					?>
+
 					<div class="amenities mb-3">
 						<div class="d-flex flex-column">
 							<?php if ( $location ) {?>

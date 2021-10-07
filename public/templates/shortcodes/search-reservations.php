@@ -38,6 +38,9 @@ $search_boat_type     = ( ! is_null( $search_boat_type ) ) ? $search_boat_type :
 $banner_image_id      = get_post_meta( $post_id, 'ersrv_banner_image_id', true );
 $banner_image_url     = ersrv_get_attachment_url_from_attachment_id( $banner_image_id );
 $banner_image_url     = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV_PLUGIN_URL . 'public/images/search-banner-image.jpg';
+$search_page_id       = ersrv_get_page_id( 'search-reservations' );
+$search_page_url      = get_permalink( $search_page_id );
+$on_click_reset       = "location.href = '{$search_page_url}'";
 ?>
 <section class="wrapper search-page" id="wrapper">
 	<div class="banner text-center" style="background-image: url( '<?php echo $banner_image_url; ?>' );">
@@ -97,8 +100,7 @@ $banner_image_url     = ( ! empty( $banner_image_url ) ) ? $banner_image_url : E
 											</button>
 										</div>
 										<div class="col-12 col-md-4">
-											<button type="button" class="ersrv-submit-reservation-reset btn btn-outline-fill-primary btn-block font-lato font-size-18 font-weight-bold">
-												<!-- <span class="mr-3"><img src="<?php echo esc_url( ERSRV_PLUGIN_URL . 'public/images/Search.png' ); ?>" alt="Search"></span> -->
+											<button type="button" onclick="<?php echo esc_attr( $on_click_reset ); ?>" class="ersrv-submit-reservation-reset btn btn-outline-fill-primary btn-block font-lato font-size-18 font-weight-bold">
 												<span><?php esc_html_e( 'Reset', 'easy-reservations' ); ?></span>
 											</button>
 										</div>

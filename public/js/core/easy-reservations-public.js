@@ -1102,6 +1102,9 @@ jQuery(document).ready(function ($) {
 
 			return false;
 		}
+
+		// Upload the file as it is uploaded.
+		$( '.ersrv-driving-license button.upload' ).click();
 	} );
 
 	/**

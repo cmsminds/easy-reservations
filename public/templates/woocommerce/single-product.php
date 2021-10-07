@@ -289,11 +289,11 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 										<label for="book-items" class="font-Poppins font-size-16 color-black"><?php echo esc_html( sprintf( __( 'Guests (Limit: %1$d)', 'easy-reservations' ), $accomodation_limit ) ); ?><span class="required">*</span></label>
 										<div class="inputs-with-label">
 											<input min="1" id="adult-accomodation-count" placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" type="number" class="ersrv-accomodation-count form-control mb-3" />
-											<label for="adult-accomodation-count" class="">Per adult: <span>$50</span></label>
+											<label for="adult-accomodation-count"><?php echo sprintf( __( 'per adult: %1$s%3$s%2$s', 'easy-reservations' ), '<span>', '</span>', wc_price( $adult_charge ) ); ?></label>
 										</div>
 										<div class="inputs-with-label">
 											<input min="0" id="kid-accomodation-count" placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" type="number" class="ersrv-accomodation-count form-control" />
-											<label for="kid-accomodation-count" class="">Per Kids: <span>$25</span></label>
+											<label for="kid-accomodation-count"><?php echo sprintf( __( 'per kid: %1$s%3$s%2$s', 'easy-reservations' ), '<span>', '</span>', wc_price( $kid_charge ) ); ?></label>
 										</div>
 										<p class="ersrv-reservation-error accomodation-error"></p>
 									</div>

@@ -1601,11 +1601,11 @@ class Easy_Reservations_Public {
 								<div class="row form-row">
 									<div class="col-6">
 										<input type="number" id="quick-view-adult-accomodation-count" class="ersrv-accomodation-count form-contol" placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" min="1" />
-										<label for="quick-view-adult-accomodation-count" class="">Per adult: <span>$50</span></label>
+										<label for="quick-view-adult-accomodation-count" class=""><?php echo sprintf( __( 'per adult: %1$s%3$s%2$s', 'easy-reservations' ), '<span>', '</span>', wc_price( $adult_charge ) ); ?></label>
 									</div>
 									<div class="col-6">
 										<input type="number" id="quick-view-kid-accomodation-count" class="ersrv-accomodation-count form-contol" placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" min="0" />
-										<label for="quick-view-kid-accomodation-count" class="">Per Kids: <span>$25</span></label>
+										<label for="quick-view-kid-accomodation-count" class=""><?php echo sprintf( __( 'per kid: %1$s%3$s%2$s', 'easy-reservations' ), '<span>', '</span>', wc_price( $kid_charge ) ); ?></label>
 									</div>
 									<label class="ersrv-reservation-error accomodation-error"></label>
 								</div>
@@ -1642,11 +1642,7 @@ class Easy_Reservations_Public {
 							<input type="hidden" id="quick-view-kid-subtotal" value="" />
 							<input type="hidden" id="quick-view-amenities-subtotal" value="" />
 							<input type="hidden" id="quick-view-security-subtotal" value="<?php echo esc_html( $security_amount ); ?>" />
-							<!--  -->
-							<h4 class="ersrv-item-details-security-amount font-Poppins font-size-16 color-black font-weight-bold mb-3">Security: <span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">$</span>100</bdi></span>
-						</h4>
-						<!--  -->
-							<h4 class="font-size-20 font-weight-semibold"><?php esc_html_e( 'Subtotal', 'easy-reservations' ); ?></h4>
+							<h4 class="ersrv-item-details-security-amount font-Poppins font-size-16 color-black font-weight-bold mb-3"><?php echo sprintf( __( 'Security: %1$s', 'easy-reservations' ), wc_price( $security_amount ) ); ?></h4>
 							<label class="font-size-16"><?php echo sprintf( __( 'This will add %1$s to the cart.', 'easy-reservations' ), '<a href="javascript:void(0);" class="text-decoration-none ersrv-split-reservation-cost is-modal"><span class="font-lato font-weight-bold color-accent ersrv-quick-view-item-subtotal ersrv-cost">--</span></a>' ); ?></label>
 							<div class="ersrv-reservation-details-item-summary" id="ersrv-split-reservation-cost-content">
 								<div class="ersrv-reservation-details-item-summary-wrapper p-3">
@@ -1759,7 +1755,7 @@ class Easy_Reservations_Public {
 		// Get the attachment ID, if already uploaded.
 		$attachment_id      = WC()->session->get( 'reservation_driving_license_attachment_id' );
 		$attachment_url     = ersrv_get_attachment_url_from_attachment_id( $attachment_id );
-		$view_license_url   = ( ! is_null( $attachment_id ) ) ? "location.href = '{$attachment_url}'" : '';
+		$view_license_url   = ( ! is_null( $attachment_id ) ) ? "window.open( '" . $attachment_url . "', '_blank' )" : '';
 		$view_license_class = ( ! is_null( $attachment_id ) ) ? '' : 'non-clickable';
 
 		// Get the max upload file size.
