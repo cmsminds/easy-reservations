@@ -1682,4 +1682,8 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
 .dropdown.bootstrap-select.form-control.Boat-Types button.btn.dropdown-toggle {
   right: 0px;
 }
+
+.ersrv-item-details-security-amount .woocommerce-Price-amount.amount {
+  color: #3ab166;
+}
 /*# sourceMappingURL=easy-reservations-twentyseventeen.css.map */

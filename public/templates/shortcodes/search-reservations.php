@@ -80,20 +80,26 @@ $banner_image_url     = ( ! empty( $banner_image_url ) ) ? $banner_image_url : E
 							</div>
 						</div>
 						<div class="form-row">
-							<div class="col-12 col-md-12 col-lg-6">
+							<div class="col-12 col-md-12 col-lg-3">
 							</div>
-							<div class="col-12 col-md-12 col-lg-6">
+							<div class="col-12 col-md-12 col-lg-9">
 								<div class="input-daterange">
 									<div class="form-row">
-										<div class="col-12 col-md-6">
+										<div class="col-12 col-md-4">
 											<div class="form-group">
 												<input type="number" value="<?php echo esc_html( $search_accomodation ); ?>" class="ersrv-search-parameter ersrv-item-search-accomodation form-control rounded-lg ship-icon-field" placeholder="<?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?>">
 											</div>
 										</div>
-										<div class="col-12 col-md-6">
+										<div class="col-12 col-md-4">
 											<button type="button" class="ersrv-submit-reservation-search btn btn-primary btn-block font-lato font-size-18 font-weight-bold">
 												<span class="mr-3"><img src="<?php echo esc_url( ERSRV_PLUGIN_URL . 'public/images/Search.png' ); ?>" alt="Search"></span>
 												<span><?php esc_html_e( 'Search', 'easy-reservations' ); ?></span>
+											</button>
+										</div>
+										<div class="col-12 col-md-4">
+											<button type="button" class="ersrv-submit-reservation-reset btn btn-outline-fill-primary btn-block font-lato font-size-18 font-weight-bold">
+												<!-- <span class="mr-3"><img src="<?php echo esc_url( ERSRV_PLUGIN_URL . 'public/images/Search.png' ); ?>" alt="Search"></span> -->
+												<span><?php esc_html_e( 'Reset', 'easy-reservations' ); ?></span>
 											</button>
 										</div>
 									</div>

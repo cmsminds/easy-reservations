@@ -967,9 +967,13 @@ img {
 
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-disabled.ersrv-date-disabled,
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ui-state-disabled.ersrv-date-disabled {
-  color: #b4b5b7;
   background-color: #e0e0e0;
   border-radius: 100%;
+}
+
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-highlight,
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ui-state-highlight {
+  color: #000;
 }
 
 @media only screen and (max-width: 767px) {
@@ -1333,6 +1337,7 @@ img {
 
 .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .card-title a {
   color: #000;
+  font-weight: 700;
 }
 
 .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .card-title a:hover {
@@ -1693,5 +1698,9 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
 
 form {
   margin-bottom: 0px;
+}
+
+.ersrv-item-details-security-amount .woocommerce-Price-amount.amount {
+  color: #96588a;
 }
 /*# sourceMappingURL=easy-reservations-storefront.css.map */

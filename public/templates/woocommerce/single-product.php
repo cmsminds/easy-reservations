@@ -285,7 +285,7 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 										<input placeholder="<?php esc_html_e( 'Checkout', 'easy-reservations' ); ?>" type="text" id="ersrv-single-reservation-checkout-datepicker" class="form-control date-control text-left rounded-lg">
 										<p class="ersrv-reservation-error checkin-checkout-dates-error"></p>
 									</div>
-									<div class="book-items-wrapper mb-4 pb-3 ersrv-single-reservation-item-accomodation">
+									<div class="book-items-wrapper mb-2 pb-3 ersrv-single-reservation-item-accomodation">
 										<label for="book-items" class="font-Poppins font-size-16 color-black"><?php echo esc_html( sprintf( __( 'Guests (Limit: %1$d)', 'easy-reservations' ), $accomodation_limit ) ); ?><span class="required">*</span></label>
 										<input min="1" id="adult-accomodation-count" placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" type="number" class="ersrv-accomodation-count form-control mb-3" />
 										<input min="0" id="kid-accomodation-count" placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" type="number" class="ersrv-accomodation-count form-control" />
@@ -313,9 +313,9 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 									<?php } ?>
 									<div class="calc-wrapper mb-3">
 										<!-- SECURITY AMOUNT -->
-										<h4 class="ersrv-item-details-security-amount font-Poppins font-size-16 color-black font-weight-bold mb-0"><?php echo sprintf( __( 'Security: %1$s', 'easy-reservations' ), wc_price( $security_amount ) ); ?>
+										<h4 class="ersrv-item-details-security-amount font-Poppins font-size-16 color-black font-weight-bold mb-3"><?php echo sprintf( __( 'Security: %1$s', 'easy-reservations' ), wc_price( $security_amount ) ); ?>
 										<!-- RESERVATION ITEM SUBTOTAL -->
-										<h4 class="ersrv-item-details-reservation-subtotal-amount font-Poppins font-size-16 color-black font-weight-bold mb-0"><?php echo sprintf( __( 'Subtotal: %1$s', 'easy-reservations' ), '<a class="text-decoration-none ersrv-split-reservation-cost" href="javascript:void(0);"><span class="ersrv-reservation-item-subtotal ersrv-cost">--</span></a>' ); ?></h4>
+										<h4 class="ersrv-item-details-reservation-subtotal-amount font-Poppins font-size-16 color-black font-weight-bold mb-0"><?php echo sprintf( __( 'Subtotal: %1$s', 'easy-reservations' ), '<a class="text-decoration-none ersrv-split-reservation-cost" href="javascript:void(0);"><span class="ersrv-reservation-item-subtotal ersrv-cost font-weight-bold color-accent ">--</span></a>' ); ?></h4>
 										<div class="ersrv-reservation-details-item-summary">
 											<div class="ersrv-reservation-details-item-summary-wrapper p-3">
 												<table class="table table-borderless">

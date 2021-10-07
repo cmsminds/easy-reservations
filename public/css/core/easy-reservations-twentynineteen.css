@@ -1675,4 +1675,8 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
     padding: 7px !important;
   }
 }
+
+.ersrv-item-details-security-amount .woocommerce-Price-amount.amount {
+  color: #005177;
+}
 /*# sourceMappingURL=easy-reservations-twentynineteen.css.map */

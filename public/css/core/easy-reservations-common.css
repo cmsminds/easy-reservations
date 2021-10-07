@@ -962,3 +962,14 @@ body:not(.theme-storefront)
 .theme-new-york-business .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .card-body{
   padding: 14px;
 }
+.form-control.date-control,
+.form-control.ship-icon-field,
+.form-control.ersrv-item-search-location {
+  padding-right: 50px;
+}
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a{
+  cursor: default !important;
+}
+.ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled{
+  background-color: transparent !important;
+}

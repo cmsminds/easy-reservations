@@ -307,9 +307,13 @@
 
 .theme-storefront .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-highlight,
 .theme-storefront .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ui-state-highlight {
-	color: #3e3e3e;
+	color: #000;
 	background-color: var(--theme-storefront-accent-300);
 	border-radius: 100%;
+}
+.theme-storefront .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-highlight *,
+.theme-storefront .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a.ui-state-highlight *{
+	color: #000 !important;
 }
 
 .theme-storefront .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td.ui-state-active,
@@ -320,7 +324,7 @@
 }
 .theme-storefront .ui-datepicker-calendar .ui-state-disabled *, 
 .theme-storefront .ui-datepicker-calendar .ersrv-date-disabled * {
-    color: #fff;
+    color: #000;
     background-color: #e0e0e0;
     border-radius: 100%;
 }
@@ -668,4 +672,8 @@ a{
 	.theme-twentytwentyone .ui-datepicker-calendar .ersrv-date-disabled *{
 		padding: 12px 8px !important;
 	}
+}
+/*  */
+.woocommerce ul.products li.product .woocommerce-loop-product__title{
+	font-weight: 700 !important;
 }
