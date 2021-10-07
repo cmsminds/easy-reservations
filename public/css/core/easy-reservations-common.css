@@ -572,7 +572,9 @@ body:not(.theme-storefront)
   padding-bottom: 0px !important;
   padding-top: 5px !important;
 }
-
+.theme-storefront .ersrv-split-reservation-cost{
+  color: #96588a !important;
+}
 .ersrv-reservation-cost-details-active,
 .ersrv-split-reservation-cost,
 .col-product .product-details .product-details-values {
