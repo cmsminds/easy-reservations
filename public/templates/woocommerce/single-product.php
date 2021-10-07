@@ -279,13 +279,13 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 							</div>
 							<div class="details text-left">
 								<form action="">
-									<div class="input-daterange d-flex flex-column flex-fill mb-3 pb-2">
+									<div class="input-daterange d-flex flex-column flex-fill mb-3 pb-2 ersrv-single-reservation-item-checkin-checkout">
 										<input placeholder="<?php esc_html_e( 'Checkin', 'easy-reservations' ); ?>" type="text" id="ersrv-single-reservation-checkin-datepicker" class="form-control date-control text-left rounded-lg">
 										<div class="input-group-addon font-Poppins font-size-18 font-weight-light color-black-400 py-2 my-1 text-center"><?php esc_html_e( 'to', 'easy-reservations' ); ?></div>
 										<input placeholder="<?php esc_html_e( 'Checkout', 'easy-reservations' ); ?>" type="text" id="ersrv-single-reservation-checkout-datepicker" class="form-control date-control text-left rounded-lg">
 										<p class="ersrv-reservation-error checkin-checkout-dates-error"></p>
 									</div>
-									<div class="book-items-wrapper mb-4 pb-3">
+									<div class="book-items-wrapper mb-4 pb-3 ersrv-single-reservation-item-accomodation">
 										<label for="book-items" class="font-Poppins font-size-16 color-black"><?php echo esc_html( sprintf( __( 'Guests (Limit: %1$d)', 'easy-reservations' ), $accomodation_limit ) ); ?><span class="required">*</span></label>
 										<input min="1" id="adult-accomodation-count" placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" type="number" class="ersrv-accomodation-count form-control mb-3" />
 										<input min="0" id="kid-accomodation-count" placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" type="number" class="ersrv-accomodation-count form-control" />

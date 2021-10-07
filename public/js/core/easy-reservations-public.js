@@ -628,6 +628,7 @@ jQuery(document).ready(function ($) {
 		if ( -1 === is_valid_number( adult_count ) && -1 === is_valid_number( kid_count ) ) {
 			process_reservation = false;
 			$( '.ersrv-reservation-error.accomodation-error' ).text( reservation_guests_err_msg );
+			// $('html, body').animate({scrollTop:$('#div_id').position().top}, 'slow');
 		} else if ( -1 === is_valid_number( adult_count ) && -1 !== is_valid_number( kid_count ) ) {
 			process_reservation = false;
 			$( '.ersrv-reservation-error.accomodation-error' ).text( reservation_only_kids_guests_err_msg );
