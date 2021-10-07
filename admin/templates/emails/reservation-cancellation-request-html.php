@@ -8,7 +8,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $customer_name     = "{$item_data->customer['billing_first_name']} {$item_data->customer['billing_last_name']}";
-$opening_paragraph = sprintf( __( 'This is to update you about a cancellation request from %3$s on order #%1$d that was placed on %2$s. The details about the reservation item are as follows:', 'easy-reservations' ), $item_data->order_id, $item_data->order_date, $customer_name );
+$opening_paragraph = sprintf( __( 'This is to update you about a cancellation request that is received from %3$s on order #%1$d that was placed on %2$s. The details about the reservation item are as follows:', 'easy-reservations' ), $item_data->order_id, $item_data->order_date, $customer_name );
 $edit_order_url    = $item_data->order_edit_url;
 $order_item        = $item_data->item;
 do_action( 'woocommerce_email_header', $email_heading );

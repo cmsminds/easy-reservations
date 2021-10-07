@@ -117,7 +117,7 @@ class Easy_Reservations_Public {
 		$enqueue_extra_css        = false;
 		$is_fav_items_endpoint    = isset( $wp_query->query_vars[ $this->favourite_reservation_items_endpoint_slug ] );
 		$is_view_order_endpoint   = isset( $wp_query->query_vars[ 'view-order' ] );
-		$is_track_order_page      = is_page( 'track-my-order' );
+		$is_track_order_page      = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'woocommerce_order_tracking' ) );
 
 		// Conditions to enqueue the extra css file.
 		if (
@@ -125,7 +125,8 @@ class Easy_Reservations_Public {
 			is_checkout() ||
 			$is_fav_items_endpoint ||
 			$is_view_order_endpoint ||
-			$is_edit_reservation_page
+			$is_edit_reservation_page ||
+			$is_track_order_page
 		) {
 			$enqueue_extra_css = true;
 		}
@@ -936,6 +937,7 @@ class Easy_Reservations_Public {
 		$is_reservation_page      = ersrv_product_is_reservation( $post->ID );
 		$is_view_order_endpoint   = isset( $wp_query->query_vars[ 'view-order' ] );
 		$is_edit_reservation_page = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_edit_reservation' ) );
+		$is_track_order_page      = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'woocommerce_order_tracking' ) );
 
 		// If it's the single reservation page or the search page.
 		if ( $is_search_page ) {
@@ -957,7 +959,8 @@ class Easy_Reservations_Public {
 				$is_view_order_endpoint ||
 				$is_reservation_page ||
 				is_checkout() ||
-				$is_edit_reservation_page
+				$is_edit_reservation_page ||
+				$is_track_order_page
 			)
 		) {
 			// Include the notification html.
