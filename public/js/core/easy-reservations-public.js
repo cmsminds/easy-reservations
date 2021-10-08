@@ -38,7 +38,7 @@ jQuery(document).ready(function ($) {
 	var quick_view_unavailable_weekdays = [];
 
 	// If sidebar is to be removed on reservation single page.
-	if ( 'yes' === is_product || 'yes' === is_search_page || 'yes' === is_checkout ) {
+	if ( 'yes' === is_product || 'yes' === is_search_page ) {
 		$( '#secondary' ).remove();
 		$( '#content-bottom-widgets' ).remove();
 		$( '#primary' ).css( 'width', '100%' );

@@ -521,6 +521,11 @@ if ( ! function_exists( 'ersrv_product_is_reservation' ) ) {
 	 * @since 1.0.0
 	 */
 	function ersrv_product_is_reservation( $product_id ) {
+		// Return, if its the shop or any archive page.
+		if ( is_shop() || is_product_category() || is_product_tag() ) {
+			return false;
+		}
+
 		// Get woocommerce product.
 		$wc_product = wc_get_product( $product_id );
 
