@@ -1009,16 +1009,29 @@ body:not(.theme-storefront)
   position: relative;
 }
 
+/* .inputs-with-label label {
+  position: absolute;
+  top: 16px;
+  right: 5px;
+  margin: auto 0px;
+  color: rgba(0, 0, 0, 0.5);
+} */
 .inputs-with-label label {
   position: absolute;
   top: 16px;
   right: 5px;
   margin: auto 0px;
   color: rgba(0, 0, 0, 0.5);
+  font-size: 14px;
+  border-left: 2px solid rgba(0, 0, 0, 0.2);
+  padding-left: 12px;
+  min-width: 140px;
 }
-
-.inputs-with-label input {
+/* .inputs-with-label input {
   padding-right: 100px;
+} */
+.inputs-with-label input {
+  padding-right: 145px;
 }
 .wrapper .sidebar-wrapper .book-tour .details input::-webkit-outer-spin-button,
 .wrapper .sidebar-wrapper .book-tour .details input::-webkit-inner-spin-button {
