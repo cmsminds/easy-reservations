@@ -187,7 +187,7 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 								// Get the last index of the array.
 								$gallery_images_last_index = count( $gallery_image_ids ) - 1;
 								?>
-								<div class="gallery-images">
+								<div class="gallery-images ersrv_count_images_<?php echo esc_attr( $gallery_images_last_index ); ?>">
 									<?php foreach ( $gallery_image_ids as $index => $image_id ) {
 										$gallery_image_url = ersrv_get_attachment_url_from_attachment_id( $image_id );
 
