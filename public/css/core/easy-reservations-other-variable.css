@@ -597,7 +597,7 @@ img {
   background-image: url("../../images/accomodation_green.png") !important;
 }
 
-.ersrv-item-search-location {
+.ersrv-item-search-location, .date-control.ersrv-item-search-location.ship-icon-field {
   background-image: url("../../images/mapPin_gray.png") !important;
   background-position: 90% !important;
   background-size: 20px !important;
@@ -607,7 +607,7 @@ img {
   transition: 0.3s ease-in-out;
 }
 
-.ersrv-item-search-location:focus, .ersrv-item-search-location:hover {
+.ersrv-item-search-location:focus, .date-control.ersrv-item-search-location.ship-icon-field:focus, .ersrv-item-search-location:hover, .date-control.ersrv-item-search-location.ship-icon-field:hover {
   background-image: url("../../images/mapPin_blue.png") !important;
 }
 

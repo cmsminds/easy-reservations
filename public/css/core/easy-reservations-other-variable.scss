@@ -199,6 +199,9 @@ img {
         background-image: url("../../images/mapPin_blue.png") !important;
     }
 }
+.date-control.ship-icon-field.ersrv-item-search-location {
+    @extend .ersrv-item-search-location;
+}
 .date-control.ship-icon-field{
     @extend .ship-icon-field;
 }
