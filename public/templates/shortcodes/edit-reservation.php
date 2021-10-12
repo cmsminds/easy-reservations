@@ -171,15 +171,13 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 													<div class="col-12 col-md-6">
 														<div class="position-relative">
 															<label for="ersrv-edit-reservation-item-checkin-date-<?php echo esc_attr( $item_id ); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Checkin', 'easy-reservations' ); ?></label>
-															<div>
-																<input type="text" id="ersrv-edit-reservation-item-checkin-date-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $checkin_date ); ?>" data-oldval="<?php echo esc_html( $checkin_date ); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkin-date form-control date-control text-left rounded-lg" placeholder="<?php echo esc_attr( ersrv_get_php_date_format() ); ?>">
-															</div>
+															<div><input type="text" id="ersrv-edit-reservation-item-checkin-date-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $checkin_date ); ?>" data-oldval="<?php echo esc_html( $checkin_date ); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkin-date form-control date-control text-left rounded-lg" placeholder="<?php esc_html_e( 'Checkin', 'easy-reservations' ); ?>" readonly></div>
 														</div>
 													</div>
 													<div class="col-12 col-md-6">
 														<div class="position-relative">
 															<label for="ersrv-edit-reservation-item-checkout-date-<?php echo esc_attr( $item_id ); ?>" class="font-Poppins font-size-16 color-black"><?php esc_html_e( 'Checkout', 'easy-reservations' ); ?></label>
-															<div><input type="text" id="ersrv-edit-reservation-item-checkout-date-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $checkout_date ); ?>" data-oldval="<?php echo esc_html( $checkout_date ); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkout-date form-control date-control text-left rounded-lg" placeholder="<?php echo esc_attr( ersrv_get_php_date_format() ); ?>"></div>
+															<div><input type="text" id="ersrv-edit-reservation-item-checkout-date-<?php echo esc_attr( $item_id ); ?>" value="<?php echo esc_html( $checkout_date ); ?>" data-oldval="<?php echo esc_html( $checkout_date ); ?>" class="ersrv-edit-reservation-item-value ersrv-edit-reservation-item-checkout-date form-control date-control text-left rounded-lg" placeholder="<?php esc_html_e( 'Checkout', 'easy-reservations' ); ?>" readonly></div>
 														</div>
 													</div>
 													<div class="col-12">

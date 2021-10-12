@@ -280,9 +280,9 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 							<div class="details text-left">
 								<form action="">
 									<div class="input-daterange d-flex flex-column flex-fill mb-3 pb-2 ersrv-single-reservation-item-checkin-checkout">
-										<input placeholder="<?php esc_html_e( 'Checkin', 'easy-reservations' ); ?>" type="text" id="ersrv-single-reservation-checkin-datepicker" class="form-control date-control text-left rounded-lg">
+										<input placeholder="<?php esc_html_e( 'Checkin', 'easy-reservations' ); ?>" type="text" id="ersrv-single-reservation-checkin-datepicker" class="form-control date-control text-left rounded-lg" readonly>
 										<div class="input-group-addon font-Poppins font-size-18 font-weight-light color-black-400 py-2 my-1 text-center"><?php esc_html_e( 'to', 'easy-reservations' ); ?></div>
-										<input placeholder="<?php esc_html_e( 'Checkout', 'easy-reservations' ); ?>" type="text" id="ersrv-single-reservation-checkout-datepicker" class="form-control date-control text-left rounded-lg">
+										<input placeholder="<?php esc_html_e( 'Checkout', 'easy-reservations' ); ?>" type="text" id="ersrv-single-reservation-checkout-datepicker" class="form-control date-control text-left rounded-lg" readonly>
 										<p class="ersrv-reservation-error checkin-checkout-dates-error"></p>
 									</div>
 									<div class="book-items-wrapper mb-2 pb-3 ersrv-single-reservation-item-accomodation">

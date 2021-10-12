@@ -2511,23 +2511,36 @@ if ( ! function_exists( 'ersrv_print_reservation_cancel_button' ) ) {
 	 */
 	function ersrv_print_reservation_cancel_button( $item_id, $order_id ) {
 		// Check if the request is already raised.
-		$already_requested = wc_get_order_item_meta( $item_id, 'ersrv_cancellation_request' );
-		$button_text       = ersrv_get_plugin_settings( 'ersrv_cancel_reservations_button_text' );
-		$tooltip_text      = ( ! empty( $already_requested ) ) ? __( 'Cancellation request for this reservation has already been raised.', 'easy-reservations' ) : __( 'Click on this button to raise a cancellation request for this reservation.', 'easy-reservations' );
+		$request_status = wc_get_order_item_meta( $item_id, 'ersrv_cancellation_request_status' );
+		$button_text    = ersrv_get_plugin_settings( 'ersrv_cancel_reservations_button_text' );
+		$tooltip_text   = __( 'Click on this button to raise a cancellation request for this reservation.', 'easy-reservations' );
+
+		// Get the tooltip text.
+		if ( ! empty( $request_status ) ) {
+			if ( 'pending' === $request_status ) {
+				$tooltip_text = __( 'Cancellation request pending.', 'easy-reservations' );
+			} elseif ( 'approved' === $request_status ) {
+				$tooltip_text = __( 'Cancellation request approved.', 'easy-reservations' );
+			} elseif ( 'declined' === $request_status ) {
+				$tooltip_text = __( 'Cancellation request declined.', 'easy-reservations' );
+			}
+		}
+
+		
 		/**
 		 * This hook runs on the view woocommerce order page.
 		 *
 		 * This filter helps in changing the tooltip text for the reservation cancellation request button.
 		 *
 		 * @param string $tooltip_text Tooltip text.
-		 * @param string $already_requested If the request has already been raised.
+		 * @param string $request_status If the request has already been raised.
 		 * @return string
 		 * @since 1.0.0
 		 */
-		$tooltip_text = apply_filters( 'ersrv_reservation_cancellation_request_button_tooltip_text', $tooltip_text, $already_requested );
+		$tooltip_text = apply_filters( 'ersrv_reservation_cancellation_request_button_tooltip_text', $tooltip_text, $request_status );
 		?>
 		<div data-tooltip="<?php echo esc_html( $tooltip_text ); ?>" class="tooltip ersrv-reservation-cancellation-container" data-order="<?php echo esc_attr( $order_id ); ?>" data-item="<?php echo esc_attr( $item_id ); ?>">
-			<button type="button" class="btn btn-accent <?php echo ( ! empty( $already_requested ) ) ? 'non-clickable' : ''; ?>" title="<?php echo esc_html( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></a>
+			<button type="button" class="btn btn-accent <?php echo ( ! empty( $request_status ) ) ? 'non-clickable' : ''; ?>" title="<?php echo esc_html( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></a>
 		</div>
 		<?php
 	}
@@ -3092,11 +3105,8 @@ if ( ! function_exists( 'ersrv_approve_reservation_cancellation_request' ) ) {
 	 * @since 1.0.0
 	 */
 	function ersrv_approve_reservation_cancellation_request( $order_id, $line_item_id ) {
-		// Flush out the dates.
-		ersrv_flush_out_reserved_dates( $order_id, $line_item_id );
-
-		// Update the request.
-		wc_update_order_item_meta( $line_item_id, 'ersrv_cancellation_request_status', 'approved' );
+		ersrv_flush_out_reserved_dates( $order_id, $line_item_id ); // Flush out the dates.
+		wc_update_order_item_meta( $line_item_id, 'ersrv_cancellation_request_status', 'approved' ); // Update the request.
 
 		/**
 		 * This action runs on the admin listing page of reservation cancellation requests.
@@ -3123,10 +3133,7 @@ if ( ! function_exists( 'ersrv_decline_reservation_cancellation_request' ) ) {
 	 * @since 1.0.0
 	 */
 	function ersrv_decline_reservation_cancellation_request( $line_item_id ) {
-		// Update the request.
-		wc_delete_order_item_meta( $line_item_id, 'ersrv_cancellation_request' );
-		wc_delete_order_item_meta( $line_item_id, 'ersrv_cancellation_request_time' );
-		wc_delete_order_item_meta( $line_item_id, 'ersrv_cancellation_request_status' );
+		wc_update_order_item_meta( $line_item_id, 'ersrv_cancellation_request_status', 'declined' ); // Update the request.
 
 		/**
 		 * This action runs on the admin listing page of reservation cancellation requests.

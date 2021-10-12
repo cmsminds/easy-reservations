@@ -73,10 +73,10 @@ $on_click_reset       = "location.href = '{$search_page_url}'";
 								<div class="input-daterange">
 									<div class="form-row">
 										<div class="col-12 col-md-6">
-											<input id="ersrv-search-checkin" value="<?php echo esc_html( $search_checkin ); ?>" type="text" class="ersrv-search-parameter form-control date-control text-left rounded-lg mb-3" placeholder="<?php esc_html_e( 'Checkin', 'easy-reservations' ); ?>">
+											<input id="ersrv-search-checkin" value="<?php echo esc_html( $search_checkin ); ?>" type="text" class="ersrv-search-parameter form-control date-control text-left rounded-lg mb-3" placeholder="<?php esc_html_e( 'Checkin', 'easy-reservations' ); ?>" readonly>
 										</div>
 										<div class="col-12 col-md-6">
-											<input id="ersrv-search-checkout" value="<?php echo esc_html( $search_checkout ); ?>" type="text" class="ersrv-search-parameter form-control date-control text-left rounded-lg mb-3" placeholder="<?php esc_html_e( 'Checkout', 'easy-reservations' ); ?>">
+											<input id="ersrv-search-checkout" value="<?php echo esc_html( $search_checkout ); ?>" type="text" class="ersrv-search-parameter form-control date-control text-left rounded-lg mb-3" placeholder="<?php esc_html_e( 'Checkout', 'easy-reservations' ); ?>" readonly>
 										</div>
 									</div>
 								</div>

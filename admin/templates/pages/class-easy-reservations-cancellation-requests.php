@@ -329,16 +329,31 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 
 		// Build row actions.
 		$actions = array(
-			/* translators: 1: %s: anchor tag open, 2: %s: anchor tag closed */
-			'approve_request' => sprintf( __( '%1$sApprove%2$s', 'easy-reservations' ), '<a href="javascript:void(0);" class="approve-request" title="' . esc_html__( 'Approve this cancellation request.', 'easy-reservations' ) . '">', '</a>' ),
-			/* translators: 1: %s: anchor tag open, 2: %s: anchor tag closed */
-			'decline_request' => sprintf( __( '%1$sDecline%2$s', 'easy-reservations' ), '<a href="javascript:void(0);" class="decline" title="' . esc_html__( 'Decline this cancellation request.', 'easy-reservations' ) . '">', '</a>' ),
+			'approve_request' => $this->ersrv_approve_cancellation_request_button(),
+			'decline_request' => $this->ersrv_decline_cancellation_request_button(),
 		);
 
-		// If the current status is approved, no further action needed.
+		// If the current status is approved, enable the decline action.
 		if ( 'Approved' === $current_status ) {
-			$actions = array();
+			unset( $actions['approve_request'] );
 		}
+
+		// If the current status is declined, enable the approve action.
+		if ( 'Declined' === $current_status ) {
+			unset( $actions['decline_request'] );
+		}
+
+		/**
+		 * This hook runs on the admin page where all the cancellation requests are listed.
+		 *
+		 * This filter helps manage the row actions per the cancellation requested item.
+		 *
+		 * @param array $actions Row actions.
+		 * @param array $item Reservation item details.
+		 * @return array
+		 * @since 1.0.0
+		 */
+		$actions = apply_filters( 'ersrv_cancellation_requested_reservation_item_row_actions', $actions, $item );
 
 		// Return the title contents.
 		/* translators: 1: %s: item name, 2: %s: row actions, 3: %s: div tag open, 4: %s: div tag closed */
@@ -349,6 +364,28 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 			'<div class="ersrv-cancellation-request-actions" data-item="' . $item_id . '" data-order="' . $order_id . '">',
 			'</div>'
 		);
+	}
+
+	/**
+	 * Return the approve button for cancellation requested reservation item.
+	 *
+	 * @return string
+	 * @since 1.0.0
+	 */
+	public function ersrv_approve_cancellation_request_button() {
+		/* translators: 1: %s: anchor tag open, 2: %s: anchor tag closed */
+		return sprintf( __( '%1$sApprove%2$s', 'easy-reservations' ), '<a href="javascript:void(0);" class="approve-request" title="' . __( 'Approve this cancellation request.', 'easy-reservations' ) . '">', '</a>' );
+	}
+
+	/**
+	 * Return the decline button for cancellation requested reservation item.
+	 *
+	 * @return string
+	 * @since 1.0.0
+	 */
+	public function ersrv_decline_cancellation_request_button() {
+		/* translators: 1: %s: anchor tag open, 2: %s: anchor tag closed */
+		return sprintf( __( '%1$sDecline%2$s', 'easy-reservations' ), '<a href="javascript:void(0);" class="decline" title="' . esc_html__( 'Decline this cancellation request.', 'easy-reservations' ) . '">', '</a>' );
 	}
 
 	/**
