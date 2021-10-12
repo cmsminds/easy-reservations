@@ -406,16 +406,16 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 										<input id="ersrv-search-checkin" type="text" class="form-control date-control text-left rounded-lg mb-2" placeholder="<?php esc_html_e( 'Checkin', 'easy-reservations' ); ?>">
 										<input id="ersrv-search-checkout" type="text" class="form-control date-control text-left rounded-lg" placeholder="<?php esc_html_e( 'Checkout', 'easy-reservations' ); ?>">
 									</div>
-									<div class="book-items-wrapper pb-2">
-										<select class="selectpicker form-control Boat-Types" id="boat-types" data-size="5" data-style="btn-outline-secondary focus-none" title="<?php esc_html_e( 'Item type', 'easy-reservations' ); ?>">
-											<option value=""><?php esc_html_e( 'Item type', 'easy-reservations' ); ?></option>
-											<?php if ( ! empty( $reservation_item_types ) && is_array( $reservation_item_types ) ) { ?>
+									<?php if ( ! empty( $reservation_item_types ) && is_array( $reservation_item_types ) ) { ?>
+										<div class="book-items-wrapper pb-2">
+											<select class="selectpicker form-control Boat-Types" id="boat-types" data-size="5" data-style="btn-outline-secondary focus-none" title="<?php esc_html_e( 'Item type', 'easy-reservations' ); ?>">
+												<option value=""><?php esc_html_e( 'Item type', 'easy-reservations' ); ?></option>
 												<?php foreach ( $reservation_item_types as $item_type ) { ?>
-													<option value="<?php echo esc_attr( $item_type->term_id ); ?>"><?php echo esc_html( $item_type->name ); ?></option>
+													<option value="<?php echo esc_attr( $item_type->term_id ); ?>"><?php echo esc_html( $item_type->name . ' (' . $item_type->count . ')' ); ?></option>
 												<?php } ?>
-											<?php } ?>
-										</select>
-									</div>
+											</select>
+										</div>
+									<?php } ?>
 									<div class="search-box">
 										<button type="button" class="ersrv-submit-search-request btn btn-primary btn-block btn-xl font-lato font-size-18 font-weight-bold">
 											<span class="mr-3"><img src="<?php echo esc_url( ERSRV_PLUGIN_URL . 'public/images/Search.png' ); ?>" alt="Search"></span>

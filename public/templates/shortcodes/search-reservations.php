@@ -64,7 +64,7 @@ $on_click_reset       = "location.href = '{$search_page_url}'";
 										<?php foreach ( $reservation_item_types as $item_type ) {
 											$is_selected = ( 0 !== $search_boat_type && $search_boat_type === $item_type->term_id );
 											?>
-											<option <?php echo ( $is_selected ) ? 'selected' : ''; ?> value="<?php echo esc_attr( $item_type->term_id ); ?>"><?php echo esc_html( $item_type->name ); ?></option>
+											<option <?php echo ( $is_selected ) ? 'selected' : ''; ?> value="<?php echo esc_attr( $item_type->term_id ); ?>"><?php echo esc_html( $item_type->name . ' (' . $item_type->count . ')' ); ?></option>
 										<?php } ?>
 									<?php } ?>
 								</select>
