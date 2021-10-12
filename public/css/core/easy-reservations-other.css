@@ -638,7 +638,7 @@ img {
 .ersrv-item-search-location, .date-control.ersrv-item-search-location.ship-icon-field, .wrapper .sidebar-wrapper .book-tour .details input.ersrv-item-search-location.ship-icon-field.date-control,
 .wrapper .sidebar-wrapper .advanced-search .details input.ersrv-item-search-location.ship-icon-field.date-control {
   background-image: url("../../images/mapPin_gray.png") !important;
-  background-position: 90% !important;
+  background-position: 96% !important;
   background-size: 20px !important;
   background-repeat: no-repeat !important;
   cursor: pointer;
