@@ -604,8 +604,8 @@
 
 /* end here */
 .ersrv-driving-license .woocommerce-input-wrapper {
-    width: calc(100% - 105px);
-    float: left;
+    width: 100%;
+    /* float: left; */
 }
 
 .ersrv-driving-license .button {
@@ -798,11 +798,17 @@
 .ersrv-driving-license .btn {
     padding:4px 8px;
 }
+.ersrv-uploaded-checkout-license-file{
+    display: flex;
+    justify-content: space-between;
+    flex-flow: row wrap;
+    margin-top: 5px;
+}
 @media(max-width:767px){
-    .ersrv-driving-license .woocommerce-input-wrapper {
+    /* .ersrv-driving-license .woocommerce-input-wrapper {
         width: calc(100% - 85px);
         float: left;
-    }
+    } */
     .ersrv-driving-license .btn {
         padding:8px 12px;
     }
