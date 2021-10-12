@@ -101,7 +101,7 @@ jQuery(document).ready(function ($) {
 					if ( 0 < key.length ) {
 						var index    = key[0];
 						date_message = reserved_dates[ index ].message;
-						date_class   = 'ersrv-date-disabled';
+						date_class   = 'ersrv-date-disabled non-clickable';
 					} else {
 						date_class = 'ersrv-date-active';
 					}
@@ -110,11 +110,11 @@ jQuery(document).ready(function ($) {
 					if ( 0 < unavailable_weekdays_arr.length ) {
 						var weekday = date.getDay();
 						if ( -1 !== $.inArray( weekday, unavailable_weekdays_arr ) ) {
-							date_class   = 'ersrv-date-disabled';
+							date_class   = 'ersrv-date-disabled non-clickable';
 						}
 					}
 				} else {
-					date_class   = 'ersrv-date-disabled';
+					date_class   = 'ersrv-date-disabled non-clickable';
 				}
 
 				// Return the datepicker day object.
@@ -146,7 +146,7 @@ jQuery(document).ready(function ($) {
 					if ( 0 < key.length ) {
 						var index    = key[0];
 						date_message = reserved_dates[ index ].message;
-						date_class   = 'ersrv-date-disabled';
+						date_class   = 'ersrv-date-disabled non-clickable';
 					} else {
 						date_class = 'ersrv-date-active';
 					}
@@ -155,11 +155,11 @@ jQuery(document).ready(function ($) {
 					if ( 0 < unavailable_weekdays_arr.length ) {
 						var weekday = date.getDay();
 						if ( -1 !== $.inArray( weekday, unavailable_weekdays_arr ) ) {
-							date_class = 'ersrv-date-disabled';
+							date_class = 'ersrv-date-disabled non-clickable';
 						}
 					}
 				} else {
-					date_class = 'ersrv-date-disabled';
+					date_class = 'ersrv-date-disabled non-clickable';
 				}
 
 				// Return the datepicker day object.
@@ -537,7 +537,7 @@ jQuery(document).ready(function ($) {
 								if ( 0 < key.length ) {
 									var index    = key[0];
 									date_message = reserved_dates[ index ].message;
-									date_class   = 'ersrv-date-disabled';
+									date_class   = 'ersrv-date-disabled non-clickable';
 								} else {
 									date_class = 'ersrv-date-active';
 								}
@@ -546,12 +546,12 @@ jQuery(document).ready(function ($) {
 								if ( 0 < unavailable_weekdays_arr.length ) {
 									var weekday = date.getDay();
 									if ( -1 !== $.inArray( weekday, unavailable_weekdays_arr ) ) {
-										date_class   = 'ersrv-date-disabled';
+										date_class   = 'ersrv-date-disabled non-clickable';
 										date_enabled = false;
 									}
 								}
 							} else {
-								date_class = 'ersrv-date-disabled';
+								date_class = 'ersrv-date-disabled non-clickable';
 							}
 
 							// Return the datepicker day object.
@@ -1111,29 +1111,13 @@ jQuery(document).ready(function ($) {
 		}
 
 		// Upload the file as it is uploaded.
-		$( '.ersrv-driving-license button.upload' ).click();
-	} );
-
-	/**
-	 * Upload the driving license copy on the checkout page.
-	 */
-	$( document ).on( 'click', '.ersrv-driving-license button.upload', function() {
-		// Check if the license is provided to upload.
-		if ( -1 === is_valid_string( $( 'input[name="reservation-driving-license"]' ).val() ) ) {
-			ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, driving_license_empty_file_error );
-			return false;
-		}
-
-		// View license button.
-		var view_license_button = $( '.ersrv-driving-license button.view' );
-
-		var oFReader        = new FileReader();
-		var driving_license = document.getElementById( 'reservation-driving-license' );
-		oFReader.readAsDataURL( driving_license.files[0] );
+		var oFReader              = new FileReader();
+		var driving_license_field = document.getElementById( 'reservation-driving-license' );
+		oFReader.readAsDataURL( driving_license_field.files[0] );
 
 		// Prepare the form data.
 		var fd = new FormData();
-		fd.append( 'driving_license_file', driving_license.files[0] );
+		fd.append( 'driving_license_file', driving_license_field.files[0] );
 
 		// AJAX action.
 		fd.append( 'action', 'upload_driving_license_checkout' );
@@ -1159,8 +1143,6 @@ jQuery(document).ready(function ($) {
 				// If the driving license is uploaded.
 				if ( 'driving-license-uploaded' === response.data.code ) {
 					unblock_element( $( '.ersrv-driving-license' ) ); // Unblock the element.
-					view_license_button.attr( 'onclick', response.data.view_license_url );
-					unblock_element( view_license_button ); // Unblock the view button as well.
 					$( '.ersrv-uploaded-checkout-license-file' ).html( response.data.view_license_html );
 					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message ); // Show toast.
 

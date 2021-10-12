@@ -1758,7 +1758,6 @@ class Easy_Reservations_Public {
 		// Get the attachment ID, if already uploaded.
 		$attachment_id      = WC()->session->get( 'reservation_driving_license_attachment_id' );
 		$attachment_url     = ersrv_get_attachment_url_from_attachment_id( $attachment_id );
-		$view_license_url   = ( ! is_null( $attachment_id ) ) ? "window.open( '" . $attachment_url . "', '_blank' )" : '';
 		$view_license_class = ( ! is_null( $attachment_id ) ) ? '' : 'non-clickable';
 
 		// Get the max upload file size.
@@ -1776,8 +1775,6 @@ class Easy_Reservations_Public {
 					<span class="woocommerce-input-wrapper">
 						<input type="file" accept="<?php echo esc_attr( $allowed_extensions_string ); ?>" name="reservation-driving-license" id="reservation-driving-license" />
 					</span>
-					<button type="button" class="upload btn btn-accent"><span class="sr-only"><?php esc_html_e( 'Upload', 'easy-reservations' ); ?></span><span class="fa fa-upload"></span></button>
-					<button type="button" onclick="<?php echo esc_attr( $view_license_url ); ?>" class="view btn btn-accent <?php echo esc_attr( $view_license_class ); ?>"><span class="sr-only"><?php esc_html_e( 'View', 'easy-reservations' ); ?></span><span class="fa fa-eye"></span></button>
 				</div>
 				<div class="ersrv-uploaded-checkout-license-file">
 				<?php if ( ! is_null( $attachment_id ) ) {
@@ -1839,7 +1836,6 @@ class Easy_Reservations_Public {
 
 		$filename         = basename( $attachment_url );
 		$filename         = ( 25 <= strlen( $filename ) ) ? ersrv_shorten_filename( $filename ) : $filename;
-		$view_license_url = "location.href = '{$attachment_url}'";
 
 		// View license html.
 		ob_start();
@@ -1852,7 +1848,6 @@ class Easy_Reservations_Public {
 		// Prepare the response.
 		$response = array(
 			'code'              => 'driving-license-uploaded',
-			'view_license_url'  => $view_license_url,
 			'view_license_html' => $view_license_html,
 			'toast_message'     => __( 'Driving license is uploaded successfully. Place order to get this attached with your order.', 'easy-reservations' ),
 		);

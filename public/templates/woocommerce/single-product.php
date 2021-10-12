@@ -403,8 +403,8 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 										<input type="number" class="ersrv-item-search-accomodation form-control ship-icon-field text-left rounded-lg" placeholder="<?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?>">
 									</div>
 									<div class="input-daterange d-flex flex-column flex-fill pb-2">
-										<input id="ersrv-search-checkin" type="text" class="form-control date-control text-left rounded-lg mb-2" placeholder="<?php esc_html_e( 'Checkin', 'easy-reservations' ); ?>">
-										<input id="ersrv-search-checkout" type="text" class="form-control date-control text-left rounded-lg" placeholder="<?php esc_html_e( 'Checkout', 'easy-reservations' ); ?>">
+										<input id="ersrv-search-checkin" type="text" class="form-control date-control text-left rounded-lg mb-2" placeholder="<?php esc_html_e( 'Checkin', 'easy-reservations' ); ?>" readonly>
+										<input id="ersrv-search-checkout" type="text" class="form-control date-control text-left rounded-lg" placeholder="<?php esc_html_e( 'Checkout', 'easy-reservations' ); ?>" readonly>
 									</div>
 									<?php if ( ! empty( $reservation_item_types ) && is_array( $reservation_item_types ) ) { ?>
 										<div class="book-items-wrapper pb-2">
