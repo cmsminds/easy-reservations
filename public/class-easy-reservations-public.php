@@ -1779,7 +1779,7 @@ class Easy_Reservations_Public {
 				<div class="ersrv-uploaded-checkout-license-file">
 				<?php if ( ! is_null( $attachment_id ) ) {
 					$filename = basename( $attachment_url );
-					$filename = ( 25 <= strlen( $filename ) ) ? ersrv_shorten_filename( $filename ) : $filename;
+					$filename = ( 43 <= strlen( $filename ) ) ? ersrv_shorten_filename( $filename ) : $filename;
 					?>
 					<span><?php echo sprintf( __( 'Uploaded: %2$s%1$s%3$s', 'easy-reservations' ), $filename, '<a target="_blank" href="' . $attachment_url . '">', '</a>' ); ?></span>
 					<button type="button" data-file="<?php echo esc_attr( $attachment_id ); ?>" class="remove btn btn-accent"><span class="sr-only">Remove</span><span class="fa fa-trash"></span></button>
@@ -1832,10 +1832,9 @@ class Easy_Reservations_Public {
 		$attachment_id = WC()->session->get( 'reservation_driving_license_attachment_id' );
 
 		// Return with the on click attribute.
-		$attachment_url   = ersrv_get_attachment_url_from_attachment_id( $attach_id );
-
-		$filename         = basename( $attachment_url );
-		$filename         = ( 25 <= strlen( $filename ) ) ? ersrv_shorten_filename( $filename ) : $filename;
+		$attachment_url = ersrv_get_attachment_url_from_attachment_id( $attach_id );
+		$filename       = basename( $attachment_url );
+		$filename       = ( 43 <= strlen( $filename ) ) ? ersrv_shorten_filename( $filename ) : $filename;
 
 		// View license html.
 		ob_start();

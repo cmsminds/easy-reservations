@@ -2825,8 +2825,8 @@ if ( ! function_exists( 'ersrv_shorten_filename' ) ) {
 		}
 
 		
-		$left_part  = substr( $long_filename, 0, 9 ); // Get the left part of the filename.
-		$right_part = substr( $long_filename, -9, 9 ); // Get the right part of the filename.
+		$left_part  = substr( $long_filename, 0, 18 ); // Get the left part of the filename.
+		$right_part = substr( $long_filename, -18, 18 ); // Get the right part of the filename.
 		$filename   = "{$left_part}...{$right_part}";
 
 		/**
