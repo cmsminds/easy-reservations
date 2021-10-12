@@ -1046,3 +1046,6 @@ body:not(.theme-storefront)
 .wrapper .sidebar-wrapper .book-tour .details input[type=number] {
   -moz-appearance: textfield;
 }
+.advanced-search .ersrv-item-search-location {
+  background-position: 90% !important;
+}
