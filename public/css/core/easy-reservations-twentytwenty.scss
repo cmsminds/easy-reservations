@@ -935,3 +935,6 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
 .ersrv-item-details-security-amount .woocommerce-Price-amount.amount{
     color: $accent;
 }
+.form-control:disabled, .form-control[readonly]{
+    background-color: #fff;
+}

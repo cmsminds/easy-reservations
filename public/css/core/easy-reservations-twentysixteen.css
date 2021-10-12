@@ -1703,4 +1703,8 @@ input[type="radio"]:checked, input[type=reset], input[type="checkbox"]:checked, 
 .ersrv-item-details-security-amount .woocommerce-Price-amount.amount {
   color: #007acc;
 }
+
+.form-control:disabled, .form-control[readonly] {
+  background-color: #f7f7f7;
+}
 /*# sourceMappingURL=easy-reservations-twentysixteen.css.map */

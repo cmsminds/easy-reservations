@@ -52,60 +52,53 @@ $on_click_reset       = "location.href = '{$search_page_url}'";
 				<div class="form-wrapper ersrv-form-wrapper">
 					<form action="#" class="form-inner">
 						<div class="form-row">
-							<div class="col-12 col-md-6 col-lg-3">
-								<div class="form-group">
-									<input type="text" value="<?php echo esc_html( $search_location ); ?>" class="ersrv-search-parameter ersrv-item-search-location form-control date-control ship-icon-field text-left rounded-lg" placeholder="<?php esc_html_e( 'Desired location', 'easy-reservations' ); ?>">
+							<div class="col-12 col-md-12 col-lg-6">
+								<input type="text" value="<?php echo esc_html( $search_location ); ?>" class="ersrv-search-parameter ersrv-item-search-location form-control date-control ship-icon-field text-left rounded-lg mb-3" placeholder="<?php esc_html_e( 'Desired location', 'easy-reservations' ); ?>">
+								<div class="form-row mb-3 mb-lg-0">
+									<div class="col-12 col-md-6 col-lg-6">
+										<select class="ersrv-search-parameter ersrv-reservation-item-type selectpicker form-control Boat-Types" id="boat-types" data-size="5" data-style="btn-outline-light focus-none" title="<?php esc_html_e( 'Item type', 'easy-reservations' ); ?>">
+											<option value=""><?php esc_html_e( 'Item type', 'easy-reservations' ); ?></option>
+											<?php if ( ! empty( $reservation_item_types ) && is_array( $reservation_item_types ) ) { ?>
+												<?php foreach ( $reservation_item_types as $item_type ) {
+													$is_selected = ( 0 !== $search_boat_type && $search_boat_type === $item_type->term_id );
+													?>
+													<option <?php echo ( $is_selected ) ? 'selected' : ''; ?> value="<?php echo esc_attr( $item_type->term_id ); ?>"><?php echo esc_html( $item_type->name . ' (' . $item_type->count . ')' ); ?></option>
+												<?php } ?>
+											<?php } ?>
+										</select>
+									</div>
+									<div class="col-12 col-md-6 col-lg-6">
+										<input type="number" value="<?php echo esc_html( $search_accomodation ); ?>" class="ersrv-search-parameter ersrv-item-search-accomodation form-control rounded-lg ship-icon-field mt-3 mt-md-0" placeholder="<?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?>">
+									</div>
 								</div>
 							</div>
-							<div class="col-12 col-md-6 col-lg-3">
-								<select class="ersrv-search-parameter ersrv-reservation-item-type selectpicker form-control Boat-Types mb-3" id="boat-types" data-size="5" data-style="btn-outline-light focus-none" title="<?php esc_html_e( 'Item type', 'easy-reservations' ); ?>">
-									<option value=""><?php esc_html_e( 'Item type', 'easy-reservations' ); ?></option>
-									<?php if ( ! empty( $reservation_item_types ) && is_array( $reservation_item_types ) ) { ?>
-										<?php foreach ( $reservation_item_types as $item_type ) {
-											$is_selected = ( 0 !== $search_boat_type && $search_boat_type === $item_type->term_id );
-											?>
-											<option <?php echo ( $is_selected ) ? 'selected' : ''; ?> value="<?php echo esc_attr( $item_type->term_id ); ?>"><?php echo esc_html( $item_type->name . ' (' . $item_type->count . ')' ); ?></option>
-										<?php } ?>
-									<?php } ?>
-								</select>
-							</div>
-							<div class="col-12 col-md-12 col-lg-6">
+							<div class="col-12 col-md-12 col-lg-3">
 								<div class="input-daterange">
-									<div class="form-row">
-										<div class="col-12 col-md-6">
+									<div class="form-row ">
+										<div class="col-12 col-md-6 col-lg-12">
 											<input id="ersrv-search-checkin" value="<?php echo esc_html( $search_checkin ); ?>" type="text" class="ersrv-search-parameter form-control date-control text-left rounded-lg mb-3" placeholder="<?php esc_html_e( 'Checkin', 'easy-reservations' ); ?>" readonly>
 										</div>
-										<div class="col-12 col-md-6">
-											<input id="ersrv-search-checkout" value="<?php echo esc_html( $search_checkout ); ?>" type="text" class="ersrv-search-parameter form-control date-control text-left rounded-lg mb-3" placeholder="<?php esc_html_e( 'Checkout', 'easy-reservations' ); ?>" readonly>
+										<div class="col-12 col-md-6 col-lg-12">
+											<input id="ersrv-search-checkout" value="<?php echo esc_html( $search_checkout ); ?>" type="text" class="ersrv-search-parameter form-control date-control text-left rounded-lg mb-3 mb-md-0" placeholder="<?php esc_html_e( 'Checkout', 'easy-reservations' ); ?>" readonly>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="form-row">
 							<div class="col-12 col-md-12 col-lg-3">
-							</div>
-							<div class="col-12 col-md-12 col-lg-9">
-								<div class="input-daterange">
-									<div class="form-row">
-										<div class="col-12 col-md-4">
-											<div class="form-group">
-												<input type="number" value="<?php echo esc_html( $search_accomodation ); ?>" class="ersrv-search-parameter ersrv-item-search-accomodation form-control rounded-lg ship-icon-field" placeholder="<?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?>">
-											</div>
-										</div>
-										<div class="col-12 col-md-4">
-											<button type="button" class="mb-2 mb-md-0 ersrv-submit-reservation-search btn btn-primary btn-block font-lato font-size-18 font-weight-bold">
-												<span class="mr-3"><img src="<?php echo esc_url( ERSRV_PLUGIN_URL . 'public/images/Search.png' ); ?>" alt="Search"></span>
-												<span><?php esc_html_e( 'Search', 'easy-reservations' ); ?></span>
-											</button>
-										</div>
-										<div class="col-12 col-md-4">
-											<button type="button" onclick="<?php echo esc_attr( $on_click_reset ); ?>" class="ersrv-submit-reservation-reset btn btn-outline-fill-primary btn-block font-lato font-size-18 font-weight-bold">
-												<span><?php esc_html_e( 'Reset', 'easy-reservations' ); ?></span>
-											</button>
-										</div>
+								<div class="form-row ">
+									<div class="col-12 col-md-6 col-lg-12">
+										<button type="button" class="mb-3 ersrv-submit-reservation-search btn btn-primary btn-block font-lato font-size-18 font-weight-bold">
+											<span class="mr-3"><img src="<?php echo esc_url( ERSRV_PLUGIN_URL . 'public/images/Search.png' ); ?>" alt="Search"></span>
+											<span><?php esc_html_e( 'Search', 'easy-reservations' ); ?></span>
+										</button>
+									</div>
+									<div class="col-12 col-md-6 col-lg-12">
+										<button type="button" onclick="<?php echo esc_attr( $on_click_reset ); ?>" class="ersrv-submit-reservation-reset btn btn-outline-fill-primary btn-block font-lato font-size-18 font-weight-bold">
+											<span><?php esc_html_e( 'Reset', 'easy-reservations' ); ?></span>
+										</button>
 									</div>
 								</div>
+								
 							</div>
 						</div>
 					</form>

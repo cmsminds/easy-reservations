@@ -1704,4 +1704,8 @@ form {
 .ersrv-item-details-security-amount .woocommerce-Price-amount.amount {
   color: #96588a;
 }
+
+.form-control:disabled, .form-control[readonly] {
+  background-color: #f2f2f2;
+}
 /*# sourceMappingURL=easy-reservations-storefront.css.map */

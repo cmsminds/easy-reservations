@@ -893,3 +893,6 @@ form{
 .ersrv-item-details-security-amount .woocommerce-Price-amount.amount{
     color: $accent;
 }
+.form-control:disabled, .form-control[readonly]{
+    background-color: #f2f2f2;
+}
