@@ -1049,3 +1049,18 @@ body:not(.theme-storefront)
 .advanced-search .ersrv-item-search-location {
   background-position: 90% !important;
 }
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .card-title{
+  max-height: 45px;
+  overflow: hidden;
+}
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .media a::after {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 278.047px;
+  background: rgb(255,255,255);
+  background: linear-gradient(
+0deg, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.2) 100%);
+}

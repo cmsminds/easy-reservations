@@ -813,3 +813,13 @@
         padding:8px 12px;
     }
 }
+/*  */
+.theme-new-york-business .icon {
+    display: inline-block;
+    fill: currentColor;
+    height: auto;
+    position: relative;
+    top: 0em;
+    vertical-align: middle;
+    width: auto;
+}

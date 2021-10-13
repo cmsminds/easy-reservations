@@ -677,3 +677,7 @@ a{
 .woocommerce ul.products li.product .woocommerce-loop-product__title{
 	font-weight: 700 !important;
 }
+.theme-twentyseventeen .woocommerce table.my_account_orders .button{
+    display: inline-block;
+	padding: 8px 12px;
+}
