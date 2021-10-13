@@ -1365,6 +1365,13 @@ jQuery(document).ready(function ($) {
 	} );
 
 	/**
+	 * Add select2 to the timezone dropdown.
+	 */
+	if ( $( '#billing_timezone' ).length ) {
+		$( '#billing_timezone' ).select2();
+	}
+
+	/**
 	 * Close the summary box if the click was made outside it.
 	 */
 	/*document.addEventListener( 'click', function( event ) {
