@@ -1354,6 +1354,17 @@ jQuery(document).ready(function ($) {
 	} );
 
 	/**
+	 * Prevent "+", "-", and "e" on input type number field.
+	 */
+	$( document ).on( 'keydown', 'input[type="number"]', function( evt ) {
+		var restricted_chars = [69, 187, 189]; // 69 for "e", 187 for "+", and 189 for "-" 
+
+		if ( -1 !== $.inArray( evt.which, restricted_chars ) ) {
+			return false;
+		}
+	} );
+
+	/**
 	 * Close the summary box if the click was made outside it.
 	 */
 	/*document.addEventListener( 'click', function( event ) {
