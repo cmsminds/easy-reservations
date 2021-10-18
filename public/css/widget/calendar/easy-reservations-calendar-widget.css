@@ -648,6 +648,7 @@ a{
 }
 .woocommerce table.my_account_orders .button:not(:last-child){
     margin-bottom: 5px;
+	margin-right: 5px;
 }
 .woocommerce table.my_account_orders .button{
 	white-space: normal;
