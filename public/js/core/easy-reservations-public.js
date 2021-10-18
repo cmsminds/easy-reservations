@@ -351,50 +351,51 @@ jQuery(document).ready(function ($) {
 		};
 
 		// Submit the ajax search now.
-		ersrv_submit_search_reservations( ajax_params );
+		ersrv_submit_search_reservations( ajax_params, false );
 
 		/**
 		 * Load more reservation items.
 		 */
 		$( document ).on( 'click', '.ersrv-loadmore-container a', function() {
-			var this_button  = $( this );
-			var current_page = parseInt( $( '#ersrv-posts-page' ).val() );
-			var next_page    = current_page + 1;
+			var this_button            = $( this );
+			var type                   = parseInt( ersrv_get_query_string_parameter_value( 'boat_type' ) );
+			var location               = ersrv_get_query_string_parameter_value( 'location' );
+			var checkin                = ersrv_get_query_string_parameter_value( 'checkin' );
+			var checkout               = ersrv_get_query_string_parameter_value( 'checkout' );
+			var accomodation           = ersrv_get_query_string_parameter_value( 'accomodation' );
+			var checkin_checkout_dates = [];
+			var reservation_weekdays   = [];
+			var current_page           = parseInt( $( '#ersrv-posts-page' ).val() );
+			var next_page              = current_page + 1;
+
+			if ( 1 === is_valid_string( checkin ) && 1 === is_valid_string( checkout ) ) {
+				// Get the dates array between the checkin and checkout dates.
+				var checkin_checkout_dates_obj = ersrv_get_dates_between_2_dates( checkin, checkout );
+				for ( var m in checkin_checkout_dates_obj ) {
+					checkin_checkout_dates.push( ersrv_get_formatted_date( checkin_checkout_dates_obj[m] ) );
+					reservation_weekdays.push( checkin_checkout_dates_obj[m].getDay() );
+				}
+			}
+
+			// AJAX arguments.
+			var ajax_params = {
+				action: 'loadmore_reservation_items',
+				location: ( 1 === is_valid_string( location ) ) ? location : '',
+				type: ( 1 === is_valid_number( type ) ) ? type : '',
+				accomodation: ( 1 === is_valid_number( accomodation ) ) ? accomodation : '',
+				checkin_checkout_dates: checkin_checkout_dates,
+				reservation_weekdays: reservation_weekdays,
+				page: next_page
+			};
 
 			// Block the element now.
 			block_element( this_button );
 
-			// Send the AJAX now.
-			$.ajax( {
-				dataType: 'JSON',
-				url: ajaxurl,
-				type: 'POST',
-				data: {
-					action: 'loadmore_reservation_items',
-					page: next_page,
-				},
-				success: function ( response ) {
-					// Check for invalid ajax request.
-					if ( 0 === response ) {
-						console.warn( 'easy reservations: invalid ajax request' );
-						return false;
-					}
+			// Submit the ajax search now.
+			ersrv_submit_search_reservations( ajax_params, true );
 
-					// Unblock the element now.
-					unblock_element( this_button );
-					
-					// If there is a valid response.
-					if ( 'items-found' === response.data.code ) { // If items are found.
-						$( '.ersrv-search-reservations-items-container' ).append( response.data.html );
-
-						// Update the posts page number.
-						$( '#ersrv-posts-page' ).val( next_page );
-					} else if ( 'no-items-found' === response.data.code ) { // If items are found.
-						// Hide the load more button.
-						$( '.ersrv-loadmore-container' ).hide();
-					}
-				},
-			} );
+			// Unblock the element now.
+			unblock_element( this_button );
 		} );
 	}
 
@@ -1326,7 +1327,7 @@ jQuery(document).ready(function ($) {
 		};
 
 		// Submit the ajax search now.
-		ersrv_submit_search_reservations( ajax_params );
+		ersrv_submit_search_reservations( ajax_params, false );
 	} );
 
 	/**
@@ -1435,7 +1436,7 @@ jQuery(document).ready(function ($) {
 	/**
 	 * Submit the search AJAX.
 	 */
-	function ersrv_submit_search_reservations( args ) {
+	function ersrv_submit_search_reservations( args, is_load_more ) {
 		// Send the AJAX now.
 		$.ajax( {
 			dataType: 'JSON',
@@ -1448,26 +1449,39 @@ jQuery(document).ready(function ($) {
 					console.warn( 'easy reservations: invalid ajax request' );
 					return false;
 				}
-				
-				// Response code.
-				var code = response.data.code;
-				if ( 'reservation-posts-found' === code || 'reservation-posts-not-found' === code ) {
-					// Unblock the wrapper.
-					unblock_element( $( '.ersrv-form-wrapper' ) );
-					// Response html.
-					$( '.ersrv-search-reservations-items-container' ).html( response.data.html );
-					// Items count.
-					$( '.ersrv-reservation-items-count' ).text( response.data.items_count );
-				}
 
-				// Add the "form-row" class, if there are search items.
-				if ( 'reservation-posts-found' === code ) {
-					$( '.ersrv-search-reservations-items-container' ).addClass( 'form-row' );
-				}
+				var code = response.data.code; // Response code.
 
-				// Remove the "form-row" class, if there are no search items.
-				if ( 'reservation-posts-not-found' === code ) {
-					$( '.ersrv-search-reservations-items-container' ).removeClass( 'form-row' );
+				// Check if the request was load more.
+				if ( true === is_load_more ) {
+					// If there is a valid response.
+					if ( 'items-found' === code ) { // If items are found.
+						$( '.ersrv-search-reservations-items-container' ).append( response.data.html );
+						// Update the posts page number.
+						$( '#ersrv-posts-page' ).val( next_page );
+					} else if ( 'no-items-found' === code ) { // If items are found.
+						// Hide the load more button.
+						$( '.ersrv-loadmore-container' ).hide();
+					}
+				} else {
+					if ( 'reservation-posts-found' === code || 'reservation-posts-not-found' === code ) {
+						// Unblock the wrapper.
+						unblock_element( $( '.ersrv-form-wrapper' ) );
+						// Response html.
+						$( '.ersrv-search-reservations-items-container' ).html( response.data.html );
+						// Items count.
+						$( '.ersrv-reservation-items-count' ).text( response.data.items_count );
+					}
+	
+					// Add the "form-row" class, if there are search items.
+					if ( 'reservation-posts-found' === code ) {
+						$( '.ersrv-search-reservations-items-container' ).addClass( 'form-row' );
+					}
+	
+					// Remove the "form-row" class, if there are no search items.
+					if ( 'reservation-posts-not-found' === code ) {
+						$( '.ersrv-search-reservations-items-container' ).removeClass( 'form-row' );
+					}
 				}
 			},
 		} );

@@ -109,7 +109,7 @@ $on_click_reset       = "location.href = '{$search_page_url}'";
 	<div class="content-part">
 		<div class="container">
 			<div class="search-results-wrapper">
-				<h3 class="title font-Poppins"><?php echo sprintf( __( 'Advanced Search: %1$s%3$s Items%2$s', 'easy-reservations' ), '<span class="ersrv-reservation-items-count result-no">', '</span>', count( $total_reservation_posts ) ) ?></h3>
+				<h3 class="title font-Poppins"><?php echo sprintf( __( 'Advanced Search: %1$s-- items%2$s', 'easy-reservations' ), '<span class="ersrv-reservation-items-count result-no">', '</span>' ) ?></h3>
 				<div class="search-result-inner ersrv-search-reservations-items-container">
 					<div class="jumbotron text-center w-100 bg-transparent">
 						<h3 class="loading-title"><?php esc_html_e( 'Please wait while we load items...', 'easy-reservations' ); ?></h3>
