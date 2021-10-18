@@ -12,6 +12,7 @@
     height: 100px;
     overflow: scroll;
     overflow-x: hidden;
+    padding-right: 10px;
 }
 
 /*  */
