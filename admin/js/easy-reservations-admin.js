@@ -1166,7 +1166,7 @@ jQuery( document ).ready( function( $ ) {
 	/**
 	 * Upload the driving license copy on the checkout page.
 	 */
-	 $( document ).on( 'click', '.ersrv-upload-license.upload', function() {
+	$( document ).on( 'click', '.ersrv-upload-license.upload', function() {
 		// Check if the license is provided to upload.
 		if ( -1 === is_valid_string( $( 'input[name="reservation-driving-license"]' ).val() ) ) {
 			ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, driving_license_empty_file_error );
@@ -1213,6 +1213,33 @@ jQuery( document ).ready( function( $ ) {
 				}
 			},
 		} );
+	} );
+
+	/**
+	 * Validate the min and max reservation period.
+	 */
+	$( document ).on( 'keyup', '#reservation_min_period, #reservation_max_period', function() {
+		var min_reservation_period = parseInt( $( '#reservation_min_period' ).val() );
+		var max_reservation_period = parseInt( $( '#reservation_max_period' ).val() );
+
+		// Check if the period values are not integers.
+		if ( -1 === is_valid_number( min_reservation_period ) || -1 === is_valid_number( max_reservation_period ) ) {
+			console.warn( 'reservation error: non number values' );
+			return false;
+		}
+
+		// Check if the min period is more than the max period.
+		if ( min_reservation_period > max_reservation_period ) {
+			ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, 'Minimum reservation period cannot be more than the maximum reservation period.' );
+
+			// Block the update button.
+			block_element( $( '#publishing-action input#publish' ) );
+
+			return false;
+		}
+
+		// Unblock the update button.
+		unblock_element( $( '#publishing-action input#publish' ) );
 	} );
 
 	/**
