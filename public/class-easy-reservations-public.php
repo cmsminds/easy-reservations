@@ -418,11 +418,11 @@ class Easy_Reservations_Public {
 			'reservation_item_contact_owner_error_message' => __( 'There is some issue contacting the owner. Please see the errors above and try again.', 'easy-reservations' ),
 			'driving_license_allowed_extensions'           => $driving_license_allowed_extensions,
 			'driving_license_invalid_file_error'           => sprintf( __( 'Invalid file selected. Allowed extensions are: %1$s', 'easy-reservations' ), implode( ', ', $driving_license_allowed_extensions ) ),
-			'driving_license_empty_file_error'             => __( 'Please provide a driving license to upload.', 'easy-reservations' ),
 			'cancel_reservation_confirmation_message'      => __( 'Click OK to confirm your cancellation. This action won\'t be undone.', 'easy-reservations' ),
 			'checkin_provided_checkout_not'                => __( 'Since you provided the checkin date, checkout date is mandatory.', 'easy-reservations' ),
 			'checkout_provided_checkin_not'                => __( 'Since you provided the checkout date, checkin date is mandatory.', 'easy-reservations' ),
 			'trim_zeros_from_price'                        => ersrv_get_plugin_settings( 'ersrv_trim_zeros_from_price' ),
+			'current_theme'                                => get_option( 'stylesheet' ),
 		);
 
 		/**

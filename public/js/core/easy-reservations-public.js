@@ -27,11 +27,11 @@ jQuery(document).ready(function ($) {
 	var reservation_item_contact_owner_error_message = ERSRV_Public_Script_Vars.reservation_item_contact_owner_error_message;
 	var driving_license_allowed_extensions           = ERSRV_Public_Script_Vars.driving_license_allowed_extensions;
 	var driving_license_invalid_file_error           = ERSRV_Public_Script_Vars.driving_license_invalid_file_error;
-	var driving_license_empty_file_error             = ERSRV_Public_Script_Vars.driving_license_empty_file_error;
 	var cancel_reservation_confirmation_message      = ERSRV_Public_Script_Vars.cancel_reservation_confirmation_message;
 	var checkin_provided_checkout_not                = ERSRV_Public_Script_Vars.checkin_provided_checkout_not;
 	var checkout_provided_checkin_not                = ERSRV_Public_Script_Vars.checkout_provided_checkin_not; 
-	var trim_zeros_from_price                        = ERSRV_Public_Script_Vars.trim_zeros_from_price;   
+	var trim_zeros_from_price                        = ERSRV_Public_Script_Vars.trim_zeros_from_price;
+	var current_theme                                = ERSRV_Public_Script_Vars.current_theme;
 
 	// Custom vars.
 	var quick_view_reserved_dates       = [];
@@ -42,6 +42,14 @@ jQuery(document).ready(function ($) {
 		$( '#secondary' ).remove();
 		$( '#content-bottom-widgets' ).remove();
 		$( '#primary' ).css( 'width', '100%' );
+	}
+
+	// For easy-storefront theme.
+	if ( 'easy-storefront' === current_theme || 'new-york-business' === current_theme ) {
+		if ( 'yes' === is_search_page ) {
+			$( '.content-area' ).removeClass( 'col-sm-8 col-lg-8' ).addClass( 'col-sm-12 col-lg-12' );
+			$( '#content .container.background' ).addClass( 'container-fluid px-0' ).removeClass( 'container' );
+		}
 	}
 
 	// Search page checkin and checkout dates.
