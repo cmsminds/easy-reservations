@@ -1100,3 +1100,6 @@ body:not(.theme-new-york-business) .site
 .ui-datepicker-multi .ui-datepicker-group table thead tr {
   border-bottom: none;
 }
+body:not(.custom-background-image):before, body:not(.custom-background-image):after{
+  height: 0px !important;
+}
