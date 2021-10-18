@@ -268,7 +268,7 @@ body:not(.theme-storefront)
   background-position: 95%;
 }
 
-.site
+body:not(.theme-new-york-business) .site
   a:focus:not(.wp-block-button__link):not(.wp-block-file__button):not(.btn-outline-primary):not(.loadmore-btn):not(.btn):not(.ersrv-cmsminds-logo) {
   background: transparent !important;
 }
@@ -1053,10 +1053,11 @@ body:not(.theme-storefront)
   max-height: 45px;
   overflow: hidden;
 }
-.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .media a{
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .media a,
+.wrapper .banner{
   position: relative;
 }
-.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .media a::after {
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .media a::after{
   content: "";
   position: absolute;
   top: 0px;
@@ -1070,4 +1071,32 @@ body:not(.theme-storefront)
   background: -webkit-linear-gradient(0deg, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.2) 100%);
   background: linear-gradient(0deg, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.2) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#000000",GradientType=1);
+}
+.wrapper .banner::after{
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+
+  background: rgba(0,0,0,0.25);
+  /* background: -moz-linear-gradient(0deg, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.2) 100%);
+  background: -webkit-linear-gradient(0deg, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.2) 100%);
+  background: linear-gradient(0deg, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.2) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#000000",GradientType=1); */
+}
+.wrapper .banner .container{
+  position: relative;
+  z-index: 2;
+}
+.wrapper .banner .details{
+  max-width: 100% !important;
+}
+.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover{
+  color: #f4f4f4 !important;
+}
+.ui-datepicker-multi .ui-datepicker-group table thead tr {
+  border-bottom: none;
 }
