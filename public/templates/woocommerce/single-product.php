@@ -105,13 +105,17 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 $featured_image_id = $wc_item->get_image_id();
 $gallery_image_ids = $wc_item->get_gallery_image_ids();
 $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $featured_image_id ), $gallery_image_ids ) : array( $featured_image_id );
+
+// For lengthy product titles.
+$product_title_class = ( 90 >= $item_post->post_title ) ? 'font-Poppins font-size-26 font-weight-semibold color-white' : 'font-Poppins font-size-40 font-weight-semibold color-white';
+$product_title_class = apply_filters( 'ersrv_reservation_item_title_attribute_class', $product_title_class );
 ?>
 <section class="wrapper single-reserve-page" id="wrapper" data-item="<?php echo esc_attr( $item_post->ID ); ?>">
 	<div class="banner text-center" style="background-image: url( '<?php echo $banner_image_url; ?>' );">
 		<div class="container">
 			<div class="details mx-auto font-lato">
 				<div class="page-title mb-3">
-					<h1 class="font-Poppins font-size-40 font-weight-semibold color-white"><?php echo wp_kses_post( $item_post->post_title ); ?></h1>
+					<h1 class="<?php echo esc_attr( $product_title_class ); ?>"><?php echo wp_kses_post( $item_post->post_title ); ?></h1>
 				</div>
 				<?php
 				/**
@@ -221,16 +225,6 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 							<?php } ?>
 						</div>
 					</div>
-					<div class="price-details info-box">
-						<a class="section-title font-Poppins font-size-24 font-weight-bold d-block color-black text-decoration-none" data-toggle="collapse" href="#price-details-collapse" role="button" aria-expanded="false" aria-controls="price-details-collapse">
-							<span class=""><?php esc_html_e( 'Pricing', 'easy-reservations' ); ?></span>
-						</a>
-						<div class="collapse" id="price-details-collapse">
-							<div class="dropdown-divider"></div>
-							<?php echo sprintf( __( '%1$sPer adult: %3$s%2$s', 'easy-reservations' ), '<p>', '</p>', wc_price( $adult_charge ) ); ?>
-							<?php echo sprintf( __( '%1$sPer kid: %3$s%2$s', 'easy-reservations' ), '<p>', '</p>', wc_price( $kid_charge ) ); ?>
-						</div>
-					</div>
 					<div class="ship-location info-box">
 						<a class="section-title font-Poppins font-size-24 font-weight-bold d-block color-black text-decoration-none" data-toggle="collapse" href="#ship-location-collapse" role="button" aria-expanded="false" aria-controls="ship-location-collapse">
 							<span class=""><?php esc_html_e( 'Location', 'easy-reservations' ); ?></span>
@@ -321,7 +315,7 @@ $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $fe
 										<!-- SECURITY AMOUNT -->
 										<h4 class="ersrv-item-details-security-amount font-Poppins font-size-16 color-black font-weight-bold mb-3"><?php echo sprintf( __( 'Security: %1$s', 'easy-reservations' ), wc_price( $security_amount ) ); ?>
 										<!-- RESERVATION ITEM SUBTOTAL -->
-										<h4 class="ersrv-item-details-reservation-subtotal-amount font-Poppins font-size-16 color-black font-weight-bold mb-0"><?php echo sprintf( __( 'Subtotal: %1$s', 'easy-reservations' ), '<a class="text-decoration-none ersrv-split-reservation-cost" href="javascript:void(0);"><span class="ersrv-reservation-item-subtotal ersrv-cost font-weight-bold color-accent ">--</span></a>' ); ?></h4>
+										<h4 class="ersrv-item-details-reservation-subtotal-amount font-Poppins font-size-16 color-black font-weight-bold mb-0"><?php echo sprintf( __( 'Total: %1$s', 'easy-reservations' ), '<a class="text-decoration-none ersrv-split-reservation-cost" href="javascript:void(0);"><span class="ersrv-reservation-item-subtotal ersrv-cost font-weight-bold color-accent ">--</span></a>' ); ?></h4>
 										<div class="ersrv-reservation-details-item-summary">
 											<div class="ersrv-reservation-details-item-summary-wrapper p-3">
 												<table class="table table-borderless">
