@@ -1767,7 +1767,7 @@ jQuery(document).ready(function ($) {
 	/**
 	 * Recalculate the item summary on the reservation quick view page.
 	 */
-	 function ersrv_recalculate_reservation_quick_view_item_summary() {
+	function ersrv_recalculate_reservation_quick_view_item_summary() {
 		var checkin_date    = $( '#ersrv-quick-view-item-checkin-date' ).val();
 		var checkout_date   = $( '#ersrv-quick-view-item-checkout-date' ).val();
 		var selected_dates  = [];
