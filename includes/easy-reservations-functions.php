@@ -1722,9 +1722,14 @@ if ( ! function_exists( 'ersrv_get_item_details' ) ) {
 
 		// Generate the booking period restrictions.
 		if ( ! empty( $min_reservation ) && ! empty( $max_reservation ) ) {
-			$reservation_period_str = sprintf( __( 'Booking for min. %1$s to %2$s days.', 'easy-reservations' ), $min_reservation, $max_reservation );
+			// If min and max reservation period days are same.
+			if ( $min_reservation === $max_reservation ) {
+				$reservation_period_str = sprintf( _n( 'Booking for min. %1$s day.', 'Booking for min. %1$s days.', $min_reservation, 'easy-reservations' ), $min_reservation );
+			} else {
+				$reservation_period_str = sprintf( __( 'Booking for min. %1$s to %2$s days.', 'easy-reservations' ), $min_reservation, $max_reservation );
+			}
 		} elseif ( ! empty( $min_reservation ) ) {
-			$reservation_period_str = sprintf( __( 'Booking for min. %1$s days.', 'easy-reservations' ), $min_reservation );
+			$reservation_period_str = sprintf( _n( 'Booking for min. %1$s day.', 'Booking for min. %1$s days.', $min_reservation, 'easy-reservations' ), $min_reservation );
 		}
 
 		// Put the details in an array.
