@@ -42,6 +42,8 @@ jQuery( document ).ready( function( $ ) {
 	var driving_license_invalid_file_error           = ERSRV_Admin_Script_Vars.driving_license_invalid_file_error;
 	var driving_license_empty_file_error             = ERSRV_Admin_Script_Vars.driving_license_empty_file_error;
 	var trim_zeros_from_price                        = ERSRV_Admin_Script_Vars.trim_zeros_from_price;
+	var duplicate_amenities_error_message            = ERSRV_Admin_Script_Vars.duplicate_amenities_error_message;
+	var min_reservation_invalid_error_message        = ERSRV_Admin_Script_Vars.min_reservation_invalid_error_message;
 	var new_reservation_item_reserved_dates          = [];
 	var post_type                                    = ersrv_get_query_string_parameter_value( 'post_type' );
 
@@ -1230,7 +1232,7 @@ jQuery( document ).ready( function( $ ) {
 
 		// Check if the min period is more than the max period.
 		if ( min_reservation_period > max_reservation_period ) {
-			ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, 'Minimum reservation period cannot be more than the maximum reservation period.' );
+			ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, min_reservation_invalid_error_message );
 
 			// Block the update button.
 			block_element( $( '#publishing-action input#publish' ) );
@@ -1280,6 +1282,41 @@ jQuery( document ).ready( function( $ ) {
 				}
 			},
 		} );
+	} );
+
+	/**
+	 * Validate the amenities.
+	 */
+	$( document ).on( 'click', '#publishing-action input#publish', function() {
+		var amenity_titles           = [];
+		var duplicate_amenity_titles = [];
+		// Check if there are amenities list.
+		if ( $( '.amenities-list' ).length && $( '.reservation_amenity_field' ).length ) {
+			// Iterate through the amenities.
+			$( '.reservation_amenity_field' ).each( function() {
+				var this_amenity_field = $( this );
+				var amenity_title      = this_amenity_field.find( '.addTitle-field' ).val();
+				amenity_titles.push( amenity_title );
+			} );
+
+			// Sort the array items.
+			amenity_titles = amenity_titles.sort();
+
+			// Iterate through the titles to find duplicates.
+			for ( var i = 0; i < amenity_titles.length - 1; i++ ) {
+				if ( amenity_titles[i + 1] === amenity_titles[i] ) {
+					duplicate_amenity_titles.push( amenity_titles[i] );
+				}
+			}
+
+			// If there are duplicate items.
+			if ( 0 < duplicate_amenity_titles.length ) {
+				ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, duplicate_amenities_error_message );
+				return false;
+			}
+		}
+
+		return false;
 	} );
 
 	/**

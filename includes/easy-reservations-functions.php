@@ -651,6 +651,10 @@ if ( ! function_exists( 'ersrv_get_admin_script_vars' ) ) {
 		// Date format.
 		$vars['date_format'] = ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' );
 
+		// Reservation items error messages.
+		$vars['duplicate_amenities_error_message']     = __( 'There are duplicate amenities added. Please remove either of them and then update.', 'easy-reservations' );
+		$vars['min_reservation_invalid_error_message'] = __( 'Minimum reservation period cannot be more than the maximum reservation period.', 'easy-reservations' );
+
 		/**
 		 * This hook fires in admin panel.
 		 *
