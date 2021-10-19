@@ -1750,6 +1750,11 @@ jQuery(document).ready(function ($) {
 		var total_cost           = adult_charge + kids_charge + amenities_total + security_total;
 		var formatted_total_cost = ersrv_get_formatted_price( total_cost );
 
+		// Exit, if the charges are all not present.
+		if ( 0 === adult_charge && 0 === kids_charge && 0 === amenities_total ) {
+			return false;
+		}
+
 		// Put in all the totals now.
 		$( '.adults-subtotal td span.ersrv-cost' ).html( formatted_adult_charge ).data( 'cost', adult_charge );
 		$( '.kids-subtotal td span.ersrv-cost' ).html( formatted_kids_charge ).data( 'cost', kids_charge );
@@ -1813,6 +1818,11 @@ jQuery(document).ready(function ($) {
 		// Calculate the total cost now.
 		var total_cost           = adult_charge + kids_charge + amenities_total + security_total;
 		var formatted_total_cost = ersrv_get_formatted_price( total_cost );
+
+		// Exit, if the charges are all not present.
+		if ( 0 === adult_charge && 0 === kids_charge && 0 === amenities_total ) {
+			return false;
+		}
 
 		// Put in all the totals now.
 		$( '.adults-subtotal td span.ersrv-cost' ).html( formatted_adult_charge ).data( 'cost', adult_charge );
