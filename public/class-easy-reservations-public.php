@@ -1563,11 +1563,11 @@ class Easy_Reservations_Public {
 							<div class="values">
 								<div class="row form-row input-daterange">
 									<div class="col-6">
-										<h4 class="font-weight-semibold font-size-20"><?php esc_html_e( 'Checkin', 'easy-reservations' ); ?></h4>
+										<h4 class="font-size-16"><?php esc_html_e( 'Checkin', 'easy-reservations' ); ?></h4>
 										<div><input type="text" id="ersrv-quick-view-item-checkin-date" class="form-control date-control text-left rounded-lg" placeholder="<?php esc_html_e( 'Checkin', 'easy-reservations' ); ?>"></div>
 									</div>
 									<div class="col-6">
-										<h4 class="font-weight-semibold font-size-20"><?php esc_html_e( 'Checkout', 'easy-reservations' ); ?></h4>
+										<h4 class="font-size-16"><?php esc_html_e( 'Checkout', 'easy-reservations' ); ?></h4>
 										<div><input type="text" id="ersrv-quick-view-item-checkout-date" class="form-control date-control text-left rounded-lg" placeholder="<?php esc_html_e( 'Checkout', 'easy-reservations' ); ?>"></div>
 									</div>
 									<label class="ersrv-reservation-error checkin-checkout-dates-error"></label>
@@ -1575,7 +1575,7 @@ class Easy_Reservations_Public {
 							</div>
 						</div>
 						<div class="accomodation-values d-flex flex-column mb-3 ersrv-quick-view-reservation-item-accomodation">
-							<h4 class="font-size-20 font-weight-semibold"><?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?><small class="font-size-10 ml-1">(<?php echo sprintf( __( 'Limit: %1$d', 'easy-reservations' ), $accomodation_limit ); ?>)<span class="required">*</span></small></h4>
+							<h4 class="font-size-16"><?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?><small class="font-size-10 ml-1">(<?php echo sprintf( __( 'Limit: %1$d', 'easy-reservations' ), $accomodation_limit ); ?>)<span class="required">*</span></small></h4>
 							<div class="values">
 								<div class="row form-row">
 									<div class="col-6">
@@ -1592,7 +1592,7 @@ class Easy_Reservations_Public {
 						</div>
 						<?php if ( ! empty( $amenities ) && is_array( $amenities ) ) { ?>
 							<div class="amenities-values d-flex flex-column mb-3">
-								<h4 class="font-size-20 font-weight-semibold"><?php esc_html_e( 'Amenities', 'easy-reservations' ); ?></h4>
+								<h4 class="font-size-16"><?php esc_html_e( 'Amenities', 'easy-reservations' ); ?></h4>
 								<div class="values ersrv-item-amenities-wrapper">
 									<div class="row form-row">
 										<?php foreach ( $amenities as $amenity_data ) {
@@ -1621,8 +1621,8 @@ class Easy_Reservations_Public {
 							<input type="hidden" id="quick-view-kid-subtotal" value="" />
 							<input type="hidden" id="quick-view-amenities-subtotal" value="" />
 							<input type="hidden" id="quick-view-security-subtotal" value="<?php echo esc_html( $security_amount ); ?>" />
-							<h4 class="ersrv-item-details-security-amount font-Poppins font-size-16 color-black font-weight-bold mb-3"><?php echo sprintf( __( 'Security: %1$s', 'easy-reservations' ), wc_price( $security_amount ) ); ?></h4>
-							<label class="font-size-16"><?php echo sprintf( __( 'This will add %1$s to the cart.', 'easy-reservations' ), '<a href="javascript:void(0);" class="text-decoration-none ersrv-split-reservation-cost is-modal"><span class="font-lato font-weight-bold color-accent ersrv-quick-view-item-subtotal ersrv-cost">--</span></a>' ); ?></label>
+							<label class="ersrv-item-details-security-amount font-Poppins font-size-16 color-black mb-3"><?php echo sprintf( __( 'Security: %1$s', 'easy-reservations' ), wc_price( $security_amount ) ); ?></label>
+							<h4 class="font-size-16 font-weight-bold"><?php echo sprintf( __( 'Total: %1$s', 'easy-reservations' ), '<a href="javascript:void(0);" class="text-decoration-none ersrv-split-reservation-cost is-modal"><span class="font-lato font-weight-bold color-accent ersrv-quick-view-item-subtotal ersrv-cost">--</span></a>' ); ?></h4>
 							<div class="ersrv-reservation-details-item-summary" id="ersrv-split-reservation-cost-content">
 								<div class="ersrv-reservation-details-item-summary-wrapper p-3">
 									<table class="table table-borderless">
@@ -1661,7 +1661,7 @@ class Easy_Reservations_Public {
 						<input type="hidden" id="quick-view-kid-charge" value="<?php echo esc_html( $kid_charge ); ?>" />
 						<input type="hidden" id="quick-view-security-amount" value="<?php echo esc_html( $security_amount ); ?>" />
 						<input type="hidden" id="quick-view-item-id" value="<?php echo esc_html( $item_id ) ?>" />
-						<button type="button" class="ersrv-add-quick-view-reservation-to-cart product-button add-to-cart btn-block"><?php esc_html_e( 'Procced to checkout', 'easy-reservations' ); ?></button>
+						<button type="button" class="ersrv-add-quick-view-reservation-to-cart product-button add-to-cart btn-block"><?php esc_html_e( 'Add to cart', 'easy-reservations' ); ?></button>
 						<a href="<?php echo esc_url( $item_permalink ); ?>" class="readmore-link btn btn-link"><?php esc_html_e( 'View full details', 'easy-reservations' ); ?></a>
 					</div>
 				</div>
