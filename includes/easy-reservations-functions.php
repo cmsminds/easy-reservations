@@ -1625,7 +1625,7 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 
 							<!-- TYPES -->
 							<?php if ( $item_type_str_with_link ) { ?>
-								<div class="capacity mr-3">
+								<div class="item-type mr-3">
 									<span class="icon"><i class="fas fa-th-large"></i></span>
 									<span class="font-weight-bold mr-2"><?php esc_html_e( 'Type:', 'easy-reservations' ); ?></span>
 									<span class=""><?php echo wp_kses_post( $item_type_str_with_link ); ?></span>
