@@ -1243,6 +1243,46 @@ jQuery( document ).ready( function( $ ) {
 	} );
 
 	/**
+	 * Send reservation reminder email for particular order.
+	 */
+	$( document ).on( 'click', '.ersrv-send-reservation-reminder-single', function( evt ) {
+		evt.preventDefault();
+		var this_button = $( this );
+		var order_id    = $( '#post_ID' ).val();
+		
+		// Exit, if the order ID is invalid.
+		if ( -1 === is_valid_number( order_id ) ) {
+			return false;
+		}
+
+		// Block the row.
+		block_element( this_button );
+
+		// Send the AJAX now.
+		$.ajax( {
+			dataType: 'JSON',
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: 'send_reservation_reminder',
+				order_id: order_id,
+			},
+			success: function ( response ) {
+				// Check for invalid ajax request.
+				if ( 0 === response ) {
+					console.log( 'easy reservations: invalid ajax request' );
+					return false;
+				}
+
+				if ( 'reminder-email-sent' === response.data.code ) {
+					unblock_element( this_button ); // Unblock the element.
+					ersrv_show_notification( 'bg-success', 'fa-check-circle', toast_success_heading, response.data.toast_message ); // Show the notification.
+				}
+			},
+		} );
+	} );
+
+	/**
 	 * Get the dates that faal between 2 dates.
 	 */
 	function ersrv_get_dates_between_2_dates( from, to ) {

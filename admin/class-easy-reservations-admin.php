@@ -1519,6 +1519,8 @@ class Easy_Reservations_Admin {
 				?><a class="button" href="<?php echo esc_url( ersrv_download_reservation_receipt_url( $order_id ) ); ?>"><?php echo esc_html( ersrv_get_plugin_settings( 'ersrv_easy_reservations_receipt_button_text' ) ); ?></a><?php
 			}
 			?>
+
+			<a class="button ersrv-send-reservation-reminder-single" href="#"><?php esc_html_e( 'Send Reminder', 'easy-reservations' ); ?></a>
 		</li>
 		<?php
 
@@ -1859,5 +1861,34 @@ class Easy_Reservations_Admin {
 		?>
 		<a class="button" title="<?php esc_html_e( 'Edit Reservation', 'easy-reservations' ); ?>" href="<?php echo esc_url( add_query_arg( $query_params, $edit_reservation_page_url ) ); ?>"><?php esc_html_e( 'Edit Reservation', 'easy-reservations' ); ?></a>
 		<?php
+	}
+
+	/**
+	 * AJAX to send reservation reminder emails.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_send_reservation_reminder_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+		// Exit, if the action mismatches.
+		if ( empty( $action ) || 'send_reservation_reminder' !== $action ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Posted data.
+		$order_id = filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT );
+		
+		// Send the reminder email.
+		ersrv_send_reservarion_reminder_emails( $order_id, true );
+
+		// Prepare the response.
+		$response = array(
+			'code'          => 'reminder-email-sent',
+			'toast_message' => __( 'Reminder email has been sent successfully.', 'easy-reservations' ),
+		);
+		wp_send_json_success( $response );
+		wp_die();
 	}
 }

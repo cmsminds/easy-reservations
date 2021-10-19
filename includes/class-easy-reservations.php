@@ -177,6 +177,7 @@ class Easy_Reservations {
 		$this->loader->add_action( 'wp_ajax_upload_driving_license', $plugin_admin, 'ersrv_upload_driving_license_callback' );
 		$this->loader->add_action( 'woocommerce_delete_order', $plugin_admin, 'ersrv_woocommerce_delete_order_callback' );
 		$this->loader->add_action( 'woocommerce_order_item_add_action_buttons', $plugin_admin, 'ersrv_woocommerce_order_item_add_action_buttons_callback', 20 );
+		$this->loader->add_action( 'wp_ajax_send_reservation_reminder', $plugin_admin, 'ersrv_send_reservation_reminder_callback' );
 	}
 
 	/**

@@ -3319,3 +3319,69 @@ if ( ! function_exists( 'ersrv_get_reservation_item_cost_type_text' ) ) {
 		return apply_filters( 'ersrv_reservation_item_cost_type_text', $text );
 	}
 }
+
+/**
+ * Check if the function exists.
+ */
+if ( ! function_exists( 'ersrv_send_reservarion_reminder_emails' ) ) {
+	/**
+	 * Send reservation reminder emails.
+	 *
+	 * @param int     $order ID WooCommerce order ID.
+	 * @param boolean $force Forcefully send the reminder.
+	 * @since 1.0.0
+	 */
+	function ersrv_send_reservarion_reminder_emails( $order_id, $force = false ) {
+		$wc_order                        = wc_get_order( $order_id );
+		$line_items                      = $wc_order->get_items();
+		$reminder_to_be_sent_before_days = ersrv_get_plugin_settings( 'ersrv_reminder_email_send_before_days' );
+
+		// Skip, if there are no items.
+		if ( empty( $line_items ) || ! is_array( $line_items ) ) {
+			return;
+		}
+
+		// Iterate through the items to check if the reminder email can be sent to the customers.
+		foreach ( $line_items as $line_item ) {
+			$product_id = $line_item->get_product_id();
+			$item_id    = $line_item->get_id();
+
+			// Skip, if this is not a reservation item.
+			if ( ! ersrv_product_is_reservation( $product_id ) ) {
+				continue;
+			}
+
+			// Get the checkin date.
+			$checkin_date = wc_get_order_item_meta( $item_id, 'Checkin Date', true );
+			$date_today   = gmdate( ersrv_get_php_date_format() );
+
+			// Get the days yet to the reservation.
+			$dates_range = ersrv_get_dates_within_2_dates( $date_today, $checkin_date );
+			$dates       = array();
+
+			// Iterate through the dates.
+			if ( ! empty( $dates_range ) ) {
+				foreach ( $dates_range as $date ) {
+					$dates[] = $date->format( ersrv_get_php_date_format() );
+				}
+			}
+			$days_difference_count = count( $dates );
+
+			// Skip, if this doesn't match with the admin settings.
+			if ( false === $force && $reminder_to_be_sent_before_days !== $days_difference_count ) { // Check against force to apply request from admin.
+				continue;
+			}
+
+			/**
+			 * Send the email now.
+			 * This action is fired by the cron.
+			 *
+			 * This action helps in sending the reminder emails to the customers about their reservation.
+			 *
+			 * @param object $line_item WooCommerce line item object.
+			 * @param int    $order_id WooCommerce order ID.
+			 */
+			do_action( 'ersrv_send_reservation_reminder_email', $line_item, $order_id );
+		}
+	}
+}
