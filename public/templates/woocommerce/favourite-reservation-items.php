@@ -18,6 +18,12 @@ if ( ! empty( $favourite_items ) && is_array( $favourite_items ) ) {
 	echo '<div class="search-result-inner form-row">';
 	// Iterate through each item to display it.
 	foreach ( $favourite_items as $item_id ) {
+		// Skip, if the product doesn't exist anymore.
+		if ( false === wc_get_product( $item_id ) ) {
+			continue;
+		}
+
+		// Print the HTML now.
 		echo ersrv_get_reservation_item_block_html( $item_id, 'favourite-items-page' );
 	}
 	echo '</div>';

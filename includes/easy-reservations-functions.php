@@ -1721,6 +1721,7 @@ if ( ! function_exists( 'ersrv_get_item_details' ) ) {
 		$max_reservation = get_post_meta( $item_id, '_ersrv_reservation_max_period', true );
 
 		// Generate the booking period restrictions.
+		$reservation_period_str = '';
 		if ( ! empty( $min_reservation ) && ! empty( $max_reservation ) ) {
 			// If min and max reservation period days are same.
 			if ( $min_reservation === $max_reservation ) {

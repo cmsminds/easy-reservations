@@ -1058,18 +1058,32 @@ class Easy_Reservations_Public {
 		require ERSRV_PLUGIN_PATH . 'public/templates/woocommerce/favourite-reservation-items.php';
 	}
 
+	/**
+	 * Add query vars for the favourite items listing page.
+	 *
+	 * @param array $vars Query variables array.
+	 * @return array
+	 * @since 1.0.0
+	 */
 	public function ersrv_query_vars_callback( $vars ) {
 		$vars[] = $this->favourite_reservation_items_endpoint_slug;
 
 		return $vars;
 	}
 
+	/**
+	 * Overwrite the titles.
+	 *
+	 * @param string $title Post title.
+	 * @return string
+	 * @since 1.0.0
+	 */
 	public function ersrv_the_title_callback( $title ) {
 		global $wp_query;
 		$is_endpoint = isset( $wp_query->query_vars[ $this->favourite_reservation_items_endpoint_slug ] );
 
-		if ( $is_endpoint && ! is_admin() && is_main_query() && in_the_loop() && is_account_page() ) {
-			$title = __( 'My Stuff', 'easy-reservations' );
+		if ( $is_endpoint && ! is_admin() ) {
+			// $title = __( 'My Stuff', 'easy-reservations' );
 		}
 
 		return $title;
