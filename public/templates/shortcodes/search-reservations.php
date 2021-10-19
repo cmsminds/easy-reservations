@@ -93,7 +93,7 @@ $on_click_reset       = "location.href = '{$search_page_url}'";
 										</button>
 									</div>
 									<div class="col-12 col-md-6 col-lg-12">
-										<button type="button" onclick="<?php echo esc_attr( $on_click_reset ); ?>" class="ersrv-submit-reservation-reset btn btn-outline-fill-primary btn-block font-lato font-size-18 font-weight-bold">
+										<button type="button" onclick="<?php echo esc_attr( $on_click_reset ); ?>" class="ersrv-submit-reservation-reset btn btn-outline-fill-primary btn-block font-lato font-size-18 font-weight-bold non-clickable">
 											<span><?php esc_html_e( 'Reset', 'easy-reservations' ); ?></span>
 										</button>
 									</div>

@@ -359,7 +359,7 @@ jQuery(document).ready(function ($) {
 		};
 
 		// Submit the ajax search now.
-		ersrv_submit_search_reservations( ajax_params, false );
+		ersrv_submit_search_reservations( ajax_params, false, false );
 
 		/**
 		 * Load more reservation items.
@@ -400,7 +400,7 @@ jQuery(document).ready(function ($) {
 			block_element( this_button );
 
 			// Submit the ajax search now.
-			ersrv_submit_search_reservations( ajax_params, true );
+			ersrv_submit_search_reservations( ajax_params, true, true );
 
 			// Unblock the element now.
 			unblock_element( this_button );
@@ -1335,7 +1335,7 @@ jQuery(document).ready(function ($) {
 		};
 
 		// Submit the ajax search now.
-		ersrv_submit_search_reservations( ajax_params, false );
+		ersrv_submit_search_reservations( ajax_params, false, true );
 	} );
 
 	/**
@@ -1444,7 +1444,7 @@ jQuery(document).ready(function ($) {
 	/**
 	 * Submit the search AJAX.
 	 */
-	function ersrv_submit_search_reservations( args, is_load_more ) {
+	function ersrv_submit_search_reservations( args, is_load_more, enable_reset ) {
 		// Send the AJAX now.
 		$.ajax( {
 			dataType: 'JSON',
@@ -1492,6 +1492,11 @@ jQuery(document).ready(function ($) {
 
 					// Scroll to the listing section.
 					$( 'html, body' ).animate( { scrollTop: $( '.search-results-wrapper' ).offset().top }, 'slow' );
+				}
+
+				// If the reset button is to be enabled.
+				if ( true === enable_reset ) {
+					unblock_element( $( '.ersrv-submit-reservation-reset' ) );
 				}
 			},
 		} );
