@@ -1464,9 +1464,8 @@ jQuery(document).ready(function ($) {
 				if ( true === is_load_more ) {
 					// If there is a valid response.
 					if ( 'items-found' === code ) { // If items are found.
-						$( '.ersrv-search-reservations-items-container' ).append( response.data.html );
-						// Update the posts page number.
-						$( '#ersrv-posts-page' ).val( next_page );
+						$( '.ersrv-search-reservations-items-container' ).append( response.data.html ); // Add the HTML now.
+						$( '#ersrv-posts-page' ).val( args.page ); // Update the posts page number.
 					} else if ( 'no-items-found' === code ) { // If items are found.
 						$( '.ersrv-load-more-reservation-items' ).hide(); // Hide the load more button.
 					}
