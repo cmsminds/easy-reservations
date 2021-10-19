@@ -66,14 +66,16 @@ $woo_currency = get_woocommerce_currency_symbol();
 // Social share URLs.
 $social_share_urls = array(
 	'facebook' => array(
-		'icon'  => 'fab fa-facebook-f',
-		'link'  => 'https://facebook.com/sharer.php?u=' . get_permalink( $item_post->ID ),
-		'class' => 'icon facebook',
+		'icon'   => 'fab fa-facebook-f',
+		'link'   => 'https://facebook.com/sharer.php?u=' . get_permalink( $item_post->ID ),
+		'class'  => 'icon facebook',
+		'target' => '_blank',
 	),
 	'twitter'  => array(
-		'icon'  => 'fab fa-twitter',
-		'link'  => 'https://twitter.com/intent/tweet?text=' . $item_post->post_title . '&url=' . get_permalink( $item_post->ID ),
-		'class' => 'icon twitter',
+		'icon'   => 'fab fa-twitter',
+		'link'   => 'https://twitter.com/intent/tweet?text=' . $item_post->post_title . '&url=' . get_permalink( $item_post->ID ),
+		'class'  => 'icon twitter',
+		'target' => '_blank',
 	),
 );
 /**
@@ -363,7 +365,7 @@ $product_title_class = apply_filters( 'ersrv_reservation_item_title_attribute_cl
 											if ( ! empty( $social_share_urls ) && is_array( $social_share_urls ) ) {
 												foreach ( $social_share_urls as $social_share_url ) {
 													?>
-													<a href="<?php echo esc_url( $social_share_url['link'] ); ?>" class="<?php echo esc_attr( $social_share_url['class'] ); ?>">
+													<a target="<?php echo esc_attr( $social_share_url['target'] ); ?>" href="<?php echo esc_url( $social_share_url['link'] ); ?>" class="<?php echo esc_attr( $social_share_url['class'] ); ?>">
 														<span><i class="<?php echo esc_attr( $social_share_url['icon'] ); ?>"></i></span>
 													</a>
 													<?php
