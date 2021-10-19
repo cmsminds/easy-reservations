@@ -117,6 +117,7 @@ class Easy_Reservations_Public {
 		$enqueue_extra_css        = false;
 		$is_fav_items_endpoint    = isset( $wp_query->query_vars[ $this->favourite_reservation_items_endpoint_slug ] );
 		$is_view_order_endpoint   = isset( $wp_query->query_vars[ 'view-order' ] );
+		$is_orders_endpoint       = isset( $wp_query->query_vars[ 'orders' ] );
 		$is_track_order_page      = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'woocommerce_order_tracking' ) );
 
 		// Conditions to enqueue the extra css file.
@@ -126,7 +127,8 @@ class Easy_Reservations_Public {
 			$is_fav_items_endpoint ||
 			$is_view_order_endpoint ||
 			$is_edit_reservation_page ||
-			$is_track_order_page
+			$is_track_order_page ||
+			$is_orders_endpoint
 		) {
 			$enqueue_extra_css = true;
 		}
