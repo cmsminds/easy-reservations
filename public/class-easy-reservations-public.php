@@ -1958,6 +1958,26 @@ class Easy_Reservations_Public {
 
 					// Shoot the error now.
 					wc_add_notice( $error_message, 'error' );
+				} else {
+					// Check if there are reservation items of past date.
+					$today = gmdate( ersrv_get_php_date_format() );
+
+					if ( strtotime( $checkin_date ) < time() ) {
+						$error_message = sprintf( __( 'You cannot proceed with the reservation of %2$s%1$s%3$s as the dates %2$s%4$s%3$s are already passed.', 'easy-reservations' ), get_the_title( $item_id ), '<strong>', '</strong>', "{$checkin_date} - {$checkout_date}" );
+						/**
+						 * This filter fires on checkout page.
+						 *
+						 * This filter helps in modifying the checkout error that is thrown in case the reservation dates have already passed.
+						 *
+						 * @param string $error_message Error message.
+						 * @return string
+						 * @since 1.0.0
+						 */
+						$error_message = apply_filters( 'ersrv_past_reservation_dates_validation_checkout_error', $error_message );
+
+						// Shoot the error now.
+						wc_add_notice( $error_message, 'error' );
+					}
 				}
 			}
 		}
