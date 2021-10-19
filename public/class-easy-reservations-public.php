@@ -1075,14 +1075,23 @@ class Easy_Reservations_Public {
 	 * Overwrite the titles.
 	 *
 	 * @param string $title Post title.
+	 * @param int    $post_id Post ID.
 	 * @return string
 	 * @since 1.0.0
 	 */
-	public function ersrv_the_title_callback( $title ) {
+	public function ersrv_the_title_callback( $title, $post_id ) {
 		global $wp_query;
 		$is_endpoint = isset( $wp_query->query_vars[ $this->favourite_reservation_items_endpoint_slug ] );
 
-		if ( $is_endpoint && ! is_admin() ) {
+		// Return the title if it's admin.
+		if ( is_admin() ) {
+			return $title;
+		}
+
+		// Reduce the item title.
+		// $title = ( 46 <= strlen( $title ) ) ? substr( $title, 0, 45 ) . '...' : $title;
+
+		if ( $is_endpoint ) {
 			// $title = __( 'My Stuff', 'easy-reservations' );
 		}
 

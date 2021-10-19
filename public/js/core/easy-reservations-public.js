@@ -1489,6 +1489,9 @@ jQuery(document).ready(function ($) {
 						$( '.ersrv-search-reservations-items-container' ).removeClass( 'form-row' );
 						$( '.ersrv-load-more-reservation-items' ).hide(); // Hide the load more button.
 					}
+
+					// Scroll to the listing section.
+					$( 'html, body' ).animate( { scrollTop: $( '.search-results-wrapper' ).offset().top }, 'slow' );
 				}
 			},
 		} );
