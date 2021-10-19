@@ -475,6 +475,8 @@ class Easy_Reservations_Public {
 
 		// Register custom user roles.
 		ersrv_add_custom_user_roles();
+
+		// $this->ersrv_send_reminder_emails();
 	}
 
 	/**
@@ -1458,7 +1460,7 @@ class Easy_Reservations_Public {
 
 		// Return, if the setting is not saved.
 		if ( 0 === $reminder_to_be_sent_before_days ) {
-			return;
+			// return;
 		}
 
 		// Return back, if there are no orders available.

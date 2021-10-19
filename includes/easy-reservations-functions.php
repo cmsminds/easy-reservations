@@ -1587,7 +1587,7 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 							<!-- LOCATION -->
 							<?php if ( $location ) {?>
 								<div class="location">
-									<span class="icon"><i class="fas fa-location-arrow"></i></span>
+									<span class="icon"><i class="fas fa-map-marker"></i></span>
 									<span><?php echo esc_html( $location ); ?></span>
 								</div>
 							<?php } ?>
@@ -1601,6 +1601,7 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 							<!-- CAPACITY -->
 							<?php if ( $capacity ) { ?>
 								<div class="capacity mr-3">
+									<span class="icon"><i class="fas fa-users"></i></span>
 									<span class="font-weight-bold mr-2"><?php esc_html_e( 'Capacity:', 'easy-reservations' ); ?></span>
 									<span class=""><?php echo esc_html( $capacity ); ?></span>
 								</div>
@@ -1625,6 +1626,7 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 							<!-- TYPES -->
 							<?php if ( $item_type_str_with_link ) { ?>
 								<div class="capacity mr-3">
+									<span class="icon"><i class="fas fa-th-large"></i></span>
 									<span class="font-weight-bold mr-2"><?php esc_html_e( 'Type:', 'easy-reservations' ); ?></span>
 									<span class=""><?php echo wp_kses_post( $item_type_str_with_link ); ?></span>
 								</div>
