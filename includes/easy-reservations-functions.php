@@ -1523,7 +1523,7 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 		$item_class          = ( $is_favourite ) ? 'selected' : '';
 		$reservation_period  = '';
 		$item_title          = get_the_title( $item_id );
-		$item_title          = ( 51 <= strlen( $item_title ) ) ? substr( $item_title, 0, 50 ) . '...' : $item_title;
+		$item_title          = ( 46 <= strlen( $item_title ) ) ? substr( $item_title, 0, 45 ) . '...' : $item_title;
 
 		// Generate the booking period restrictions.
 		if ( ! empty( $min_reservation ) && ! empty( $max_reservation ) ) {
