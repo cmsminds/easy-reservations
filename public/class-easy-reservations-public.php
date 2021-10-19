@@ -1575,7 +1575,7 @@ class Easy_Reservations_Public {
 							</div>
 						</div>
 						<div class="accomodation-values d-flex flex-column mb-3 ersrv-quick-view-reservation-item-accomodation">
-							<h4 class="font-size-16"><?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?><small class="font-size-10 ml-1">(<?php echo sprintf( __( 'Limit: %1$d', 'easy-reservations' ), $accomodation_limit ); ?>)<span class="required">*</span></small></h4>
+							<h4 class="font-size-16"><?php esc_html_e( 'Guests', 'easy-reservations' ); ?><small class="font-size-10 ml-1">(<?php echo sprintf( __( 'Limit: %1$d', 'easy-reservations' ), $accomodation_limit ); ?>)<span class="required">*</span></small></h4>
 							<div class="values">
 								<div class="row form-row">
 									<div class="col-6">
