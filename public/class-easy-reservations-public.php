@@ -1963,7 +1963,7 @@ class Easy_Reservations_Public {
 					$today = gmdate( ersrv_get_php_date_format() );
 
 					if ( strtotime( $checkin_date ) < time() ) {
-						$error_message = sprintf( __( 'You cannot proceed with the reservation of %2$s%1$s%3$s as the dates %2$s%4$s%3$s are already passed.', 'easy-reservations' ), get_the_title( $item_id ), '<strong>', '</strong>', "{$checkin_date} - {$checkout_date}" );
+						$error_message = sprintf( __( 'Selected dates, %2$s%4$s%3$s for the item, %2$s%1$s%3$s are not available anymore. Please select another dates.', 'easy-reservations' ), get_the_title( $item_id ), '<strong>', '</strong>', "{$checkin_date} - {$checkout_date}" );
 						/**
 						 * This filter fires on checkout page.
 						 *
