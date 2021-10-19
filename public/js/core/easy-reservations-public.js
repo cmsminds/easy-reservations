@@ -1468,8 +1468,7 @@ jQuery(document).ready(function ($) {
 						// Update the posts page number.
 						$( '#ersrv-posts-page' ).val( next_page );
 					} else if ( 'no-items-found' === code ) { // If items are found.
-						// Hide the load more button.
-						$( '.ersrv-loadmore-container' ).hide();
+						$( '.ersrv-load-more-reservation-items' ).hide(); // Hide the load more button.
 					}
 				} else {
 					if ( 'reservation-posts-found' === code || 'reservation-posts-not-found' === code ) {
@@ -1489,6 +1488,7 @@ jQuery(document).ready(function ($) {
 					// Remove the "form-row" class, if there are no search items.
 					if ( 'reservation-posts-not-found' === code ) {
 						$( '.ersrv-search-reservations-items-container' ).removeClass( 'form-row' );
+						$( '.ersrv-load-more-reservation-items' ).hide(); // Hide the load more button.
 					}
 				}
 			},
