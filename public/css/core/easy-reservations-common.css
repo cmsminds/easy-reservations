@@ -1049,10 +1049,10 @@ body:not(.theme-new-york-business) .site
 .advanced-search .ersrv-item-search-location {
   background-position: 90% !important;
 }
-.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .card-title{
+/* .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .card-title{
   max-height: 45px;
   overflow: hidden;
-}
+} */
 .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .media a,
 .wrapper .banner{
   position: relative;
