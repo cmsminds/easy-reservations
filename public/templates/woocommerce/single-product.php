@@ -107,7 +107,7 @@ $gallery_image_ids = $wc_item->get_gallery_image_ids();
 $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $featured_image_id ), $gallery_image_ids ) : array( $featured_image_id );
 
 // For lengthy product titles.
-$product_title_class = ( 90 >= $item_post->post_title ) ? 'font-Poppins font-size-26 font-weight-semibold color-white' : 'font-Poppins font-size-40 font-weight-semibold color-white';
+$product_title_class = ( 90 <= strlen( $item_post->post_title ) ) ? 'font-Poppins font-size-26 font-weight-semibold color-white' : 'font-Poppins font-size-40 font-weight-semibold color-white';
 $product_title_class = apply_filters( 'ersrv_reservation_item_title_attribute_class', $product_title_class );
 ?>
 <section class="wrapper single-reserve-page" id="wrapper" data-item="<?php echo esc_attr( $item_post->ID ); ?>">
