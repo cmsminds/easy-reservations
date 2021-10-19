@@ -110,7 +110,7 @@
                             text-decoration: none;
                             top: 2px;
                             color: $secondary !important;
-                            background-color: $transparent;
+                            background-color: $transparent !important;
                         }
                     }
 
@@ -610,7 +610,7 @@
                 text-decoration: none;
                 top: 2px;
                 color: $secondary !important;
-                background-color: $transparent;
+                background-color: $transparent !important;
             }
         }
         .ui-datepicker-prev {

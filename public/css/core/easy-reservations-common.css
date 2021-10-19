@@ -1094,10 +1094,11 @@ body:not(.theme-new-york-business) .site
 .wrapper .banner .details{
   max-width: 100% !important;
 }
-.wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover{
+/* .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-next:hover{
   color: #f4f4f4 !important;
-}
-.ui-datepicker-multi .ui-datepicker-group table thead tr {
+} */
+.ui-datepicker-multi .ui-datepicker-group table thead tr ,
+#ui-datepicker-div .ui-datepicker-calendar tr{
   border-bottom: none;
 }
 body:not(.custom-background-image):before, body:not(.custom-background-image):after{

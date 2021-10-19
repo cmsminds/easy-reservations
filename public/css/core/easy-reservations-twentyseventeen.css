@@ -861,7 +861,7 @@ img {
   text-decoration: none;
   top: 2px;
   color: #111 !important;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0) !important;
 }
 
 .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-header .ui-datepicker-prev:hover {
@@ -1401,7 +1401,7 @@ img {
   text-decoration: none;
   top: 2px;
   color: #111 !important;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0) !important;
 }
 
 #ui-datepicker-div .ui-datepicker-header .ui-datepicker-prev:hover {
