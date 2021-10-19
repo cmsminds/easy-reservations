@@ -1,3 +1,4 @@
+@import "../widget/calendar/easy-reservations-calendar-widget.css";
 .non-clickable {
     pointer-events: none !important;
     opacity: 0.5;
