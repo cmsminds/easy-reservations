@@ -409,7 +409,7 @@ class Easy_Reservations_Public {
 			'reservation_checkout_missing_err_msg'         => __( 'Please provide checkout dates.', 'easy-reservations' ),
 			'reservation_lesser_reservation_days_err_msg'  => __( 'The item can be reserved for a min. of XX days.', 'easy-reservations' ),
 			'reservation_greater_reservation_days_err_msg' => __( 'The item can be reserved for a max. of XX days.', 'easy-reservations' ),
-			'reservation_blocked_dates_err_msg'            => __( 'The dates selected for reservation contain the dates that are already reserved. Kindly check the availability on the left hand side and then proceed with the reservation.', 'easy-reservations' ),
+			'reservation_blocked_dates_err_msg'            => __( 'The dates selected for reservation contain the dates that are already reserved. Kindly recheck the availability and proceed with the reservation.', 'easy-reservations' ),
 			'search_reservations_page_url'                 => get_permalink( $search_reservations_page ),
 			'date_format'                                  => ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' ),
 			'toast_success_heading'                        => __( 'Ohhoooo! Success..', 'easy-reservations' ),

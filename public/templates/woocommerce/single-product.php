@@ -50,16 +50,7 @@ $total_reservations      = ( ! empty( $item_details['total_reservations'] ) ) ? 
 $total_reservations_icon = ( ! empty( $item_details['total_reservations_icon'] ) ) ? $item_details['total_reservations_icon'] : '';
 
 // Reservation Item Type.
-$types    = wp_get_object_terms( $item_post->ID, 'reservation-item-type' );
-$type_str = '';
-
-if ( ! empty( $types ) && is_array( $types ) ) {
-	foreach ( $types as $type_obj ) {
-		$type_links[] = '<a href="' . get_category_link( $type_obj->term_id ) . '">' . $type_obj->name . '</a>';
-	}
-
-	$type_str = implode( ', ', $type_links );
-}
+$item_type_str_with_link = ( ! empty( $item_details['item_type_str_with_link'] ) ) ? $item_details['item_type_str_with_link'] : '';
 
 // Reservation item types.
 $reservation_item_types = get_terms(
@@ -129,10 +120,10 @@ $product_title_class = apply_filters( 'ersrv_reservation_item_title_attribute_cl
 				?>
 				<div class="boat-options d-flex justify-content-center align-items-center color-white font-size-16 flex-column flex-md-row">
 					<!-- ITEM TYPES -->
-					<?php if ( ! empty( $type_str ) ) { ?>
+					<?php if ( ! empty( $item_type_str_with_link ) ) { ?>
 						<div class="d-flex align-items-center first mb-2 mb-md-0 mr-3 pr-1">
 							<img src="<?php echo esc_url ( ERSRV_PLUGIN_URL . 'public/images/Ship-icon.png' ); ?>" alt="">
-							<span class="ml-2 font-weight-medium"><?php echo wp_kses_post( $type_str ); ?></span>
+							<span class="ml-2 font-weight-medium"><?php echo wp_kses_post( $item_type_str_with_link ); ?></span>
 						</div>
 					<?php } ?>
 

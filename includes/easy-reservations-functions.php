@@ -1507,23 +1507,24 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 	 * @param int $item_id Reservation item ID.
 	 */
 	function ersrv_get_reservation_item_block_html( $item_id, $page ) {
-		$user_id             = get_current_user_id();
-		$featured_image_id   = get_post_thumbnail_id( $item_id );
-		$item_featured_image = ersrv_get_attachment_url_from_attachment_id( $featured_image_id );
-		$item_featured_image = ( empty( $item_featured_image ) ) ? wc_placeholder_img_src() : $item_featured_image;
-		$item_link           = get_permalink( $item_id );
-		$item_details        = ersrv_get_item_details( $item_id );
-		$adult_charge        = ( ! empty( $item_details['adult_charge'] ) ) ? $item_details['adult_charge'] : 0;
-		$location            = ( ! empty( $item_details['location'] ) ) ? $item_details['location'] : '';
-		$capacity            = ( ! empty( $item_details['accomodation_limit'] ) ) ? $item_details['accomodation_limit'] : '';
-		$security_amt        = ( ! empty( $item_details['security_amount'] ) ) ? $item_details['security_amount'] : '';
-		$min_reservation     = ( ! empty( $item_details['min_reservation_period'] ) ) ? $item_details['min_reservation_period'] : '';
-		$max_reservation     = ( ! empty( $item_details['max_reservation_period'] ) ) ? $item_details['max_reservation_period'] : '';
-		$is_favourite        = ersrv_is_favourite_item( $user_id, $item_id );
-		$item_class          = ( $is_favourite ) ? 'selected' : '';
-		$reservation_period  = '';
-		$item_title          = get_the_title( $item_id );
-		$item_title          = ( 46 <= strlen( $item_title ) ) ? substr( $item_title, 0, 45 ) . '...' : $item_title;
+		$user_id                 = get_current_user_id();
+		$featured_image_id       = get_post_thumbnail_id( $item_id );
+		$item_featured_image     = ersrv_get_attachment_url_from_attachment_id( $featured_image_id );
+		$item_featured_image     = ( empty( $item_featured_image ) ) ? wc_placeholder_img_src() : $item_featured_image;
+		$item_link               = get_permalink( $item_id );
+		$item_details            = ersrv_get_item_details( $item_id );
+		$adult_charge            = ( ! empty( $item_details['adult_charge'] ) ) ? $item_details['adult_charge'] : 0;
+		$location                = ( ! empty( $item_details['location'] ) ) ? $item_details['location'] : '';
+		$capacity                = ( ! empty( $item_details['accomodation_limit'] ) ) ? $item_details['accomodation_limit'] : '';
+		$security_amt            = ( ! empty( $item_details['security_amount'] ) ) ? $item_details['security_amount'] : '';
+		$min_reservation         = ( ! empty( $item_details['min_reservation_period'] ) ) ? $item_details['min_reservation_period'] : '';
+		$max_reservation         = ( ! empty( $item_details['max_reservation_period'] ) ) ? $item_details['max_reservation_period'] : '';
+		$is_favourite            = ersrv_is_favourite_item( $user_id, $item_id );
+		$item_class              = ( $is_favourite ) ? 'selected' : '';
+		$reservation_period      = '';
+		$item_title              = get_the_title( $item_id );
+		$item_title              = ( 46 <= strlen( $item_title ) ) ? substr( $item_title, 0, 45 ) . '...' : $item_title;
+		$item_type_str_with_link = ( ! empty( $item_details['item_type_str_with_link'] ) ) ? $item_details['item_type_str_with_link'] : '';
 
 		// Generate the booking period restrictions.
 		if ( ! empty( $min_reservation ) && ! empty( $max_reservation ) ) {
@@ -1583,22 +1584,29 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 
 					<div class="amenities mb-3">
 						<div class="d-flex flex-column">
+							<!-- LOCATION -->
 							<?php if ( $location ) {?>
 								<div class="location">
 									<span class="icon"><i class="fas fa-location-arrow"></i></span>
 									<span><?php echo esc_html( $location ); ?></span>
 								</div>
 							<?php } ?>
+
+							<!-- RESERVATION PERIOD -->
 							<div class="map-loaction mr-3">
 								<span class="icon"><i class="fas fa-calendar-alt"></i></span>
 								<span class=""><?php echo esc_html( $reservation_period ); ?></span>
 							</div>
+
+							<!-- CAPACITY -->
 							<?php if ( $capacity ) { ?>
-							<div class="capacity mr-3">
-								<span class="font-weight-bold mr-2"><?php esc_html_e( 'Capacity:', 'easy-reservations' ); ?></span>
-								<span class=""><?php echo esc_html( $capacity ); ?></span>
-							</div>
+								<div class="capacity mr-3">
+									<span class="font-weight-bold mr-2"><?php esc_html_e( 'Capacity:', 'easy-reservations' ); ?></span>
+									<span class=""><?php echo esc_html( $capacity ); ?></span>
+								</div>
 							<?php } ?>
+
+							<!-- SECURITY AMOUNT -->
 							<div class="cabins mr-3">
 								<span class="icon"><i class="fas fa-money-bill-alt"></i></span>
 								<span class="font-weight-bold mr-2"><?php esc_html_e( 'Security Amt:', 'easy-reservations' ); ?></span>
@@ -1613,6 +1621,14 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 									); ?>
 								</span>
 							</div>
+
+							<!-- TYPES -->
+							<?php if ( $item_type_str_with_link ) { ?>
+								<div class="capacity mr-3">
+									<span class="font-weight-bold mr-2"><?php esc_html_e( 'Type:', 'easy-reservations' ); ?></span>
+									<span class=""><?php echo wp_kses_post( $item_type_str_with_link ); ?></span>
+								</div>
+							<?php } ?>
 						</div>
 					</div>
 					<div class="btns-group">
@@ -1733,6 +1749,21 @@ if ( ! function_exists( 'ersrv_get_item_details' ) ) {
 			$reservation_period_str = sprintf( _n( 'Booking for min. %1$s day.', 'Booking for min. %1$s days.', $min_reservation, 'easy-reservations' ), $min_reservation );
 		}
 
+		// Item types.
+		$item_types              = wp_get_object_terms( $item_id, 'reservation-item-type' );
+		$item_type_str           = '';
+		$item_type_str_with_link = '';
+
+		if ( ! empty( $item_types ) && is_array( $item_types ) ) {
+			foreach ( $item_types as $type_obj ) {
+				$item_type_links[] = '<a href="' . get_category_link( $type_obj->term_id ) . '">' . $type_obj->name . '</a>';
+				$item_type_texts[] = $type_obj->name;
+			}
+
+			$item_type_str_with_link = implode( ', ', $item_type_links );
+			$item_type_str           = implode( ', ', $item_type_texts );
+		}
+
 		// Put the details in an array.
 		$item_details = array(
 			'accomodation_limit'      => $accomodation_limit,
@@ -1753,6 +1784,8 @@ if ( ! function_exists( 'ersrv_get_item_details' ) ) {
 			'total_reservations'      => get_post_meta( $item_id, 'total_sales', true ),
 			'total_reservations_icon' => ERSRV_PLUGIN_URL . 'public/images/3d-box.png',
 			'unavailable_weekdays'    => $unavailable_weekdays,
+			'item_type_str_with_link' => $item_type_str_with_link,
+			'item_type_str'           => $item_type_str,
 		);
 
 		/**
