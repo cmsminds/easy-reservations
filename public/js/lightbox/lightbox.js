@@ -33,7 +33,6 @@ jQuery( document ).ready( function( $ ) {
 	 */
 	$( document ).on( 'click', '.close', function() {
 		$( '.lightbox' ).fadeOut(300);
-		$( 'h1' ).remove();
 		$( '.lightbox img' ).remove();
 		$( 'html' ).css( 'overflow', 'auto' );
 	} );
