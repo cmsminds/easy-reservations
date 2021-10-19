@@ -1522,6 +1522,8 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 		$is_favourite        = ersrv_is_favourite_item( $user_id, $item_id );
 		$item_class          = ( $is_favourite ) ? 'selected' : '';
 		$reservation_period  = '';
+		$item_title          = get_the_title( $item_id );
+		$item_title          = ( 51 <= strlen( $item_title ) ) ? substr( $item_title, 0, 50 ) . '...' : $item_title;
 
 		// Generate the booking period restrictions.
 		if ( ! empty( $min_reservation ) && ! empty( $max_reservation ) ) {
@@ -1563,7 +1565,7 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 				</div>
 				<div class="card-body">
 					<h3 class="card-title">
-						<a href="<?php echo esc_url( $item_link ); ?>"><?php echo wp_kses_post( get_the_title( $item_id ) ); ?></a>
+						<a href="<?php echo esc_url( $item_link ); ?>"><?php echo wp_kses_post( $item_title ); ?></a>
 					</h3>
 
 					<?php
