@@ -385,7 +385,7 @@ $product_title_class = apply_filters( 'ersrv_reservation_item_title_attribute_cl
 										<input type="text" class="ersrv-item-search-location form-control text-left rounded-lg" placeholder="<?php esc_html_e( 'Desired location', 'easy-reservations' ); ?>">
 									</div>
 									<div class="mb-2">
-										<input type="number" class="ersrv-item-search-accomodation form-control ship-icon-field text-left rounded-lg" placeholder="<?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?>">
+										<input type="number" class="ersrv-item-search-accomodation form-control ship-icon-field text-left rounded-lg" placeholder="<?php esc_html_e( 'Capacity', 'easy-reservations' ); ?>">
 									</div>
 									<div class="input-daterange d-flex flex-column flex-fill pb-2">
 										<input id="ersrv-search-checkin" type="text" class="form-control date-control text-left rounded-lg mb-2" placeholder="<?php esc_html_e( 'Checkin', 'easy-reservations' ); ?>" readonly>

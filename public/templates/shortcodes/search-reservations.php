@@ -68,7 +68,7 @@ $on_click_reset       = "location.href = '{$search_page_url}'";
 										</select>
 									</div>
 									<div class="col-12 col-md-6 col-lg-6">
-										<input type="number" value="<?php echo esc_html( $search_accomodation ); ?>" class="ersrv-search-parameter ersrv-item-search-accomodation form-control rounded-lg ship-icon-field mt-3 mt-md-0" placeholder="<?php esc_html_e( 'Accomodation', 'easy-reservations' ); ?>">
+										<input type="number" value="<?php echo esc_html( $search_accomodation ); ?>" class="ersrv-search-parameter ersrv-item-search-accomodation form-control rounded-lg ship-icon-field mt-3 mt-md-0" placeholder="<?php esc_html_e( 'Capacity', 'easy-reservations' ); ?>">
 									</div>
 								</div>
 							</div>
