@@ -1029,6 +1029,7 @@ body:not(.theme-new-york-business) .site
   border-left: 2px solid rgba(0, 0, 0, 0.2);
   padding-left: 12px;
   min-width: 140px;
+  font-weight: 400;
 }
 /* .inputs-with-label input {
   padding-right: 100px;
