@@ -1606,7 +1606,7 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 							<?php if ( $capacity ) { ?>
 								<div class="capacity">
 									<span class="icon"><i class="fas fa-users"></i></span>
-									<span class="font-weight-bold mr-2"><?php esc_html_e( 'Capacity:', 'easy-reservations' ); ?></span>
+									<span class="font-weight-bold"><?php esc_html_e( 'Capacity:', 'easy-reservations' ); ?></span>
 									<span class=""><?php echo esc_html( $capacity ); ?></span>
 								</div>
 							<?php } ?>
@@ -1614,7 +1614,7 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 							<!-- SECURITY AMOUNT -->
 							<div class="cabins">
 								<span class="icon"><i class="fas fa-money-bill-alt"></i></span>
-								<span class="font-weight-bold mr-2"><?php esc_html_e( 'Security Amt:', 'easy-reservations' ); ?></span>
+								<span class="font-weight-bold"><?php esc_html_e( 'Security Amt:', 'easy-reservations' ); ?></span>
 								<span class="">
 									<?php echo wp_kses(
 										wc_price( $security_amt ),
@@ -1631,7 +1631,7 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 							<?php if ( $item_type_str_with_link ) { ?>
 								<div class="ersrv-item-type">
 									<span class="icon"><i class="fas fa-th-large"></i></span>
-									<span class="font-weight-bold mr-2"><?php esc_html_e( 'Type:', 'easy-reservations' ); ?></span>
+									<span class="font-weight-bold"><?php esc_html_e( 'Type:', 'easy-reservations' ); ?></span>
 									<span class=""><?php echo wp_kses_post( $item_type_str_with_link ); ?></span>
 								</div>
 							<?php } ?>
