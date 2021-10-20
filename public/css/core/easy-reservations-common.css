@@ -982,7 +982,7 @@ body:not(.theme-new-york-business) .site
 .theme-new-york-business .dropdown-toggle{
   right: 0px;
 }
-.theme-new-york-business .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn{
+/* .theme-new-york-business .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group .btn{
   margin-right: 0px !important;
   margin-bottom: 1rem;
   width: 100%;
@@ -990,7 +990,7 @@ body:not(.theme-new-york-business) .site
 .theme-new-york-business .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .btns-group {
   display: flex;
   flex-direction: column-reverse;
-}
+} */
 .theme-new-york-business div#page div#content .site-main .page.has-post-thumbnail .entry-content img.attachment-full.size-full.wp-post-image {
   display: none !important;
 }
@@ -1104,4 +1104,7 @@ body:not(.theme-new-york-business) .site
 }
 body:not(.custom-background-image):before, body:not(.custom-background-image):after{
   height: 0px !important;
+}
+.wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .amenities .icon{
+  min-width: 20px;
 }

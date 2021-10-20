@@ -649,7 +649,7 @@ img {
 .ersrv-item-search-location:focus, .date-control.ersrv-item-search-location.ship-icon-field:focus, .wrapper .sidebar-wrapper .book-tour .details input.ersrv-item-search-location.ship-icon-field.date-control:focus,
 .wrapper .sidebar-wrapper .advanced-search .details input.ersrv-item-search-location.ship-icon-field.date-control:focus, .ersrv-item-search-location:hover, .date-control.ersrv-item-search-location.ship-icon-field:hover, .wrapper .sidebar-wrapper .book-tour .details input.ersrv-item-search-location.ship-icon-field.date-control:hover,
 .wrapper .sidebar-wrapper .advanced-search .details input.ersrv-item-search-location.ship-icon-field.date-control:hover {
-  background-image: url("../../images/mapPin_blue.png") !important;
+  background-image: url("../../images/mapPin_green.png") !important;
 }
 
 *:focus,

@@ -608,7 +608,7 @@ img {
 }
 
 .ersrv-item-search-location:focus, .date-control.ersrv-item-search-location.ship-icon-field:focus, .ersrv-item-search-location:hover, .date-control.ersrv-item-search-location.ship-icon-field:hover {
-  background-image: url("../../images/mapPin_blue.png") !important;
+  background-image: url("../../images/mapPin_green.png") !important;
 }
 
 *:focus,
