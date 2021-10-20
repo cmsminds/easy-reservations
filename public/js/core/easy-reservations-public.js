@@ -367,11 +367,11 @@ jQuery(document).ready(function ($) {
 		 */
 		$( document ).on( 'click', '.ersrv-loadmore-container a', function() {
 			var this_button            = $( this );
-			var type                   = parseInt( ersrv_get_query_string_parameter_value( 'boat_type' ) );
-			var location               = ersrv_get_query_string_parameter_value( 'location' );
-			var checkin                = ersrv_get_query_string_parameter_value( 'checkin' );
-			var checkout               = ersrv_get_query_string_parameter_value( 'checkout' );
-			var accomodation           = ersrv_get_query_string_parameter_value( 'accomodation' );
+			var type                   = parseInt( parseInt( $( 'select.ersrv-reservation-item-type' ).val() ) );
+			var location               = $( '.ersrv-item-search-location' ).val();
+			var checkin                = $( '#ersrv-search-checkin' ).val();
+			var checkout               = $( '#ersrv-search-checkout' ).val();
+			var accomodation           = parseInt( $( '.ersrv-item-search-accomodation' ).val() );
 			var checkin_checkout_dates = [];
 			var reservation_weekdays   = [];
 			var current_page           = parseInt( $( '#ersrv-posts-page' ).val() );

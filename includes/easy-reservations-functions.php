@@ -1597,14 +1597,14 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 							<?php } ?>
 
 							<!-- RESERVATION PERIOD -->
-							<div class="map-loaction mr-3">
+							<div class="map-loaction">
 								<span class="icon"><i class="fas fa-calendar-alt"></i></span>
 								<span class=""><?php echo esc_html( $reservation_period ); ?></span>
 							</div>
 
 							<!-- CAPACITY -->
 							<?php if ( $capacity ) { ?>
-								<div class="capacity mr-3">
+								<div class="capacity">
 									<span class="icon"><i class="fas fa-users"></i></span>
 									<span class="font-weight-bold mr-2"><?php esc_html_e( 'Capacity:', 'easy-reservations' ); ?></span>
 									<span class=""><?php echo esc_html( $capacity ); ?></span>
@@ -1612,7 +1612,7 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 							<?php } ?>
 
 							<!-- SECURITY AMOUNT -->
-							<div class="cabins mr-3">
+							<div class="cabins">
 								<span class="icon"><i class="fas fa-money-bill-alt"></i></span>
 								<span class="font-weight-bold mr-2"><?php esc_html_e( 'Security Amt:', 'easy-reservations' ); ?></span>
 								<span class="">
@@ -1629,7 +1629,7 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 
 							<!-- TYPES -->
 							<?php if ( $item_type_str_with_link ) { ?>
-								<div class="ersrv-item-type mr-3">
+								<div class="ersrv-item-type">
 									<span class="icon"><i class="fas fa-th-large"></i></span>
 									<span class="font-weight-bold mr-2"><?php esc_html_e( 'Type:', 'easy-reservations' ); ?></span>
 									<span class=""><?php echo wp_kses_post( $item_type_str_with_link ); ?></span>
