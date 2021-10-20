@@ -242,11 +242,9 @@ jQuery( document ).ready( function( $ ) {
 					return false;
 				}
 
-				// Unblock the element.
-				unblock_element( $( '.reservations-amenities' ) );
-
-				// Apend the amenity html block.
-				$( '.amenities-list' ).append( response.data.html );
+				unblock_element( $( '.reservations-amenities' ) ); // Unblock the element.
+				$( '.amenities-list' ).append( response.data.html ); // Apend the amenity html block.
+				$( '.amenities-list p:last-child' ).find( '.addTitle-field' ).focus(); // Add focus.
 			},
 		} );
 	} );
@@ -1288,8 +1286,8 @@ jQuery( document ).ready( function( $ ) {
 	 * Validate the amenities.
 	 */
 	$( document ).on( 'click', '#publishing-action input#publish', function() {
-		var amenity_titles           = [];
-		var duplicate_amenity_titles = [];
+		var amenity_titles        = [];
+		var unique_amenity_titles = [];
 		// Check if there are amenities list.
 		if ( $( '.amenities-list' ).length && $( '.reservation_amenity_field' ).length ) {
 			// Iterate through the amenities.
@@ -1303,14 +1301,17 @@ jQuery( document ).ready( function( $ ) {
 			amenity_titles = amenity_titles.sort();
 
 			// Iterate through the titles to find duplicates.
-			for ( var i = 0; i < amenity_titles.length - 1; i++ ) {
-				if ( amenity_titles[i + 1] === amenity_titles[i] ) {
-					duplicate_amenity_titles.push( amenity_titles[i] );
+			for ( var k in amenity_titles ) {
+				var amenity_title = amenity_titles[k];
+				amenity_title     = amenity_title.toLowerCase();
+
+				if ( -1 === $.inArray( amenity_title, unique_amenity_titles ) ) {
+					unique_amenity_titles.push( amenity_title );
 				}
 			}
 
-			// If there are duplicate items.
-			if ( 0 < duplicate_amenity_titles.length ) {
+			// If the uniques ones match exactly with the original array, there are no duplicates.
+			if ( amenity_titles.length !== unique_amenity_titles.length ) {
 				ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, duplicate_amenities_error_message );
 				return false;
 			}
