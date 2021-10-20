@@ -657,12 +657,18 @@ a{
 .woocommerce table.my_account_orders .woocommerce-orders-table__header.woocommerce-orders-table__header-order-number{
 	width: 60px;
 }
+/*  */
+.woocommerce ul.products li.product .woocommerce-loop-product__title{
+	font-weight: 700 !important;
+}
+.theme-twentyseventeen .woocommerce table.my_account_orders .button{
+	display: inline-block;
+	padding: 8px 12px;
+}
+.theme-twentytwentyone .ersrv-reservation-widget-container .selectbox select.selectpicker{
+	padding-right: 24px;
+}
 @media(max-width:767px){
-	.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td span,
-	.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a,
-	.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a{
-		padding: 10px !important;
-	}
 	.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline{
 		width: 310px;
 	}
@@ -671,14 +677,30 @@ a{
 	.theme-twentytwentyone .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a,
 	.theme-twentytwentyone .ui-datepicker-calendar .ui-state-disabled *, 
 	.theme-twentytwentyone .ui-datepicker-calendar .ersrv-date-disabled *{
-		padding: 12px 8px !important;
+		padding: 10px !important;
 	}
-}
-/*  */
-.woocommerce ul.products li.product .woocommerce-loop-product__title{
-	font-weight: 700 !important;
-}
-.theme-twentyseventeen .woocommerce table.my_account_orders .button{
-    display: inline-block;
-	padding: 8px 12px;
+	.ersrv-reservation-widget-container{
+		padding-right: 0px;
+	}
+	.ersrv-widget-calendar .ui-datepicker-inline,
+	.theme-twentytwenty .ersrv-widget-calendar .ui-datepicker-inline,
+	.theme-twentytwenty .ersrv-reservation-widget-container{
+		width: 100% !important;
+	}
+	.ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td span,
+	.ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a,
+	.ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a{
+		padding: 7px !important;
+	}
+	
+	.theme-storefront .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td span,
+	.theme-storefront .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a,
+	.theme-storefront .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a{
+		padding: 10px 7px !important;
+	}
+	.theme-twentytwenty .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td span,
+	.theme-twentytwenty .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a,
+	.theme-twentytwenty .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a{
+		padding: 12px 10px !important;
+	}
 }
