@@ -2403,6 +2403,9 @@ class Easy_Reservations_Public {
 			wp_die();
 		}
 
+		// Posted data.
+		$search_performed = filter_input( INPUT_POST, 'search_performed', FILTER_SANITIZE_STRING );
+
 		// Get the reservation items.
 		$reservation_posts_query    = ersrv_get_posts( 'product' );
 		$reservation_post_ids       = $reservation_posts_query->posts;
@@ -2504,11 +2507,14 @@ class Easy_Reservations_Public {
 		// Count of qualifying reservation posts.
 		$qualified_reservation_posts = count( $final_reservation_ids );
 
+		// Items count.
+		$items_count = ( ! empty( $search_performed ) && 'yes' === $search_performed ) ? $qualified_reservation_posts : $reservation_post_ids_found;
+
 		// Return the AJAX response.
 		$response = array(
 			'code'        => 'reservation-posts-found',
 			'html'        => $html,
-			'items_count' => sprintf( _n( '%d item', '%d items', $qualified_reservation_posts, 'easy-reservations' ), number_format_i18n( $qualified_reservation_posts ) ),
+			'items_count' => sprintf( _n( '%d item', '%d items', $items_count, 'easy-reservations' ), number_format_i18n( $items_count ) ),
 		);
 		wp_send_json_success( $response );
 		wp_die();

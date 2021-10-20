@@ -356,6 +356,7 @@ jQuery(document).ready(function ($) {
 			accomodation: ( 1 === is_valid_number( accomodation ) ) ? accomodation : '',
 			checkin_checkout_dates: checkin_checkout_dates,
 			reservation_weekdays: reservation_weekdays,
+			search_performed: 'no',
 		};
 
 		// Submit the ajax search now.
@@ -1321,6 +1322,15 @@ jQuery(document).ready(function ($) {
 			reservation_weekdays.push( checkin_checkout_dates_obj[i].getDay() );
 		}
 
+		// Check if search is actually performed.
+		var search_performed = (
+			1 === is_valid_string( location ) ||
+			1 === is_valid_number( type ) ||
+			1 === is_valid_string( checkin ) ||
+			1 === is_valid_string( checkout ) ||
+			1 === is_valid_number( accomodation )
+		) ? 'yes' : 'no';
+
 		// Block the wrapper.
 		block_element( $( '.ersrv-form-wrapper' ) );
 
@@ -1332,6 +1342,7 @@ jQuery(document).ready(function ($) {
 			checkin_checkout_dates: checkin_checkout_dates,
 			reservation_weekdays: reservation_weekdays,
 			accomodation: accomodation,
+			search_performed: search_performed,
 		};
 
 		// Submit the ajax search now.
