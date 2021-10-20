@@ -1218,7 +1218,7 @@ jQuery( document ).ready( function( $ ) {
 	/**
 	 * Validate the min and max reservation period.
 	 */
-	$( document ).on( 'keyup', '#reservation_min_period, #reservation_max_period', function() {
+	$( document ).on( 'keyup click', '#reservation_min_period, #reservation_max_period', function() {
 		var min_reservation_period = parseInt( $( '#reservation_min_period' ).val() );
 		var max_reservation_period = parseInt( $( '#reservation_max_period' ).val() );
 
