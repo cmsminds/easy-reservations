@@ -1228,6 +1228,9 @@ jQuery( document ).ready( function( $ ) {
 			return false;
 		}
 
+		// Unblock the update button.
+		unblock_element( $( '#publishing-action input#publish' ) );
+
 		// Check if the min period is more than the max period.
 		if ( min_reservation_period > max_reservation_period ) {
 			ersrv_show_notification( 'bg-danger', 'fa-skull-crossbones', toast_error_heading, min_reservation_invalid_error_message );
@@ -1237,9 +1240,6 @@ jQuery( document ).ready( function( $ ) {
 
 			return false;
 		}
-
-		// Unblock the update button.
-		unblock_element( $( '#publishing-action input#publish' ) );
 	} );
 
 	/**
