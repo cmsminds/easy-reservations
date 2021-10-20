@@ -668,6 +668,9 @@ a{
 .theme-twentytwentyone .ersrv-reservation-widget-container .selectbox select.selectpicker{
 	padding-right: 24px;
 }
+.ersrv-book-item-from-widget .button{
+	display: inline-block;
+}
 @media(max-width:767px){
 	.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline{
 		width: 310px;
