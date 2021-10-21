@@ -513,7 +513,7 @@ body:not(.theme-new-york-business) .site
 }
 
 .ersrv-reservation-details-item-summary,
-.ersrv-edit-reservation-item-summary {
+.ersrvr-reservation-reviews-details {
   background: rgba(255, 255, 255, 1);
   border-radius: 8px;
   /* backdrop-filter: blur(5px);
@@ -532,47 +532,47 @@ body:not(.theme-new-york-business) .site
   transition: 0.3s ease-in-out;
   margin: 10px 20px;
 }
-.theme-twentysixteen .ersrv-edit-reservation-item-summary {
+.theme-twentysixteen .ersrvr-reservation-reviews-details {
   margin: 0px;
 }
 .ersrv-reservation-details-item-summary.show,
-.ersrv-edit-reservation-item-summary.show {
+.ersrvr-reservation-reviews-details.show {
   transform: none;
   transform-origin: bottom;
 }
 
 .ersrv-reservation-details-item-summary table,
-.ersrv-edit-reservation-item-summary table {
+.ersrvr-reservation-reviews-details table {
   margin-bottom: 0px;
 }
 
 .ersrv-reservation-details-item-summary table td,
 .ersrv-reservation-details-item-summary table td *,
 .ersrv-reservation-details-item-summary table th,
-.ersrv-edit-reservation-item-summary table td,
-.ersrv-edit-reservation-item-summary table td *,
-.ersrv-edit-reservation-item-summary table th {
+.ersrvr-reservation-reviews-details table td,
+.ersrvr-reservation-reviews-details table td *:not(.rating__icon),
+.ersrvr-reservation-reviews-details table th {
   color: #7e808c !important;
   line-height: normal;
 }
 
-.ersrv-edit-reservation-item-summary table td,
-.ersrv-edit-reservation-item-summary table th {
+.ersrvr-reservation-reviews-details table td,
+.ersrvr-reservation-reviews-details table th {
   padding: 0.2rem 0.5rem;
   vertical-align: middle;
 }
 
-.ersrv-edit-reservation-item-summary table td,
+.ersrvr-reservation-reviews-details table td,
 .ersrv-reservation-details-item-summary table td {
   text-align: right;
 }
 
-.ersrv-edit-reservation-item-summary table .edit-reservation-item-total-cost,
+.ersrvr-reservation-reviews-details table .edit-reservation-item-total-cost,
 .ersrv-reservation-details-item-summary table .reservation-item-subtotal {
   border-top: 1px solid #a7a9b1;
 }
 
-.ersrv-edit-reservation-item-summary table .edit-reservation-item-total-cost *,
+.ersrvr-reservation-reviews-details table .edit-reservation-item-total-cost *,
 .ersrv-reservation-details-item-summary table .reservation-item-subtotal * {
   color: #000 !important;
   padding-bottom: 0px !important;
@@ -1107,4 +1107,8 @@ body:not(.custom-background-image):before, body:not(.custom-background-image):af
 }
 .wrapper.search-page .content-part .search-results-wrapper .search-result-inner .card .amenities .icon{
   min-width: 20px;
+}
+.theme-twentytwentyone .site a:focus:not(.wp-block-button__link):not(.wp-block-file__button).loadmore-btn:focus {
+  background: #007bff;
+  color: #fff;
 }
