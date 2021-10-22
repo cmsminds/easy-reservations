@@ -2151,6 +2151,7 @@ class Easy_Reservations_Public {
 		global $post;
 		$is_edit_reservation_page = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_edit_reservation' ) );
 		$is_search_page           = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
+		$is_reservation_page      = ersrv_product_is_reservation( $post->ID );
 
 		// If it's the edit reservation page.
 		if ( $is_edit_reservation_page ) {
@@ -2166,6 +2167,17 @@ class Easy_Reservations_Public {
 		// If it's the search reservation page.
 		if ( $is_search_page ) {
 			$classes = array_merge( $classes, array( 'ersrv-search-reservations-template', 'ersrv-reservation-template' ) );
+
+			// Remove the no-sidebar class.
+			$no_sidebar_class_index = array_search( 'no-sidebar', $classes, true );
+			if ( false !== $no_sidebar_class_index ) {
+				unset( $classes[ $no_sidebar_class_index ] );
+			}
+		}
+
+		// If it's the reservation details page.
+		if ( $is_reservation_page ) {
+			$classes = array_merge( $classes, array( 'ersrv-single-reservation-template', 'ersrv-reservation-template' ) );
 
 			// Remove the no-sidebar class.
 			$no_sidebar_class_index = array_search( 'no-sidebar', $classes, true );
