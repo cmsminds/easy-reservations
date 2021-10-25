@@ -55,18 +55,18 @@ $on_click_reset       = "location.href = '{$search_page_url}'";
 							<div class="col-12 col-md-12 col-lg-6">
 								<input type="text" value="<?php echo esc_html( $search_location ); ?>" class="ersrv-search-parameter ersrv-item-search-location form-control date-control ship-icon-field text-left rounded-lg mb-3" placeholder="<?php esc_html_e( 'Desired location', 'easy-reservations' ); ?>">
 								<div class="form-row mb-3 mb-lg-0">
-									<div class="col-12 col-md-6 col-lg-6">
-										<select class="ersrv-search-parameter ersrv-reservation-item-type selectpicker form-control Boat-Types" id="boat-types" data-size="5" data-style="btn-outline-light focus-none" title="<?php esc_html_e( 'Item type', 'easy-reservations' ); ?>">
-											<option value=""><?php esc_html_e( 'Item type', 'easy-reservations' ); ?></option>
-											<?php if ( ! empty( $reservation_item_types ) && is_array( $reservation_item_types ) ) { ?>
+									<?php if ( ! empty( $reservation_item_types ) && is_array( $reservation_item_types ) ) { ?>
+										<div class="col-12 col-md-6 col-lg-6">
+											<select class="ersrv-search-parameter ersrv-reservation-item-type selectpicker form-control Boat-Types" id="boat-types" data-size="5" data-style="btn-outline-light focus-none" title="<?php esc_html_e( 'Item type', 'easy-reservations' ); ?>">
+												<option value=""><?php esc_html_e( 'Item type', 'easy-reservations' ); ?></option>
 												<?php foreach ( $reservation_item_types as $item_type ) {
 													$is_selected = ( 0 !== $search_boat_type && $search_boat_type === $item_type->term_id );
 													?>
 													<option <?php echo ( $is_selected ) ? 'selected' : ''; ?> value="<?php echo esc_attr( $item_type->term_id ); ?>"><?php echo esc_html( $item_type->name . ' (' . $item_type->count . ')' ); ?></option>
 												<?php } ?>
-											<?php } ?>
-										</select>
-									</div>
+											</select>
+										</div>
+									<?php } ?>
 									<div class="col-12 col-md-6 col-lg-6">
 										<input type="number" value="<?php echo esc_html( $search_accomodation ); ?>" class="ersrv-search-parameter ersrv-item-search-accomodation form-control rounded-lg ship-icon-field mt-3 mt-md-0" placeholder="<?php esc_html_e( 'Capacity', 'easy-reservations' ); ?>">
 									</div>

@@ -522,7 +522,7 @@ if ( ! function_exists( 'ersrv_product_is_reservation' ) ) {
 	 */
 	function ersrv_product_is_reservation( $product_id ) {
 		// Return, if its the shop or any archive page.
-		if ( is_shop() || is_product_category() || is_product_tag() ) {
+		if ( is_archive() || is_search() || is_shop() ) {
 			return false;
 		}
 
@@ -905,11 +905,11 @@ if ( ! function_exists( 'ersrv_get_receipt_watermarks' ) ) {
 	function ersrv_get_receipt_watermarks() {
 		$watermarks = array(
 			'pending'    => array(
-				'text'  => __( 'PENDING', 'easy-reservations' ),
+				'text'  => __( 'PAYMENT PENDING', 'easy-reservations' ),
 				'color' => '',
 			),
 			'processing' => array(
-				'text'  => __( 'PAID', 'easy-reservations' ),
+				'text'  => __( 'YET TO ONBOARD', 'easy-reservations' ),
 				'color' => '',
 			),
 			'on-hold'    => array(
@@ -917,7 +917,7 @@ if ( ! function_exists( 'ersrv_get_receipt_watermarks' ) ) {
 				'color' => '',
 			),
 			'completed'  => array(
-				'text'  => __( 'SHIPPED', 'easy-reservations' ),
+				'text'  => __( 'OFFBOARDED', 'easy-reservations' ),
 				'color' => '',
 			),
 			'cancelled'  => array(
@@ -942,7 +942,7 @@ if ( ! function_exists( 'ersrv_get_receipt_watermarks' ) ) {
 		 * @param array $watermarks Holds the array of watermarks.
 		 * @return array
 		 */
-		return apply_filters( 'wpir_receipt_watermarks', $watermarks );
+		return apply_filters( 'ersrv_reservation_receipt_watermarks', $watermarks );
 	}
 }
 
@@ -1495,8 +1495,7 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 			$body        = 'Hello, please find the attached receipt.';
 			wp_mail( $customer_email, $subject, $body, $headers, $attachments );
 		} else {
-			// $pdf->Output( $pdf_file_title, 'I' ); // View PDF.
-			$pdf->Output( $pdf_file_title, 'D' ); // View PDF.
+			$pdf->Output( $pdf_file_title, 'D' ); // Download PDF. Use "I" for viewing the PDF.
 		}
 	}
 }

@@ -553,9 +553,10 @@ class Easy_Reservations_Public {
 		if ( ! empty( $type ) ) {
 			$args['tax_query']['relation'] = 'AND';
 			$args['tax_query'][] = array(
-				'taxonomy' => 'reservation-item-type',
-				'field'    => 'term_id',
-				'terms'    => $type,
+				'taxonomy'         => 'reservation-item-type',
+				'field'            => 'term_id',
+				'terms'            => $type,
+				'include_children' => false,
 			);
 		}
 
