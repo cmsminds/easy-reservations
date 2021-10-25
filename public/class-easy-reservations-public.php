@@ -937,7 +937,7 @@ class Easy_Reservations_Public {
 	public function ersrv_wp_footer_callback() {
 		global $post, $wp_query;
 		$is_search_page           = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
-		$is_reservation_page      = ersrv_product_is_reservation( $post->ID );
+		$is_reservation_page      = ( ! is_null( $post ) ) ? ersrv_product_is_reservation( $post->ID ) : false;
 		$is_view_order_endpoint   = isset( $wp_query->query_vars[ 'view-order' ] );
 		$is_edit_reservation_page = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_edit_reservation' ) );
 		$is_track_order_page      = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'woocommerce_order_tracking' ) );
@@ -2152,7 +2152,7 @@ class Easy_Reservations_Public {
 		global $post;
 		$is_edit_reservation_page = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_edit_reservation' ) );
 		$is_search_page           = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
-		$is_reservation_page      = ersrv_product_is_reservation( $post->ID );
+		$is_reservation_page      = ( ! is_null( $post ) ) ? ersrv_product_is_reservation( $post->ID ) : false;
 
 		// If it's the edit reservation page.
 		if ( $is_edit_reservation_page ) {

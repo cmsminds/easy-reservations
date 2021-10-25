@@ -56,8 +56,10 @@ $amenities         = get_post_meta( $product_id, '_ersrv_reservation_amenities',
 				'type'              => 'number',
 				'value'             => get_post_meta( $post->ID, '_ersrv_security_amt', true ),
 				'custom_attributes' => array(
-					'step' => 0.01,
-					'min'  => 0,
+					'step'      => 0.01,
+					'min'       => 0,
+					'oninput'   => 'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);',
+					'maxlength' => 10,
 				),
 			)
 		);
@@ -86,8 +88,10 @@ $amenities         = get_post_meta( $product_id, '_ersrv_reservation_amenities',
 				'type'              => 'number',
 				'value'             => get_post_meta( $post->ID, '_ersrv_accomodation_limit', true ),
 				'custom_attributes' => array(
-					'step' => 1,
-					'min'  => 1,
+					'step'      => 1,
+					'min'       => 1,
+					'oninput'   => 'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);',
+					'maxlength' => 10,
 				),
 			)
 		);
@@ -103,8 +107,10 @@ $amenities         = get_post_meta( $product_id, '_ersrv_reservation_amenities',
 				'type'              => 'number',
 				'value'             => get_post_meta( $post->ID, '_ersrv_accomodation_adult_charge', true ),
 				'custom_attributes' => array(
-					'step' => 0.01,
-					'min'  => 0,
+					'step'      => 0.01,
+					'min'       => 0,
+					'oninput'   => 'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);',
+					'maxlength' => 10,
 				),
 			)
 		);
@@ -120,8 +126,10 @@ $amenities         = get_post_meta( $product_id, '_ersrv_reservation_amenities',
 				'type'              => 'number',
 				'value'             => get_post_meta( $post->ID, '_ersrv_accomodation_kid_charge', true ),
 				'custom_attributes' => array(
-					'step' => 0.01,
-					'min'  => 0,
+					'step'      => 0.01,
+					'min'       => 0,
+					'oninput'   => 'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);',
+					'maxlength' => 10,
 				),
 			)
 		);
@@ -150,8 +158,10 @@ $amenities         = get_post_meta( $product_id, '_ersrv_reservation_amenities',
 				'type'              => 'number',
 				'value'             => get_post_meta( $post->ID, '_ersrv_reservation_min_period', true ),
 				'custom_attributes' => array(
-					'step' => 1,
-					'min'  => 0,
+					'step'      => 1,
+					'min'       => 0,
+					'oninput'   => 'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);',
+					'maxlength' => 10,
 				),
 			)
 		);
@@ -167,8 +177,10 @@ $amenities         = get_post_meta( $product_id, '_ersrv_reservation_amenities',
 				'type'              => 'number',
 				'value'             => get_post_meta( $post->ID, '_ersrv_reservation_max_period', true ),
 				'custom_attributes' => array(
-					'step' => 1,
-					'min'  => 0,
+					'step'      => 1,
+					'min'       => 0,
+					'oninput'   => 'javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);',
+					'maxlength' => 10,
 				),
 			)
 		);

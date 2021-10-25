@@ -177,7 +177,7 @@ $product_title_class = apply_filters( 'ersrv_reservation_item_title_attribute_cl
 						</a>
 						<div class="collapse show" id="ship-description-collapse">
 							<div class="dropdown-divider"></div>
-							<?php echo wp_kses_post( $item_post->post_content ); ?>
+							<?php the_content(); ?>
 							<div class="dropdown-divider"></div>
 							<!-- GALLERY IMAGES -->
 							<?php if ( ! empty( $gallery_image_ids ) && ! empty( $gallery_image_ids ) ) {
