@@ -1041,3 +1041,14 @@ body:not(.custom-background-image):after {
   background: #007bff;
   color: #fff;
 }
+.wrapper .content-part .info-box .collapse {
+  clear: both;
+  overflow: hidden;
+}
+/* small view */
+@media (max-width:325px) {
+  .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a, .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a, .ui-datepicker td span{
+    padding: 4px !important;
+    vertical-align: middle;
+  }
+}
