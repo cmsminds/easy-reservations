@@ -98,7 +98,18 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 $featured_image_id = $wc_item->get_image_id();
 $gallery_image_ids = $wc_item->get_gallery_image_ids();
 $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $featured_image_id ), $gallery_image_ids ) : array( $featured_image_id );
-$gallery_image_ids = ( ! empty( $gallery_image_ids ) && is_array( $gallery_image_ids ) ) ? array_values( array_unique( array_filter( $gallery_image_ids ) ) ) : array();
+$gallery_images    = array();
+
+// Prepare the array of gallery image URLs to make them unique.
+if ( ! empty( $gallery_image_ids ) && is_array( $gallery_image_ids ) ) {
+	// Iterate through the image IDs to collect the image URL.
+	foreach ( $gallery_image_ids as $gallery_image_id ) {
+		$gallery_images[] = ersrv_get_attachment_url_from_attachment_id( $gallery_image_id );
+	}
+}
+
+// Remove the duplicate images.
+$gallery_images = ( ! empty( $gallery_images ) && is_array( $gallery_images ) ) ? array_values( array_unique( array_filter( $gallery_images ) ) ) : array();
 
 // For lengthy product titles.
 $product_title_class = ( 90 <= strlen( $item_post->post_title ) ) ? 'font-Poppins font-size-26 font-weight-semibold color-white' : 'font-Poppins font-size-40 font-weight-semibold color-white';
@@ -181,19 +192,12 @@ $product_title_class = apply_filters( 'ersrv_reservation_item_title_attribute_cl
 							<?php the_content(); ?>
 							<div class="dropdown-divider"></div>
 							<!-- GALLERY IMAGES -->
-							<?php if ( ! empty( $gallery_image_ids ) && ! empty( $gallery_image_ids ) ) {
+							<?php if ( ! empty( $gallery_images ) && ! empty( $gallery_images ) ) {
 								// Get the last index of the array.
-								$gallery_images_last_index = count( $gallery_image_ids ) - 1;
+								$gallery_images_last_index = count( $gallery_images ) - 1;
 								?>
 								<div class="gallery-images ersrv_count_images_<?php echo esc_attr( $gallery_images_last_index ); ?>">
-									<?php foreach ( $gallery_image_ids as $index => $image_id ) {
-										$gallery_image_url = ersrv_get_attachment_url_from_attachment_id( $image_id );
-
-										// Continue, if the gallery image doesn't exist anymore.
-										if ( empty( $gallery_image_url ) ) {
-											continue;
-										}
-
+									<?php foreach ( $gallery_images as $index => $gallery_image_url ) {
 										// Get the filename.
 										$image_filename = basename( $gallery_image_url );
 
@@ -203,7 +207,7 @@ $product_title_class = apply_filters( 'ersrv_reservation_item_title_attribute_cl
 										 */
 										$last_gallery_image_custom_class = '';
 										$last_gallery_image_custom_text  = '';
-										if ( 6 < count( $gallery_image_ids ) && 5 === $index ) {
+										if ( 6 < count( $gallery_images ) && 5 === $index ) {
 											$last_gallery_image_custom_class = 'gallery-last-image-overlay';
 											$last_gallery_image_custom_text  = sprintf( __( '+%1$d images', 'easy-reservations' ), ( count( $gallery_image_ids ) - 6 ) );
 										}
