@@ -178,7 +178,7 @@ img {
     transition: 0.3s ease-in-out;
     &:focus,
     &:hover {
-        background-image: url("../../images/accomodation_blue.png") !important;
+        background-image: url("../../images/accomodation_dark_blue.png") !important;
     }
 }
 .ersrv-item-search-location{
@@ -190,7 +190,7 @@ img {
     transition: 0.3s ease-in-out;
     &:focus,
     &:hover {
-        background-image: url("../../images/mapPin_blue.png") !important;
+        background-image: url("../../images/mapPin_darkblue.png") !important;
     }
 }
 
@@ -206,7 +206,7 @@ img {
 .bootstrap-select>.dropdown-toggle {
     &::after {
         border: none !important;
-        background-image: url(../../images/down_arrow.png);
+        background-image: url(../../images/down_arrow_dark_blue.png);
         background-position: center;
         background-repeat: no-repeat;
         background-size: contain;

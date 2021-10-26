@@ -663,11 +663,12 @@ img {
   background-size: contain;
   width: 15px;
   height: 10px;
-  -webkit-filter: brightness(0) invert(0.4);
-  filter: brightness(0) invert(0.4);
+  -webkit-filter: brightness(0) invert(0.6);
+  filter: brightness(0) invert(0.6);
 }
 
 .bootstrap-select > .dropdown-toggle:hover::after, .bootstrap-select > .dropdown-toggle:focus::after {
+  background-image: url(../../images/down_arrow_storefront.png);
   -webkit-filter: brightness(0) invert(1);
   filter: brightness(0) invert(1);
 }
