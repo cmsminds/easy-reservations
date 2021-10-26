@@ -1520,8 +1520,15 @@ class Easy_Reservations_Admin {
 			}
 			?>
 
+			<!-- SEND REMINDER -->
 			<a class="button ersrv-send-reservation-reminder-single" href="#"><?php esc_html_e( 'Send Reminder', 'easy-reservations' ); ?></a>
 		</li>
+
+		<!-- MAKE FINAL SETTLEMENT -->
+		<li class="wide ersrv-reservation-final-settlement">
+			<a class="button ersrv-make-final-settlement" href="#"><?php esc_html_e( 'Make Reservation Final Settlement', 'easy-reservations' ); ?></a>
+		</li>
+
 		<?php
 
 		echo wp_kses_post( ob_get_clean() );
@@ -1877,16 +1884,42 @@ class Easy_Reservations_Admin {
 			wp_die();
 		}
 
-		// Posted data.
-		$order_id = filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT );
-		
-		// Send the reminder email.
-		ersrv_send_reservarion_reminder_emails( $order_id, true );
+		$order_id = filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT ); // Posted data.
+		ersrv_send_reservarion_reminder_emails( $order_id, true ); // Send the reminder email.
 
 		// Prepare the response.
 		$response = array(
 			'code'          => 'reminder-email-sent',
 			'toast_message' => __( 'Reminder email has been sent successfully.', 'easy-reservations' ),
+		);
+		wp_send_json_success( $response );
+		wp_die();
+	}
+
+	/**
+	 * AJAX to send reservation reminder emails.
+	 *
+	 * @since 1.0.0
+	 */
+	public function ersrv_make_final_settlement_callback() {
+		$action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_STRING );
+
+		// Exit, if the action mismatches.
+		if ( empty( $action ) || 'make_final_settlement' !== $action ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Posted data.
+		$order_id = filter_input( INPUT_POST, 'order_id', FILTER_SANITIZE_NUMBER_INT );
+
+		// WooCommerce order object.
+		$wc_order = wc_get_order( $order_id );
+
+		// Prepare the response.
+		$response = array(
+			'code'          => 'final-settlement-done',
+			'toast_message' => __( 'Reservation final settlement has been done. Reloading...', 'easy-reservations' ),
 		);
 		wp_send_json_success( $response );
 		wp_die();
