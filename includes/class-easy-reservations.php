@@ -257,6 +257,7 @@ class Easy_Reservations {
 		$this->loader->add_action( 'wp', $plugin_public, 'ersrv_wp_callback' );
 		$this->loader->add_action( 'wp_ajax_remove_uploaded_driving_license', $plugin_public, 'ersrv_remove_uploaded_driving_license_callback' );
 		$this->loader->add_action( 'wp_ajax_nopriv_remove_uploaded_driving_license', $plugin_public, 'ersrv_remove_uploaded_driving_license_callback' );
+		$this->loader->add_filter( 'pre_get_posts', $plugin_public, 'ersrv_pre_get_posts_callback' );
 	}
 
 	/**

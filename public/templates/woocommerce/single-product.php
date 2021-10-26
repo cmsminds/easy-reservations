@@ -98,6 +98,7 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 $featured_image_id = $wc_item->get_image_id();
 $gallery_image_ids = $wc_item->get_gallery_image_ids();
 $gallery_image_ids = ( ! empty( $gallery_image_ids ) ) ? array_merge( array( $featured_image_id ), $gallery_image_ids ) : array( $featured_image_id );
+$gallery_image_ids = ( ! empty( $gallery_image_ids ) && is_array( $gallery_image_ids ) ) ? array_values( array_unique( array_filter( $gallery_image_ids ) ) ) : array();
 
 // For lengthy product titles.
 $product_title_class = ( 90 <= strlen( $item_post->post_title ) ) ? 'font-Poppins font-size-26 font-weight-semibold color-white' : 'font-Poppins font-size-40 font-weight-semibold color-white';

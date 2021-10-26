@@ -2612,4 +2612,30 @@ class Easy_Reservations_Public {
 			}
 		}
 	}
+
+	/**
+	 * Manage the pre get posts.
+	 *
+	 * @param WP_Query $wp_query WP Query.
+	 */
+	public function ersrv_pre_get_posts_callback( $wp_query ) {
+		// Shoot, if it's the taxonomy page.
+		if ( is_tax( 'reservation-item-type' ) ) {
+			// Get the current queried term ID.
+			$current_term_id = get_queried_object()->term_id;
+
+			// Set the tax query now.
+			$item_type_tax_query = array(
+				array(
+					'taxonomy'         => 'reservation-item-type',
+					'field'            => 'term_id',
+					'terms'            => $current_term_id,
+					'include_children' => false,
+				)
+			);
+
+			// Set the item type taxonomy query.
+			$wp_query->set( 'tax_query', $item_type_tax_query );
+		}
+	}
 }
