@@ -1528,14 +1528,9 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 		$item_title              = get_the_title( $item_id );
 		$item_title              = ( 46 <= strlen( $item_title ) ) ? substr( $item_title, 0, 45 ) . '...' : $item_title;
 		$item_type_str_with_link = ( ! empty( $item_details['item_type_str_with_link'] ) ) ? $item_details['item_type_str_with_link'] : '';
+		$reservation_period_str  = ( ! empty( $item_details['reservation_period_str'] ) ) ? $item_details['reservation_period_str'] : '';
 
-		// Generate the booking period restrictions.
-		if ( ! empty( $min_reservation ) && ! empty( $max_reservation ) ) {
-			$reservation_period = sprintf( __( 'Booking for min. %1$s to %2$s days.', 'easy-reservations' ), $min_reservation, $max_reservation );
-		} elseif ( ! empty( $min_reservation ) ) {
-			$reservation_period = sprintf( __( 'Booking for min. %1$s days.', 'easy-reservations' ), $min_reservation );
-		}
-
+		// Prepare the block html now.
 		ob_start();
 		?>
 		<div class="col-12 col-md-6 col-lg-4 ersrv-reservation-item-block" data-item="<?php echo esc_attr( $item_id ); ?>">
@@ -1598,7 +1593,7 @@ if ( ! function_exists( 'ersrv_get_reservation_item_block_html' ) ) {
 							<!-- RESERVATION PERIOD -->
 							<div class="map-loaction">
 								<span class="icon"><i class="fas fa-calendar-alt"></i></span>
-								<span class=""><?php echo esc_html( $reservation_period ); ?></span>
+								<span class=""><?php echo esc_html( $reservation_period_str ); ?></span>
 							</div>
 
 							<!-- CAPACITY -->
