@@ -437,7 +437,7 @@ body:not(.theme-new-york-business) .site a:focus:not(.wp-block-button__link):not
 .wrapper .sidebar-wrapper .book-tour .calc-wrapper {
   position: relative;
 }
-
+.ersrv-edit-reservation-item-summary,
 .ersrv-reservation-details-item-summary,
 .ersrvr-reservation-reviews-details {
   background: rgba(255, 255, 255, 1);
@@ -462,18 +462,20 @@ body:not(.theme-new-york-business) .site a:focus:not(.wp-block-button__link):not
 .theme-twentysixteen .ersrvr-reservation-reviews-details {
   margin: 0px;
 }
-
+.ersrv-edit-reservation-item-summary.show,
 .ersrv-reservation-details-item-summary.show,
 .ersrvr-reservation-reviews-details.show {
   transform: none;
   transform-origin: bottom;
 }
-
+.ersrv-edit-reservation-item-summary table,
 .ersrv-reservation-details-item-summary table,
 .ersrvr-reservation-reviews-details table {
   margin-bottom: 0px;
 }
-
+.ersrv-edit-reservation-item-summary table td,
+.ersrv-edit-reservation-item-summary table td *:not(.rating__icon),
+.ersrv-edit-reservation-item-summary table th,
 .ersrv-reservation-details-item-summary table td,
 .ersrv-reservation-details-item-summary table td *,
 .ersrv-reservation-details-item-summary table th,
@@ -482,24 +484,26 @@ body:not(.theme-new-york-business) .site a:focus:not(.wp-block-button__link):not
 .ersrvr-reservation-reviews-details table th {
   color: #7e808c !important;
   line-height: normal;
+  background-color: transparent !important;
 }
-
+.ersrv-edit-reservation-item-summary table td,
+.ersrv-edit-reservation-item-summary table th,
 .ersrvr-reservation-reviews-details table td,
 .ersrvr-reservation-reviews-details table th {
   padding: 0.2rem 0.5rem;
   vertical-align: middle;
 }
-
+.ersrv-edit-reservation-item-summary table td,
 .ersrvr-reservation-reviews-details table td,
 .ersrv-reservation-details-item-summary table td {
   text-align: right;
 }
-
+.ersrv-edit-reservation-item-summary table .edit-reservation-item-total-cost,
 .ersrvr-reservation-reviews-details table .edit-reservation-item-total-cost,
 .ersrv-reservation-details-item-summary table .reservation-item-subtotal {
   border-top: 1px solid #a7a9b1;
 }
-
+.ersrv-edit-reservation-item-summary table .edit-reservation-item-total-cost *,
 .ersrvr-reservation-reviews-details table .edit-reservation-item-total-cost *,
 .ersrv-reservation-details-item-summary table .reservation-item-subtotal * {
   color: #000 !important;
