@@ -2637,5 +2637,16 @@ class Easy_Reservations_Public {
 			// Set the item type taxonomy query.
 			$wp_query->set( 'tax_query', $item_type_tax_query );
 		}
+
+		// Exclude the reservation pages from search results.
+		if ( is_search() ) {
+			$edit_reservation_page_id    = ersrv_get_page_id( 'edit-reservation' );
+			$search_reservations_page_id = ersrv_get_page_id( 'search-reservations' );
+			$exclude_posts               = array( $edit_reservation_page_id, $search_reservations_page_id );
+			$exclude_posts               = apply_filters( 'ersrv_exclude_posts_pre_get_posts', $exclude_posts );
+
+			// Exclude the above 2 pages.
+			$wp_query->set( 'post__not_in', $exclude_posts );
+		}
 	}
 }
