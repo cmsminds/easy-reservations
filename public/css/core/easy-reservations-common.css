@@ -1053,6 +1053,32 @@ body:not(.custom-background-image):after {
   filter: brightness(0) invert(0.75) !important;
 }
 /* small view */
+@media (max-width:360px) {
+  .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar thead tr th{
+    font-size: 13px;
+  }
+  .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a, 
+  .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a, 
+  .ui-datepicker td span,
+  .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td span,
+  .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a, 
+  .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a, 
+  .ui-datepicker-calendar .ui-state-disabled *, 
+  .ui-datepicker-calendar .ersrv-date-disabled *{
+    /* padding: 4px !important;
+    vertical-align: middle; */
+
+    padding: 0px !important;
+    vertical-align: middle;
+    font-size: 14px;
+    width: 37px;
+    height: 37px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    margin: 0px !important;
+  }
+}
 @media (max-width:325px) {
   .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar thead tr th{
     font-size: 13px;
