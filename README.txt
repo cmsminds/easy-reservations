@@ -1,51 +1,39 @@
-=== Plugin Name ===
-Contributors: (this should be a list of wordpress.org userid's)
-Donate link: https://www.cmsminds.com/
-Tags: comments, spam
-Requires at least: 3.0.1
-Tested up to: 3.4
-Stable tag: 4.3
+=== Boat Rental Plugin for WordPress ===
+Contributors: cmsminds, shobhit2412
+Donate link: https://example.com/
+Tags: woocommerce, boat, rental, reservation
+Requires at least: 5.0
+Tested up to: 5.8.1
+Stable tag: 1.0.0
+Requires PHP: 7.0
 License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+Allow your customers to make boat reservations online. A simple solution that works on all mobile/tablet devices.
 
 == Description ==
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+Boat Rental Plugin for Wordpress is a simple to use plugin that allows you to rent your boat. It integrates with WordPress and WooCommerce and enables your business to rent boats online. Make Booking boats for your website visitors a breeze.
+In just a few minutes, you'll be up and running. You can add boats (all the different types), manage your bookings and create boat bookings and calendars. This reservation system can be simply customised to meet your specific requirements. It’s powerful to accept payment and security deposits as well.
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+= Special Features =
+* Add boats as inventory and list them on the advanced search page offered by the plugin.
+* Multiple reservations managed in a single order.
+* Security deposits per reservation item.
+* Available dates shown with the help of a widget.
+* A quick view available to make instant bookings.
+* Customers can post request to cancel their reservations.
+* Customers can edit their reservations (only once in the free version).
+* Customers can download an invoice for the reservation.
+* Customers can sync their Google and iCalendars based on their reservations.
 
-A few notes about the sections above:
-
-*   "Contributors" is a comma separated list of wp.org/wp-plugins.org usernames
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
-
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
-
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
+= Feedback =
+* I am open for your suggestions and feedback - Thank you for using or trying out one of my plugins!
+* Drop me any issue/suggestion [@cmsminds](https://github.com/cmsminds/easy-reservations) on GitHub
 
 == Installation ==
-
-This section describes how to install the plugin and get it working.
-
-e.g.
-
-1. Upload `easy-reservations.php` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
+1. Upload the entire `easy-reservations` folder to the `/wp-content/plugins/` directory.
+2. Activate the plugin through the **Plugins** screen (**Plugins > Installed Plugins**).
 
 == Frequently Asked Questions ==
 
@@ -59,56 +47,28 @@ Answer to foo bar dilemma.
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. This screenshot shows the general admin settings about the plugin.
+2. This screenshot shows the invoice settings for the reservations made.
+3. If admin allows customers to cancel their reservations, here are such settings.
+4. If admin allows the customers to edit their reservations, here are such settings.
+5. For non-technical end customers, the admin has this screen to make reservations.
+6. Since the cancellation requests are moderated by default, this is the page where all the reservation cancellation requests are rendered.
+7. Custom taxonomy for reservation item type.
+8. This is the metabox on the order screen for the admin user to send calendar invites to the end customers.
+9. This is the metabox on the order screen where the admin user can review the driving license provided by the customer on reservation checkout.
+10. This is the metabox on the order screen where the admin user can download the reservation receipt and send the reminder to the end customer.
+11. This is a call to action on the order screen where the admin user can edit a reservation for the end customer.
+12. This is the screenshot of a widget that shows a summary of the reserved and available dates for any reservation item.
+13. This is the advanced search page offered by the plugin.
+14. The quickview of any reservation item from the search page.
+15. This is the view order screen where the customer can post requests for cancelling reservation and other actions.
 
 == Changelog ==
 
-= 1.0 =
-* A change since the previous version.
-* Another change.
-
-= 0.5 =
-* List versions from most recent at top to oldest at bottom.
+= 1.0.0 =
+* Initial version of the plugin.
 
 == Upgrade Notice ==
 
 = 1.0 =
-Upgrade notices describe the reason a user should upgrade.  No more than 300 characters.
-
-= 0.5 =
-This version fixes a security related bug.  Upgrade immediately.
-
-== Arbitrary section ==
-
-You may provide arbitrary sections, in the same format as the ones above.  This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation."  Arbitrary sections will be shown below the built-in sections outlined above.
-
-== A brief Markdown Example ==
-
-Ordered list:
-
-1. Some feature
-1. Another feature
-1. Something else about the plugin
-
-Unordered list:
-
-* something
-* something else
-* third thing
-
-Here's a link to [WordPress](http://wordpress.org/ "Your favorite software") and one to [Markdown's Syntax Documentation][markdown syntax].
-Titles are optional, naturally.
-
-[markdown syntax]: http://daringfireball.net/projects/markdown/syntax
-            "Markdown is what the parser uses to process much of the readme file"
-
-Markdown uses email style notation for blockquotes and I've been told:
-> Asterisks for *emphasis*. Double it up  for **strong**.
-
-`<?php code(); // goes in backticks ?>`
+Just released into the wild.
