@@ -1,7 +1,7 @@
 === Boat Rental Plugin for WordPress ===
 Contributors: cmsminds, shobhit2412
 Donate link: https://example.com/
-Tags: woocommerce, boat, rental, reservation
+Tags: woocommerce, boat, rental, reservation, watercraft, yacht, speed boat, deck boat, electric boat
 Requires at least: 5.0
 Tested up to: 5.8.1
 Stable tag: 1.0.0
@@ -37,13 +37,23 @@ In just a few minutes, you'll be up and running. You can add boats (all the diff
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= Can the rental periods (day, half-day, etc.) be customized? =
 
-An answer to that question.
+The free version allows reservations minimum for a day. The customers can book the boat for 2 hours, but then the boat's next availability will be the next day.
 
-= What about foo bar? =
+= Can I allow boat owners to list their boats? =
 
-Answer to foo bar dilemma.
+Yes, since this plugin is an extention to WooCommerce, you can add your boats as products with product type: reservation.
+
+= Will this boat rental booking plugin work for me? =
+
+If you're the marina owner, you just need to add inventory in the admin panel and those will be listed in the advanced search page provided by the plugin.
+Make sure that you select the product type to be "Reservation".
+
+= How’s the availability of the boat calculated? =
+
+The availability is calculated based on the reservations made by the customers. The customers can select the checkin and checkout dates from the reservation form.
+After they complete their reservation, the dates are blocked on the availability calendar for that reservation item.
 
 == Screenshots ==
 
