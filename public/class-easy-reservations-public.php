@@ -138,7 +138,9 @@ class Easy_Reservations_Public {
 		// Enqueue the free font-awesome style.
 		wp_enqueue_style(
 			$this->plugin_name . '-font-awesome-style',
-			'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css',
+			ERSRV_PLUGIN_URL . 'public/css/fontawesome/all.min.css',
+			array(),
+			filemtime( ERSRV_PLUGIN_PATH . 'public/css/fontawesome/all.min.css' )
 		);
 
 		// Add the UI style.
