@@ -14,7 +14,7 @@
  * @wordpress-plugin
  * Plugin Name:       Boat Rental System
  * Plugin URI:        https://www.github.com/cmsminds
- * Description:       Transfer your WordPress into an easy reservation system. Powered by WooCommerce and cmsMinds.
+ * Description:       Transfer your WordPress into an easy reservation system. Powered by cmsMinds.
  * Version:           1.0.0
  * Author:            cmsMinds
  * Author URI:        https://www.cmsminds.com/
