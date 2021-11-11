@@ -252,15 +252,6 @@ class Easy_Reservations_Public {
 				filemtime( ERSRV_PLUGIN_PATH . 'public/js/bootstrap/bootstrap-select.min.js' ),
 				true
 			);
-
-			// Enqueue the ui script.
-			// wp_enqueue_script(
-			// 	$this->plugin_name . '-jquery-ui-script',
-			// 	ERSRV_PLUGIN_URL . 'public/js/ui/jquery-ui.min.js',
-			// 	array( 'jquery' ),
-			// 	filemtime( ERSRV_PLUGIN_PATH . 'public/js/ui/jquery-ui.min.js' ),
-			// 	true
-			// );
 		}
 		
 		// Include the core JS file.
@@ -328,17 +319,6 @@ class Easy_Reservations_Public {
 
 		// Add the datepicker and custom script only when the widget is active.
 		if ( false !== $this->is_calendar_widget_active ) {
-			// Enqueue the ui datepicker script if not already enqueued.
-			if ( ! wp_script_is( $this->plugin_name . '-jquery-ui-script', 'enqueued' ) ) {
-				// wp_enqueue_script(
-				// 	$this->plugin_name . '-jquery-ui-script',
-				// 	ERSRV_PLUGIN_URL . 'public/js/ui/jquery-ui.min.js',
-				// 	array( 'jquery' ),
-				// 	filemtime( ERSRV_PLUGIN_PATH . 'public/js/ui/jquery-ui.min.js' ),
-				// 	true
-				// );
-			}
-
 			// Calendar widget public script.
 			wp_enqueue_script(
 				$this->plugin_name . '-calendar-widget',

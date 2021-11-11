@@ -66,6 +66,8 @@ jQuery(document).ready(function ($) {
 			},
 			dateFormat: date_format,
 			minDate: 0,
+			nextText: 'Next',
+			prevText: 'Prev',
 		} );
 	}
 
@@ -131,6 +133,8 @@ jQuery(document).ready(function ($) {
 			numberOfMonths: 2,
 			dateFormat: date_format,
 			minDate: 0,
+			nextText: 'Next',
+			prevText: 'Prev',
 		} );
 
 		// Checkin and checkout datepicker.
@@ -193,6 +197,8 @@ jQuery(document).ready(function ($) {
 			},
 			dateFormat: date_format,
 			minDate: 0,
+			nextText: 'Next',
+			prevText: 'Prev',
 		} );
 	}
 
@@ -581,6 +587,8 @@ jQuery(document).ready(function ($) {
 						},
 						dateFormat: date_format,
 						minDate: 0,
+						nextText: 'Next',
+						prevText: 'Prev',
 					} );
 				}
 			},

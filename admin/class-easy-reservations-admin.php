@@ -75,33 +75,16 @@ class Easy_Reservations_Admin {
 		$page                      = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
 		$include_modal_style       = false;
 		$include_datepicker_style  = false;
-		$include_datepicker_script = false;
-		$include_fontawesome_style = false;
 
 		// Include the blocked out reservation dates modal only on orders page.
 		if ( ! is_null( $post_id ) && 'product' === get_post_type( $post_id ) ) {
 			$include_modal_style       = true;
 			$include_datepicker_style  = true;
-			$include_datepicker_script = true;
 		} elseif ( ! is_null( $post_type ) && 'shop_order' === $post_type ) { // Include the modal style only on orders page.
 			$include_modal_style = true;
 		} elseif ( ! is_null( $page ) && 'new-reservation' === $page ) {
 			$include_modal_style       = true;
 			$include_datepicker_style  = true;
-			$include_datepicker_script = true;
-			$include_fontawesome_style = true;
-		} elseif ( ! is_null( $post_id ) && 'shop_order' === get_post_type( $post_id ) ) {
-			$include_fontawesome_style = true;
-		}
-
-		// If font awesome is to be included.
-		if ( $include_fontawesome_style ) {
-			wp_enqueue_style(
-				$this->plugin_name . '-font-awesome-style',
-				'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css',
-				array(),
-				time(),
-			);
 		}
 
 		// Enqueue bootstrap datepicker on new reservation page.
@@ -131,17 +114,6 @@ class Easy_Reservations_Admin {
 			array(),
 			filemtime( ERSRV_PLUGIN_PATH . 'admin/css/easy-reservations-admin.css' )
 		);
-
-		// Enqueue bootstrap datepicker.
-		if ( $include_datepicker_script ) {
-			wp_enqueue_script(
-				$this->plugin_name . '-jquery-ui-script',
-				ERSRV_PLUGIN_URL . 'public/js/ui/jquery-ui.min.js',
-				array( 'jquery' ),
-				filemtime( ERSRV_PLUGIN_PATH . 'public/js/ui/jquery-ui.min.js' ),
-				true
-			);
-		}
 
 		// Custom admin script.
 		wp_enqueue_script(
@@ -1468,18 +1440,6 @@ class Easy_Reservations_Admin {
 				'title'  => ersrv_download_reservation_receipt_button_title( $order_id ),
 				'action' => 'ersrv-reservation-receipt',
 			);
-		} else {
-			// Check if dokan plugin is active.
-			if ( ersrv_is_dokan_active() ) {
-				// This is for the acitons for dokan order's page.
-				$button_text                          = ersrv_get_plugin_settings( 'ersrv_easy_reservations_receipt_button_text' );
-				$actions['ersrv-reservation-receipt'] = array(
-					'url'    => ersrv_download_reservation_receipt_url( $order_id ),
-					'name'   => $button_text,
-					'action' => 'ersrv-reservation-receipt',
-					'icon'   => '<i class="fa fa-file"></i>',
-				);
-			}
 		}
 
 		return $actions;

@@ -174,6 +174,8 @@ jQuery(document).ready(function ($) {
 						},
 						dateFormat: date_format,
 						minDate: 0,
+						nextText: 'Next',
+						prevText: 'Prev',
 					} );
 
 					// Show the datepicker.

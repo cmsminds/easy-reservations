@@ -101,6 +101,8 @@ jQuery( document ).ready( function( $ ) {
 					weekStart: start_of_week,
 					changeMonth: true,
 					dateFormat: date_format,
+					nextText: 'Next',
+					prevText: 'Prev',
 				} );
 			},
 		} );

@@ -416,7 +416,7 @@ jQuery( document ).ready( function( $ ) {
 		block_element( this_button );
 
 		// Activate loader.
-		this_button.html( '<span class="webinar-registration-in-process"><i class="fa fa-refresh fa-spin"></i></span> Please wait...' );
+		this_button.text( 'Please wait...' );
 
 		// Send the AJAX now.
 		var data = {
