@@ -43,7 +43,7 @@ $search_page_url      = get_permalink( $search_page_id );
 $on_click_reset       = "location.href = '{$search_page_url}'";
 ?>
 <section class="wrapper search-page" id="wrapper">
-	<div class="banner text-center" style="background-image: url( '<?php echo $banner_image_url; ?>' );">
+	<div class="banner text-center" style="background-image: url( '<?php echo esc_url( $banner_image_url ); ?>' );">
 		<div class="container">
 			<div class="details mx-auto font-lato">
 				<div class="page-title">
@@ -62,7 +62,7 @@ $on_click_reset       = "location.href = '{$search_page_url}'";
 												<?php foreach ( $reservation_item_types as $item_type ) {
 													$is_selected = ( 0 !== $search_boat_type && $search_boat_type === $item_type->term_id );
 													?>
-													<option <?php echo ( $is_selected ) ? 'selected' : ''; ?> value="<?php echo esc_attr( $item_type->term_id ); ?>"><?php echo esc_html( $item_type->name . ' (' . $item_type->count . ')' ); ?></option>
+													<option <?php echo esc_attr( ( $is_selected ) ? 'selected' : '' ); ?> value="<?php echo esc_attr( $item_type->term_id ); ?>"><?php echo esc_html( $item_type->name . ' (' . $item_type->count . ')' ); ?></option>
 												<?php } ?>
 											</select>
 										</div>
@@ -109,7 +109,7 @@ $on_click_reset       = "location.href = '{$search_page_url}'";
 	<div class="content-part">
 		<div class="container">
 			<div class="search-results-wrapper">
-				<h3 class="title font-Poppins"><?php echo sprintf( __( 'Advanced Search: %1$s-- items%2$s', 'easy-reservations' ), '<span class="ersrv-reservation-items-count result-no">', '</span>' ) ?></h3>
+				<h3 class="title font-Poppins"><?php echo wp_kses_post( sprintf( __( 'Advanced Search: %1$s-- items%2$s', 'easy-reservations' ), '<span class="ersrv-reservation-items-count result-no">', '</span>' ) ); ?></h3>
 				<div class="search-result-inner ersrv-search-reservations-items-container">
 					<div class="jumbotron text-center w-100 bg-transparent">
 						<h3 class="loading-title"><?php esc_html_e( 'Please wait while we load items...', 'easy-reservations' ); ?></h3>

@@ -466,23 +466,6 @@ class Easy_Reservations_Public {
 	}
 
 	/**
-	 * Add the reservation shortcode to the woocommerce product page.
-	 */
-	public function ersrv_woocommerce_after_single_product_summary_callback() {
-		global $product;
-		$product_id   = $product->get_id();
-		$product_type = $product->get_type();
-
-		// Return, if the current product type doesn't match with the expected product type.
-		if ( $this->custom_product_type !== $product_type ) {
-			return;
-		}
-
-		// Integrate the shortcode, instead.
-		echo do_shortcode( '[ersrv_reserve_item id="' . $product_id . '"]' );
-	}
-
-	/**
 	 * Customizations on thank you page.
 	 * Send the email to multiple administrators set in plugin settings.
 	 *
@@ -606,7 +589,7 @@ class Easy_Reservations_Public {
 
 		// Check if action mismatches.
 		if ( empty( $action ) || 'get_item_unavailable_dates' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -969,7 +952,7 @@ class Easy_Reservations_Public {
 
 		// Exit, if the action mismatches.
 		if ( empty( $action ) || 'item_favourite' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -1097,7 +1080,7 @@ class Easy_Reservations_Public {
 
 		// Exit, if the action mismatches.
 		if ( empty( $action ) || 'loadmore_reservation_items' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -1141,7 +1124,7 @@ class Easy_Reservations_Public {
 
 		// Exit, if the action mismatches.
 		if ( empty( $action ) || 'add_reservation_to_cart' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -1217,7 +1200,7 @@ class Easy_Reservations_Public {
 
 		// Exit, if the action mismatches.
 		if ( empty( $action ) || 'submit_contact_owner_request' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -1482,7 +1465,7 @@ class Easy_Reservations_Public {
 
 		// Exit, if the action mismatches.
 		if ( empty( $action ) || 'quick_view_item_data' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -1564,16 +1547,16 @@ class Easy_Reservations_Public {
 							</div>
 						</div>
 						<div class="accomodation-values d-flex flex-column mb-3 ersrv-quick-view-reservation-item-accomodation">
-							<h4 class="font-size-16"><?php esc_html_e( 'Guests', 'easy-reservations' ); ?><small class="font-size-10 ml-1">(<?php echo sprintf( __( 'Limit: %1$d', 'easy-reservations' ), $accomodation_limit ); ?>)<span class="required">*</span></small></h4>
+							<h4 class="font-size-16"><?php esc_html_e( 'Guests', 'easy-reservations' ); ?><small class="font-size-10 ml-1">(<?php echo esc_html( sprintf( __( 'Limit: %1$d', 'easy-reservations' ), $accomodation_limit ) ); ?>)<span class="required">*</span></small></h4>
 							<div class="values">
 								<div class="row form-row">
 									<div class="col-6">
 										<input type="number" id="quick-view-adult-accomodation-count" class="ersrv-accomodation-count form-contol" placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" min="1" />
-										<label for="quick-view-adult-accomodation-count" class=""><?php echo sprintf( __( 'per adult: %1$s%3$s%2$s', 'easy-reservations' ), '<span>', '</span>', wc_price( $adult_charge ) ); ?></label>
+										<label for="quick-view-adult-accomodation-count" class=""><?php echo wp_kses_post( sprintf( __( 'per adult: %1$s%3$s%2$s', 'easy-reservations' ), '<span>', '</span>', wc_price( $adult_charge ) ) ); ?></label>
 									</div>
 									<div class="col-6">
 										<input type="number" id="quick-view-kid-accomodation-count" class="ersrv-accomodation-count form-contol" placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" min="0" />
-										<label for="quick-view-kid-accomodation-count" class=""><?php echo sprintf( __( 'per kid: %1$s%3$s%2$s', 'easy-reservations' ), '<span>', '</span>', wc_price( $kid_charge ) ); ?></label>
+										<label for="quick-view-kid-accomodation-count" class=""><?php echo wp_kses_post( sprintf( __( 'per kid: %1$s%3$s%2$s', 'easy-reservations' ), '<span>', '</span>', wc_price( $kid_charge ) ) ); ?></label>
 									</div>
 									<label class="ersrv-reservation-error accomodation-error"></label>
 								</div>
@@ -1596,7 +1579,20 @@ class Easy_Reservations_Public {
 													<input type="checkbox" class="ersrv-quick-view-reservation-single-amenity custom-control-input" id="amenity-<?php echo esc_html( $amenity_slug ); ?>">
 													<label class="custom-control-label font-size-15" for="amenity-<?php echo esc_html( $amenity_slug ); ?>">
 														<span class="d-block font-lato font-weight-bold color-black pb-2"><?php echo esc_html( $amenity_title ); ?> </span>
-														<span><span class="font-lato font-weight-bold color-accent"><?php echo wc_price( $amenity_cost ); ?></span> | <span class="font-lato font-weight-normal color-black-500"><?php echo esc_html( $cost_type_text ); ?></span></span>
+														<span>
+															<span class="font-lato font-weight-bold color-accent">
+																<?php
+																echo wp_kses(
+																	wc_price( $amenity_cost ),
+																	array(
+																		'span' => array(
+																			'class' => array(),
+																		),
+																	)
+																);
+																?>
+															</span> | <span class="font-lato font-weight-normal color-black-500"><?php echo esc_html( $cost_type_text ); ?></span>
+														</span>
 													</label>
 												</div>
 											</div>
@@ -1610,8 +1606,8 @@ class Easy_Reservations_Public {
 							<input type="hidden" id="quick-view-kid-subtotal" value="" />
 							<input type="hidden" id="quick-view-amenities-subtotal" value="" />
 							<input type="hidden" id="quick-view-security-subtotal" value="<?php echo esc_html( $security_amount ); ?>" />
-							<label class="ersrv-item-details-security-amount font-Poppins font-size-16 color-black mb-3"><?php echo sprintf( __( 'Security: %1$s', 'easy-reservations' ), wc_price( $security_amount ) ); ?></label>
-							<h4 class="font-size-16 font-weight-bold"><?php echo sprintf( __( 'Total: %1$s', 'easy-reservations' ), '<a href="javascript:void(0);" class="text-decoration-none ersrv-split-reservation-cost is-modal"><span class="font-lato font-weight-bold color-accent ersrv-quick-view-item-subtotal ersrv-cost">--</span></a>' ); ?></h4>
+							<label class="ersrv-item-details-security-amount font-Poppins font-size-16 color-black mb-3"><?php echo wp_kses_post( sprintf( __( 'Security: %1$s', 'easy-reservations' ), wc_price( $security_amount ) ) ); ?></label>
+							<h4 class="font-size-16 font-weight-bold"><?php echo wp_kses_post( sprintf( __( 'Total: %1$s', 'easy-reservations' ), '<a href="javascript:void(0);" class="text-decoration-none ersrv-split-reservation-cost is-modal"><span class="font-lato font-weight-bold color-accent ersrv-quick-view-item-subtotal ersrv-cost">--</span></a>' ) ); ?></h4>
 							<div class="ersrv-reservation-details-item-summary" id="ersrv-split-reservation-cost-content">
 								<div class="ersrv-reservation-details-item-summary-wrapper p-3">
 									<table class="table table-borderless">
@@ -1730,7 +1726,6 @@ class Easy_Reservations_Public {
 		$max_upload_size = ( ! $max_upload_size ) ? 0 : $max_upload_size;
 
 		// Prepare the HTML now.
-		ob_start();
 		?>
 		<div class="woocommerce-additional-fields__field-wrapper">
 			<div class="form-row ersrv-driving-license" id="ersrv_driving_license_field">
@@ -1746,15 +1741,13 @@ class Easy_Reservations_Public {
 					$filename = basename( $attachment_url );
 					$filename = ( 43 <= strlen( $filename ) ) ? ersrv_shorten_filename( $filename ) : $filename;
 					?>
-					<span><?php echo sprintf( __( 'Uploaded: %2$s%1$s%3$s', 'easy-reservations' ), $filename, '<a target="_blank" href="' . $attachment_url . '">', '</a>' ); ?></span>
+					<span><?php echo wp_kses_post( sprintf( __( 'Uploaded: %2$s%1$s%3$s', 'easy-reservations' ), $filename, '<a target="_blank" href="' . $attachment_url . '">', '</a>' ) ); ?></span>
 					<button type="button" data-file="<?php echo esc_attr( $attachment_id ); ?>" class="remove btn btn-accent"><span class="sr-only">Remove</span><span class="fa fa-trash"></span></button>
 				<?php } ?>
 				</div>
 			</div>
 		</div>
 		<?php
-
-		echo ob_get_clean();
 	}
 
 	/**
@@ -1767,7 +1760,7 @@ class Easy_Reservations_Public {
 
 		// Exit, if the action mismatches.
 		if ( empty( $action ) || 'upload_driving_license_checkout' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -1829,7 +1822,7 @@ class Easy_Reservations_Public {
 
 		// Exit, if the action mismatches.
 		if ( empty( $action ) || 'remove_uploaded_driving_license' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -2051,7 +2044,7 @@ class Easy_Reservations_Public {
 
 		// Exit, if the action mismatches.
 		if ( empty( $action ) || 'request_reservation_cancel' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -2225,7 +2218,7 @@ class Easy_Reservations_Public {
 
 		// Check if action mismatches.
 		if ( empty( $action ) || 'edit_reservation_initiate_datepicker' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -2296,7 +2289,7 @@ class Easy_Reservations_Public {
 
 		// Check if action mismatches.
 		if ( empty( $action ) || 'update_reservation' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -2400,7 +2393,7 @@ class Easy_Reservations_Public {
 
 		// Check if action mismatches.
 		if ( empty( $action ) || 'search_reservations' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 

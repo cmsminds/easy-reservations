@@ -483,7 +483,7 @@ class Easy_Reservations_Admin {
 
 		// Exit, if the action mismatches.
 		if ( empty( $action ) || 'export_reservations' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -591,7 +591,7 @@ class Easy_Reservations_Admin {
 
 		// Exit, if the action mismatches.
 		if ( empty( $action ) || 'get_amenity_html' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -624,7 +624,7 @@ class Easy_Reservations_Admin {
 
 		// Exit, if the action mismatches.
 		if ( empty( $action ) || 'get_blockout_date_html' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -781,7 +781,7 @@ class Easy_Reservations_Admin {
 
 		// Exit, if the action mismatches.
 		if ( empty( $action ) || 'register_new_customer' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -851,7 +851,7 @@ class Easy_Reservations_Admin {
 
 		// Exit, if the action mismatches.
 		if ( empty( $action ) || 'generate_new_password' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -873,7 +873,7 @@ class Easy_Reservations_Admin {
 
 		// Exit, if the action mismatches.
 		if ( empty( $action ) || 'get_reservable_item_details' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -899,7 +899,7 @@ class Easy_Reservations_Admin {
 
 		// Exit, if the action mismatches.
 		if ( empty( $action ) || 'create_reservation' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -1046,7 +1046,7 @@ class Easy_Reservations_Admin {
 
 			// Exit, if the action mismatches.
 			if ( empty( $action ) || 'get_states' !== $action ) {
-				echo 0;
+				echo esc_html( 0 );
 				wp_die();
 			}
 
@@ -1642,7 +1642,7 @@ class Easy_Reservations_Admin {
 
 		// Exit, if the action mismatches.
 		if ( empty( $action ) || 'add_reservation_to_gcal' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -1671,7 +1671,7 @@ class Easy_Reservations_Admin {
 
 		// Exit, if the action mismatches.
 		if ( empty( $action ) || 'add_reservation_to_ical' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -1700,7 +1700,7 @@ class Easy_Reservations_Admin {
 
 		// Exit, if the action mismatches.
 		if ( empty( $action ) || 'decline_reservation_cancellation_request' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -1730,7 +1730,7 @@ class Easy_Reservations_Admin {
 
 		// Exit, if the action mismatches.
 		if ( empty( $action ) || 'approve_reservation_cancellation_request' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -1761,7 +1761,7 @@ class Easy_Reservations_Admin {
 
 		// Exit, if the action mismatches.
 		if ( empty( $action ) || 'upload_driving_license' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 
@@ -1834,7 +1834,7 @@ class Easy_Reservations_Admin {
 
 		// Exit, if the action mismatches.
 		if ( empty( $action ) || 'send_reservation_reminder' !== $action ) {
-			echo 0;
+			echo esc_html( 0 );
 			wp_die();
 		}
 

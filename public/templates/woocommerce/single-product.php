@@ -116,7 +116,7 @@ $product_title_class = ( 90 <= strlen( $item_post->post_title ) ) ? 'font-Poppin
 $product_title_class = apply_filters( 'ersrv_reservation_item_title_attribute_class', $product_title_class );
 ?>
 <section class="wrapper single-reserve-page" id="wrapper" data-item="<?php echo esc_attr( $item_post->ID ); ?>">
-	<div class="banner text-center" style="background-image: url( '<?php echo $banner_image_url; ?>' );">
+	<div class="banner text-center" style="background-image: url( '<?php echo esc_url( $banner_image_url ); ?>' );">
 		<div class="container">
 			<div class="details mx-auto font-lato">
 				<div class="page-title mb-3">
@@ -281,11 +281,11 @@ $product_title_class = apply_filters( 'ersrv_reservation_item_title_attribute_cl
 										<label for="book-items" class="font-Poppins font-size-16 color-black"><?php echo esc_html( sprintf( __( 'Guests (Limit: %1$d)', 'easy-reservations' ), $accomodation_limit ) ); ?><span class="required">*</span></label>
 										<div class="inputs-with-label">
 											<input min="1" id="adult-accomodation-count" placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" type="number" class="ersrv-accomodation-count form-control mb-3" />
-											<label for="adult-accomodation-count"><?php echo sprintf( __( 'per adult: %1$s%3$s%2$s', 'easy-reservations' ), '<span>', '</span>', wc_price( $adult_charge ) ); ?></label>
+											<label for="adult-accomodation-count"><?php echo wp_kses_post( sprintf( __( 'per adult: %1$s%3$s%2$s', 'easy-reservations' ), '<span>', '</span>', wc_price( $adult_charge ) ) ); ?></label>
 										</div>
 										<div class="inputs-with-label">
 											<input min="0" id="kid-accomodation-count" placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" type="number" class="ersrv-accomodation-count form-control" />
-											<label for="kid-accomodation-count"><?php echo sprintf( __( 'per kid: %1$s%3$s%2$s', 'easy-reservations' ), '<span>', '</span>', wc_price( $kid_charge ) ); ?></label>
+											<label for="kid-accomodation-count"><?php echo wp_kses_post( sprintf( __( 'per kid: %1$s%3$s%2$s', 'easy-reservations' ), '<span>', '</span>', wc_price( $kid_charge ) ) ); ?></label>
 										</div>
 										<p class="ersrv-reservation-error accomodation-error"></p>
 									</div>
@@ -303,7 +303,20 @@ $product_title_class = apply_filters( 'ersrv_reservation_item_title_attribute_cl
 													<input type="checkbox" class="custom-control-input ersrv-new-reservation-single-amenity" id="amenity-<?php echo esc_html( $amenity_slug ); ?>">
 													<label class="custom-control-label font-size-15" for="amenity-<?php echo esc_html( $amenity_slug ); ?>">
 														<span class="d-block font-lato font-weight-bold color-black pb-2"><?php echo esc_html( $amenity_title ); ?> </span>
-														<span><span class="font-lato font-weight-bold color-accent"><?php echo wc_price( $amenity_cost ); ?></span> | <span class="font-lato font-weight-normal color-black-500"><?php echo esc_html( $cost_type_text ); ?></span></span>
+														<span>
+															<span class="font-lato font-weight-bold color-accent">
+																<?php
+																echo wp_kses(
+																	wc_price( $amenity_cost ),
+																	array(
+																		'span' => array(
+																			'class' => array(),
+																		),
+																	)
+																);
+																?>
+															</span> | <span class="font-lato font-weight-normal color-black-500"><?php echo esc_html( $cost_type_text ); ?></span>
+														</span>
 													</label>
 												</div>
 											<?php } ?>
@@ -311,9 +324,9 @@ $product_title_class = apply_filters( 'ersrv_reservation_item_title_attribute_cl
 									<?php } ?>
 									<div class="calc-wrapper mb-3">
 										<!-- SECURITY AMOUNT -->
-										<h4 class="ersrv-item-details-security-amount font-Poppins font-size-16 color-black font-weight-bold mb-3"><?php echo sprintf( __( 'Security: %1$s', 'easy-reservations' ), wc_price( $security_amount ) ); ?>
+										<h4 class="ersrv-item-details-security-amount font-Poppins font-size-16 color-black font-weight-bold mb-3"><?php echo wp_kses_post( sprintf( __( 'Security: %1$s', 'easy-reservations' ), wc_price( $security_amount ) ) ); ?>
 										<!-- RESERVATION ITEM SUBTOTAL -->
-										<h4 class="ersrv-item-details-reservation-subtotal-amount font-Poppins font-size-16 color-black font-weight-bold mb-0"><?php echo sprintf( __( 'Total: %1$s', 'easy-reservations' ), '<a class="text-decoration-none ersrv-split-reservation-cost" href="javascript:void(0);"><span class="ersrv-reservation-item-subtotal ersrv-cost font-weight-bold color-accent ">--</span></a>' ); ?></h4>
+										<h4 class="ersrv-item-details-reservation-subtotal-amount font-Poppins font-size-16 color-black font-weight-bold mb-0"><?php echo wp_kses_post( sprintf( __( 'Total: %1$s', 'easy-reservations' ), '<a class="text-decoration-none ersrv-split-reservation-cost" href="javascript:void(0);"><span class="ersrv-reservation-item-subtotal ersrv-cost font-weight-bold color-accent ">--</span></a>' ) ); ?></h4>
 										<div class="ersrv-reservation-details-item-summary">
 											<div class="ersrv-reservation-details-item-summary-wrapper p-3">
 												<table class="table table-borderless">

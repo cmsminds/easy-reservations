@@ -389,8 +389,8 @@ if ( ! function_exists( 'ersrv_get_amenity_html' ) ) {
 			<input type="text" value="<?php echo esc_html( $title ); ?>" required name="amenity_title[]" class="short addTitle-field" placeholder="<?php esc_html_e( 'Amenity Title', 'easy-reservations' ); ?>">
 			<input type="number" value="<?php echo esc_html( $cost ); ?>" required name="amenity_cost[]" class="short addNumber-field" placeholder="0.0" step="0.01" min="0.01">
 			<select class="ersrv-amenity-charge-type" name="amenity_cost_type[]">
-				<option <?php echo ( ! empty( $cost_type ) && 'per_day' === $cost_type ) ? 'selected' : ''; ?> value="per_day"><?php esc_html_e( 'Per Day Cost', 'easy-reservations' ); ?></option>
-				<option <?php echo ( ! empty( $cost_type ) && 'one_time' === $cost_type ) ? 'selected' : ''; ?> value="one_time"><?php esc_html_e( 'One Time Cost', 'easy-reservations' ); ?></option>
+				<option <?php echo esc_attr( ( ! empty( $cost_type ) && 'per_day' === $cost_type ) ? 'selected' : '' ); ?> value="per_day"><?php esc_html_e( 'Per Day Cost', 'easy-reservations' ); ?></option>
+				<option <?php echo esc_attr( ( ! empty( $cost_type ) && 'one_time' === $cost_type ) ? 'selected' : '' ); ?> value="one_time"><?php esc_html_e( 'One Time Cost', 'easy-reservations' ); ?></option>
 			</select>
 			<button type="button" class="button button-secondary btn-submit ersrv-remove-amenity-html"></button>
 		</p>
@@ -1270,14 +1270,14 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 									<td style="line-height:16px;font-size:12px;padding:15px" width="25%"><?php echo esc_html( $sku ); ?></td>
 									<td style="line-height:16px;font-size:12px;padding:15px" width="35%">
 										<p style="line-height:10px;"><?php echo esc_html( $wc_product->get_title() ); ?></p>
-										<p style="line-height:2px;"><?php echo sprintf( __( 'Checkin Date: %1$s', 'easy-reservations' ), $checkin_date ); ?></p>
-										<p style="line-height:2px;"><?php echo sprintf( __( 'Checkout Date: %1$s', 'easy-reservations' ), $checkout_date ); ?></p>
-										<p style="line-height:2px;"><?php echo sprintf( __( 'Adult Count: %1$s', 'easy-reservations' ), $adult_count ); ?></p>
-										<p style="line-height:2px;"><?php echo sprintf( __( 'Adult Subtotal: %1$s', 'easy-reservations' ), wc_price( $adult_subtotal ) ); ?></p>
-										<p style="line-height:2px;"><?php echo sprintf( __( 'Kids Count: %1$s', 'easy-reservations' ), $kids_count ); ?></p>
-										<p style="line-height:2px;"><?php echo sprintf( __( 'Kids Subtotal: %1$s', 'easy-reservations' ), wc_price( $kids_subtotal ) ); ?></p>
-										<p style="line-height:2px;"><?php echo sprintf( __( 'Security Amount: %1$s', 'easy-reservations' ), wc_price( $security_amount ) ); ?></p>
-										<p style="line-height:2px;"><?php echo sprintf( __( 'Amenities Subtotal: %1$s', 'easy-reservations' ), wc_price( $amenities_subtotal ) ); ?></p>
+										<p style="line-height:2px;"><?php echo wp_kses_post( sprintf( __( 'Checkin Date: %1$s', 'easy-reservations' ), $checkin_date ) ); ?></p>
+										<p style="line-height:2px;"><?php echo wp_kses_post( sprintf( __( 'Checkout Date: %1$s', 'easy-reservations' ), $checkout_date ) ); ?></p>
+										<p style="line-height:2px;"><?php echo wp_kses_post( sprintf( __( 'Adult Count: %1$s', 'easy-reservations' ), $adult_count ) ); ?></p>
+										<p style="line-height:2px;"><?php echo wp_kses_post( sprintf( __( 'Adult Subtotal: %1$s', 'easy-reservations' ), wc_price( $adult_subtotal ) ) ); ?></p>
+										<p style="line-height:2px;"><?php echo wp_kses_post( sprintf( __( 'Kids Count: %1$s', 'easy-reservations' ), $kids_count ) ); ?></p>
+										<p style="line-height:2px;"><?php echo wp_kses_post( sprintf( __( 'Kids Subtotal: %1$s', 'easy-reservations' ), wc_price( $kids_subtotal ) ) ); ?></p>
+										<p style="line-height:2px;"><?php echo wp_kses_post( sprintf( __( 'Security Amount: %1$s', 'easy-reservations' ), wc_price( $security_amount ) ) ); ?></p>
+										<p style="line-height:2px;"><?php echo wp_kses_post( sprintf( __( 'Amenities Subtotal: %1$s', 'easy-reservations' ), wc_price( $amenities_subtotal ) ) ); ?></p>
 									</td>
 									<td style="line-height:16px;font-size:12px;padding:15px" width="5%"><?php echo esc_html( $quantity ); ?></td>
 									<td style="line-height:16px;font-size:12px;text-align:right;padding:15px" width="10%"><?php echo wp_kses_post( wc_price( $item_cost ) ); ?></td>
@@ -1403,7 +1403,7 @@ if ( ! function_exists( 'ersrv_download_reservation_receipt_callback' ) ) {
 									<tr width="100%">
 										<td style="width:10%;font-size:12px;line-height:28px;"><?php echo esc_html( "{$index}." ); ?></td>
 										<td style="width:80%;font-size:12px;line-height:28px;"><?php echo esc_html( ( empty( $refund_reason ) ) ? __( 'N/A', 'easy-reservations' ) : $refund_reason ); ?></td>
-										<td style="width:10%;color:red;font-size:12px;line-height:28px;text-align:right;"><?php echo '- ' . wp_kses_post( wc_price( $refund_amount ) ); ?></td>
+										<td style="width:10%;color:red;font-size:12px;line-height:28px;text-align:right;"><?php echo wp_kses_post( '- ' . wc_price( $refund_amount ) ); ?></td>
 									</tr>
 									<?php
 								}
@@ -1706,24 +1706,22 @@ if ( ! function_exists( 'ersrv_get_item_details' ) ) {
 		ob_start();
 		if ( ! empty( $amenities ) && is_array( $amenities ) ) {
 			foreach ( $amenities as $index => $amenity ) {
-				$title     = ( ! empty( $amenity['title'] ) ) ? $amenity['title'] : '';
-				$cost      = ( ! empty( $amenity['cost'] ) ) ? $amenity['cost'] : '';
-				$cost_type = ( ! empty( $amenity['cost_type'] ) ) ? $amenity['cost_type'] : '';
+				$title          = ( ! empty( $amenity['title'] ) ) ? $amenity['title'] : '';
+				$cost           = ( ! empty( $amenity['cost'] ) ) ? $amenity['cost'] : '';
+				$cost_type      = ( ! empty( $amenity['cost_type'] ) ) ? $amenity['cost_type'] : '';
+				$formatted_cost = wc_price( $cost );
 
 				// Skip the HTML is either the title or the cost is missing.
 				if ( empty( $title ) || empty( $cost ) ) {
 					continue;
 				}
-
-				// WooCommerce currency symbol.
-				$currency = get_woocommerce_currency_symbol();
 				?>
-				<div data-amenity="<?php echo esc_attr( $title ); ?>" data-cost_type="<?php echo esc_attr( $cost_type ); ?>" data-cost="<?php echo esc_attr( $cost ); ?>" class="ersrv-new-reservation-single-amenity <?php echo ( 2 < $index ) ? 'mtop' : ''; ?>">
+				<div data-amenity="<?php echo esc_attr( $title ); ?>" data-cost_type="<?php echo esc_attr( $cost_type ); ?>" data-cost="<?php echo esc_attr( $cost ); ?>" class="ersrv-new-reservation-single-amenity <?php echo esc_attr( ( 2 < $index ) ? 'mtop' : '' ); ?>">
 					<label class="ersrv-switch">
 						<input type="checkbox" class="ersrv-switch-input">
 						<span class="slider ersrv-switch-slider"></span>
 					</label>
-					<span><?php echo "{$title} [{$currency}{$cost}]"; ?></span>
+					<span><?php echo wp_kses_post( "{$title} [{$formatted_cost}]" ); ?></span>
 				</div>
 				<?php
 			}
@@ -2583,7 +2581,7 @@ if ( ! function_exists( 'ersrv_print_reservation_cancel_button' ) ) {
 		$tooltip_text = apply_filters( 'ersrv_reservation_cancellation_request_button_tooltip_text', $tooltip_text, $request_status );
 		?>
 		<div data-tooltip="<?php echo esc_html( $tooltip_text ); ?>" class="tooltip ersrv-reservation-cancellation-container" data-order="<?php echo esc_attr( $order_id ); ?>" data-item="<?php echo esc_attr( $item_id ); ?>">
-			<button type="button" class="btn btn-accent <?php echo ( ! empty( $request_status ) ) ? 'non-clickable' : ''; ?>" title="<?php echo esc_html( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></a>
+			<button type="button" class="btn btn-accent <?php echo esc_attr( ( ! empty( $request_status ) ) ? 'non-clickable' : '' ); ?>" title="<?php echo esc_html( $button_text ); ?>"><?php echo esc_html( $button_text ); ?></a>
 		</div>
 		<?php
 	}

@@ -61,7 +61,7 @@ $banner_image_url = ersrv_get_attachment_url_from_attachment_id( $banner_image_i
 $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV_PLUGIN_URL . 'public/images/banner-bg.jpg';
 ?>
 <div class="wrapper edit-order-wrapper pb-5">
-	<div class="banner text-center" style="background-image: url( '<?php echo $banner_image_url; ?>' );">
+	<div class="banner text-center" style="background-image: url( '<?php echo esc_url( $banner_image_url ); ?>' );">
 	<div class="container">
 			<div class="details mx-auto font-lato">
 				<div class="page-title">
@@ -193,7 +193,7 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 										</div>
 										<div class="form-wrapper">
 											<div class="bookItems mb-3">
-												<label><?php echo sprintf( __( 'Accomodation %2$s[Limit: %1$d]%3$s', 'easy-reservations' ), $accomodation_limit, '<small>', '</small>' ); ?><span class="required">*</span></label>
+												<label><?php echo wp_kses_post( sprintf( __( 'Accomodation %2$s[Limit: %1$d]%3$s', 'easy-reservations' ), $accomodation_limit, '<small>', '</small>' ) ); ?><span class="required">*</span></label>
 												<div class="row form-row input-daterange">
 													<div class="col-12 col-md-6">
 														<div class="position-relative">
@@ -230,7 +230,20 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 																<input type="checkbox" class="custom-control-input ersrv-new-reservation-single-amenity" id="amenity-<?php echo esc_html( $amenity_slug . '-' . $item_id ); ?>" <?php echo esc_attr( $is_checked ); ?> data-oldval="<?php echo esc_attr( $old_value ); ?>">
 																<label class="custom-control-label font-size-15" for="amenity-<?php echo esc_html( $amenity_slug . '-' . $item_id ); ?>">
 																	<span class="d-block font-lato font-weight-bold color-black pb-2"><?php echo esc_html( $amenity_title ); ?> </span>
-																	<span><span class="font-lato font-weight-bold color-accent"><?php echo wc_price( $amenity_cost ); ?></span> | <span class="font-lato font-weight-normal color-black-500"><?php echo esc_html( $cost_type_text ); ?></span></span>
+																	<span>
+																		<span class="font-lato font-weight-bold color-accent">
+																			<?php
+																			echo wp_kses(
+																				wc_price( $amenity_cost ),
+																				array(
+																					'span' => array(
+																						'class' => array(),
+																					),
+																				)
+																			);
+																			?>
+																		</span> | <span class="font-lato font-weight-normal color-black-500"><?php echo esc_html( $cost_type_text ); ?></span>
+																	</span>
 																</label>
 															</div>
 														<?php } ?>
@@ -243,8 +256,8 @@ $banner_image_url = ( ! empty( $banner_image_url ) ) ? $banner_image_url : ERSRV
 												<div class="row form-row align-items-center">
 													<div class="col-12 col-md-5 mb-4 mb-md-0">
 														<h4 class="font-Poppins font-size-16 color-black font-weight-bold mb-0">
-															<?php echo sprintf( __( 'Subtotal: %2$s%1$s%3$s', 'easy-reservations' ), wc_price( $item_total ), '<span id="ersrv-edit-reservation-item-subtotal-' . $item_id . '">', '</span>' ); ?>
-															<a class="ersrv-split-reservation-cost <?php echo ( 'twentysixteen' === $current_theme ) ? '' : 'text-theme-primary'; ?>" href="javascript:void(0);" data-toggle="modal" data-target="#summaryModal"><?php esc_html_e( 'Know More', 'easy-reservations' ); ?></a>
+															<?php echo wp_kses_post( sprintf( __( 'Subtotal: %2$s%1$s%3$s', 'easy-reservations' ), wc_price( $item_total ), '<span id="ersrv-edit-reservation-item-subtotal-' . $item_id . '">', '</span>' ) ); ?>
+															<a class="ersrv-split-reservation-cost <?php echo esc_attr( ( 'twentysixteen' === $current_theme ) ? '' : 'text-theme-primary' ); ?>" href="javascript:void(0);" data-toggle="modal" data-target="#summaryModal"><?php esc_html_e( 'Know More', 'easy-reservations' ); ?></a>
 														</h4>
 														<div class="ersrv-edit-reservation-item-summary" id="ersrv-edit-reservation-item-summary-<?php echo esc_attr( $item_id ); ?>">
 															<div class="ersrv-edit-reservation-item-summary-wrapper p-3">

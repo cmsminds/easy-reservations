@@ -19,7 +19,7 @@ $banner_image_id = get_post_meta( $post_id, 'ersrv_banner_image_id', true );
 			<th scope="row"><label for="ersrv-banner-image-id"><?php esc_html_e( 'Banner Image ID', 'easy-reservations' ); ?></label></th>
 			<td>
 				<input id="ersrv-banner-image-id" value="<?php echo esc_html( $banner_image_id ); ?>" name="banner_image_id" type="number" class="regular-text" />
-				<p class="description"><?php echo sprintf( __( 'This holds the banner image file ID found under the %1$smedia%2$s menu.', 'easy-reservations' ), '<a target="_blank" href="' . admin_url( 'upload.php' ) . '">', '</a>' ); ?></p>
+				<p class="description"><?php echo wp_kses_post( sprintf( __( 'This holds the banner image file ID found under the %1$smedia%2$s menu.', 'easy-reservations' ), '<a target="_blank" href="' . admin_url( 'upload.php' ) . '">', '</a>' ) ); ?></p>
 			</td>
 		</tr>
 	</tobody>
