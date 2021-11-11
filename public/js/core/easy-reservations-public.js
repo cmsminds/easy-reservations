@@ -32,6 +32,8 @@ jQuery(document).ready(function ($) {
 	var checkout_provided_checkin_not                = ERSRV_Public_Script_Vars.checkout_provided_checkin_not; 
 	var trim_zeros_from_price                        = ERSRV_Public_Script_Vars.trim_zeros_from_price;
 	var current_theme                                = ERSRV_Public_Script_Vars.current_theme;
+	var datepicker_next_month_button_text            = ERSRV_Public_Script_Vars.datepicker_next_month_button_text;
+	var datepicker_prev_month_button_text            = ERSRV_Public_Script_Vars.datepicker_prev_month_button_text;
 
 	// Custom vars.
 	var quick_view_reserved_dates       = [];
@@ -66,8 +68,8 @@ jQuery(document).ready(function ($) {
 			},
 			dateFormat: date_format,
 			minDate: 0,
-			nextText: 'Next',
-			prevText: 'Prev',
+			nextText: datepicker_next_month_button_text,
+			prevText: datepicker_prev_month_button_text,
 		} );
 	}
 
@@ -133,8 +135,8 @@ jQuery(document).ready(function ($) {
 			numberOfMonths: 2,
 			dateFormat: date_format,
 			minDate: 0,
-			nextText: 'Next',
-			prevText: 'Prev',
+			nextText: datepicker_next_month_button_text,
+			prevText: datepicker_prev_month_button_text,
 		} );
 
 		// Checkin and checkout datepicker.
@@ -197,8 +199,8 @@ jQuery(document).ready(function ($) {
 			},
 			dateFormat: date_format,
 			minDate: 0,
-			nextText: 'Next',
-			prevText: 'Prev',
+			nextText: datepicker_next_month_button_text,
+			prevText: datepicker_prev_month_button_text,
 		} );
 	}
 
@@ -587,8 +589,8 @@ jQuery(document).ready(function ($) {
 						},
 						dateFormat: date_format,
 						minDate: 0,
-						nextText: 'Next',
-						prevText: 'Prev',
+						nextText: datepicker_next_month_button_text,
+						prevText: datepicker_prev_month_button_text,
 					} );
 				}
 			},

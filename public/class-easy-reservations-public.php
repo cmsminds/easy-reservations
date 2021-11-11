@@ -313,6 +313,8 @@ class Easy_Reservations_Public {
 					'trim_zeros_from_price'                        => ersrv_get_plugin_settings( 'ersrv_trim_zeros_from_price' ),
 					'reservation_blocked_dates_err_msg_per_item'   => __( 'The dates selected for reserving XX contain the dates that are already reserved. Kindly check the availability on the left hand side and then proceed with the reservation.', 'easy-reservations' ),
 					'update_reservation_confirmation_message'      => __( 'Since there are no issues found with your changes, we are proceeding to update your reservation now. This alert is just take your consent because you won\'t be able to edit this reservation another time.', 'easy-reservations' ),
+					'datepicker_next_month_button_text'            => __( 'Next', 'easy-reservations' ),
+					'datepicker_prev_month_button_text'            => __( 'Prev', 'easy-reservations' ),
 				)
 			);
 		}
@@ -333,9 +335,11 @@ class Easy_Reservations_Public {
 				$this->plugin_name . '-calendar-widget',
 				'ERSRV_Calendar_Widget_Script_Vars',
 				array(
-					'ajaxurl'       => admin_url( 'admin-ajax.php' ),
-					'start_of_week' => get_option( 'start_of_week' ),
-					'date_format'   => ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' ),
+					'ajaxurl'                           => admin_url( 'admin-ajax.php' ),
+					'start_of_week'                     => get_option( 'start_of_week' ),
+					'date_format'                       => ersrv_get_plugin_settings( 'ersrv_datepicker_date_format' ),
+					'datepicker_next_month_button_text' => __( 'Next', 'easy-reservations' ),
+					'datepicker_prev_month_button_text' => __( 'Prev', 'easy-reservations' ),
 				)
 			);
 		}
@@ -407,6 +411,8 @@ class Easy_Reservations_Public {
 			'checkout_provided_checkin_not'                => __( 'Since you provided the checkout date, checkin date is mandatory.', 'easy-reservations' ),
 			'trim_zeros_from_price'                        => ersrv_get_plugin_settings( 'ersrv_trim_zeros_from_price' ),
 			'current_theme'                                => get_option( 'stylesheet' ),
+			'datepicker_next_month_button_text'            => __( 'Next', 'easy-reservations' ),
+			'datepicker_prev_month_button_text'            => __( 'Prev', 'easy-reservations' ),
 		);
 
 		/**

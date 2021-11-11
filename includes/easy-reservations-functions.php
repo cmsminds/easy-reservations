@@ -640,6 +640,8 @@ if ( ! function_exists( 'ersrv_get_admin_script_vars' ) ) {
 			$vars['reservation_customer_city_err_msg']            = __( 'City is required.', 'easy-reservations' );
 			$vars['reservation_customer_postcode_err_msg']        = __( 'Postcode is required.', 'easy-reservations' );
 			$vars['trim_zeros_from_price']                        = ersrv_get_plugin_settings( 'ersrv_trim_zeros_from_price' );
+			$vars['datepicker_next_month_button_text']            = __( 'Next', 'easy-reservations' );
+			$vars['datepicker_prev_month_button_text']            = __( 'Prev', 'easy-reservations' );
 		}
 
 		// Add the custom message to the array on cancellation requests page.

@@ -44,6 +44,8 @@ jQuery( document ).ready( function( $ ) {
 	var trim_zeros_from_price                        = ERSRV_Admin_Script_Vars.trim_zeros_from_price;
 	var duplicate_amenities_error_message            = ERSRV_Admin_Script_Vars.duplicate_amenities_error_message;
 	var min_reservation_invalid_error_message        = ERSRV_Admin_Script_Vars.min_reservation_invalid_error_message;
+	var datepicker_next_month_button_text            = ERSRV_Admin_Script_Vars.datepicker_next_month_button_text;
+	var datepicker_prev_month_button_text            = ERSRV_Admin_Script_Vars.datepicker_prev_month_button_text;
 	var new_reservation_item_reserved_dates          = [];
 	var post_type                                    = ersrv_get_query_string_parameter_value( 'post_type' );
 
@@ -659,8 +661,8 @@ jQuery( document ).ready( function( $ ) {
 						weekStart: start_of_week,
 						changeMonth: true,
 						dateFormat: date_format,
-						nextText: 'Next',
-						prevText: 'Prev',
+						nextText: datepicker_next_month_button_text,
+						prevText: datepicker_prev_month_button_text,
 					} );
 
 					// Min and max reservation periods.

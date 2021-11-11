@@ -23,6 +23,8 @@ jQuery(document).ready(function ($) {
 	var trim_zeros_from_price                        = ERSRV_Edit_Reservation_Script_Vars.trim_zeros_from_price;
 	var reservation_blocked_dates_err_msg_per_item   = ERSRV_Edit_Reservation_Script_Vars.reservation_blocked_dates_err_msg_per_item;
 	var update_reservation_confirmation_message      = ERSRV_Edit_Reservation_Script_Vars.update_reservation_confirmation_message;
+	var datepicker_next_month_button_text            = ERSRV_Edit_Reservation_Script_Vars.datepicker_next_month_button_text;
+	var datepicker_prev_month_button_text            = ERSRV_Edit_Reservation_Script_Vars.datepicker_prev_month_button_text;
 
 	// If sidebar is to be removed on reservation single page.
 	$( '#secondary' ).remove();
@@ -174,8 +176,8 @@ jQuery(document).ready(function ($) {
 						},
 						dateFormat: date_format,
 						minDate: 0,
-						nextText: 'Next',
-						prevText: 'Prev',
+						nextText: datepicker_next_month_button_text,
+						prevText: datepicker_prev_month_button_text,
 					} );
 
 					// Show the datepicker.

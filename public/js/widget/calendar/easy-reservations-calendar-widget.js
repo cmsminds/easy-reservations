@@ -2,9 +2,11 @@ jQuery( document ).ready( function( $ ) {
 	'use strict';
 
 	// Localized variables.
-	var ajaxurl       = ERSRV_Calendar_Widget_Script_Vars.ajaxurl;
-	var start_of_week = parseInt( ERSRV_Calendar_Widget_Script_Vars.start_of_week );
-	var date_format   = ERSRV_Calendar_Widget_Script_Vars.date_format;
+	var ajaxurl                           = ERSRV_Calendar_Widget_Script_Vars.ajaxurl;
+	var start_of_week                     = parseInt( ERSRV_Calendar_Widget_Script_Vars.start_of_week );
+	var date_format                       = ERSRV_Calendar_Widget_Script_Vars.date_format;
+	var datepicker_next_month_button_text = ERSRV_Calendar_Widget_Script_Vars.datepicker_next_month_button_text;
+	var datepicker_prev_month_button_text = ERSRV_Calendar_Widget_Script_Vars.datepicker_prev_month_button_text;
 
 	/**
 	 * Display the calendar widget when the reservable item is selected.
@@ -101,8 +103,8 @@ jQuery( document ).ready( function( $ ) {
 					weekStart: start_of_week,
 					changeMonth: true,
 					dateFormat: date_format,
-					nextText: 'Next',
-					prevText: 'Prev',
+					nextText: datepicker_next_month_button_text,
+					prevText: datepicker_prev_month_button_text,
 				} );
 			},
 		} );
