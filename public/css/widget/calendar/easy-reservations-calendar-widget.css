@@ -360,7 +360,7 @@
 .theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td span,
 .theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a,
 .theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a {
-	padding: 11px;
+	padding: 9px;
 	text-align: center;
 }
 
@@ -710,4 +710,10 @@ a{
 
 .theme-storefront .woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--favourite-reservable-items a::before{
     content: "\f004" !important;
+}
+.theme-twentynineteen .ersrv-reservation-widget-container{
+	max-width: 15rem;
+}
+.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline{
+	width: 100%;
 }
