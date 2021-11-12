@@ -825,3 +825,7 @@
     vertical-align: middle;
     width: auto;
 }
+
+.woocommerce-orders-table__cell-order-total {
+    max-width: 100px;
+}
