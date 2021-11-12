@@ -1075,6 +1075,7 @@ body:not(.custom-background-image):after {
 .bootstrap-select > .dropdown-toggle:not(:hover)::after{
   filter: brightness(0) invert(0.75) !important;
 }
+
 /* small view */
 @media (max-width:360px) {
   .wrapper .content-part .datepicker .ui-datepicker-inline .ui-datepicker-calendar thead tr th{

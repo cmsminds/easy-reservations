@@ -707,3 +707,7 @@ a{
 		padding: 12px 10px !important;
 	}
 }
+
+.woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--favourite-reservable-items a::before{
+    content: "\f004" !important;
+}
