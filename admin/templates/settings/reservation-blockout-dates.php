@@ -66,15 +66,15 @@ $weekdays          = array(
 		// Weekdays unavailability selection.
 		woocommerce_wp_select(
 			array(
-				'id'          => 'reservation_item_weekdays_unavailability',
-				'name'        => 'reservation_item_weekdays_unavailability[]',
-				'label'       => __( 'Weekdays Unavailability', 'easy-reservations' ),
-				'class'       => 'select wc-enhanced-select',
-				'options'     => $weekdays,
-				'value'       => get_post_meta( $post->ID, '_ersrv_item_unavailable_weekdays', true ),
-				'style'       => 'width: 90%',
-				'desc_tip'    => true,
-				'description' => __( 'This sets the unavailable weekdays of this reservation item.', 'easy-reservations' ),
+				'id'                => 'reservation_item_weekdays_unavailability',
+				'name'              => 'reservation_item_weekdays_unavailability[]',
+				'label'             => __( 'Weekdays Unavailability', 'easy-reservations' ),
+				'class'             => 'select wc-enhanced-select',
+				'options'           => $weekdays,
+				'value'             => get_post_meta( $post->ID, '_ersrv_item_unavailable_weekdays', true ),
+				'style'             => 'width: 90%',
+				'desc_tip'          => true,
+				'description'       => __( 'This sets the unavailable weekdays of this reservation item.', 'easy-reservations' ),
 				'custom_attributes' => array(
 					'multiple' => 'multiple',
 				),

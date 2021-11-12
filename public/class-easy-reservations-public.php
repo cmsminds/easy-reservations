@@ -116,8 +116,8 @@ class Easy_Reservations_Public {
 		$is_reservation_page      = ersrv_product_is_reservation( get_the_ID() );
 		$enqueue_extra_css        = false;
 		$is_fav_items_endpoint    = isset( $wp_query->query_vars[ $this->favourite_reservation_items_endpoint_slug ] );
-		$is_view_order_endpoint   = isset( $wp_query->query_vars[ 'view-order' ] );
-		$is_orders_endpoint       = isset( $wp_query->query_vars[ 'orders' ] );
+		$is_view_order_endpoint   = isset( $wp_query->query_vars['view-order'] );
+		$is_orders_endpoint       = isset( $wp_query->query_vars['orders'] );
 		$is_track_order_page      = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'woocommerce_order_tracking' ) );
 
 		// Conditions to enqueue the extra css file.
@@ -253,7 +253,7 @@ class Easy_Reservations_Public {
 				true
 			);
 		}
-		
+
 		// Include the core JS file.
 		if (
 			$is_reservation_page ||
@@ -364,7 +364,7 @@ class Easy_Reservations_Public {
 		global $wp_registered_widgets, $post, $wp_query;
 		$is_search_page           = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
 		$is_reservation_page      = ersrv_product_is_reservation( get_the_ID() );
-		$is_view_order_endpoint   = isset( $wp_query->query_vars[ 'view-order' ] );
+		$is_view_order_endpoint   = isset( $wp_query->query_vars['view-order'] );
 		$reservation_item_details = ( $is_reservation_page ) ? ersrv_get_item_details( get_the_ID() ) : array();
 		$search_reservations_page = ersrv_get_page_id( 'search-reservations' );
 		// Custom public script.
@@ -445,10 +445,10 @@ class Easy_Reservations_Public {
 		// Add the custom rewrite for my account endpoints.
 		add_rewrite_endpoint( $this->favourite_reservation_items_endpoint_slug, EP_ROOT | EP_PAGES );
 		$rewrite_fav_items_endpoint = get_option( 'ersrv_rewrite_fav_items_endpoint_permalink' );
-        if ( 'yes' !== $rewrite_fav_items_endpoint ) {
-            flush_rewrite_rules( false );
-            update_option( 'ersrv_rewrite_fav_items_endpoint_permalink', 'yes', false );
-        }
+		if ( 'yes' !== $rewrite_fav_items_endpoint ) {
+			flush_rewrite_rules( false );
+			update_option( 'ersrv_rewrite_fav_items_endpoint_permalink', 'yes', false );
+		}
 
 		// Register reservation item type taxonomy.
 		ersrv_register_reservation_type_taxonomy();
@@ -523,7 +523,7 @@ class Easy_Reservations_Public {
 		// If the reservation item type is set.
 		if ( ! empty( $type ) ) {
 			$args['tax_query']['relation'] = 'AND';
-			$args['tax_query'][] = array(
+			$args['tax_query'][]           = array(
 				'taxonomy'         => 'reservation-item-type',
 				'field'            => 'term_id',
 				'terms'            => $type,
@@ -743,10 +743,8 @@ class Easy_Reservations_Public {
 	 * @since 1.0.0
 	 */
 	public function ersrv_woocommerce_my_account_my_orders_actions_callback( $actions, $wc_order ) {
-		$order_id = $wc_order->get_id();
-		
-		// Check if the order has reservation items.
-		$is_reservation_order  = ersrv_order_is_reservation( $wc_order );
+		$order_id             = $wc_order->get_id();
+		$is_reservation_order = ersrv_order_is_reservation( $wc_order ); // Check if the order has reservation items.
 
 		// Return the actions if the order is not reservation order.
 		if ( ! $is_reservation_order ) {
@@ -789,7 +787,7 @@ class Easy_Reservations_Public {
 	/**
 	 * Add custom action after the order details table.
 	 *
-	 * @param object $order Holds the WC order object.
+	 * @param WC_Order $wc_order Holds the WC order object.
 	 * @return void
 	 * @since 1.0.0
 	 */
@@ -847,30 +845,13 @@ class Easy_Reservations_Public {
 	}
 
 	/**
-	 * Modify the billing address to add email and phone number to the billing address.
-	 *
-	 * @param string $address Holds the billing address.
-	 * @param array  $raw_address Holds the billing address in an array.
-	 * @return string
-	 * @since 1.0.0
-	 */
-	public function ersrv_woocommerce_order_get_formatted_billing_address_callback( $address, $raw_address ) {
-		$address .= ( ! empty( $raw_address['email'] ) ) ? '<br />' . $raw_address['email'] : '';
-		$address .= ( ! empty( $raw_address['phone'] ) ) ? '<br />' . $raw_address['phone'] : '';
-
-		return $address;
-	}
-
-	/**
 	 * Add metabox on the dokan view order page so get the receipt.
 	 *
 	 * @param WC_Order $wc_order Holds the WooCommerce order object.
 	 */
 	public function ersrv_dokan_order_detail_after_order_items_callback( $wc_order ) {
-		$order_id = $wc_order->get_id();
-		
-		// Check if the order has reservation items.
-		$is_reservation_order  = ersrv_order_is_reservation( $wc_order );
+		$order_id             = $wc_order->get_id();
+		$is_reservation_order = ersrv_order_is_reservation( $wc_order ); // Check if the order has reservation items.
 
 		// Return the actions if the order is not reservation order.
 		if ( ! $is_reservation_order ) {
@@ -909,7 +890,7 @@ class Easy_Reservations_Public {
 		global $post, $wp_query;
 		$is_search_page           = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_search_reservations' ) );
 		$is_reservation_page      = ( ! is_null( $post ) ) ? ersrv_product_is_reservation( $post->ID ) : false;
-		$is_view_order_endpoint   = isset( $wp_query->query_vars[ 'view-order' ] );
+		$is_view_order_endpoint   = isset( $wp_query->query_vars['view-order'] );
 		$is_edit_reservation_page = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'ersrv_edit_reservation' ) );
 		$is_track_order_page      = ( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'woocommerce_order_tracking' ) );
 
@@ -970,6 +951,7 @@ class Easy_Reservations_Public {
 
 			// Create the toast message.
 			if ( ! empty( $fav_items_endpoint ) ) {
+				/* translators: 1: %s: anchor tag open, 2: %s: anchor tag closed */
 				$toast_message = sprintf( __( 'Item has been marked favourite. %1$sView favourites.%2$s', 'easy-reservations' ), '<a href="' . $fav_items_endpoint . '" title="' . __( 'Favourite Items', 'easy-reservations' ) . '">', '</a>' );
 			} else {
 				$toast_message = __( 'Item has been marked favourite.', 'easy-reservations' );
@@ -1041,33 +1023,6 @@ class Easy_Reservations_Public {
 		$vars[] = $this->favourite_reservation_items_endpoint_slug;
 
 		return $vars;
-	}
-
-	/**
-	 * Overwrite the titles.
-	 *
-	 * @param string $title Post title.
-	 * @param int    $post_id Post ID.
-	 * @return string
-	 * @since 1.0.0
-	 */
-	public function ersrv_the_title_callback( $title, $post_id ) {
-		global $wp_query;
-		$is_endpoint = isset( $wp_query->query_vars[ $this->favourite_reservation_items_endpoint_slug ] );
-
-		// Return the title if it's admin.
-		if ( is_admin() ) {
-			return $title;
-		}
-
-		// Reduce the item title.
-		// $title = ( 46 <= strlen( $title ) ) ? substr( $title, 0, 45 ) . '...' : $title;
-
-		if ( $is_endpoint ) {
-			// $title = __( 'My Stuff', 'easy-reservations' );
-		}
-
-		return $title;
 	}
 
 	/**
@@ -1184,6 +1139,7 @@ class Easy_Reservations_Public {
 		// Prepare the response.
 		$response = array(
 			'code'          => 'reservation-added-to-cart',
+			/* translators: 1: %s: anchor tag open, 2: %s: anchor tag closed */
 			'toast_message' => sprintf( __( 'Reservation has been added to the cart. %1$sView Cart%2$s', 'easy-reservations' ), '<a title="' . __( 'View Cart', 'easy-reservations' ) . '" href="' . wc_get_cart_url() . '">', '</a>' ),
 		);
 		wp_send_json_success( $response );
@@ -1386,7 +1342,7 @@ class Easy_Reservations_Public {
 	 * @param object   $item WooCommerce order item.
 	 * @param string   $cart_item_key WooCommerce cart item key.
 	 * @param array    $cart_item_data WooCommerce cart item data.
-	 * @param WC_Order $wc_order WooCommerce order
+	 * @param WC_Order $wc_order WooCommerce order.
 	 * @since 1.0.0
 	 */
 	public function ersrv_woocommerce_checkout_create_order_line_item_callback( $item, $cart_item_key, $cart_item_data, $wc_order ) {
@@ -1500,7 +1456,8 @@ class Easy_Reservations_Public {
 					<!-- GALLERY IMAGES -->
 					<div id="preview-list" class="product-preview-menu">
 						<?php if ( ! empty( $gallery_image_ids ) && is_array( $gallery_image_ids ) ) { ?>
-							<?php foreach ( $gallery_image_ids as $image_id ) {
+							<?php
+							foreach ( $gallery_image_ids as $image_id ) {
 								$image_src = ersrv_get_attachment_url_from_attachment_id( $image_id );
 								$image_src = ( empty( $image_src ) ) ? wc_placeholder_img_src() : $image_src;
 								?>
@@ -1547,16 +1504,35 @@ class Easy_Reservations_Public {
 							</div>
 						</div>
 						<div class="accomodation-values d-flex flex-column mb-3 ersrv-quick-view-reservation-item-accomodation">
-							<h4 class="font-size-16"><?php esc_html_e( 'Guests', 'easy-reservations' ); ?><small class="font-size-10 ml-1">(<?php echo esc_html( sprintf( __( 'Limit: %1$d', 'easy-reservations' ), $accomodation_limit ) ); ?>)<span class="required">*</span></small></h4>
+							<h4 class="font-size-16">
+								<?php esc_html_e( 'Guests', 'easy-reservations' ); ?>
+								<small class="font-size-10 ml-1">(
+									<?php
+									/* translators: 1: %s: accomodation limit */
+									echo esc_html( sprintf( __( 'Limit: %1$d', 'easy-reservations' ), $accomodation_limit ) );
+									?>
+									)<span class="required">*</span>
+								</small>
+							</h4>
 							<div class="values">
 								<div class="row form-row">
 									<div class="col-6">
 										<input type="number" id="quick-view-adult-accomodation-count" class="ersrv-accomodation-count form-contol" placeholder="<?php esc_html_e( 'No. of adults', 'easy-reservations' ); ?>" min="1" />
-										<label for="quick-view-adult-accomodation-count" class=""><?php echo wp_kses_post( sprintf( __( 'per adult: %1$s%3$s%2$s', 'easy-reservations' ), '<span>', '</span>', wc_price( $adult_charge ) ) ); ?></label>
+										<label for="quick-view-adult-accomodation-count" class="">
+											<?php
+											/* translators: 1: %s: span tag open, 2: %s: span tag closed, 3: %s: adult charge */
+											echo wp_kses_post( sprintf( __( 'per adult: %1$s%3$s%2$s', 'easy-reservations' ), '<span>', '</span>', wc_price( $adult_charge ) ) );
+											?>
+										</label>
 									</div>
 									<div class="col-6">
 										<input type="number" id="quick-view-kid-accomodation-count" class="ersrv-accomodation-count form-contol" placeholder="<?php esc_html_e( 'No. of kids', 'easy-reservations' ); ?>" min="0" />
-										<label for="quick-view-kid-accomodation-count" class=""><?php echo wp_kses_post( sprintf( __( 'per kid: %1$s%3$s%2$s', 'easy-reservations' ), '<span>', '</span>', wc_price( $kid_charge ) ) ); ?></label>
+										<label for="quick-view-kid-accomodation-count" class="">
+											<?php
+											/* translators: 1: %s: span tag open, 2: %s: span tag closed, 3: %s: kid charge */
+											echo wp_kses_post( sprintf( __( 'per kid: %1$s%3$s%2$s', 'easy-reservations' ), '<span>', '</span>', wc_price( $kid_charge ) ) );
+											?>
+										</label>
 									</div>
 									<label class="ersrv-reservation-error accomodation-error"></label>
 								</div>
@@ -1567,7 +1543,8 @@ class Easy_Reservations_Public {
 								<h4 class="font-size-16"><?php esc_html_e( 'Amenities', 'easy-reservations' ); ?></h4>
 								<div class="values ersrv-item-amenities-wrapper">
 									<div class="row form-row">
-										<?php foreach ( $amenities as $amenity_data ) {
+										<?php
+										foreach ( $amenities as $amenity_data ) {
 											$amenity_title     = ( ! empty( $amenity_data['title'] ) ) ? $amenity_data['title'] : '';
 											$amenity_cost      = ( ! empty( $amenity_data['cost'] ) ) ? $amenity_data['cost'] : 0.00;
 											$amenity_slug      = ( ! empty( $amenity_title ) ) ? sanitize_title( $amenity_title ) : '';
@@ -1606,8 +1583,18 @@ class Easy_Reservations_Public {
 							<input type="hidden" id="quick-view-kid-subtotal" value="" />
 							<input type="hidden" id="quick-view-amenities-subtotal" value="" />
 							<input type="hidden" id="quick-view-security-subtotal" value="<?php echo esc_html( $security_amount ); ?>" />
-							<label class="ersrv-item-details-security-amount font-Poppins font-size-16 color-black mb-3"><?php echo wp_kses_post( sprintf( __( 'Security: %1$s', 'easy-reservations' ), wc_price( $security_amount ) ) ); ?></label>
-							<h4 class="font-size-16 font-weight-bold"><?php echo wp_kses_post( sprintf( __( 'Total: %1$s', 'easy-reservations' ), '<a href="javascript:void(0);" class="text-decoration-none ersrv-split-reservation-cost is-modal"><span class="font-lato font-weight-bold color-accent ersrv-quick-view-item-subtotal ersrv-cost">--</span></a>' ) ); ?></h4>
+							<label class="ersrv-item-details-security-amount font-Poppins font-size-16 color-black mb-3">
+								<?php
+								/* translators: 1: %s: quickview reservation security subtotal */
+								echo wp_kses_post( sprintf( __( 'Security: %1$s', 'easy-reservations' ), wc_price( $security_amount ) ) );
+								?>
+							</label>
+							<h4 class="font-size-16 font-weight-bold">
+								<?php
+								/* translators: 1: %s: quickview reservation subtotal */
+								echo wp_kses_post( sprintf( __( 'Total: %1$s', 'easy-reservations' ), '<a href="javascript:void(0);" class="text-decoration-none ersrv-split-reservation-cost is-modal"><span class="font-lato font-weight-bold color-accent ersrv-quick-view-item-subtotal ersrv-cost">--</span></a>' ) );
+								?>
+							</h4>
 							<div class="ersrv-reservation-details-item-summary" id="ersrv-split-reservation-cost-content">
 								<div class="ersrv-reservation-details-item-summary-wrapper p-3">
 									<table class="table table-borderless">
@@ -1645,7 +1632,7 @@ class Easy_Reservations_Public {
 						<input type="hidden" id="quick-view-adult-charge" value="<?php echo esc_html( $adult_charge ); ?>" />
 						<input type="hidden" id="quick-view-kid-charge" value="<?php echo esc_html( $kid_charge ); ?>" />
 						<input type="hidden" id="quick-view-security-amount" value="<?php echo esc_html( $security_amount ); ?>" />
-						<input type="hidden" id="quick-view-item-id" value="<?php echo esc_html( $item_id ) ?>" />
+						<input type="hidden" id="quick-view-item-id" value="<?php echo esc_html( $item_id ); ?>" />
 						<button type="button" class="ersrv-add-quick-view-reservation-to-cart product-button add-to-cart btn-block"><?php esc_html_e( 'Add to cart', 'easy-reservations' ); ?></button>
 						<a href="<?php echo esc_url( $item_permalink ); ?>" class="readmore-link btn btn-link"><?php esc_html_e( 'View full details', 'easy-reservations' ); ?></a>
 					</div>
@@ -1730,19 +1717,30 @@ class Easy_Reservations_Public {
 		<div class="woocommerce-additional-fields__field-wrapper">
 			<div class="form-row ersrv-driving-license" id="ersrv_driving_license_field">
 				<label for="reservation-driving-license"><?php esc_html_e( 'Driving License', 'easy-reservations' ); ?> <span class="required">*</span></label>
-				<span class="ersrv-upload-filesize-notice"><?php echo esc_html( sprintf( __( 'Maximum upload file size: %1$s.', 'easy-reservations' ), size_format( $max_upload_size ) ) ); ?></span>
+				<span class="ersrv-upload-filesize-notice">
+					<?php
+					/* translators: 1: %s: max. upload size allowed */
+					echo esc_html( sprintf( __( 'Maximum upload file size: %1$s.', 'easy-reservations' ), size_format( $max_upload_size ) ) );
+					?>
+				</span>
 				<div class="ersrv-driving-license-file-upload-wrapper">
 					<span class="woocommerce-input-wrapper">
 						<input type="file" accept="<?php echo esc_attr( $allowed_extensions_string ); ?>" name="reservation-driving-license" id="reservation-driving-license" />
 					</span>
 				</div>
 				<div class="ersrv-uploaded-checkout-license-file">
-				<?php if ( ! is_null( $attachment_id ) ) {
+				<?php
+				if ( ! is_null( $attachment_id ) ) {
 					$filename = basename( $attachment_url );
 					$filename = ( 43 <= strlen( $filename ) ) ? ersrv_shorten_filename( $filename ) : $filename;
 					?>
-					<span><?php echo wp_kses_post( sprintf( __( 'Uploaded: %2$s%1$s%3$s', 'easy-reservations' ), $filename, '<a target="_blank" href="' . $attachment_url . '">', '</a>' ) ); ?></span>
-					<button type="button" data-file="<?php echo esc_attr( $attachment_id ); ?>" class="remove btn btn-accent"><span class="sr-only">Remove</span><span class="fa fa-trash"></span></button>
+					<span>
+						<?php
+						/* translators: 1: %s: filename, 2: %s: anchor tag open, 3: %s: anchor tag closed */
+						echo wp_kses_post( sprintf( __( 'Uploaded: %2$s%1$s%3$s', 'easy-reservations' ), $filename, '<a target="_blank" href="' . $attachment_url . '">', '</a>' ) );
+						?>
+					</span>
+					<button type="button" data-file="<?php echo esc_attr( $attachment_id ); ?>" class="remove btn btn-accent"><span class="sr-only"><?php esc_html_e( 'Remove', 'easy-reservations' ); ?></span><span class="fa fa-trash"></span></button>
 				<?php } ?>
 				</div>
 			</div>
@@ -1765,8 +1763,8 @@ class Easy_Reservations_Public {
 		}
 
 		// Upload the file now.
-		$driving_license_file_name = $_FILES['driving_license_file']['name'];
-		$driving_license_file_temp = $_FILES['driving_license_file']['tmp_name'];
+		$driving_license_file_name = ( ! empty( $_FILES['driving_license_file']['name'] ) ) ? $_FILES['driving_license_file']['name'] : '';
+		$driving_license_file_temp = ( ! empty( $_FILES['driving_license_file']['tmp_name'] ) ) ? $_FILES['driving_license_file']['tmp_name'] : '';
 		$file_data                 = file_get_contents( $driving_license_file_temp );
 		$filename                  = basename( $driving_license_file_name );
 		$upload_dir                = wp_upload_dir();
@@ -1780,7 +1778,7 @@ class Easy_Reservations_Public {
 			'post_mime_type' => $wp_filetype['type'],
 			'post_title'     => sanitize_file_name( $filename ),
 			'post_content'   => '',
-			'post_status'    => 'inherit'
+			'post_status'    => 'inherit',
 		);
 		$attach_id   = wp_insert_attachment( $attachment, $file_path );
 
@@ -1797,8 +1795,13 @@ class Easy_Reservations_Public {
 		// View license html.
 		ob_start();
 		?>
-		<span><?php echo sprintf( __( 'Uploaded: %2$s%1$s%3$s', 'easy-reservations' ), $filename, '<a target="_blank" href="' . $attachment_url . '">', '</a>' ); ?></span>
-		<button type="button" data-file="<?php echo esc_attr( $attachment_id ); ?>" class="remove btn btn-accent"><span class="sr-only">Remove</span><span class="fa fa-trash"></span></button>
+		<span>
+			<?php
+			/* translators: 1: %s: filename, 2: %s: anchor tag open, 3: %s: anchor tag closed */
+			echo wp_kses_post( sprintf( __( 'Uploaded: %2$s%1$s%3$s', 'easy-reservations' ), $filename, '<a target="_blank" href="' . $attachment_url . '">', '</a>' ) );
+			?>
+		</span>
+		<button type="button" data-file="<?php echo esc_attr( $attachment_id ); ?>" class="remove btn btn-accent"><span class="sr-only"><?php esc_html_e( 'Remove', 'easy-reservations' ); ?></span><span class="fa fa-trash"></span></button>
 		<?php
 		$view_license_html = ob_get_clean();
 
@@ -1868,6 +1871,7 @@ class Easy_Reservations_Public {
 
 			// Throw the error if the attachment is either null or empty.
 			if ( empty( $attachment_id ) || is_null( $attachment_id ) ) {
+				/* translators: 1: %s: anchor tag open, 2: %s: anchor tag closed */
 				$error_message = sprintf( __( 'Since you\'re doing a reservation, we require you to upload a valid driving license. Click %1$shere%2$s to upload.', 'easy-reservations' ), '<a class="scroll-to-driving-license" href="#">', '</a>' );
 				/**
 				 * This filter fires on checkout page.
@@ -1926,6 +1930,7 @@ class Easy_Reservations_Public {
 
 				// Throw error if the dates match.
 				if ( ! empty( $intersecting_dates ) ) {
+					/* translators: 1: %s: item title, 2: %s: strong tag open, 3: %s: strong tag closed, 4: %s: intersecting dates */
 					$error_message = sprintf( __( 'You cannot proceed with the reservation of %2$s%1$s%3$s as the dates %2$s%4$s%3$s are already reserved.', 'easy-reservations' ), get_the_title( $item_id ), '<strong>', '</strong>', implode( ', ', $intersecting_dates ) );
 					/**
 					 * This filter fires on checkout page.
@@ -1945,6 +1950,7 @@ class Easy_Reservations_Public {
 					$today = gmdate( ersrv_get_php_date_format() );
 
 					if ( strtotime( $checkin_date ) < time() ) {
+						/* translators: 1: %s: item title, 2: %s: strong tag open, 3: %s: strong tag closed, 4: %s: checkin-checkout dates */
 						$error_message = sprintf( __( 'Selected dates, %2$s%4$s%3$s for the item, %2$s%1$s%3$s are not available anymore. Please select another dates.', 'easy-reservations' ), get_the_title( $item_id ), '<strong>', '</strong>', "{$checkin_date} - {$checkout_date}" );
 						/**
 						 * This filter fires on checkout page.
@@ -1990,6 +1996,7 @@ class Easy_Reservations_Public {
 	 * @param int      $item_id WooCommerce order item ID.
 	 * @param object   $item WooCommerce order item.
 	 * @param WC_Order $wc_order WooCommerce order.
+	 * @param boolean  $plain_text Whether a plain text is requested.
 	 * @since 1.0.0
 	 */
 	public function ersrv_woocommerce_order_item_meta_end_callback( $item_id, $item, $wc_order, $plain_text ) {
@@ -2416,7 +2423,7 @@ class Easy_Reservations_Public {
 			wp_die();
 		}
 
-		// Reservation post IDs that qualify to the 
+		// Reservation post IDs that qualify to the.
 		$final_reservation_ids = $reservation_post_ids;
 
 		// Check through the requested checkin and checkout dates.
@@ -2508,6 +2515,7 @@ class Easy_Reservations_Public {
 		$response = array(
 			'code'        => 'reservation-posts-found',
 			'html'        => $html,
+			/* translators: 1: %d: items count */
 			'items_count' => sprintf( _n( '%d item', '%d items', $items_count, 'easy-reservations' ), number_format_i18n( $items_count ) ),
 		);
 		wp_send_json_success( $response );
@@ -2589,7 +2597,7 @@ class Easy_Reservations_Public {
 			if ( $is_edit_reservation_page ) {
 				$my_account = wc_get_page_permalink( 'myaccount' );
 				wp_safe_redirect( $my_account );
-				exit(0);
+				exit( 0 );
 			}
 		}
 	}
@@ -2612,7 +2620,7 @@ class Easy_Reservations_Public {
 					'field'            => 'term_id',
 					'terms'            => $current_term_id,
 					'include_children' => false,
-				)
+				),
 			);
 
 			// Set the item type taxonomy query.

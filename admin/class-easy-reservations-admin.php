@@ -70,21 +70,21 @@ class Easy_Reservations_Admin {
 	 * @since    1.0.0
 	 */
 	public function ersrv_admin_enqueue_scripts_callback() {
-		$post_type                 = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
-		$post_id                   = (int) filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
-		$page                      = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
-		$include_modal_style       = false;
-		$include_datepicker_style  = false;
+		$post_type                = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
+		$post_id                  = (int) filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
+		$page                     = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
+		$include_modal_style      = false;
+		$include_datepicker_style = false;
 
 		// Include the blocked out reservation dates modal only on orders page.
 		if ( ! is_null( $post_id ) && 'product' === get_post_type( $post_id ) ) {
-			$include_modal_style       = true;
-			$include_datepicker_style  = true;
+			$include_modal_style      = true;
+			$include_datepicker_style = true;
 		} elseif ( ! is_null( $post_type ) && 'shop_order' === $post_type ) { // Include the modal style only on orders page.
 			$include_modal_style = true;
 		} elseif ( ! is_null( $page ) && 'new-reservation' === $page ) {
-			$include_modal_style       = true;
-			$include_datepicker_style  = true;
+			$include_modal_style      = true;
+			$include_datepicker_style = true;
 		}
 
 		// Enqueue bootstrap datepicker on new reservation page.
@@ -215,34 +215,6 @@ class Easy_Reservations_Admin {
 			'priority' => 68,
 		);
 
-		// Reservation captain settings tab.
-		// $reservation_captain_settings_tab_title = __( 'Captain', 'easy-reservations' );
-
-		/**
-		 * This hook fires in admin panel on the item settings page.
-		 *
-		 * This filter will help in modifying the product type tab title - captain settings.
-		 *
-		 * @param string $reservation_blockout_dates_tab_title Holds the product type tab title.
-		 *
-		 * @return string
-		 */
-		// $reservation_captain_settings_tab_title = apply_filters( 'ersrv_product_captain_settings_tab_label', $reservation_captain_settings_tab_title );
-
-		// Add the new tab - reservation blockout dates.
-		// $tabs['reservation_captain_settings'] = array(
-		// 	'label'    => $reservation_captain_settings_tab_title,
-		// 	'target'   => 'reservation_captain_settings_product_options',
-		// 	'class'    => array(
-		// 		"show_if_{$this->custom_product_type}",
-		// 		'hide_if_simple',
-		// 		'hide_if_grouped',
-		// 		'hide_if_external',
-		// 		'hide_if_variable',
-		// 	),
-		// 	'priority' => 69,
-		// );
-
 		// Hide the general tab.
 		if ( ! empty( $tabs['general'] ) ) {
 			$tabs['general']['class'][] = "hide_if_{$this->custom_product_type}";
@@ -293,9 +265,6 @@ class Easy_Reservations_Admin {
 
 		// Reservation blockout dates.
 		require_once ERSRV_PLUGIN_PATH . 'admin/templates/settings/reservation-blockout-dates.php';
-
-		// Reservation captain settings.
-		// require_once ERSRV_PLUGIN_PATH . 'admin/templates/settings/reservation-captain-settings.php';
 	}
 
 	/**
@@ -703,10 +672,15 @@ class Easy_Reservations_Admin {
 			'reservation-cancellation-requests',
 			array( $this, 'ersrv_reservation_cancellation_requests' )
 		);
-		include( plugin_dir_path( __FILE__ ) . 'templates/pages/class-easy-reservations-cancellation-requests.php' );
+		include plugin_dir_path( __FILE__ ) . 'templates/pages/class-easy-reservations-cancellation-requests.php';
 		add_action( "load-$reservation_cancellation_requests_hook", array( $this, 'ersrv_load_reservation_cancellation_requests_menu_page_screen_options_callback' ) );
 	}
 
+	/**
+	 * Reservation cancelation requests admin page screen options.
+	 *
+	 * @since 1.0.0
+	 */
 	public function ersrv_load_reservation_cancellation_requests_menu_page_screen_options_callback() {
 		global $reservation_cancellation_requests_menu_page_data;
 		$option = 'per_page';
@@ -1249,10 +1223,8 @@ class Easy_Reservations_Admin {
 			<div class="ersrv-driving-license-container edit-order">
 				<p><?php esc_html_e( 'Click on the buttons below to download & view customer\'s driving license.', 'easy-reservations' ); ?></p>
 				<p>
-					<a href="<?php echo esc_url( $license_url ); ?>" class="button download" download><?php esc_html_e( 'Download', 'easy-reservations' ); ?><span
-								class="dashicons dashicons-download"></span></a>
-					<a href="<?php echo esc_url( $license_url ); ?>" rel="noopener noreferrer" class="button view"
-					   target="_blank"><?php esc_html_e( 'View', 'easy-reservations' ); ?><span class="dashicons dashicons-visibility"></span></a>
+					<a href="<?php echo esc_url( $license_url ); ?>" class="button download" download><?php esc_html_e( 'Download', 'easy-reservations' ); ?><span class="dashicons dashicons-download"></span></a>
+					<a href="<?php echo esc_url( $license_url ); ?>" rel="noopener noreferrer" class="button view" target="_blank"><?php esc_html_e( 'View', 'easy-reservations' ); ?><span class="dashicons dashicons-visibility"></span></a>
 				</p>
 			</div>
 			<?php
@@ -1317,7 +1289,7 @@ class Easy_Reservations_Admin {
 		if ( ! empty( $cost_difference ) ) {
 			if ( 'cost_difference_customer_payable' === $cost_difference_key ) {
 				echo wp_kses(
-				/* translators: 1: %s: strong tag open, 2: %s: strong tag closed, 3: %s: cost difference */
+					/* translators: 1: %s: strong tag open, 2: %s: strong tag closed, 3: %s: cost difference */
 					sprintf( __( 'The customer needs to pay %1$s%3$s%2$s before onboarding.', 'easy-reservations' ), '<strong>', '</strong>', wc_price( $cost_difference ) ),
 					array(
 						'strong' => array(),
@@ -1328,7 +1300,7 @@ class Easy_Reservations_Admin {
 				);
 			} elseif ( 'cost_difference_admin_payable' === $cost_difference_key ) {
 				echo wp_kses(
-				/* translators: 1: %s: strong tag open, 2: %s: strong tag closed, 3: %s: cost difference */
+					/* translators: 1: %s: strong tag open, 2: %s: strong tag closed, 3: %s: cost difference */
 					sprintf( __( 'The admin shall refund %1$s%3$s%2$s after the reservation is complete.', 'easy-reservations' ), '<strong>', '</strong>', wc_price( $cost_difference ) ),
 					array(
 						'strong' => array(),
@@ -1418,11 +1390,11 @@ class Easy_Reservations_Admin {
 			$actions['ersrv-reservation-edit'] = array(
 				'url'    => add_query_arg( $query_params, $edit_reservation_page_url ),
 				'name'   => '',
+				/* translators: 1: %s: order id */
 				'title'  => sprintf( __( 'Edit Reservation #%1$d', 'easy-reservations' ), $order_id ),
 				'action' => 'ersrv-reservation-edit',
 			);
 		}
-
 
 		// Check if the order status is allowed for receipts.
 		$display_order_receipt = ersrv_should_display_receipt_button( $order_id );
@@ -1476,7 +1448,11 @@ class Easy_Reservations_Admin {
 			<?php
 			// Return the actions if the receipt button should not be displayed.
 			if ( false !== $display_order_receipt ) {
-				?><a class="button" href="<?php echo esc_url( ersrv_download_reservation_receipt_url( $order_id ) ); ?>"><?php echo esc_html( ersrv_get_plugin_settings( 'ersrv_easy_reservations_receipt_button_text' ) ); ?></a><?php
+				?>
+				<a class="button" href="<?php echo esc_url( ersrv_download_reservation_receipt_url( $order_id ) ); ?>">
+					<?php echo esc_html( ersrv_get_plugin_settings( 'ersrv_easy_reservations_receipt_button_text' ) ); ?>
+				</a>
+				<?php
 			}
 			?>
 
@@ -1766,8 +1742,8 @@ class Easy_Reservations_Admin {
 		}
 
 		// Upload the file now.
-		$driving_license_file_name = $_FILES['driving_license_file']['name'];
-		$driving_license_file_temp = $_FILES['driving_license_file']['tmp_name'];
+		$driving_license_file_name = ( ! empty( $_FILES['driving_license_file']['name'] ) ) ? $_FILES['driving_license_file']['name'] : '';
+		$driving_license_file_temp = ( ! empty( $_FILES['driving_license_file']['tmp_name'] ) ) ? $_FILES['driving_license_file']['tmp_name'] : '';
 		$file_data                 = file_get_contents( $driving_license_file_temp );
 		$filename                  = basename( $driving_license_file_name );
 		$upload_dir                = wp_upload_dir();

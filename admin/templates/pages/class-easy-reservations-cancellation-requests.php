@@ -29,11 +29,13 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	public function __construct() {
 		global $status, $page;
 
-		parent::__construct( array(
-			'singular' => __( 'reservation-cancellation record', 'easy-reservations' ),
-			'plural'   => __( 'reservation-cancellation records', 'easy-reservations' ),
-			'ajax'     => false,
-		) );
+		parent::__construct(
+			array(
+				'singular' => __( 'reservation-cancellation record', 'easy-reservations' ),
+				'plural'   => __( 'reservation-cancellation records', 'easy-reservations' ),
+				'ajax'     => false,
+			)
+		);
 
 		add_action( 'admin_head', array( $this, 'ersrv_admin_header_callback' ) );
 	}
@@ -64,10 +66,9 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	 */
 	private function table_data() {
 		global $wpdb;
-		$data                        = array();
-		$wc_order_items_meta_table   = "{$wpdb->prefix}woocommerce_order_itemmeta";
-		$cancellation_requests_query = "SELECT `order_item_id` FROM `{$wc_order_items_meta_table}` WHERE `meta_key` = 'ersrv_cancellation_request'";
-		$cancellation_requests       = $wpdb->get_results( $cancellation_requests_query );
+		$data                      = array();
+		$wc_order_items_meta_table = "{$wpdb->prefix}woocommerce_order_itemmeta";
+		$cancellation_requests     = $wpdb->get_results( "SELECT `order_item_id` FROM `{$wc_order_items_meta_table}` WHERE `meta_key` = 'ersrv_cancellation_request'" );
 
 		// Return blank data, if there is no cancellation request.
 		if ( empty( $cancellation_requests ) || ! is_array( $cancellation_requests ) ) {
@@ -215,7 +216,7 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 		// Column headers.
 		$this->_column_headers = $this->get_column_info();
 
-		// Fetch table data
+		// Fetch table data.
 		$data = $this->table_data();
 
 		// Check for bulk action.
@@ -224,7 +225,7 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 			$this->process_bulk_action( $data, $bulk_action );
 		}
 
-		// Filter the table data in case of a search
+		// Filter the table data in case of a search.
 		if ( $searched_keyword ) {
 			$data = $this->filter_table_data( $data, $searched_keyword );
 		}
@@ -237,11 +238,13 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 
 		// Set the pagination data.
 		$total_items = count( $data );
-		$this->set_pagination_args( array(
-			'total_items' => $total_items,
-			'per_page'    => $per_page,
-			'total_pages' => ceil( $total_items / $per_page ),
-		) );
+		$this->set_pagination_args(
+			array(
+				'total_items' => $total_items,
+				'per_page'    => $per_page,
+				'total_pages' => ceil( $total_items / $per_page ),
+			)
+		);
 
 		$this->items = $found_data;
 	}
@@ -256,19 +259,26 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	 */
 	public function filter_table_data( $table_data, $search_key ) {
 		$filtered_table_data = array_values(
-			array_filter( $table_data, function ( $row ) use ( $search_key ) {
-				foreach ( $row as $row_val ) {
-					if ( stripos( $row_val, $search_key ) !== false ) {
-						return true;
+			array_filter(
+				$table_data,
+				function ( $row ) use ( $search_key ) {
+					foreach ( $row as $row_val ) {
+						if ( stripos( $row_val, $search_key ) !== false ) {
+							return true;
+						}
 					}
 				}
-			} ) );
+			)
+		);
 
 		return $filtered_table_data;
 	}
 
 	/**
 	 * The callback where the bulk actions are processed.
+	 *
+	 * @param array  $data Item data.
+	 * @param string $bulk_action Bulk action name.
 	 */
 	public function process_bulk_action( $data, $bulk_action ) {
 		$posted_array   = filter_input_array( INPUT_GET );
@@ -394,7 +404,7 @@ class Easy_Reservations_Cancellation_Requests extends WP_List_Table {
 	 * @param array $item Item data.
 	 * @return string
 	 */
-	function column_cb( $item ) {
+	public function column_cb( $item ) {
 		$item_id  = ( ! empty( $item['item_id'] ) ) ? $item['item_id'] : '';
 		$order_id = ( ! empty( $item['order_id'] ) ) ? $item['order_id'] : '';
 
