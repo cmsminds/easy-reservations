@@ -1075,6 +1075,16 @@ body:not(.custom-background-image):after {
 .bootstrap-select > .dropdown-toggle:not(:hover)::after{
   filter: brightness(0) invert(0.75) !important;
 }
+.wrapper .sidebar-wrapper .book-tour .details .social a, .wrapper .sidebar-wrapper .advanced-search .details .social a{
+  font-size: 16px;
+}
+.theme-twentytwenty .product-details h4 {
+  margin-left: 0px;
+}
+.theme-twentytwenty .wrapper .banner .details .boat-options a{
+  color: #fff;
+}
+
 
 /* small view */
 @media (max-width:360px) {

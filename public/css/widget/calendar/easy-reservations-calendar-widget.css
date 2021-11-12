@@ -714,6 +714,29 @@ a{
 .theme-twentynineteen .ersrv-reservation-widget-container{
 	max-width: 15rem;
 }
-.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline{
+.theme-twentytwentyone .ersrv-reservation-widget-container{
+	max-width: 20rem;
+}
+.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline,
+.theme-twentytwentyone .ersrv-widget-calendar .ui-datepicker-inline{
 	width: 100%;
+}
+@media(max-width:767px){
+	.theme-twentynineteen .ersrv-reservation-widget-container,
+	.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline,
+	.theme-twentytwentyone .ersrv-reservation-widget-container,
+	.theme-twentytwentyone .ersrv-widget-calendar .ui-datepicker-inline{
+		width: 100%;
+	}
+	.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td span,
+	.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a,
+	.theme-twentynineteen .ersrv-widget-calendar .ui-datepicker-inline .ui-datepicker-calendar tbody tr td a a {
+		padding: 0px !important;
+		width: 34px;
+		height: 34px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+	}
 }
