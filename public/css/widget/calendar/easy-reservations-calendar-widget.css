@@ -708,6 +708,6 @@ a{
 	}
 }
 
-.woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--favourite-reservable-items a::before{
+.theme-storefront .woocommerce-MyAccount-navigation ul li.woocommerce-MyAccount-navigation-link--favourite-reservable-items a::before{
     content: "\f004" !important;
 }
