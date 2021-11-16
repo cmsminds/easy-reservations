@@ -1,5 +1,5 @@
 === Boat Rental Plugin for WordPress ===
-Contributors: cmsminds, shobhit2412
+Contributors: cmsminds, shobhit2412, niravmehta44
 Tags: woocommerce, boat, rental, reservation, watercraft, yacht, booking, scheduling, speed boat, deck boat, electric boat, watercraft, deck boat, yacht boat, duffy boat, private boat, party boat
 Requires at least: 5.0
 Tested up to: 5.8
