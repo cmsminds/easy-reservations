@@ -12,7 +12,7 @@
  * @package           Easy_Reservations
  *
  * @wordpress-plugin
- * Plugin Name:       Boat Rental System
+ * Plugin Name:       Boat Rental Plugin for WordPress
  * Plugin URI:        https://www.github.com/cmsminds
  * Description:       Transfer your WordPress into an easy reservation system. Powered by cmsMinds.
  * Version:           1.0.0

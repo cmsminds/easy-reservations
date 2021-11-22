@@ -12,19 +12,34 @@ Allow your customers to make boat reservations online. A simple solution that wo
 
 == Description ==
 
-Boat Rental Plugin for WordPress is a simple-to-use plugin that allows you to rent your boat. It integrates with WordPress and WooCommerce and enables your business to rent boats online. Make Booking boats for your website visitors a breeze.
-In just a few minutes, you'll be up and running. You can add boats (all the different types), manage your bookings, and create boat bookings and calendars. This reservation system can be simply customized to meet your specific requirements. It’s powerful to accept payment and security deposits as well.
+Boat Rental Plugin for Wordpress is a simple to use plugin that allows you to rent your boat. It integrates with WordPress and WooCommerce and enables your watercraft business to rent boats online. Make booking boats for your website visitors a breeze.
+
+Is this a calendar for someone like you to use?
+
+* Do you rent boats, jet skis, yachts, pantoons, kayaks, paddle boards or SUP or any other types of watercraft?
+* Do you want to rent them online and want to make it robust enough without incurring a big commission to third party or on-going monthly fees?
+* Do you wish to save a lot of money by creating your own reservation boat booking portal?
+
+If you answered yes to any of the questions, here is the answer. WordPress is totally FREE. The powerful basic version of the plugin is totally FREE as well.
+
+For your boat rental business, a set and forget reservation system
+WP Boat Rental Plugin allows marina owners to enable their customers to book online. In just a few minutes, you'll be up and running. You can add boats (all the different types), manage your bookings and create boat bookings and calendars. This reservation system can be simply customised to meet your specific requirements. It’s powerful to accept payment and security deposits as well. 
+
+Begin accepting reservations from your visitors right away!
 
 = Special Features =
 * Add boats as inventory and list them on the advanced search page offered by the plugin.
 * Multiple reservations managed in a single order.
 * Security deposits per reservation item.
+* Display available dates in your booking calendar.	
 * Available dates are shown with the help of a widget.
 * A quick view available to make instant bookings.
 * Customers can post requests to cancel their reservations.
 * Customers can edit their reservations (only once in the free version).
 * Customers can download an invoice for the reservation.
 * Customers can sync their Google and iCalendars based on their reservations.
+
+In a nutshell, it's a complete reservation system for your business.
 
 = Feedback =
 * I am open to your suggestions and feedback - Thank you for using or trying out one of my plugins!
